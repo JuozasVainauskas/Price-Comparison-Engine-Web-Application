@@ -6,7 +6,7 @@
 - Justas Vitkauskas
 ## About the project (key tasks)
 **Front-End**
-- [ ] Switch platform to website
+- [ ] Switch platform to a website
 - [x] Register/login forms
 - [x] Search field
 - [x] FAQ
@@ -20,7 +20,7 @@
 - [ ] Review about the page
 
 **Back-End**
-- [ ] Switch platform to website
+- [ ] Switch platform to a website
 - [x] Gather data from online shop websites
 - [x] Compare the gathered data
 - [x] Admin panel
