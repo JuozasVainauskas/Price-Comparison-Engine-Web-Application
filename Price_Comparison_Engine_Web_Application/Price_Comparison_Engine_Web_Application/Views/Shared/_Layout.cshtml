@@ -6,7 +6,9 @@
     <title>@ViewData["Title"] - SmartShop</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/Design.css" />
 </head>
+
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
@@ -29,6 +31,21 @@
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
+
+            <div id="cover">
+                <form method="get" action="">
+                    <div class="tb">
+                        <div class="td"><input type="text" placeholder="Ieškoti" required></div>
+                        <div class="td" id="s-cover">
+                            <button type="submit">
+                                <div id="s-circle"></div>
+                                <span></span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
         </main>
     </div>
 
