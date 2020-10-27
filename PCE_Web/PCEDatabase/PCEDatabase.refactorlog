@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="05dc7aff-745b-4bf7-a6a4-18e05d420b1f" ChangeDateTime="10/27/2020 13:18:50">
+    <Property Name="ElementName" Value="[dbo].[UserData].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[UserData]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="UserId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="ba029254-949b-489c-8d52-ae89e6e36310" ChangeDateTime="10/27/2020 13:21:23">
+    <Property Name="ElementName" Value="[dbo].[SavedIems].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[SavedIems]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="SavedItemId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="72851e6d-4a1b-4258-a550-d440519d6582" ChangeDateTime="10/27/2020 13:21:44">
+    <Property Name="ElementName" Value="[dbo].[SavedIems].[PageURL]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[SavedIems]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="PageUrl" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="a55487ea-b8ad-41ae-b366-dff7ef05b230" ChangeDateTime="10/27/2020 13:21:50">
+    <Property Name="ElementName" Value="[dbo].[SavedIems].[ImgURL]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[SavedIems]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ImgUrl" />
+  </Operation>
+</Operations>
