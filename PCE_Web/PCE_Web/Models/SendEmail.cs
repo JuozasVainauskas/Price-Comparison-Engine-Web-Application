@@ -13,7 +13,7 @@ namespace PCE_Web.Models
 {
     class SendEmail
     {
-        public SendEmail(string kodas, string email)
+        public SendEmail(string code, string email)
         {
             var client = new SmtpClient()
             {
@@ -35,7 +35,7 @@ namespace PCE_Web.Models
                 IsBodyHtml = true,
                 From = fromEmail,
                 Subject = "Email patvirtinimas",
-                Body = "Sveiki,<br>kad patvirtintumėte, jog tai yra jūsų email adresas, prašome įvesti šį kodą:<br><br><b>" + kodas + "</b><br><br>Jei jūs nesinaudojote mūsų paslaugomis ir niekur nesiregistravote, prašome ignoruoti šį laišką.<br><img src=\"https://i.pinimg.com/originals/d4/2a/8c/d42a8c4e83f0fb3750af810be2abbb23.png\" alt =\"SmartShop\" width=\"50\" height=\"50\"><br><i>Pasirašo,<br>Smart Shop komanda.</i>"
+                Body = "Sveiki,<br>kad patvirtintumėte, jog tai yra jūsų email adresas, prašome įvesti šį kodą:<br><br><b>" + code + "</b><br><br>Jei jūs nesinaudojote mūsų paslaugomis ir niekur nesiregistravote, prašome ignoruoti šį laišką.<br><img src=\"https://i.pinimg.com/originals/d4/2a/8c/d42a8c4e83f0fb3750af810be2abbb23.png\" alt =\"SmartShop\" width=\"50\" height=\"50\"><br><i>Pasirašo,<br>Smart Shop komanda.</i>"
             };
             message.To.Add(toEmail);
             client.SendCompleted += ClientSendCompleted;

@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[SavedIems]
+﻿CREATE TABLE [dbo].[SavedItems]
 (
 	[SavedItemId] INT NOT NULL PRIMARY KEY IDENTITY(1,1), 
     [Email] NVARCHAR(50) NOT NULL, 
