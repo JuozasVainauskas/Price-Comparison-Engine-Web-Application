@@ -57,13 +57,46 @@
                 </form>
                 <ul class="nav navbar-nav navbar-right navbar-menu-items wow fadeIn">
                     <li><a href="#">Pagrindinis</a></li>
-                    <li><a href="#">Apie</a></li>
-                    <li><a href="#">DUK</a></li>
+                    <li><a href="_Layout2.cshtml">Apie</a></li>
+                    <li><a href="#" data-toggle="modal" data-target="#dukModal">DUK</a></li>
                     <li><a href="#">Kontaktai</a></li>
                 </ul>
             </div>
         </div>
     </nav>
+
+    <div class="modal fade" id="dukModal" tabindex="-1" role="dialog" aria-labelledby="dukModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="dukModalLabel" style="color:green" bold>DUK</h5>
+
+                </div>
+                <div class="modal-body">
+                    
+                    <h1 style="color:green" bold>Kodėl nematau prekių?</h1>
+                    <p>Programa yra kūrimo stadijoje, todėl gali kilti tokie trukdžiai.</p>
+                    <hr>
+
+                    <h2 style="color:green" bold>Kaip surasti geriausią prekę?</h2>
+                    <p>Į paieškos lauką įveskite ieškomos prekės pavadinimą, tada pasirinkite kategoriją ir kainą.</p>
+                    <hr>
+
+                    <h2 style="color:green" bold>Ar visi pasiūlymai tikri? Ar tai ne apgaulė?</h2>
+                    <p>Taip, visos prekės yra tikros.</p>
+                    <hr>
+
+                    <h2 style="color:green" bold>Ką daryti, jeigu radau klaidą?</h2>
+                    <p>Praneškite klaidą administracijai paštu.</p>
+                    <hr>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn first" data-dismiss="modal" style="color:green" bold>Uždaryti</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Top content -->
     <div class="top-content">
