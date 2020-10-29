@@ -1,5 +1,4 @@
-.image 
-{
+.image {
     margin-left: auto;
     margin-right: auto;
     width: auto;
@@ -7,10 +6,11 @@
     max-width: 500px;
     max-height: 500px;
 }
-table 
+/*table 
 {
     display: inline-block;
 }
+*/
 td 
 {
     padding: 10px;
