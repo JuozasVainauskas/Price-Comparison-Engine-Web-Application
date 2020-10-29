@@ -16,7 +16,7 @@ namespace PCE_Web.Controllers
 
             public string Seller { get; set; }
 
-            public double Pricea { get; set; }
+            public double PriceDouble { get; set; }
 
             public string Price { get; set; }
 
