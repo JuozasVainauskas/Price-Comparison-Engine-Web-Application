@@ -126,37 +126,37 @@
 </div>
 <!-- Paieškos mygtukas -->
 <div id="cover">
-    <form method="get" action="">
-        <div class="tb">
-            <div class="td"><input type="text" placeholder="Ieškoti" required></div>
-            <div class="td" id="s-cover">
-                <button type="submit">
-                    <div id="s-circle"></div>
-                    <span></span>
-                </button>
+        <form method="get" action="">
+            <div class="tb">
+                <div class="td"><input type="text" name="ProductName" placeholder="Ieškoti" required></div>
+                <div class="td" id="s-cover">
+                    <button type="submit" asp-area="" asp-controller="Search" asp-action="Suggestions">
+                        <div id="s-circle"></div>
+                        <span></span>
+                    </button>
+                </div>
             </div>
-        </div>
-    </form>
-</div>
-<!-- Footer -->
-<footer>
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12 footer-copyright">
-                &copy; SmartShop.LT, 2020.
-            </div>
-        </div>
+        </form>
     </div>
-</footer>
+<!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 footer-copyright">
+                    &copy; SmartShop.LT, 2020.
+                </div>
+            </div>
+        </div>
+    </footer>
 
 
-<!-- Javascript -->
-<script src="~/js/jquery-1.11.1.min.js"></script>
-<script src="~/bootstrap/js/bootstrap.min.js"></script>
-<script src="~/js/jquery.backstretch.min.js"></script>
-<script src="~/js/wow.min.js"></script>
-<script src="~/js/scripts.js"></script>
+    <!-- Javascript -->
+    <script src="~/js/jquery-1.11.1.min.js"></script>
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/js/jquery.backstretch.min.js"></script>
+    <script src="~/js/wow.min.js"></script>
+    <script src="~/js/scripts.js"></script>
 
-<!--[if lt IE 10]>
-    <script src="assets/js/placeholder.js"></script>
-<![endif]-->
+    <!--[if lt IE 10]>
+        <script src="assets/js/placeholder.js"></script>
+    <![endif]-->
