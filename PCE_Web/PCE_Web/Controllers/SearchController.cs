@@ -42,7 +42,7 @@ namespace PCE_Web.Controllers
             products = SortAndInsert(products);
             var suggestionsView = new SuggestionsView
             {
-                Message = "Artimiausiu metu čia galėsite pamatyti siūlomas prekes.", Products = products
+                Products = products
             };
             return View(suggestionsView);
         }
