@@ -57,9 +57,14 @@
 
 <!-- Paieškos mygtukas -->
 <div class="search-button">
-<form>
-    <input type="text" name="search" placeholder="Ieškokite..">
-</form>
+    <form method="get" action="">
+        <div class="tb">
+            <input type="text" name="ProductName" placeholder="Ieškokite..">
+            <div class="td" id="s-cover">
+                <input type="submit" asp-area="" asp-controller="Search" asp-action="Suggestions" style="position: absolute; left: -9999px" />
+            </div>
+        </div>
+    </form>
 </div>
 
 <!-- Features -->
