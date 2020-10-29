@@ -52,8 +52,19 @@
                 </div>
             </div>
         </div>
-
     </div>
+</div>
+
+<!-- Paieškos mygtukas -->
+<div class="search-button">
+    <form method="get" action="">
+        <div class="tb">
+            <input type="text" name="ProductName" placeholder="Ieškokite..">
+            <div class="td" id="s-cover">
+                <input type="submit" asp-area="" asp-controller="Search" asp-action="Suggestions" style="position: absolute; left: -9999px" />
+            </div>
+        </div>
+    </form>
 </div>
 
 <!-- Features -->
@@ -124,20 +135,6 @@
 
     </div>
 </div>
-<!-- Paieškos mygtukas -->
-<div id="cover">
-        <form method="get" action="">
-            <div class="tb">
-                <div class="td"><input type="text" name="ProductName" placeholder="Ieškoti" required></div>
-                <div class="td" id="s-cover">
-                    <button type="submit" asp-area="" asp-controller="Search" asp-action="Suggestions">
-                        <div id="s-circle"></div>
-                        <span></span>
-                    </button>
-                </div>
-            </div>
-        </form>
-    </div>
 <!-- Footer -->
     <footer>
         <div class="container">

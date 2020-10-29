@@ -218,6 +218,28 @@ button span {
 .top-content .description a:hover, .top-content .description a:focus { color: #fff; border: 0; }
 
 
+/***** Search button *****/
+
+.search-button input[type=text] {
+	width: 300px;
+	box-sizing: border-box;
+	border: 2px solid #ccc;
+	border-radius: 4px;
+	font-size: 50px;
+	background-color: white;
+	background-image: url('searchicon.png');
+	background-position: 10px 10px;
+	background-repeat: no-repeat;
+	padding: 6px 20px 6px 40px;
+	margin-top: 30px;
+	-webkit-transition: width 0.4s ease-in-out;
+	transition: width 0.5s ease-in-out;
+}
+
+.search-button input[type=text]:focus {
+		width: 50%;
+	}
+
 /***** Features *****/
 
 .features-box { margin-top: 30px; text-align: left; }
