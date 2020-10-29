@@ -218,6 +218,12 @@ button span {
 .top-content .description a:hover, .top-content .description a:focus { color: #fff; border: 0; }
 
 
+/***** Search button *****/
+
+.search-button { padding: 70px 0 160px 0; position: relative }
+
+
+
 /***** Features *****/
 
 .features-box { margin-top: 30px; text-align: left; }
