@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 using Microsoft.AspNetCore.Mvc;
+using PCE_Web.Classes;
 using PCE_Web.Models;
 
 namespace PCE_Web.Controllers
@@ -387,7 +388,7 @@ namespace PCE_Web.Controllers
                             price = PasalinimasTarpuPigu(price);
                             var priceAtsarg = price;
                             price = PasalinimasEuroSimbol(price);
-                            price = price + "€";
+                            price += "€";
                             priceAtsarg = PasalinimasEuroSimbol(priceAtsarg);
 
                             var priceDouble = Convert.ToDouble(priceAtsarg);
@@ -435,7 +436,7 @@ namespace PCE_Web.Controllers
                         price = PasalinimasTarpuPigu(price);
                         var priceAtsarg = price;
                         price = PasalinimasEuroSimbol(price);
-                        price = price + "€";
+                        price += "€";
                         priceAtsarg = PasalinimasEuroSimbol(priceAtsarg);
                         var priceDouble = Convert.ToDouble(priceAtsarg);
                         var singleItem = new Item 
