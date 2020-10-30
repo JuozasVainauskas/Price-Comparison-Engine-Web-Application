@@ -13,7 +13,7 @@ namespace PCE_Web.Controllers
             return View();
         }
 
-        public IActionResult Register()
+        public IActionResult Register(string email, string psw,string pswRepeat)
         {
             return View();
         }
