@@ -239,14 +239,14 @@ namespace PCE_Web.Controllers
                             var priceAtsarg = price;
                             priceAtsarg = PasalinimasTrikdanciuSimboliu2(priceAtsarg);
                             priceAtsarg = PasalinimasEuroSimbol(priceAtsarg);
-                            var pricea = Convert.ToDouble(priceAtsarg);
+                            var priceDouble = Convert.ToDouble(priceAtsarg);
 
                             var singleItem = new Item
                             {
                                 Picture = "https://www.rde.lt/" + imgLink, 
                                 Seller = "Rde", 
                                 Name = name, 
-                                PriceDouble = pricea, 
+                                PriceDouble = priceDouble, 
                                 Price = price, 
                                 Link = "https://www.rde.lt/" + link
                             };
@@ -283,7 +283,7 @@ namespace PCE_Web.Controllers
                         price = PasalinimasTrikdanciuSimboliu(price);
                         var priceAtsarg = price;
                         priceAtsarg = PasalinimasEuroSimbol(priceAtsarg);
-                        var pricea = Convert.ToDouble(priceAtsarg);
+                        var priceDouble = Convert.ToDouble(priceAtsarg);
                         if (imgLink != "")
                         {
                             var singleItem = new Item
@@ -291,7 +291,7 @@ namespace PCE_Web.Controllers
                                 Picture = imgLink, 
                                 Seller = "Avitela", 
                                 Name = name, 
-                                PriceDouble = pricea, 
+                                PriceDouble = priceDouble, 
                                 Price = price, 
                                 Link = link
                             };
@@ -299,7 +299,7 @@ namespace PCE_Web.Controllers
                         }
                         else
                         {
-                            var singleItem = new Item { Picture = "https://avitela.lt/image/no_image.jpg", Seller = "Avitela", Name = name, PriceDouble = pricea, Price = price, Link = link };
+                            var singleItem = new Item { Picture = "https://avitela.lt/image/no_image.jpg", Seller = "Avitela", Name = name, PriceDouble = priceDouble, Price = price, Link = link };
                             prices.Add(singleItem);
                         }
 
@@ -339,13 +339,13 @@ namespace PCE_Web.Controllers
                             price = PasalinimasTrikdanciuSimboliu(price);
                             var priceTemporary = price;
                             priceTemporary = PasalinimasEuroSimbol(priceTemporary);
-                            var pricea = Convert.ToDouble(priceTemporary);
+                            var priceDouble = Convert.ToDouble(priceTemporary);
                             var item1 = new Item
                             {
                                 Picture = "https://pagrindinis.barbora.lt/" + imgLink, 
                                 Seller = "Barbora", 
                                 Name = name, 
-                                PriceDouble = pricea, 
+                                PriceDouble = priceDouble, 
                                 Price = price, 
                                 Link = "https://pagrindinis.barbora.lt/" + link
                             };
@@ -390,13 +390,13 @@ namespace PCE_Web.Controllers
                             price = price + "€";
                             priceAtsarg = PasalinimasEuroSimbol(priceAtsarg);
 
-                            var pricea = Convert.ToDouble(priceAtsarg);
+                            var priceDouble = Convert.ToDouble(priceAtsarg);
                             var singleItem = new Item
                             {
                                 Picture = imgLink,
                                 Seller = "Pigu",
                                 Name = name,
-                                PriceDouble = pricea,
+                                PriceDouble = priceDouble,
                                 Price = price,
                                 Link = link
                             };
@@ -437,13 +437,13 @@ namespace PCE_Web.Controllers
                         price = PasalinimasEuroSimbol(price);
                         price = price + "€";
                         priceAtsarg = PasalinimasEuroSimbol(priceAtsarg);
-                        var pricea = Convert.ToDouble(priceAtsarg);
+                        var priceDouble = Convert.ToDouble(priceAtsarg);
                         var singleItem = new Item 
                             { 
                                 Picture = imgLink, 
                                 Seller = "BigBox", 
                                 Name = name, 
-                                PriceDouble = pricea, 
+                                PriceDouble = priceDouble, 
                                 Price = price, 
                                 Link = link
                             };
@@ -479,13 +479,13 @@ namespace PCE_Web.Controllers
                     var priceAtsarg = price;
                     priceAtsarg = PasalinimasEuroSimbol(priceAtsarg);
 
-                    var pricea = double.Parse(priceAtsarg);
+                    var priceDouble = double.Parse(priceAtsarg);
                     var item1 = new Item
                     {
                         Picture = imgLink, 
                         Seller = "Elektromarkt", 
                         Name = name, 
-                        PriceDouble = pricea, 
+                        PriceDouble = priceDouble, 
                         Price = price, 
                         Link = link
                     };
@@ -516,14 +516,14 @@ namespace PCE_Web.Controllers
                     {
                         var regex = Regex.Match(price ?? string.Empty, @"[0-9]+\,[0-9][0-9]");
                         price = Convert.ToString(regex);
-                        var pricea = Convert.ToDouble(price);
+                        var priceDouble = Convert.ToDouble(price);
 
                         var singleItem = new Item
                         {
                             Picture = imgLink, 
                             Seller = "Gintarine vaistine", 
                             Name = name, 
-                            PriceDouble = pricea,
+                            PriceDouble = priceDouble,
                             Price = price + '€', 
                             Link = "https://www.gintarine.lt/" + link
                         };

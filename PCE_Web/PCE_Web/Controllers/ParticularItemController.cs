@@ -242,7 +242,7 @@ namespace PCE_Web.Controllers
                             var priceBackUp = price;
                             priceBackUp = EliminatingSymbols2(priceBackUp);
                             priceBackUp = EliminatingEuroSimbol(priceBackUp);
-                            var pricea = Convert.ToDouble(priceBackUp);
+                            var priceDouble = Convert.ToDouble(priceBackUp);
                             if (name != null)
                             {
                                 var pavArray = name.Split();
@@ -254,7 +254,7 @@ namespace PCE_Web.Controllers
                                         Picture = "https://www.rde.lt/" + imgLink,
                                         Seller = "Rde",
                                         Name = name,
-                                        PriceDouble = pricea,
+                                        PriceDouble = priceDouble,
                                         Price = price,
                                         Link = "https://www.rde.lt/" + link
                                     };
@@ -293,7 +293,7 @@ namespace PCE_Web.Controllers
                         price = EliminatingSymbols(price);
                         var priceAtsarg = price;
                         priceAtsarg = EliminatingEuroSimbol(priceAtsarg);
-                        var pricea = Convert.ToDouble(priceAtsarg);
+                        var priceDouble = Convert.ToDouble(priceAtsarg);
                         if (name != null)
                         {
                             var pavArray = name.Split();
@@ -305,7 +305,7 @@ namespace PCE_Web.Controllers
                                     Picture = imgLink,
                                     Seller = "Avitela", 
                                     Name = name, 
-                                    PriceDouble = pricea, 
+                                    PriceDouble = priceDouble, 
                                     Price = price, 
                                     Link = link
                                 };
@@ -349,7 +349,7 @@ namespace PCE_Web.Controllers
                             price = EliminatingSymbols(price);
                             var priceTemporary = price;
                             priceTemporary = EliminatingEuroSimbol(priceTemporary);
-                            var pricea = Convert.ToDouble(priceTemporary);
+                            var priceDouble = Convert.ToDouble(priceTemporary);
                             if (name != null)
                             {
                                 var pavArray = name.Split();
@@ -361,7 +361,7 @@ namespace PCE_Web.Controllers
                                         Picture = "https://pagrindinis.barbora.lt/" + imgLink,
                                         Seller = "Barbora",
                                         Name = name,
-                                        PriceDouble = pricea,
+                                        PriceDouble = priceDouble,
                                         Price = price,
                                         Link = "https://pagrindinis.barbora.lt/" + link
                                     };
@@ -408,7 +408,7 @@ namespace PCE_Web.Controllers
                             price = price + "€";
                             priceAtsarg = EliminatingEuroSimbol(priceAtsarg);
 
-                            var pricea = Convert.ToDouble(priceAtsarg);
+                            var priceDouble = Convert.ToDouble(priceAtsarg);
                             if (name != null)
                             {
                                 var pavArray = name.Split();
@@ -420,7 +420,7 @@ namespace PCE_Web.Controllers
                                         Picture = imgLink,
                                         Seller = "Pigu",
                                         Name = name,
-                                        PriceDouble = pricea,
+                                        PriceDouble = priceDouble,
                                         Price = price,
                                         Link = link
                                     };
@@ -463,7 +463,7 @@ namespace PCE_Web.Controllers
                         price = EliminatingEuroSimbol(price);
                         price = price + "€";
                         priceAtsarg = EliminatingEuroSimbol(priceAtsarg);
-                        var pricea = Convert.ToDouble(priceAtsarg);
+                        var priceDouble = Convert.ToDouble(priceAtsarg);
                         if (name != null)
                         {
                             var pavArray = name.Split();
@@ -475,7 +475,7 @@ namespace PCE_Web.Controllers
                                     Picture = imgLink,
                                     Seller = "BigBox",
                                     Name = name,
-                                    PriceDouble = pricea,
+                                    PriceDouble = priceDouble,
                                     Price = price,
                                     Link = link
                                 };
@@ -512,7 +512,7 @@ namespace PCE_Web.Controllers
                     var priceAtsarg = price;
                     priceAtsarg = EliminatingEuroSimbol(priceAtsarg);
 
-                    var pricea = double.Parse(priceAtsarg);
+                    var priceDouble = double.Parse(priceAtsarg);
                     if (name != null)
                     {
                         var pavArray = name.Split();
@@ -524,7 +524,7 @@ namespace PCE_Web.Controllers
                                 Picture = imgLink,
                                 Seller = "Elektromarkt",
                                 Name = name,
-                                PriceDouble = pricea,
+                                PriceDouble = priceDouble,
                                 Price = price,
                                 Link = link
                             };
@@ -557,7 +557,7 @@ namespace PCE_Web.Controllers
                     {
                         var regex = Regex.Match(price ?? string.Empty, @"[0-9]+\,[0-9][0-9]");
                         price = Convert.ToString(regex);
-                        var pricea = Convert.ToDouble(price);
+                        var priceDouble = Convert.ToDouble(price);
 
                         if (name != null)
                         {
@@ -570,7 +570,7 @@ namespace PCE_Web.Controllers
                                     Picture = imgLink,
                                     Seller = "Gintarine vaistine",
                                     Name = name,
-                                    PriceDouble = pricea,
+                                    PriceDouble = priceDouble,
                                     Price = price + '€',
                                     Link = "https://www.gintarine.lt/" + link
                                 };
