@@ -1,0 +1,17 @@
+﻿@model ParticularItemView
+
+<link rel="stylesheet" href="~/css/styleForSuggestionView.css">
+@foreach (var product in @Model.Products)
+{
+    <table>
+        <tr>
+            <td>
+                <a href="@product.Link">
+                    <img class="image" alt="product.jpg" src="@product.Picture">
+                </a>
+            </td>
+            <td>@product.Name</td>
+            <td>@product.Price</td>
+        </tr>
+    </table>
+}

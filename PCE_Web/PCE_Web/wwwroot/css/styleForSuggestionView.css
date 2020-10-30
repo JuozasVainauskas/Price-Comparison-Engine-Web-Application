@@ -15,3 +15,7 @@ td
 {
     padding: 10px;
 }
+button.link {
+    background: none;
+    border: none;
+}

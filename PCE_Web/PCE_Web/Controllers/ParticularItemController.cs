@@ -10,21 +10,25 @@ using PCE_Web.Models;
 
 namespace PCE_Web.Controllers
 {
-    public class SearchController : Controller
+    public class ParticularItemController : Controller
     {
-        public static int soldOutBarbora;
-        public static int soldOut;
-        public async Task<IActionResult> Suggestions(string productName)//Perduodamas produkto pavadinimas
+        public static int SoldOutBarbora;
+        public static int SoldOut;
+        public static string[] Divided;
+        private static readonly string[] ItemsToSkip = { "Šaldytuvas", "Išmanusis", "telefonas", "Kompiuteris", "mobilusis", "apsauginis", "stiklas" };
+        public async Task<IActionResult> ParticularItem(string particularItem)
         {
+            Divided = particularItem.Split();
             var httpClient = new HttpClient();
             var products = new List<Item>();
-            var urlRde = "https://www.rde.lt/search_result/lt/word/" + productName + "/page/1";
-            var urlAvitela = "https://avitela.lt/paieska/" + productName;
-            var urlBarbora = "https://pagrindinis.barbora.lt/paieska?q=" + productName;
-            var urlPigu = "https://pigu.lt/lt/search?q=" + productName;
-            var urlBigBox = "https://bigbox.lt/paieska?controller=search&orderby=position&orderway=desc&ssa_submit=&search_query=" + productName;
-            var urlElektromarkt = "https://www.elektromarkt.lt/lt/catalogsearch/result/?order=price&dir=desc&q=" + productName;
-            var urlGintarineVaistine = "https://www.gintarine.lt/search?adv=false&cid=0&mid=0&vid=0&q=" + productName + "%5D&sid=false&isc=true&orderBy=0";
+            var urlRde = "https://www.rde.lt/search_result/lt/word/" + particularItem + "/page/1";
+            var urlAvitela = "https://avitela.lt/paieska/" + particularItem;
+            var urlBarbora = "https://pagrindinis.barbora.lt/paieska?q=" + particularItem;
+            var urlPigu = "https://pigu.lt/lt/search?q=" + particularItem;
+            var urlBigBox = "https://bigbox.lt/paieska?controller=search&orderby=position&orderway=desc&ssa_submit=&search_query=" + particularItem;
+            var urlElektromarkt = "https://www.elektromarkt.lt/lt/catalogsearch/result/?order=price&dir=desc&q=" + particularItem;
+            var urlGintarineVaistine = "https://www.gintarine.lt/search?adv=false&cid=0&mid=0&vid=0&q=" + particularItem + "%5D&sid=false&isc=true&orderBy=0";
+
             var rdeItems = RdeSearch(await Html(httpClient, urlRde));
             WriteDataFromRde(rdeItems, products);
             var barboraItems = BarboraSearch(await Html(httpClient, urlBarbora));
@@ -36,18 +40,17 @@ namespace PCE_Web.Controllers
             var bigBoxItem = BigBoxSearch(await Html(httpClient, urlBigBox));
             WriteDataFromBigBox(bigBoxItem, products);
             var gintarineVaistineItems = GintarineVaistineSearch(await Html(httpClient, urlGintarineVaistine));
-            WriteDataFromgintarineVaistine(gintarineVaistineItems, products);
+            WriteDataFromGintarineVaistine(gintarineVaistineItems, products);
             var elektromarktItems = ElektromarktSearch(await Html(httpClient, urlElektromarkt));
             WriteDataFromElektromarkt(elektromarktItems, products);
             products = SortAndInsert(products);
-            
-            var suggestionsView = new SuggestionsView
+
+            var particularItemView = new ParticularItemView
             {
                 Products = products
             };
-            return View(suggestionsView);
+            return View(particularItemView);
         }
-
         private static async Task<HtmlDocument> Html(HttpClient httpClient, string urlget)
         {
             try
@@ -114,7 +117,7 @@ namespace PCE_Web.Controllers
                         .Contains("b-product-out-of-stock-backdrop")).ToList();
                 foreach (var unused in productListItemsSoldOut)
                 {
-                    soldOutBarbora++;
+                    SoldOutBarbora++;
                 }
                 return productListItems2;
             }
@@ -141,7 +144,7 @@ namespace PCE_Web.Controllers
                         .Contains("label-soldout")).ToList();
                 foreach (var unused in productListItemsSoldOut)
                 {
-                    soldOut++;
+                    SoldOut++;
                 }
                 return productListItems2;
             }
@@ -235,22 +238,29 @@ namespace PCE_Web.Controllers
 
                         if (price != "")
                         {
-                            price = PasalinimasTrikdanciuSimboliu2(price);
-                            var priceAtsarg = price;
-                            priceAtsarg = PasalinimasTrikdanciuSimboliu2(priceAtsarg);
-                            priceAtsarg = PasalinimasEuroSimbol(priceAtsarg);
-                            var pricea = Convert.ToDouble(priceAtsarg);
-
-                            var singleItem = new Item
+                            price = EliminatingSymbols2(price);
+                            var priceBackUp = price;
+                            priceBackUp = EliminatingSymbols2(priceBackUp);
+                            priceBackUp = EliminatingEuroSimbol(priceBackUp);
+                            var pricea = Convert.ToDouble(priceBackUp);
+                            if (name != null)
                             {
-                                Picture = "https://www.rde.lt/" + imgLink, 
-                                Seller = "Rde", 
-                                Name = name, 
-                                PriceDouble = pricea, 
-                                Price = price, 
-                                Link = "https://www.rde.lt/" + link
-                            };
-                            prices.Add(singleItem);
+                                var pavArray = name.Split();
+                                var numberOfSameWords = AlgorithmHowManyWordsAreTheSame(pavArray);
+                                if (numberOfSameWords >= (Divided.Length / 2) + 1)
+                                {
+                                    var singleItem = new Item
+                                    {
+                                        Picture = "https://www.rde.lt/" + imgLink,
+                                        Seller = "Rde",
+                                        Name = name,
+                                        PriceDouble = pricea,
+                                        Price = price,
+                                        Link = "https://www.rde.lt/" + link
+                                    };
+                                    prices.Add(singleItem);
+                                }
+                            }
                         }
                     }
                 }
@@ -280,27 +290,27 @@ namespace PCE_Web.Controllers
 
                     if (price != "")
                     {
-                        price = PasalinimasTrikdanciuSimboliu(price);
+                        price = EliminatingSymbols(price);
                         var priceAtsarg = price;
-                        priceAtsarg = PasalinimasEuroSimbol(priceAtsarg);
+                        priceAtsarg = EliminatingEuroSimbol(priceAtsarg);
                         var pricea = Convert.ToDouble(priceAtsarg);
-                        if (imgLink != "")
+                        if (name != null)
                         {
-                            var singleItem = new Item
+                            var pavArray = name.Split();
+                            var numberOfSameWords = AlgorithmHowManyWordsAreTheSame(pavArray);
+                            if (numberOfSameWords >= (Divided.Length / 2) + 1)
                             {
-                                Picture = imgLink, 
-                                Seller = "Avitela", 
-                                Name = name, 
-                                PriceDouble = pricea, 
-                                Price = price, 
-                                Link = link
-                            };
-                            prices.Add(singleItem);
-                        }
-                        else
-                        {
-                            var singleItem = new Item { Picture = "https://avitela.lt/image/no_image.jpg", Seller = "Avitela", Name = name, PriceDouble = pricea, Price = price, Link = link };
-                            prices.Add(singleItem);
+                                var singleItem = new Item
+                                {
+                                    Picture = imgLink,
+                                    Seller = "Avitela", 
+                                    Name = name, 
+                                    PriceDouble = pricea, 
+                                    Price = price, 
+                                    Link = link
+                                };
+                                prices.Add(singleItem);
+                            }
                         }
 
                     }
@@ -312,7 +322,7 @@ namespace PCE_Web.Controllers
         {
             if (productListItems != null)
             {
-                var countItems = productListItems.Count - soldOutBarbora;
+                var countItems = productListItems.Count - SoldOutBarbora;
 
                 foreach (var productListItem in productListItems)
                     if (countItems != 0)
@@ -336,20 +346,28 @@ namespace PCE_Web.Controllers
 
                         if (price != "")
                         {
-                            price = PasalinimasTrikdanciuSimboliu(price);
+                            price = EliminatingSymbols(price);
                             var priceTemporary = price;
-                            priceTemporary = PasalinimasEuroSimbol(priceTemporary);
+                            priceTemporary = EliminatingEuroSimbol(priceTemporary);
                             var pricea = Convert.ToDouble(priceTemporary);
-                            var item1 = new Item
+                            if (name != null)
                             {
-                                Picture = "https://pagrindinis.barbora.lt/" + imgLink, 
-                                Seller = "Barbora", 
-                                Name = name, 
-                                PriceDouble = pricea, 
-                                Price = price, 
-                                Link = "https://pagrindinis.barbora.lt/" + link
-                            };
-                            prices.Add(item1);
+                                var pavArray = name.Split();
+                                var numberOfSameWords = AlgorithmHowManyWordsAreTheSame(pavArray);
+                                if (numberOfSameWords >= (Divided.Length / 2) + 1)
+                                {
+                                    var singleItem = new Item
+                                    {
+                                        Picture = "https://pagrindinis.barbora.lt/" + imgLink,
+                                        Seller = "Barbora",
+                                        Name = name,
+                                        PriceDouble = pricea,
+                                        Price = price,
+                                        Link = "https://pagrindinis.barbora.lt/" + link
+                                    };
+                                    prices.Add(singleItem);
+                                }
+                            }
                         }
 
                         countItems--;
@@ -361,7 +379,7 @@ namespace PCE_Web.Controllers
         {
             if (productListItems != null)
             {
-                var countItems = productListItems.Count - soldOut;
+                var countItems = productListItems.Count - SoldOut;
 
                 foreach (var productListItem in productListItems)
                     if (countItems != 0)
@@ -384,24 +402,32 @@ namespace PCE_Web.Controllers
 
                         if (price != null)
                         {
-                            price = PasalinimasTarpuPigu(price);
+                            price = EliminateSpacesPigu(price);
                             var priceAtsarg = price;
-                            price = PasalinimasEuroSimbol(price);
+                            price = EliminatingEuroSimbol(price);
                             price = price + "€";
-                            priceAtsarg = PasalinimasEuroSimbol(priceAtsarg);
+                            priceAtsarg = EliminatingEuroSimbol(priceAtsarg);
 
                             var pricea = Convert.ToDouble(priceAtsarg);
-                            var singleItem = new Item
+                            if (name != null)
                             {
-                                Picture = imgLink,
-                                Seller = "Pigu",
-                                Name = name,
-                                PriceDouble = pricea,
-                                Price = price,
-                                Link = link
-                            };
-                            prices.Add(singleItem);
-                            countItems--;
+                                var pavArray = name.Split();
+                                var numberOfSameWords = AlgorithmHowManyWordsAreTheSame(pavArray);
+                                if (numberOfSameWords >= (Divided.Length / 2) + 1)
+                                {
+                                    var singleItem = new Item
+                                    {
+                                        Picture = imgLink,
+                                        Seller = "Pigu",
+                                        Name = name,
+                                        PriceDouble = pricea,
+                                        Price = price,
+                                        Link = link
+                                    };
+                                    prices.Add(singleItem);
+                                    countItems--;
+                                }
+                            }
                         }
                     }
             }
@@ -432,23 +458,30 @@ namespace PCE_Web.Controllers
 
                     if (price != "")
                     {
-                        price = PasalinimasTarpuPigu(price);
+                        price = EliminateSpacesPigu(price);
                         var priceAtsarg = price;
-                        price = PasalinimasEuroSimbol(price);
+                        price = EliminatingEuroSimbol(price);
                         price = price + "€";
-                        priceAtsarg = PasalinimasEuroSimbol(priceAtsarg);
+                        priceAtsarg = EliminatingEuroSimbol(priceAtsarg);
                         var pricea = Convert.ToDouble(priceAtsarg);
-                        var singleItem = new Item 
-                            { 
-                                Picture = imgLink, 
-                                Seller = "BigBox", 
-                                Name = name, 
-                                PriceDouble = pricea, 
-                                Price = price, 
-                                Link = link
-                            };
-
-                        prices.Add(singleItem);
+                        if (name != null)
+                        {
+                            var pavArray = name.Split();
+                            var numberOfSameWords = AlgorithmHowManyWordsAreTheSame(pavArray);
+                            if (numberOfSameWords >= (Divided.Length / 2) + 1)
+                            {
+                                var singleItem = new Item
+                                {
+                                    Picture = imgLink,
+                                    Seller = "BigBox",
+                                    Name = name,
+                                    PriceDouble = pricea,
+                                    Price = price,
+                                    Link = link
+                                };
+                                prices.Add(singleItem);
+                            }
+                        }
                     }
                 }
             }
@@ -475,27 +508,35 @@ namespace PCE_Web.Controllers
 
                     var imgLink = productListItem.Descendants("img").FirstOrDefault()?.GetAttributeValue("src", "");
 
-                    price = PasalinimasTarpu(price);
+                    price = EliminateSpaces(price);
                     var priceAtsarg = price;
-                    priceAtsarg = PasalinimasEuroSimbol(priceAtsarg);
+                    priceAtsarg = EliminatingEuroSimbol(priceAtsarg);
 
                     var pricea = double.Parse(priceAtsarg);
-                    var item1 = new Item
+                    if (name != null)
                     {
-                        Picture = imgLink, 
-                        Seller = "Elektromarkt", 
-                        Name = name, 
-                        PriceDouble = pricea, 
-                        Price = price, 
-                        Link = link
-                    };
-                    prices.Add(item1);
+                        var pavArray = name.Split();
+                        var numberOfSameWords = AlgorithmHowManyWordsAreTheSame(pavArray);
+                        if (numberOfSameWords >= (Divided.Length / 2) + 1)
+                        {
+                            var singleItem = new Item
+                            {
+                                Picture = imgLink,
+                                Seller = "Elektromarkt",
+                                Name = name,
+                                PriceDouble = pricea,
+                                Price = price,
+                                Link = link
+                            };
+                            prices.Add(singleItem);
+                        }
+                    }
 
                 }
             }
         }
 
-        private static void WriteDataFromgintarineVaistine(List<HtmlNode> productListItems, List<Item> prices)
+        private static void WriteDataFromGintarineVaistine(List<HtmlNode> productListItems, List<Item> prices)
         {
             if (productListItems != null)
             {
@@ -518,22 +559,59 @@ namespace PCE_Web.Controllers
                         price = Convert.ToString(regex);
                         var pricea = Convert.ToDouble(price);
 
-                        var singleItem = new Item
+                        if (name != null)
                         {
-                            Picture = imgLink, 
-                            Seller = "Gintarine vaistine", 
-                            Name = name, 
-                            PriceDouble = pricea,
-                            Price = price + '€', 
-                            Link = "https://www.gintarine.lt/" + link
-                        };
-                        prices.Add(singleItem);
+                            var pavArray = name.Split();
+                            var numberOfSameWords = AlgorithmHowManyWordsAreTheSame(pavArray);
+                            if (numberOfSameWords >= (Divided.Length / 2) + 1)
+                            {
+                                var singleItem = new Item
+                                {
+                                    Picture = imgLink,
+                                    Seller = "Gintarine vaistine",
+                                    Name = name,
+                                    PriceDouble = pricea,
+                                    Price = price + '€',
+                                    Link = "https://www.gintarine.lt/" + link
+                                };
+                                prices.Add(singleItem);
+                            }
+                        }
                     }
                 }
             }
         }
 
-        private static string PasalinimasEuroSimbol(string priceAtsarg)
+        private static int AlgorithmHowManyWordsAreTheSame(string[] pavArray)
+        {
+            var numberOfSameWords = 0;
+            foreach (var t in pavArray)
+            {
+                foreach (var t1 in Divided) 
+                {
+                        if (t.Equals(t1, StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            var acceptTheWord = 1;
+                            foreach (var t2 in ItemsToSkip)
+                            {
+                                if (t.Equals(t2, StringComparison.CurrentCultureIgnoreCase))
+                                {
+                                    acceptTheWord = 0;
+                                }
+                            }
+
+                            if (acceptTheWord == 1)
+                            {
+                                numberOfSameWords++;
+                            }
+                        }
+                }
+            }
+
+            return numberOfSameWords;
+        }
+
+        private static string EliminatingEuroSimbol(string priceAtsarg)
         {
             var charsToRemove = new[] { "€" };
             foreach (var c in charsToRemove) priceAtsarg = priceAtsarg.Replace(c, string.Empty);
@@ -541,7 +619,7 @@ namespace PCE_Web.Controllers
             return priceAtsarg;
         }
 
-        private static string PasalinimasTrikdanciuSimboliu(string price)
+        private static string EliminatingSymbols(string price)
         {
             var index = price.IndexOf("\n", StringComparison.Ordinal);
             if (index > 0) price = price.Substring(0, index);
@@ -551,7 +629,7 @@ namespace PCE_Web.Controllers
             return price;
         }
 
-        private static string PasalinimasTrikdanciuSimboliu2(string price)
+        private static string EliminatingSymbols2(string price)
         {
             var index = price.IndexOf("\n", StringComparison.Ordinal);
             if (index > 0) price = price.Substring(0, index);
@@ -565,14 +643,14 @@ namespace PCE_Web.Controllers
 
             return price;
         }
-        private static string PasalinimasTarpu(string price)
+        private static string EliminateSpaces(string price)
         {
             var charsToRemove = new[] { " " };
             foreach (var c in charsToRemove) price = price.Replace(c, string.Empty);
             return price;
         }
 
-        private static string PasalinimasTarpuPigu(string price)
+        private static string EliminateSpacesPigu(string price)
         {
             var charsToRemove = new[] { " " };
             foreach (var c in charsToRemove) price = price.Replace(c, string.Empty);
