@@ -126,14 +126,6 @@ input[type="text"] {
 	padding-left: 35px;
 }
 
-button {
-	position: relative;
-	display: block;
-	width: 84px;
-	height: 96px;
-	cursor: pointer;
-}
-
 #s-circle {
 	position: relative;
 	top: -8px;
