@@ -34,7 +34,7 @@
         <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
 
         <hr>
-        <p>Sukurdami vartotoją Jūs sutinkate su mūsų <a href="#">privatumo politika</a>.</p>
+        <p>Sukurdami vartotoją Jūs sutinkate su mūsų <a asp-area="" asp-controller="Home" asp-action="Privacy">privatumo politika</a>.</p>
 
         <button type="submit" asp-area="" asp-controller="MainWindowLoggedIn" asp-action="Items" class="registerbtn">Registruotis</button>
 
