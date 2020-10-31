@@ -31,8 +31,9 @@
 </head>
 
 <body>
+    
 
-    <!-- Top menu -->
+<!-- Top menu -->
     <nav class="navbar navbar-inverse" role="navigation">
         <div class="container">
             <div class="navbar-header">
@@ -54,13 +55,15 @@
                         <input type="text" name="search" placeholder="Search..." class="search form-control">
                     </div>
                 </form>
+                <ul class="nav navbar-nav navbar-left navbar-menu-items wow fadeIn">
+                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Atsijungti</a></li>
+                </ul>
                 <ul class="nav navbar-nav navbar-right navbar-menu-items wow fadeIn">
-                        <li><a href="#">Pagrindinis</a></li>
-                        <li><a asp-area="" asp-controller="Home" asp-action="Apie">Apie</a></li>
-                        <li><a href="#" data-toggle="modal" data-target="#dukModal">DUK</a></li>
-                        <li><a href="#">Kontaktai</a></li>
+                    <li><a asp-area="" asp-controller="MainWindowLoggedIn" asp-action="Items">Pagrindinis</a></li>
+                    <li><a href="#" data-toggle="modal" data-target="#dukModal">DUK</a></li>
+                    <li><a href="#">Kontaktai</a></li>
 
-                    </ul>
+                </ul>
             </div>
         </div>
     </nav>
