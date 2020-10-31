@@ -1,8 +1,8 @@
 ﻿CREATE TABLE [dbo].[UserData]
 (
 	[UserId] INT NOT NULL PRIMARY KEY IDENTITY(1,1), 
-    [Email] NVARCHAR(50) NOT NULL, 
-    [PasswordHash] NVARCHAR(100) NOT NULL, 
-    [PasswordSalt] NVARCHAR(100) NOT NULL, 
-    [Role] NVARCHAR(50) NOT NULL
+    [Email] NVARCHAR(MAX) NOT NULL, 
+    [PasswordHash] NVARCHAR(MAX) NOT NULL, 
+    [PasswordSalt] NVARCHAR(MAX) NOT NULL, 
+    [Role] NVARCHAR(MAX) NOT NULL
 )
