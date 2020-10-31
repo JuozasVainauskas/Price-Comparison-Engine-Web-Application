@@ -12,26 +12,29 @@
 
 </head>
 <body>
-<div class="container">
-            <h1>Prisijungimas</h1>
-            <p>Užpildykite šią formą, norėdami prisijungti</p>
-            <hr>
 
-            <label for="email"><b>El. paštas</b></label>
-            <input type="email" placeholder="Įveskite el. paštą" name="email" id="email" required>
+<form action="/action_page.php">
+    <div class="container">
+        <h1>Prisijungimas</h1>
+        <p>Užpildykite šią formą, norėdami prisijungti</p>
+        <hr>
 
-            <label for="psw"><b>Slaptažodis</b></label>
-            <input type="password" placeholder="Įveskite slaptažodį" name="psw" id="psw" required>
+        <label for="email"><b>El. paštas</b></label>
+        <input type="email" placeholder="Įveskite el. paštą" name="email" id="email" required>
 
-            <hr>
-            <p>Prisijungdami Jūs sutinkate su mūsų <a href="#">privatumo politika</a>.</p>
+        <label for="psw"><b>Slaptažodis</b></label>
+        <input type="password" placeholder="Įveskite slaptažodį" name="psw" id="psw" required>
 
-            <a asp-area="" asp-controller="MainWindowLoggedIn" asp-action="Items"><input type="button" class="registerbtn" value="Prisijungti"></input></a>
-        </div>
+        <hr>
+        <p>Prisijungdami Jūs sutinkate su mūsų <a href="#">privatumo politika</a>.</p>
 
-        <div class="container signin">
-            <p>Dar neturite vartotojo? <a asp-area="" asp-controller="Registration" asp-action="Register">Registruokitės</a>.</p>
-        </div>
+        <button type="submit" class="registerbtn">Prisijungti</button>
+    </div>
+
+    <div class="container signin">
+        <p>Dar neturite vartotojo? <a asp-area="" asp-controller="Registration" asp-action="Register">Registruokitės</a>.</p>
+    </div>
+</form>
 
 </body>
 </html>

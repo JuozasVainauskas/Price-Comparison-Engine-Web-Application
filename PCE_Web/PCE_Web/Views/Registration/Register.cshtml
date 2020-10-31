@@ -13,30 +13,30 @@
 </head>
 <body>
 
-    <form action="/action_page.php">
-        <div class="container">
-            <h1>Registracija</h1>
-            <p>Užpildykite šią formą, norėdami sukurti vartotoją</p>
-            <hr>
+<form action="/action_page.php">
+    <div class="container">
+        <h1>Registracija</h1>
+        <p>Užpildykite šią formą, norėdami sukurti vartotoją</p>
+        <hr>
 
-            <label for="email"><b>El. paštas</b></label>
-            <input type="email" placeholder="Įveskite el. paštą" name="email" id="email" required>
+        <label for="email"><b>El. paštas</b></label>
+        <input type="email" placeholder="Įveskite el. paštą" name="email" id="email" required>
 
-            <label for="psw"><b>Slaptažodis</b></label>
-            <input type="password" placeholder="Įveskite slaptažodį" name="psw" id="psw" required>
+        <label for="psw"><b>Slaptažodis</b></label>
+        <input type="password" placeholder="Įveskite slaptažodį" name="psw" id="psw" required>
 
-            <label for="psw-repeat"><b>Pakartokite slaptažodį</b></label>
-            <input type="password" placeholder="Pakartokite slaptažodį" name="psw-repeat" id="psw-repeat" required>
-            <hr>
-            <p>Sukurdami vartotoją Jūs sutinkate su mūsų <a href="#">privatumo politika</a>.</p>
+        <label for="psw-repeat"><b>Pakartokite slaptažodį</b></label>
+        <input type="password" placeholder="Pakartokite slaptažodį" name="psw-repeat" id="psw-repeat" required>
+        <hr>
+        <p>Sukurdami vartotoją Jūs sutinkate su mūsų <a href="#">privatumo politika</a>.</p>
 
-            <button type="submit" asp-area="" asp-controller="Registration" asp-action="Register" class="registerbtn">Registruotis</button>
-        </div>
+        <button type="submit" asp-area="" asp-controller="Registration" asp-action="Register" class="registerbtn">Registruotis</button>
+    </div>
 
-        <div class="container signin">
-            <p>Jau turite vartotoją? <a asp-area="" asp-controller="Logging" asp-action="Login">Prisijunkite</a>.</p>
-        </div>
-    </form>
+    <div class="container signin">
+        <p>Jau turite vartotoją? <a asp-area="" asp-controller="Logging" asp-action="Login">Prisijunkite</a>.</p>
+    </div>
+</form>
 
 </body>
 </html>
