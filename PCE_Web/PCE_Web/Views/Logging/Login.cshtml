@@ -21,17 +21,17 @@
         @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
 
         <label asp-for="Email" class="control-label"><b>El. paštas</b></label>
-        <input type="email" placeholder="Įveskite el. paštą" asp-for="Email" />
+        <input type="email" placeholder="Įveskite el. paštą" asp-for="Email" required />
         <span asp-validation-for="Email" class="text-danger"></span>
 
         <label asp-for="Password" class="control-label"><b>Slaptažodis</b></label>
-        <input type="password" placeholder="Įveskite slaptažodį" asp-for="Password" />
+        <input type="password" placeholder="Įveskite slaptažodį" asp-for="Password" required />
         <span asp-validation-for="Password" class="text-danger"></span>
 
         <hr>
         <p>Prisijungdami Jūs sutinkate su mūsų <a asp-area="" asp-controller="Home" asp-action="Privacy">privatumo politika</a>.</p>
 
-        <a asp-area="" asp-controller="MainWindowLoggedIn" asp-action="Items"><input type="button" class="registerbtn" value="Prisijungti"></a>
+        <button type="submit" asp-area="" asp-controller="MainWindowLoggedIn" asp-action="Items" class="registerbtn">Prisijungti</button>
     </div>
 
     <div class="container signin">
