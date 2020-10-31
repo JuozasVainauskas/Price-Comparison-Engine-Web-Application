@@ -53,8 +53,8 @@ ul.navbar-nav { font-size: 16px; color: #fff; }
 .navbar-inverse ul.navbar-nav li a:focus { color: #64ca87; outline: 0; }
 
 .navbar-brand {
-	width: 95px;
 	background: url(../img/logo.png) left center no-repeat;
+
 	text-indent: -99999px;
 }
 .navbar>.container .navbar-brand { margin-left: 0; }
