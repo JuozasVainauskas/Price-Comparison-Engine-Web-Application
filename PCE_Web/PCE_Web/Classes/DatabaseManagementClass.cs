@@ -331,6 +331,29 @@ namespace PCE_Web.Classes
             return item;
         }
 
+        public void WriteSavedItem(string pageUrl, string imgUrl, string shopName, string itemName, string price, string email)
+        {
+            using (var context = new PCEDatabaseContext())
+            {
+                var result = context.SavedItems.SingleOrDefault(c => c.PageUrl == pageUrl && c.ImgUrl == imgUrl && c.ShopName == shopName && c.ItemName == itemName && c.Price == price && c.Email == email);
+
+                if (result == null)
+                {
+                    var savedItems = new SavedItems()
+                    {
+                        PageUrl = pageUrl,
+                        ImgUrl = imgUrl,
+                        ShopName = shopName,
+                        ItemName = itemName,
+                        Price = price,
+                        Email = email
+                    };
+                    context.SavedItems.Add(savedItems);
+                    context.SaveChanges();
+                }
+            }
+        }
+
         public static void WriteSavedItem(string email)
         {
 
@@ -401,6 +424,45 @@ namespace PCE_Web.Classes
                     context.SaveChanges();
                 }
             }
+        }
+
+        private static void WriteSearchedItems(string pageUrl, string imgUrl, string shopName, string itemName, string price, string keyword)
+        {
+            using (var context = new PCEDatabaseContext())
+            {
+                var result = context.ItemsTable.SingleOrDefault(c => c.PageUrl == pageUrl && c.ImgUrl == imgUrl && c.ShopName == shopName && c.ItemName == itemName && c.Price == price && c.Keyword == keyword);
+
+                if (result == null)
+                {
+                    var itemsTable = new ItemsTable
+                    {
+                        PageUrl = pageUrl,
+                        ImgUrl = imgUrl,
+                        ShopName = shopName,
+                        ItemName = itemName,
+                        Price = price,
+                        Keyword = keyword
+                    };
+                    context.ItemsTable.Add(itemsTable);
+                    context.SaveChanges();
+                }
+            }
+        }
+
+        private static List<Item> ReadSearchedItems(string keyword)
+        {
+            var item = new List<Item>();
+
+            using (var context = new PCEDatabaseContext())
+            {
+                var result = context.ItemsTable.Where(x => x.Keyword == keyword).Select(x => new Item { Link = x.PageUrl, Picture = x.ImgUrl, Seller = x.ShopName, Name = x.ItemName, Price = x.Price }).ToList();
+
+                foreach (var singleItem in result)
+                {
+                    item.Add(singleItem);
+                }
+            }
+            return item;
         }
     }
 }
