@@ -8,7 +8,39 @@ namespace PCE_Web.Classes
 {
     public class DatabaseManagementClass
     {
-        private void SetRole(string email, string role)
+        private static bool EmailVerification(string email)
+        {
+            var pattern = new Regex(@"([a-zA-Z0-9._-]*[a-zA-Z0-9][a-zA-Z0-9._-]*)(@gmail.com)$", RegexOptions.Compiled);
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                return false;
+            }
+            else if (!pattern.IsMatch(email))
+            {
+                return false;
+            }
+            else return true;
+        }
+
+        private static bool PasswordVerification(string password)
+        {
+            var pattern =
+                new Regex(
+                    @"(\.*\d+\.*[a-zA-Z]\.*[a-zA-Z]\.*[a-zA-Z]\.*)|(\.*[a-zA-Z]\.*\d+\.*[a-zA-Z]\.*[a-zA-Z]\.*)|(\.*[a-zA-Z]\.*[a-zA-Z]\.*\d+\.*[a-zA-Z]\.*)|(\.*[a-zA-Z]\.*[a-zA-Z]\.*[a-zA-Z]\.*\d+\.*)",
+                    RegexOptions.Compiled);
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                return false;
+            }
+            else if (!pattern.IsMatch(password))
+            {
+                return false;
+            }
+            else return true;
+        }
+
+        /* Admin klasei */
+        public void SetRole(string email, string role)
         {
             using (var context = new PCEDatabaseContext())
             {
@@ -26,7 +58,7 @@ namespace PCE_Web.Classes
             }
         }
 
-        private void DeleteAccount(string email)
+        public void DeleteAccount(string email)
         {
             using (var context = new PCEDatabaseContext())
             {
@@ -70,34 +102,8 @@ namespace PCE_Web.Classes
             //    this.Close();
             //}
         }
-        private bool EmailVerification(string email)
-        {
-            var pattern = new Regex(@"([a-zA-Z0-9._-]*[a-zA-Z0-9][a-zA-Z0-9._-]*)(@gmail.com)$", RegexOptions.Compiled);
-            if (string.IsNullOrWhiteSpace(email))
-            {
-                return false;
-            }
-            else if (!pattern.IsMatch(email))
-            {
-                return false;
-            }
-            else return true;
-        }
-        private bool PasswordVerification(string password)
-        {
-            var pattern = new Regex(@"(\.*\d+\.*[a-zA-Z]\.*[a-zA-Z]\.*[a-zA-Z]\.*)|(\.*[a-zA-Z]\.*\d+\.*[a-zA-Z]\.*[a-zA-Z]\.*)|(\.*[a-zA-Z]\.*[a-zA-Z]\.*\d+\.*[a-zA-Z]\.*)|(\.*[a-zA-Z]\.*[a-zA-Z]\.*[a-zA-Z]\.*\d+\.*)", RegexOptions.Compiled);
-            if (string.IsNullOrWhiteSpace(password))
-            {
-                return false;
-            }
-            else if (!pattern.IsMatch(password))
-            {
-                return false;
-            }
-            else return true;
-        }
 
-        private void CreateAccount(string email, string password)
+        public void CreateAccount(string email, string password)
         {
             var passwordSalt = GenerateHash.CreateSalt(10);
             var passwordHash = GenerateHash.GenerateSha256Hash(password, passwordSalt);
@@ -135,7 +141,41 @@ namespace PCE_Web.Classes
             }
         }
 
-        private void RegisterUser(string email, string password)
+        public List<User> ReadUsersList()
+        {
+            var usersList = new List<User>();
+
+            using (var context = new PCEDatabaseContext())
+            {
+                var tempEmail = context.UserData.Select(column => column.Email).ToList();
+                var tempRole = context.UserData.Select(column => column.Role).ToList();
+
+                for (var i = 0; i < tempRole.Count; i++)
+                {
+                    Enum singleTempRole = null;
+
+                    if (tempRole[i] == "0")
+                    {
+                        singleTempRole = Role.User;
+                    }
+                    else if (tempRole[i] == "1")
+                    {
+                        singleTempRole = Role.Admin;
+                    }
+
+                    usersList.Add(new User()
+                    {
+                        Email = tempEmail[i],
+                        Role = singleTempRole
+                    });
+                }
+            }
+
+            return usersList;
+        }
+        /* ------------------------------------------- */
+
+        public void RegisterUser(string email, string password)
         {
             var passwordSalt = GenerateHash.CreateSalt(10);
             var passwordHash = GenerateHash.GenerateSha256Hash(password, passwordSalt);
@@ -160,7 +200,7 @@ namespace PCE_Web.Classes
             }
         }
 
-        private User LoginUser(string email, string password)
+        public User LoginUser(string email, string password)
         {
             var user = new User();
 
@@ -202,6 +242,30 @@ namespace PCE_Web.Classes
             user.Role = null;
             user.Email = null;
             return user;
+        }
+
+        public List<Slide> ReadSlidesList()
+        {
+            var slidesList = new List<Slide>();
+            using (var context = new PCEDatabaseContext())
+            {
+                var tempPageUrl = context.ItemsTable.Select(column => column.PageUrl).ToList();
+                var tempImgUrl = context.ItemsTable.Select(column => column.ImgUrl).ToList();
+
+                for (int i = 0; i < tempPageUrl.Count; i++)
+                {
+                    if (tempPageUrl.ElementAt(i) != null && tempImgUrl.ElementAt(i) != null)
+                    {
+                        slidesList.Add(new Slide()
+                        {
+                            PageUrl = tempPageUrl[i],
+                            ImgUrl = tempImgUrl[i]
+                        });
+                    }
+                }
+            }
+
+            return slidesList;
         }
     }
 }
