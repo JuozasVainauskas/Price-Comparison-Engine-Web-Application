@@ -1,22 +1,24 @@
 ﻿@model SuggestionsView
-    <link rel="stylesheet" href="~/css/styleForSuggestionView.css">
-@foreach (var product in @Model.Products)
-{
-    <table>
+<link rel="stylesheet" href="~/css/styleForSuggestionView.css">
+
+<table id="items">
+    <tr>
+        <th>Nuotrauka</th>
+        <th>Prekė</th>
+        <th>Kaina</th>
+    </tr>
+    @foreach (var product in @Model.Products)
+    {
         <tr>
+            <td><a href="@product.Link"><img class="image" alt="product.jpg" src="@product.Picture"></a></td>
             <td>
-                <a href="@product.Link">
-                    <img class="image" alt="product.jpg" src="@product.Picture">
-                </a>
-            </td>
-            <td>
-                <button class="link" name="particularItem" onclick="location.href = '@Url.Action("ParticularItem", "ParticularItem", new{particularItem=@product.Name})'">
+                <button class="link" name="particularItem" onclick="location.href = '@Url.Action("ParticularItem", "ParticularItem", new { particularItem = @product.Name })'">
                     @product.Name
-            </button>
+                </button>
             </td>
             <td>@product.Price</td>
         </tr>
+    }
     </table>
-}
 
 
