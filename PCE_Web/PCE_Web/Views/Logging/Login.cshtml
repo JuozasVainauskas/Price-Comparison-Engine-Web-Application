@@ -12,35 +12,37 @@
 </head>
 <body>
 
-<form asp-action="Login">
-    <div class="container">
-        <h1>Prisijungimas</h1>
-        <p>Užpildykite šią formą, norėdami prisijungti</p>
-        <hr>
+    <form asp-action="Login">
+        <div class="container">
+            <h1>Prisijungimas</h1>
+            <p>Užpildykite šią formą, norėdami prisijungti</p>
+            <hr>
 
-        @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
+            @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
 
-        <label asp-for="Email" class="control-label"><b>El. paštas</b></label>
-        <input type="email" placeholder="Įveskite el. paštą" asp-for="Email" />
-        <span asp-validation-for="Email" class="text-danger"></span>
+            <label asp-for="Email" class="control-label"><b>El. paštas</b></label>
+            <input type="email" placeholder="Įveskite el. paštą" asp-for="Email" required />
+            <span asp-validation-for="Email" class="text-danger"></span>
 
-        <label asp-for="Password" class="control-label"><b>Slaptažodis</b></label>
-        <input type="password" placeholder="Įveskite slaptažodį" asp-for="Password" />
-        <span asp-validation-for="Password" class="text-danger"></span>
+            <label asp-for="Password" class="control-label"><b>Slaptažodis</b></label>
+            <input type="password" placeholder="Įveskite slaptažodį" asp-for="Password" required />
+            <span asp-validation-for="Password" class="text-danger"></span>
 
-        <hr>
-        <p>Prisijungdami Jūs sutinkate su mūsų <a asp-area="" asp-controller="Home" asp-action="Privacy">privatumo politika</a>.</p>
+            <hr>
+            <p>Prisijungdami Jūs sutinkate su mūsų <a asp-area="" asp-controller="Home" asp-action="Privacy">privatumo politika</a>.</p>
 
-        <a asp-area="" asp-controller="MainWindowLoggedIn" asp-action="Items"><input type="button" class="registerbtn" value="Prisijungti"></a>
-    </div>
+            <button type="submit" asp-area="" asp-controller="MainWindowLoggedIn" asp-action="Items" class="registerbtn">Prisijungti</button>
+        </div>
 
-    <div class="container signin">
-        <p>Dar neturite vartotojo? <a asp-area="" asp-controller="Registration" asp-action="Register">Registruokitės</a>.</p>
-    </div>
+        <div class="container signin">
+            <p>Dar neturite vartotojo? <a asp-area="" asp-controller="Registration" asp-action="Register">Registruokitės</a>.</p>
+        </div>
 
-</form>
+    </form>
 
 </body>
 </html>
 
-
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
