@@ -1,7 +1,7 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model PCE_Web.Models.UserRegisterModel
+
 @{
+    ViewData["Title"] = "Registracija";
 }
 
 <!DOCTYPE html>
@@ -13,24 +13,31 @@
 </head>
 <body>
 
-<form action="/action_page.php">
+<form asp-action="Register">
     <div class="container">
         <h1>Registracija</h1>
         <p>Užpildykite šią formą, norėdami sukurti vartotoją</p>
         <hr>
+        
+        @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
 
-        <label for="email"><b>El. paštas</b></label>
-        <input type="email" placeholder="Įveskite el. paštą" name="email" id="email" required>
+        <label asp-for="Email" class="control-label"><b>El. paštas</b></label>
+        <input type="email" placeholder="Įveskite el. paštą" asp-for="Email"/>
+        <span asp-validation-for="Email" class="text-danger"></span>
 
-        <label for="psw"><b>Slaptažodis</b></label>
-        <input type="password" placeholder="Įveskite slaptažodį" name="psw" id="psw" required>
+        <label asp-for="Password" class="control-label"><b>Slaptažodis</b></label>
+        <input type="password" placeholder="Įveskite slaptažodį"  asp-for="Password"/>
+        <span asp-validation-for="Password" class="text-danger"></span>
 
-        <label for="psw-repeat"><b>Pakartokite slaptažodį</b></label>
-        <input type="password" placeholder="Pakartokite slaptažodį" name="psw-repeat" id="psw-repeat" required>
+        <label asp-for="ConfirmPassword" class="control-label"><b>Pakartokite slaptažodį</b></label>
+        <input type="password" placeholder="Pakartokite slaptažodį" asp-for="ConfirmPassword"/>
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+
         <hr>
         <p>Sukurdami vartotoją Jūs sutinkate su mūsų <a href="#">privatumo politika</a>.</p>
 
-        <button type="submit" asp-area="" asp-controller="Registration" asp-action="Register" class="registerbtn">Registruotis</button>
+        <button type="submit" asp-area="" asp-controller="MainWindowLoggedIn" asp-action="Items" class="registerbtn">Registruotis</button>
+
     </div>
 
     <div class="container signin">
@@ -40,3 +47,7 @@
 
 </body>
 </html>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
