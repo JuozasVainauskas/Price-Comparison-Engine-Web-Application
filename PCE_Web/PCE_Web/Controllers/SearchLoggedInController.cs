@@ -17,36 +17,53 @@ namespace PCE_Web.Controllers
         public static int soldOut;
         public async Task<IActionResult> Suggestions(string productName)//Perduodamas produkto pavadinimas
         {
-            var httpClient = new HttpClient();
-            var products = new List<Item>();
-            var urlRde = "https://www.rde.lt/search_result/lt/word/" + productName + "/page/1";
-            var urlAvitela = "https://avitela.lt/paieska/" + productName;
-            var urlBarbora = "https://pagrindinis.barbora.lt/paieska?q=" + productName;
-            var urlPigu = "https://pigu.lt/lt/search?q=" + productName;
-            var urlBigBox = "https://bigbox.lt/paieska?controller=search&orderby=position&orderway=desc&ssa_submit=&search_query=" + productName;
-            var urlElektromarkt = "https://www.elektromarkt.lt/lt/catalogsearch/result/?order=price&dir=desc&q=" + productName;
-            var urlGintarineVaistine = "https://www.gintarine.lt/search?adv=false&cid=0&mid=0&vid=0&q=" + productName + "%5D&sid=false&isc=true&orderBy=0";
-            var rdeItems = RdeSearch(await Html(httpClient, urlRde));
-            WriteDataFromRde(rdeItems, products);
-            var barboraItems = BarboraSearch(await Html(httpClient, urlBarbora));
-            WriteDataFromBarbora(barboraItems, products);
-            var avitelaItems = AvitelaSearch(await Html(httpClient, urlAvitela));
-            WriteDataFromAvitela(avitelaItems, products);
-            var piguItems = PiguSearch(await Html(httpClient, urlPigu));
-            WriteDataFromPigu(piguItems, products);
-            var bigBoxItem = BigBoxSearch(await Html(httpClient, urlBigBox));
-            WriteDataFromBigBox(bigBoxItem, products);
-            var gintarineVaistineItems = GintarineVaistineSearch(await Html(httpClient, urlGintarineVaistine));
-            WriteDataFromgintarineVaistine(gintarineVaistineItems, products);
-            var elektromarktItems = ElektromarktSearch(await Html(httpClient, urlElektromarkt));
-            WriteDataFromElektromarkt(elektromarktItems, products);
-            products = SortAndInsert(products);
-            
-            var suggestionsView = new SuggestionsView
+            if (DbMngClass.ReadSearchedItems(productName).Any())
             {
-                Products = products
-            };
-            return View(suggestionsView);
+                var products = new List<Item>();
+                foreach (var item in DbMngClass.ReadSearchedItems(productName)) products.Add(item);
+                var suggestionsView = new SuggestionsView
+                {
+                    Products = products
+                };
+                return View(suggestionsView);
+            }
+            else
+            {
+                var httpClient = new HttpClient();
+                var products = new List<Item>();
+                var urlRde = "https://www.rde.lt/search_result/lt/word/" + productName + "/page/1";
+                var urlAvitela = "https://avitela.lt/paieska/" + productName;
+                var urlBarbora = "https://pagrindinis.barbora.lt/paieska?q=" + productName;
+                var urlPigu = "https://pigu.lt/lt/search?q=" + productName;
+                var urlBigBox =
+                    "https://bigbox.lt/paieska?controller=search&orderby=position&orderway=desc&ssa_submit=&search_query=" +
+                    productName;
+                var urlElektromarkt = "https://www.elektromarkt.lt/lt/catalogsearch/result/?order=price&dir=desc&q=" +
+                                      productName;
+                var urlGintarineVaistine = "https://www.gintarine.lt/search?adv=false&cid=0&mid=0&vid=0&q=" +
+                                           productName + "%5D&sid=false&isc=true&orderBy=0";
+                var rdeItems = RdeSearch(await Html(httpClient, urlRde));
+                WriteDataFromRde(rdeItems, products);
+                var barboraItems = BarboraSearch(await Html(httpClient, urlBarbora));
+                WriteDataFromBarbora(barboraItems, products);
+                var avitelaItems = AvitelaSearch(await Html(httpClient, urlAvitela));
+                WriteDataFromAvitela(avitelaItems, products);
+                var piguItems = PiguSearch(await Html(httpClient, urlPigu));
+                WriteDataFromPigu(piguItems, products);
+                //var bigBoxItem = BigBoxSearch(await Html(httpClient, urlBigBox));
+                //WriteDataFromBigBox(bigBoxItem, products);
+                var gintarineVaistineItems = GintarineVaistineSearch(await Html(httpClient, urlGintarineVaistine));
+                WriteDataFromgintarineVaistine(gintarineVaistineItems, products);
+                var elektromarktItems = ElektromarktSearch(await Html(httpClient, urlElektromarkt));
+                WriteDataFromElektromarkt(elektromarktItems, products);
+                products = SortAndInsert(products, productName);
+
+                var suggestionsView = new SuggestionsView
+                {
+                    Products = products
+                };
+                return View(suggestionsView);
+            }
         }
 
         private static async Task<HtmlDocument> Html(HttpClient httpClient, string urlget)
@@ -580,9 +597,13 @@ namespace PCE_Web.Controllers
             return price;
         }
 
-        private static List<Item> SortAndInsert(List<Item> products)
+        private static List<Item> SortAndInsert(List<Item> products, string productName)
         {
             products = products.OrderBy(o => o.PriceDouble).ToList();
+            foreach (var item in products)
+            {
+                DbMngClass.WriteSearchedItems(item.Link, item.Picture, item.Seller, item.Name, item.Price, productName);
+            }
             return products;
         }
     }
