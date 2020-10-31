@@ -29,7 +29,7 @@
         <span asp-validation-for="Password" class="text-danger"></span>
 
         <hr>
-        <p>Prisijungdami Jūs sutinkate su mūsų <a href="#">privatumo politika</a>.</p>
+        <p>Prisijungdami Jūs sutinkate su mūsų <a asp-area="" asp-controller="Home" asp-action="Privacy">privatumo politika</a>.</p>
 
         <a asp-area="" asp-controller="MainWindowLoggedIn" asp-action="Items"><input type="button" class="registerbtn" value="Prisijungti"></a>
     </div>
