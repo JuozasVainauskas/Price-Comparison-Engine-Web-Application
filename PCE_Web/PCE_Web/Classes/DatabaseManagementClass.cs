@@ -24,10 +24,7 @@ namespace PCE_Web.Classes
 
         private static bool PasswordVerification(string password)
         {
-            var pattern =
-                new Regex(
-                    @"(\.*\d+\.*[a-zA-Z]\.*[a-zA-Z]\.*[a-zA-Z]\.*)|(\.*[a-zA-Z]\.*\d+\.*[a-zA-Z]\.*[a-zA-Z]\.*)|(\.*[a-zA-Z]\.*[a-zA-Z]\.*\d+\.*[a-zA-Z]\.*)|(\.*[a-zA-Z]\.*[a-zA-Z]\.*[a-zA-Z]\.*\d+\.*)",
-                    RegexOptions.Compiled);
+            var pattern = new Regex(@"(\.*\d+\.*[a-zA-Z]\.*[a-zA-Z]\.*[a-zA-Z]\.*)|(\.*[a-zA-Z]\.*\d+\.*[a-zA-Z]\.*[a-zA-Z]\.*)|(\.*[a-zA-Z]\.*[a-zA-Z]\.*\d+\.*[a-zA-Z]\.*)|(\.*[a-zA-Z]\.*[a-zA-Z]\.*[a-zA-Z]\.*\d+\.*)", RegexOptions.Compiled);
             if (string.IsNullOrWhiteSpace(password))
             {
                 return false;
@@ -244,6 +241,42 @@ namespace PCE_Web.Classes
             return user;
         }
 
+        public void ChangePassword(string email, string password, string passwordConfirm)
+        {
+            if (string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(passwordConfirm))
+            {
+                //MessageBox.Show("Prašome užpildyti visus laukus.");
+            }
+            else if (!PasswordVerification(password))
+            {
+                //MessageBox.Show("Slaptažodyje turi būti bent trys raidės ir vienas skaičius!!!");
+            }
+            else if (!password.Equals(passwordConfirm))
+            {
+                //MessageBox.Show("Slaptažodžiai nesutampa.");
+            }
+            else
+            {
+                var passwordSalt = GenerateHash.CreateSalt(10);
+                var passwordHash = GenerateHash.GenerateSha256Hash(password, passwordSalt);
+
+                using (var context = new PCEDatabaseContext())
+                {
+                    var result = context.UserData.SingleOrDefault(b => b.Email == email);
+                    if (result != null)
+                    {
+                        result.PasswordHash = passwordHash;
+                        result.PasswordSalt = passwordSalt;
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        //MessageBox.Show("Vartotojas tokiu emailu neegzistuoja arba nebuvo rastas.");
+                    }
+                }
+            }
+        }
+
         public List<Slide> ReadSlidesList()
         {
             var slidesList = new List<Slide>();
@@ -252,7 +285,7 @@ namespace PCE_Web.Classes
                 var tempPageUrl = context.ItemsTable.Select(column => column.PageUrl).ToList();
                 var tempImgUrl = context.ItemsTable.Select(column => column.ImgUrl).ToList();
 
-                for (int i = 0; i < tempPageUrl.Count; i++)
+                for (var i = 0; i < tempPageUrl.Count; i++)
                 {
                     if (tempPageUrl.ElementAt(i) != null && tempImgUrl.ElementAt(i) != null)
                     {
@@ -266,6 +299,108 @@ namespace PCE_Web.Classes
             }
 
             return slidesList;
+        }
+
+        public void DeleteSavedItem(string email, Item item)
+        {
+            using (var context = new PCEDatabaseContext())
+            {
+                var result = context.SavedItems.SingleOrDefault(b => b.Email == email && b.PageUrl == item.Link && b.ImgUrl == item.Picture && b.ShopName == item.Seller && b.ItemName == item.Name && b.Price == item.Price);
+
+                if (result != null)
+                {
+                    context.SavedItems.Remove(result);
+                    context.SaveChanges();
+                }
+            }
+        }
+
+        public static List<Item> ReadSavedItems(string email)
+        {
+            var item = new List<Item>();
+
+            using (var context = new PCEDatabaseContext())
+            {
+                var itemsList = context.SavedItems.Where(x => x.Email == email).Select(x => new Item { Link = x.PageUrl, Picture = x.ImgUrl, Seller = x.ShopName, Name = x.ItemName, Price = x.Price }).ToList();
+
+                foreach (var singleItem in itemsList)
+                {
+                    item.Add(singleItem);
+                }
+            }
+            return item;
+        }
+
+        public static void WriteSavedItem(string email)
+        {
+
+        }
+
+        public static List<CommentsTable> ReadComments()
+        {
+            List<CommentsTable> temp;
+            using (var context = new PCEDatabaseContext())
+            {
+                temp = context.CommentsTable.ToList();
+            }
+            return temp;
+        }
+
+        public static void WriteComments(string email, int shopId, int serviceRating, int productsQualityRating, int deliveryRating, string comment)
+        {
+            using (var context = new PCEDatabaseContext())
+            {
+                var result = context.CommentsTable.SingleOrDefault(b => b.Email == email && b.ShopId == shopId);
+
+                if (result == null)
+                {
+                    var commentsTable = new CommentsTable()
+                    {
+                        Email = email,
+                        ShopId = shopId,
+                        Date = DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
+                        ServiceRating = serviceRating,
+                        ProductsQualityRating = productsQualityRating,
+                        DeliveryRating = deliveryRating,
+                        Comment = comment
+                    };
+                    context.CommentsTable.Add(commentsTable);
+                    context.SaveChanges();
+                }
+            }
+        }
+
+        public static ShopRating ReadRatings(string shopName)
+        {
+            var shopRating = new ShopRating();
+
+            using (var context = new PCEDatabaseContext())
+            {
+                var result = context.ShopRatingTable.SingleOrDefault(c => c.ShopName == shopName);
+
+                if (result != null)
+                {
+                    shopRating.VotesNumber = result.VotesNumber;
+                    shopRating.VotersNumber = result.VotersNumber;
+                }
+            }
+
+            return shopRating;
+        }
+
+        public static void WriteRatings(string shopName, int votesNumber, int votersNumber)
+        {
+            using (var context = new PCEDatabaseContext())
+            {
+                var result = context.ShopRatingTable.SingleOrDefault(b => b.ShopName == shopName);
+
+                if (result != null)
+                {
+                    result.VotersNumber = votersNumber;
+                    result.VotesNumber = votesNumber;
+                    context.SaveChanges();
+                }
+            }
         }
     }
 }
