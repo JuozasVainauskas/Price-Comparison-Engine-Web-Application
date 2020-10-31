@@ -1,169 +1,179 @@
-﻿@{
+﻿
+@{
     ViewData["Title"] = "Home Page";
     ViewData["Test"] = "Page";
 }
 
+
 <div class="modal fade" id="dukModal" tabindex="-1" role="dialog" aria-labelledby="dukModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="dukModalLabel" style="color:green" bold>DUK</h5>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="dukModalLabel" style="color:green" bold>DUK</h5>
 
-            </div>
-            <div class="modal-body">
+                </div>
+                <div class="modal-body">
 
-                <h1 style="color:green" bold>Kodėl nematau prekių?</h1>
-                <p>Programa yra kūrimo stadijoje, todėl gali kilti tokie trukdžiai.</p>
-                <hr>
+                    <h1 style="color:green" bold>Kodėl nematau prekių?</h1>
+                    <p>Programa yra kūrimo stadijoje, todėl gali kilti tokie trukdžiai.</p>
+                    <hr>
 
-                <h2 style="color:green" bold>Kaip surasti geriausią prekę?</h2>
-                <p>Į paieškos lauką įveskite ieškomos prekės pavadinimą, tada pasirinkite kategoriją ir kainą.</p>
-                <hr>
+                    <h2 style="color:green" bold>Kaip surasti geriausią prekę?</h2>
+                    <p>Į paieškos lauką įveskite ieškomos prekės pavadinimą, tada pasirinkite kategoriją ir kainą.</p>
+                    <hr>
 
-                <h2 style="color:green" bold>Ar visi pasiūlymai tikri? Ar tai ne apgaulė?</h2>
-                <p>Taip, visos prekės yra tikros.</p>
-                <hr>
+                    <h2 style="color:green" bold>Ar visi pasiūlymai tikri? Ar tai ne apgaulė?</h2>
+                    <p>Taip, visos prekės yra tikros.</p>
+                    <hr>
 
-                <h2 style="color:green" bold>Ką daryti, jeigu radau klaidą?</h2>
-                <p>Praneškite klaidą administracijai paštu.</p>
-                <hr>
+                    <h2 style="color:green" bold>Ką daryti, jeigu radau klaidą?</h2>
+                    <p>Praneškite klaidą administracijai paštu.</p>
+                    <hr>
 
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn first" data-dismiss="modal" style="color:green" bold>Uždaryti</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Top content -->
-<div class="top-content">
-    <div class="container">
-
-        <div class="row">
-            <div class="col-sm-12 text wow fadeInLeft">
-                <h1> <strong>Smart</strong>shop.lt</h1>
-                <div class="description">
-                    <p class="medium-paragraph">
-                        Tai svetainė, skirta efektyviam prekių kainų palyginimui.
-                        Tiesiog įveskite ieškomą prekę ir rinkitės iš geriausių pasiūlymų.
-                        Registruoti nariai gauna daugiau privilegijų: užsiregistruoti galite <strong><a href="#">čia</a></strong>!
-                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn first" data-dismiss="modal" style="color:green" bold>Uždaryti</button>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Paieškos mygtukas -->
-<div class="search-button">
-    <form method="get" action="">
-        <div class="tb">
-            <input type="text" name="ProductName" placeholder="Ieškokite..">
-            <div class="td" id="s-cover">
-                <input id="mvc-action-button" type="submit" asp-area="" asp-controller="Search" asp-action="Suggestions" style="position: absolute; left: -9999px" />
-            </div>
-        </div>
-    </form>
-</div>
+    <!-- Top content -->
+    <div class="top-content">
+        <div class="container">
 
-<!-- Features -->
-<div class="features-container section-container">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-6 features-box wow fadeInLeft">
-                <div class="row">
-                    <div class="col-sm-3 features-box-icon">
-                        <i class="fa fa-cloud"></i>
-                    </div>
-                    <div class="col-sm-9">
-                        <h3>Rinkitės prekes iš didžiausių Lietuvos parduotuvių</h3>
-                        <p>
-                            Smartshop.lt Jums suteikia galimybę rinktis prekes iš daugiau nei 10 skirtingų
-                            Lietuvos parduotuvių. Čia galite rasti viską, ko Jums reikia: išmanieji telefonai, buitinė technika
-                            ar net vaistai!
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 features-box wow fadeInLeft">
-                <div class="row">
-                    <div class="col-sm-3 features-box-icon">
-                        <i class="fa fa-facebook"></i>
-                    </div>
-                    <div class="col-sm-9">
-                        <h3>Smartshop.lt socialiniuose tinkluose</h3>
-                        <p>
-                            Sekite naujienas apie karščiausius prekių pasiūlymus, dalyvaukite konkursuose
-                            bei dalinkitės savo pastebėjimais mūsų facebook puslapyje "SmartShop Lietuva"
+            <div class="row">
+                <div class="col-sm-12 text wow fadeInLeft">
+                    <h1> <strong>Smart</strong>shop.lt</h1>
+                    <div class="description">
+                        <p class="medium-paragraph">
+                            Tai svetainė, skirta efektyviam prekių kainų palyginimui.
+                            Tiesiog įveskite ieškomą prekę ir rinkitės iš geriausių pasiūlymų.
+                            Registruoti nariai gauna daugiau privilegijų: užsiregistruoti galite <strong><a href="#">čia</a></strong>!
                         </p>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="row">
-            <div class="col-sm-6 features-box wow fadeInLeft">
-                <div class="row">
-                    <div class="col-sm-3 features-box-icon">
-                        <i class="fa fa-paperclip"></i>
+    <!-- Paieškos mygtukas -->
+    <div class="search-button">
+        <form method="get" action="">
+            <div class="tb">
+                <input type="text" name="ProductName" placeholder="Ieškokite..">
+                <div class="td" id="s-cover">
+                    <input id="mvc-action-button" type="submit" asp-area="" asp-controller="Search" asp-action="Suggestions" style="position: absolute; left: -9999px" />
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Features -->
+    <div class="features-container section-container">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6 features-box wow fadeInLeft">
+                    <div class="row">
+                        <div class="col-sm-3 features-box-icon">
+                            <i class="fa fa-cloud"></i>
+                        </div>
+                        <div class="col-sm-9">
+                            <h3>Rinkitės prekes iš didžiausių Lietuvos parduotuvių</h3>
+                            <p>
+                                Smartshop.lt Jums suteikia galimybę rinktis prekes iš daugiau nei 10 skirtingų
+                                Lietuvos parduotuvių. Čia galite rasti viską, ko Jums reikia: išmanieji telefonai, buitinė technika
+                                ar net vaistai!
+                            </p>
+                        </div>
                     </div>
-                    <div class="col-sm-9">
-                        <h3>Išsisaugokite pasirinktas prekes</h3>
-                        <p>
-                            Patiko keletas prekių ir sunku išsirinkti? Ne bėda!
-                            Išsisaugokite rastas prekes ir jas peržiūrėkite Jums patogiu metu.
-                        </p>
+                </div>
+                <div class="col-sm-6 features-box wow fadeInLeft">
+                    <div class="row">
+                        <div class="col-sm-3 features-box-icon">
+                            <i class="fa fa-facebook"></i>
+                        </div>
+                        <div class="col-sm-9">
+                            <h3>Smartshop.lt socialiniuose tinkluose</h3>
+                            <p>
+                                Sekite naujienas apie karščiausius prekių pasiūlymus, dalyvaukite konkursuose
+                                bei dalinkitės savo pastebėjimais mūsų facebook puslapyje "SmartShop Lietuva"
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6 features-box wow fadeInLeft">
-                <div class="row">
-                    <div class="col-sm-3 features-box-icon">
-                        <i class="fa fa-bug"></i>
+
+            <div class="row">
+                <div class="col-sm-6 features-box wow fadeInLeft">
+                    <div class="row">
+                        <div class="col-sm-3 features-box-icon">
+                            <i class="fa fa-paperclip"></i>
+                        </div>
+                        <div class="col-sm-9">
+                            <h3>Išsisaugokite pasirinktas prekes</h3>
+                            <p>
+                                Patiko keletas prekių ir sunku išsirinkti? Ne bėda!
+                                Išsisaugokite rastas prekes ir jas peržiūrėkite Jums patogiu metu.
+                            </p>
+                        </div>
                     </div>
-                    <div class="col-sm-9">
-                        <h3>Esame viena komanda</h3>
-                        <p>
-                            Radote klaidų, turite pastebėjimų dėl svetainės veikimo?
-                            Prašome susisiekti su mumis ir pasistengsime kuo greičiau išspręsti iškilusias problemas.
-                        </p>
+                </div>
+                <div class="col-sm-6 features-box wow fadeInLeft">
+                    <div class="row">
+                        <div class="col-sm-3 features-box-icon">
+                            <i class="fa fa-bug"></i>
+                        </div>
+                        <div class="col-sm-9">
+                            <h3>Esame viena komanda</h3>
+                            <p>
+                                Radote klaidų, turite pastebėjimų dėl svetainės veikimo?
+                                Prašome susisiekti su mumis ir pasistengsime kuo greičiau išspręsti iškilusias problemas.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
+        </div>
     </div>
-</div>
-<!-- Footer -->
-<footer>
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12 footer-copyright">
-                &copy; SmartShop.LT, 2020.
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 footer-copyright">
+                    &copy; SmartShop.LT, 2020.
+                </div>
             </div>
         </div>
+    </footer>
+
+
+    <div id="overlay" class="overlay">
+
+
+        <div class="loader">
+            <img src="loader.gif" />
+        </div>
+      
+
     </div>
-</footer>
 
-<div id="overlay" class="overlay">
-    <div class="loader"></div>
-    <h1><strong>Kraunama...</strong></h1>
-</div>
+    <!-- Javascript -->
 
-<!-- Javascript -->
-<script src="~/js/jquery-1.11.1.min.js"></script>
-<script src="~/bootstrap/js/bootstrap.min.js"></script>
-<script src="~/js/jquery.backstretch.min.js"></script>
-<script src="~/js/wow.min.js"></script>
-<script src="~/js/scripts.js"></script>
-<script>
-    document.getElementById('mvc-action-button')
-        .addEventListener('click', function (e) {
-            document.getElementById('overlay').style.display = 'flex';
-        });
-</script>
+    <script src="~/js/jquery-1.11.1.min.js"></script>
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/js/jquery.backstretch.min.js"></script>
+    <script src="~/js/wow.min.js"></script>
+    <script src="~/js/scripts.js"></script>
 
-<!--[if lt IE 10]>
-    <script src="assets/js/placeholder.js"></script>
-<![endif]-->
+    <script>
+        document.getElementById('mvc-action-button')
+            .addEventListener('click', function (e) {
+                document.getElementById('overlay').style.display = 'flex';
+            });
+    </script>
+
+    <!--[if lt IE 10]>
+        <script src="assets/js/placeholder.js"></script>
+    <![endif]-->
