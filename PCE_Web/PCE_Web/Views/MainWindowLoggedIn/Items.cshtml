@@ -1,0 +1,20 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="text-center">
+    <h1 class="display-4">Sveiki prisijungę!</h1>
+</div>
+<!-- Paieškos mygtukas -->
+<div class="search-button">
+    <form method="get" action="">
+        <div class="tb">
+            <input type="text" name="ProductName" placeholder="Ieškokite..">
+            <div class="td" id="s-cover">
+                <input id="mvc-action-button" type="submit" asp-area="" asp-controller="Search" asp-action="Suggestions" style="position: absolute; left: -9999px" />
+            </div>
+        </div>
+    </form>
+</div>

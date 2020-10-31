@@ -12,6 +12,7 @@ namespace PCE_Web.Controllers
 {
     public class HomeController : Controller
     {
+        public static int isLoggedIn = 0;
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
