@@ -61,7 +61,7 @@
         <div class="tb">
             <input type="text" name="ProductName" placeholder="Ieškokite..">
             <div class="td" id="s-cover">
-                <input type="submit" asp-area="" asp-controller="Search" asp-action="Suggestions" style="position: absolute; left: -9999px" />
+                <input id="mvc-action-button" type="submit" asp-area="" asp-controller="Search" asp-action="Suggestions" style="position: absolute; left: -9999px" />
             </div>
         </div>
     </form>
@@ -136,24 +136,34 @@
     </div>
 </div>
 <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12 footer-copyright">
-                    &copy; SmartShop.LT, 2020.
-                </div>
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 footer-copyright">
+                &copy; SmartShop.LT, 2020.
             </div>
         </div>
-    </footer>
+    </div>
+</footer>
 
+<div id="overlay" class="overlay">
+    <div class="loader"></div>
+    <h1><strong>Kraunama...</strong></h1>
+</div>
 
-    <!-- Javascript -->
-    <script src="~/js/jquery-1.11.1.min.js"></script>
-    <script src="~/bootstrap/js/bootstrap.min.js"></script>
-    <script src="~/js/jquery.backstretch.min.js"></script>
-    <script src="~/js/wow.min.js"></script>
-    <script src="~/js/scripts.js"></script>
+<!-- Javascript -->
+<script src="~/js/jquery-1.11.1.min.js"></script>
+<script src="~/bootstrap/js/bootstrap.min.js"></script>
+<script src="~/js/jquery.backstretch.min.js"></script>
+<script src="~/js/wow.min.js"></script>
+<script src="~/js/scripts.js"></script>
+<script>
+    document.getElementById('mvc-action-button')
+        .addEventListener('click', function (e) {
+            document.getElementById('overlay').style.display = 'flex';
+        });
+</script>
 
-    <!--[if lt IE 10]>
-        <script src="assets/js/placeholder.js"></script>
-    <![endif]-->
+<!--[if lt IE 10]>
+    <script src="assets/js/placeholder.js"></script>
+<![endif]-->
