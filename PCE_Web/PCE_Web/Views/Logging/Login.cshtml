@@ -9,32 +9,34 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="~/css/styleForRegistration.css">
-
 </head>
 <body>
 
-<form action="/action_page.php">
-    <div class="container">
-        <h1>Prisijungimas</h1>
-        <p>Užpildykite šią formą, norėdami prisijungti</p>
-        <hr>
+    <form action="/action_page.php">
+        <div class="container">
+            <h1>Prisijungimas</h1>
+            <p>Užpildykite šią formą, norėdami prisijungti</p>
+            <hr>
 
-        <label for="email"><b>El. paštas</b></label>
-        <input type="email" placeholder="Įveskite el. paštą" name="email" id="email" required>
+            <label for="email"><b>El. paštas</b></label>
+            <input type="email" placeholder="Įveskite el. paštą" name="email" id="email" required>
 
-        <label for="psw"><b>Slaptažodis</b></label>
-        <input type="password" placeholder="Įveskite slaptažodį" name="psw" id="psw" required>
+            <label for="psw"><b>Slaptažodis</b></label>
+            <input type="password" placeholder="Įveskite slaptažodį" name="psw" id="psw" required>
 
-        <hr>
-        <p>Prisijungdami Jūs sutinkate su mūsų <a href="#">privatumo politika</a>.</p>
+            <hr>
+            <p>Prisijungdami Jūs sutinkate su mūsų <a href="#">privatumo politika</a>.</p>
 
-        <a asp-area="" asp-controller="MainWindowLoggedIn" asp-action="Items"><input type="button" class="registerbtn" value="Prisijungti"></a>
-    </div>
+            <a asp-area="" asp-controller="MainWindowLoggedIn" asp-action="Items"><input type="button" class="registerbtn" value="Prisijungti"></a>
+        </div>
 
-    <div class="container signin">
-        <p>Dar neturite vartotojo? <a asp-area="" asp-controller="Registration" asp-action="Register">Registruokitės</a>.</p>
-    </div>
-</form>
+        <div class="container signin">
+            <p>Dar neturite vartotojo? <a asp-area="" asp-controller="Registration" asp-action="Register">Registruokitės</a>.</p>
+        </div>
+
+    </form>
 
 </body>
 </html>
+
+

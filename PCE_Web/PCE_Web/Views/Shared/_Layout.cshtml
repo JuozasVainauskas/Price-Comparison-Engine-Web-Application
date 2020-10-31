@@ -1,7 +1,42 @@
 ﻿<!DOCTYPE html>
+
 <html lang="en">
 
+<div class="modal fade" id="dukModal" tabindex="-1" role="dialog" aria-labelledby="dukModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="dukModalLabel" style="color: green" bold>DUK</h5>
+
+            </div>
+            <div class="modal-body">
+
+                <h1 style="color: green" bold>Kodėl nematau prekių?</h1>
+                <p>Programa yra kūrimo stadijoje, todėl gali kilti tokie trukdžiai.</p>
+                <hr>
+
+                <h2 style="color: green" bold>Kaip surasti geriausią prekę?</h2>
+                <p>Į paieškos lauką įveskite ieškomos prekės pavadinimą, tada pasirinkite kategoriją ir kainą.</p>
+                <hr>
+
+                <h2 style="color: green" bold>Ar visi pasiūlymai tikri? Ar tai ne apgaulė?</h2>
+                <p>Taip, visos prekės yra tikros.</p>
+                <hr>
+
+                <h2 style="color: green" bold>Ką daryti, jeigu radau klaidą?</h2>
+                <p>Praneškite klaidą administracijai paštu.</p>
+                <hr>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn first" data-dismiss="modal" style="color: green" bold>Uždaryti</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <head>
+
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -27,6 +62,7 @@
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="~/ico/apple-touch-icon-114-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="~/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="~/ico/apple-touch-icon-57-precomposed.png">
+
 
 </head>
 
@@ -58,18 +94,31 @@
                     <li><a asp-area="" asp-controller="Logging" asp-action="Login"><strong>Prisijungti</strong></a></li>
                     <li><a asp-area="" asp-controller="Registration" asp-action="Register"><strong>Registruotis</strong></a></li>
                 </ul>
-                    <ul class="nav navbar-nav navbar-right navbar-menu-items wow fadeIn">
+                <ul class="nav navbar-nav navbar-right navbar-menu-items wow fadeIn">
 
-                        <li><a href="#">Pagrindinis</a></li>
-                        <li><a href="#" data-toggle="modal" data-target="#dukModal">DUK</a></li>
-                        <li><a href="#">Kontaktai</a></li>
+                    <li><a href="#" data-toggle="modal" data-target="#dukModal">DUK</a></li>
+                    <li><a href="#">Kontaktai</a></li>
 
-                    </ul>
+                </ul>
             </div>
         </div>
     </nav>
+
     @RenderBody()
 
 </body>
 @RenderSection("Scripts", required: false)
 </html>
+
+<script src="~/js/jquery-1.11.1.min.js"></script>
+<script src="~/bootstrap/js/bootstrap.min.js"></script>
+<script src="~/js/jquery.backstretch.min.js"></script>
+<script src="~/js/wow.min.js"></script>
+<script src="~/js/scripts.js"></script>
+
+<script>
+    document.getElementById('mvc-action-button')
+        .addEventListener('click', function (e) {
+            document.getElementById('overlay').style.display = 'flex';
+        });
+</script>
