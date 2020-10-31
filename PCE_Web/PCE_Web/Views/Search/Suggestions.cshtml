@@ -31,10 +31,12 @@
 </div>
 
 <script>
-    document.getElementById('mvc-action-button')
-        .addEventListener('click', function (e) {
-            document.getElementById('overlay').style.display = 'flex';
-        });
+
+    var buttons = document.getElementsByClassName('link');
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].addEventListener('click', function (e) {
+            document.getElementById('overlay').style.display = 'flex';})
+    }
 </script>
 
 
