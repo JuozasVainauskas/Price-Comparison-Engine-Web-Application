@@ -9,7 +9,7 @@ using System.Windows;
 using System.ComponentModel;
 using System.Linq.Expressions;
 
-namespace PCE_Web.Models
+namespace PCE_Web.Classes
 {
     class SendEmail
     {

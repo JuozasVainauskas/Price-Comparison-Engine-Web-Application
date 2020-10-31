@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PCE_Web.Models
+namespace PCE_Web.Classes
 {
     class GenerateHash
     {

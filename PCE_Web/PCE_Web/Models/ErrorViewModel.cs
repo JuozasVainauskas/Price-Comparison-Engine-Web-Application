@@ -1,5 +1,3 @@
-using System;
-
 namespace PCE_Web.Models
 {
     public class ErrorViewModel

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace PCE_Web.Models
+namespace PCE_Web.Classes
 {
     public partial class PCEDatabaseContext : DbContext
     {
