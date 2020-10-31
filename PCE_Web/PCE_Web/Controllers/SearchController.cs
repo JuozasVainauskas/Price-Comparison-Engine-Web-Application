@@ -34,8 +34,8 @@ namespace PCE_Web.Controllers
             WriteDataFromAvitela(avitelaItems, products);
             var piguItems = PiguSearch(await Html(httpClient, urlPigu));
             WriteDataFromPigu(piguItems, products);
-            var bigBoxItem = BigBoxSearch(await Html(httpClient, urlBigBox));
-            WriteDataFromBigBox(bigBoxItem, products);
+           // var bigBoxItem = BigBoxSearch(await Html(httpClient, urlBigBox));
+           // WriteDataFromBigBox(bigBoxItem, products);
             var gintarineVaistineItems = GintarineVaistineSearch(await Html(httpClient, urlGintarineVaistine));
             WriteDataFromgintarineVaistine(gintarineVaistineItems, products);
             var elektromarktItems = ElektromarktSearch(await Html(httpClient, urlElektromarkt));
