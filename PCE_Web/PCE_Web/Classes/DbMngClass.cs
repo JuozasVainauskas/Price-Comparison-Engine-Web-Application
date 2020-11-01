@@ -24,7 +24,10 @@ namespace PCE_Web.Classes
 
         private static bool PasswordVerification(string password)
         {
-            var pattern = new Regex(@"(\.*\d+\.*[a-zA-Z]\.*[a-zA-Z]\.*[a-zA-Z]\.*)|(\.*[a-zA-Z]\.*\d+\.*[a-zA-Z]\.*[a-zA-Z]\.*)|(\.*[a-zA-Z]\.*[a-zA-Z]\.*\d+\.*[a-zA-Z]\.*)|(\.*[a-zA-Z]\.*[a-zA-Z]\.*[a-zA-Z]\.*\d+\.*)", RegexOptions.Compiled);
+            var pattern =
+                new Regex(
+                    @"(\.*\d+\.*[a-zA-Z]\.*[a-zA-Z]\.*[a-zA-Z]\.*)|(\.*[a-zA-Z]\.*\d+\.*[a-zA-Z]\.*[a-zA-Z]\.*)|(\.*[a-zA-Z]\.*[a-zA-Z]\.*\d+\.*[a-zA-Z]\.*)|(\.*[a-zA-Z]\.*[a-zA-Z]\.*[a-zA-Z]\.*\d+\.*)",
+                    RegexOptions.Compiled);
             if (string.IsNullOrWhiteSpace(password))
             {
                 return false;
@@ -305,7 +308,9 @@ namespace PCE_Web.Classes
         {
             using (var context = new PCEDatabaseContext())
             {
-                var result = context.SavedItems.SingleOrDefault(b => b.Email == email && b.PageUrl == item.Link && b.ImgUrl == item.Picture && b.ShopName == item.Seller && b.ItemName == item.Name && b.Price == item.Price);
+                var result = context.SavedItems.SingleOrDefault(b =>
+                    b.Email == email && b.PageUrl == item.Link && b.ImgUrl == item.Picture &&
+                    b.ShopName == item.Seller && b.ItemName == item.Name && b.Price == item.Price);
 
                 if (result != null)
                 {
@@ -321,21 +326,27 @@ namespace PCE_Web.Classes
 
             using (var context = new PCEDatabaseContext())
             {
-                var itemsList = context.SavedItems.Where(x => x.Email == email).Select(x => new Item { Link = x.PageUrl, Picture = x.ImgUrl, Seller = x.ShopName, Name = x.ItemName, Price = x.Price }).ToList();
+                var itemsList = context.SavedItems.Where(x => x.Email == email).Select(x => new Item
+                        {Link = x.PageUrl, Picture = x.ImgUrl, Seller = x.ShopName, Name = x.ItemName, Price = x.Price})
+                    .ToList();
 
                 foreach (var singleItem in itemsList)
                 {
                     item.Add(singleItem);
                 }
             }
+
             return item;
         }
 
-        public static void WriteSavedItem(string pageUrl, string imgUrl, string shopName, string itemName, string price, string email)
+        public static void WriteSavedItem(string pageUrl, string imgUrl, string shopName, string itemName, string price,
+            string email)
         {
             using (var context = new PCEDatabaseContext())
             {
-                var result = context.SavedItems.SingleOrDefault(c => c.PageUrl == pageUrl && c.ImgUrl == imgUrl && c.ShopName == shopName && c.ItemName == itemName && c.Price == price && c.Email == email);
+                var result = context.SavedItems.SingleOrDefault(c =>
+                    c.PageUrl == pageUrl && c.ImgUrl == imgUrl && c.ShopName == shopName && c.ItemName == itemName &&
+                    c.Price == price && c.Email == email);
 
                 if (result == null)
                 {
@@ -361,10 +372,12 @@ namespace PCE_Web.Classes
             {
                 temp = context.CommentsTable.ToList();
             }
+
             return temp;
         }
 
-        public static void WriteComments(string email, int shopId, int serviceRating, int productsQualityRating, int deliveryRating, string comment)
+        public static void WriteComments(string email, int shopId, int serviceRating, int productsQualityRating,
+            int deliveryRating, string comment)
         {
             using (var context = new PCEDatabaseContext())
             {
@@ -421,7 +434,14 @@ namespace PCE_Web.Classes
             }
         }
 
-        public static void WriteSearchedItems(string pageUrl, string imgUrl, string shopName, string itemName, string price, string keyword)
+        public static void WriteSearchedItems(List<Item> items, string productName)
+        {
+            foreach (var item in items)
+            {
+                WriteSearchedItem(item.Link, item.Picture, item.Seller, item.Name, item.Price, productName);
+            }
+        }
+
         {
             using (var context = new PCEDatabaseContext())
             {

@@ -56,7 +56,8 @@ namespace PCE_Web.Controllers
                 WriteDataFromgintarineVaistine(gintarineVaistineItems, products);
                 var elektromarktItems = ElektromarktSearch(await Html(httpClient, urlElektromarkt));
                 WriteDataFromElektromarkt(elektromarktItems, products);
-                products = SortAndInsert(products, productName);
+                products = SortAndInsert(products);
+                DbMngClass.WriteSearchedItems(products, productName);
 
                 var suggestionsView = new SuggestionsView
                 {
@@ -597,13 +598,9 @@ namespace PCE_Web.Controllers
             return price;
         }
 
-        private static List<Item> SortAndInsert(List<Item> products, string productName)
+        private static List<Item> SortAndInsert(List<Item> products)
         {
             products = products.OrderBy(o => o.PriceDouble).ToList();
-            foreach (var item in products)
-            {
-                DbMngClass.WriteSearchedItems(item.Link, item.Picture, item.Seller, item.Name, item.Price, productName);
-            }
             return products;
         }
     }
