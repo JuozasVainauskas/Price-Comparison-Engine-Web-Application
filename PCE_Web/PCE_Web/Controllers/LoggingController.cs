@@ -8,10 +8,6 @@ namespace PCE_Web.Controllers
 {
     public class LoggingController : Controller
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
         public IActionResult Login()
         {
             return View();
