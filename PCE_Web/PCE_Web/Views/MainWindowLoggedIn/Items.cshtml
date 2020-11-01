@@ -1,0 +1,29 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutLoggedIn.cshtml";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Sveiki prisijungę!</h1>
+</div>
+<!-- Paieškos mygtukas -->
+<div class="search-button">
+    <form method="get" action="">
+        <div class="tb">
+            <input type="text" name="ProductName" placeholder="Ieškokite..">
+            <div class="td" id="s-cover">
+                <input id="mvc-action-button" type="submit" asp-area="" asp-controller="SearchLoggedIn" asp-action="Suggestions" style="position: absolute; left: -9999px" />
+            </div>
+        </div>
+    </form>
+</div>
+
+<div id="overlay" class="overlay">
+
+
+    <div class="loader">
+        <img src="~/img/loader.gif" width="400" height="400"/>
+    </div>
+      
+
+</div>
+

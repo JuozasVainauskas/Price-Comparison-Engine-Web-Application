@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<link rel="icon" href="/img/logo.png">
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewData["Title"] - SmartShop</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,500,500i">
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/css/animate.css">
+    <link rel="stylesheet" href="~/css/style.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Favicon and touch icons -->
+    <link rel="shortcut icon" href="~/ico/favicon.png">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="~/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="~/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="~/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="~/ico/apple-touch-icon-57-precomposed.png">
+
+</head>
+
+<body>
+
+
+    <!-- Top menu -->
+    <nav class="navbar navbar-inverse" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#top-navbar-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" asp-area="" asp-controller="MainWindowLoggedIn" asp-action="Items">WebApplication1</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="top-navbar-1">
+                <ul class="nav navbar-nav navbar-right navbar-search-button">
+                    <li><a class="search-button" href="#"><i class="fa fa-search"></i></a></li>
+                </ul>
+                <form class="navbar-form navbar-right navbar-search-form disabled wow fadeInLeft" role="form" action="" method="post">
+                    <div class="form-group">
+                        <input type="text" name="search" placeholder="Search..." class="search form-control">
+                    </div>
+                </form>
+                <ul class="nav navbar-nav navbar-left navbar-menu-items wow fadeIn">
+                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Atsijungti</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right navbar-menu-items wow fadeIn">
+                    <li><a asp-area="" asp-controller="Evaluation" asp-action="Evaluate">Parduotuvių įvertinimai</a></li>
+                    <li><a href="#" data-toggle="modal" data-target="#dukModal">DUK</a></li>
+                    <li><a href="#">Kontaktai</a></li>
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="modal fade" id="dukModal" tabindex="-1" role="dialog" aria-labelledby="dukModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="dukModalLabel" style="color:green" bold>DUK</h5>
+                    </div>
+                    <div class="modal-body">
+
+                        <h1 style="color:green" bold>Kodėl nematau prekių?</h1>
+                        <p>Programa yra kūrimo stadijoje, todėl gali kilti tokie trukdžiai.</p>
+                        <hr>
+
+                        <h2 style="color:green" bold>Kaip surasti geriausią prekę?</h2>
+                        <p>Į paieškos lauką įveskite ieškomos prekės pavadinimą, tada pasirinkite kategoriją ir kainą.</p>
+                        <hr>
+
+                        <h2 style="color:green" bold>Ar visi pasiūlymai tikri? Ar tai ne apgaulė?</h2>
+                        <p>Taip, visos prekės yra tikros.</p>
+                        <hr>
+
+                        <h2 style="color:green" bold>Ką daryti, jeigu radau klaidą?</h2>
+                        <p>Praneškite klaidą administracijai paštu.</p>
+                        <hr>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn first" data-dismiss="modal" style="color:green" bold>Uždaryti</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Footer -->
+    @RenderBody()
+
+</body>
+@RenderSection("Scripts", required: false)
+</html>
+
+<!-- Javascript -->
+
+<script src="~/js/jquery-1.11.1.min.js"></script>
+<script src="~/bootstrap/js/bootstrap.min.js"></script>
+<script src="~/js/jquery.backstretch.min.js"></script>
+<script src="~/js/wow.min.js"></script>
+<script src="~/js/scripts.js"></script>
+
+
+<script>
+    document.getElementById('mvc-action-button')
+        .addEventListener('click', function (e) {
+            document.getElementById('overlay').style.display = 'flex';
+        });
+</script>

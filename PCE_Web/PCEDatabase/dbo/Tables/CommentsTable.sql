@@ -1,9 +1,9 @@
 ﻿CREATE TABLE [dbo].[CommentsTable]
 (
 	[CommentId] INT NOT NULL PRIMARY KEY IDENTITY(1,1),
-	[Email] NVARCHAR (50) NOT NULL,
+	[Email] NVARCHAR (MAX) NOT NULL,
     [ShopId] INT NOT NULL,
-    [Date] NVARCHAR (50) NOT NULL,
+    [Date] NVARCHAR (MAX) NOT NULL,
     [ServiceRating] INT NOT NULL,
     [ProductsQualityRating] INT NOT NULL,
     [DeliveryRating] INT NOT NULL,

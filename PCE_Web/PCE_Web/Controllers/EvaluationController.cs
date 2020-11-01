@@ -6,12 +6,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace PCE_Web.Controllers
 {
-    public class RegistrationController : Controller
+    public class EvaluationController : Controller
     {
-        public IActionResult Register()
+        public IActionResult Index()
         {
             return View();
         }
-
+        public IActionResult Evaluate()
+        {
+            return View();
+        }
     }
 }
