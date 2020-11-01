@@ -12,7 +12,6 @@ namespace PCE_Web.Controllers
 {
     public class HomeController : Controller
     {
-        public static int isLoggedIn = 0;
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
@@ -34,11 +33,6 @@ namespace PCE_Web.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
-        public IActionResult Apie()
-        {
-            return View();
         }
     }
 }

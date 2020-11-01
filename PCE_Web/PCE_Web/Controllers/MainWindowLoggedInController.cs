@@ -13,8 +13,6 @@ namespace PCE_Web.Controllers
 {
     public class MainWindowLoggedInController : Controller
     {
-        //HomeController.isLoggedIn = 1;
-        
         public IActionResult Items()
         {
             return View();

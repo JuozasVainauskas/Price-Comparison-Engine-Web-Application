@@ -1,6 +1,4 @@
-﻿@model PCE_Web.Models.UserRegisterModel
-
-@{
+﻿@{
     ViewData["Title"] = "Registracija";
 }
 
@@ -13,41 +11,30 @@
 </head>
 <body>
 
-<form asp-action="Register">
-    <div class="container">
-        <h1>Registracija</h1>
-        <p>Užpildykite šią formą, norėdami sukurti vartotoją</p>
-        <hr>
-        
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <form action="/action_page.php">
+        <div class="container">
+            <h1>Registracija</h1>
+            <p>Užpildykite šią formą, norėdami sukurti vartotoją</p>
+            <hr>
 
-        <label asp-for="Email" class="control-label"><b>El. paštas</b></label>
-        <input type="email" placeholder="Įveskite el. paštą" asp-for="Email" required/>
-        <span asp-validation-for="Email" class="text-danger"></span>
+            <label for="email"><b>El. paštas</b></label>
+            <input type="email" placeholder="Įveskite el. paštą" name="email" id="email" required>
 
-        <label asp-for="Password" class="control-label"><b>Slaptažodis</b></label>
-        <input type="password" placeholder="Įveskite slaptažodį"  asp-for="Password" required/>
-        <span asp-validation-for="Password" class="text-danger"></span>
+            <label for="psw"><b>Slaptažodis</b></label>
+            <input type="password" placeholder="Įveskite slaptažodį" name="psw" id="psw" required>
 
-        <label asp-for="ConfirmPassword" class="control-label"><b>Pakartokite slaptažodį</b></label>
-        <input type="password" placeholder="Pakartokite slaptažodį" asp-for="ConfirmPassword" required/>
-        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            <label for="psw-repeat"><b>Pakartokite slaptažodį</b></label>
+            <input type="password" placeholder="Pakartokite slaptažodį" name="psw-repeat" id="psw-repeat" required>
+            <hr>
+            <p>Sukurdami vartotoją Jūs sutinkate su mūsų <a asp-controller="Home" asp-action="Privacy">privatumo politika</a>.</p>
 
-        <hr>
-        <p>Sukurdami vartotoją Jūs sutinkate su mūsų <a asp-area="" asp-controller="Home" asp-action="Privacy">privatumo politika</a>.</p>
+            <button type="submit" class="registerbtn">Registruotis</button>
+        </div>
 
-        <button type="submit" asp-area="" asp-controller="MainWindowLoggedIn" asp-action="Items" class="registerbtn">Registruotis</button>
-
-    </div>
-
-    <div class="container signin">
-        <p>Jau turite vartotoją? <a asp-area="" asp-controller="Logging" asp-action="Login">Prisijunkite</a>.</p>
-    </div>
-</form>
+        <div class="container signin">
+            <p>Jau turite vartotoją? <a asp-controller="Logging" asp-action="Login">Prisijunkite</a>.</p>
+        </div>
+    </form>
 
 </body>
 </html>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
