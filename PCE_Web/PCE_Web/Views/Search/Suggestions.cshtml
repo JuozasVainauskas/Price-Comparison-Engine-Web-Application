@@ -15,13 +15,28 @@
         <tr>
             <td><a href="@product.Link"><img class="image" alt="product.jpg" src="@product.Picture"></a></td>
             <td>
-                <button class="link" name="particularItem" onclick="location.href = '@Url.Action("ParticularItem", "ParticularItem", new { particularItem = @product.Name })'">
+                <button id="mvc-action-button" class="link" name="particularItem" onclick="location.href = '@Url.Action("ParticularItem", "ParticularItem", new { particularItem = @product.Name })'">
                     @product.Name
                 </button>
             </td>
             <td>@product.Price</td>
         </tr>
     }
-    </table>
+</table>
+
+<div id="overlay" class="overlay">
+    <div class="loader">
+        <img src="~/img/loader.gif"width="400" height="400" />
+    </div>
+</div>
+
+<script>
+
+    var buttons = document.getElementsByClassName('link');
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].addEventListener('click', function (e) {
+            document.getElementById('overlay').style.display = 'flex';})
+    }
+</script>
 
 
