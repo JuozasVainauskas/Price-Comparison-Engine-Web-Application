@@ -442,6 +442,7 @@ namespace PCE_Web.Classes
             }
         }
 
+        public static void WriteSearchedItem(string pageUrl, string imgUrl, string shopName, string itemName, string price, string keyword)
         {
             using (var context = new PCEDatabaseContext())
             {
