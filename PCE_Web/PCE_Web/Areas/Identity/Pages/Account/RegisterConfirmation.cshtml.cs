@@ -2,24 +2,21 @@
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using PCE_Web.Areas.Identity.Data;
+using PCE_Web.Classes;
 
 namespace PCE_Web.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class RegisterConfirmationModel : PageModel
     {
-        private readonly UserManager<AccountUser> _userManager;
-        private readonly IEmailSender _sender;
+        private readonly UserManager<WebUser> _userManager;
 
-        public RegisterConfirmationModel(UserManager<AccountUser> userManager, IEmailSender sender)
+        public RegisterConfirmationModel(UserManager<WebUser> userManager)
         {
             _userManager = userManager;
-            _sender = sender;
         }
 
         public string Email { get; set; }

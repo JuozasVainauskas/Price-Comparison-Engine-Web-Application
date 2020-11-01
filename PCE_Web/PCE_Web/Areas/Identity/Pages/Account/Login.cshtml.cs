@@ -7,24 +7,23 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using PCE_Web.Areas.Identity.Data;
+using PCE_Web.Classes;
 
 namespace PCE_Web.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
-        private readonly UserManager<AccountUser> _userManager;
-        private readonly SignInManager<AccountUser> _signInManager;
+        private readonly UserManager<WebUser> _userManager;
+        private readonly SignInManager<WebUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<AccountUser> signInManager, 
+        public LoginModel(SignInManager<WebUser> signInManager, 
             ILogger<LoginModel> logger,
-            UserManager<AccountUser> userManager)
+            UserManager<WebUser> userManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;

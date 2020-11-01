@@ -1,8 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using PCE_Web.Areas.Identity.Data
 
-@inject SignInManager<AccountUser> SignInManager
-@inject UserManager<AccountUser> UserManager
+@inject SignInManager<WebUser> SignInManager
+@inject UserManager<WebUser> UserManager
 
 @if (SignInManager.IsSignedIn(User))
 {
