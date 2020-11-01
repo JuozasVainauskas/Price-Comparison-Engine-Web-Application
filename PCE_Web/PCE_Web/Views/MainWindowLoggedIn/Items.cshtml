@@ -1,29 +1,70 @@
 ﻿@{
     Layout = "~/Views/Shared/_LayoutLoggedIn.cshtml";
 }
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="~/css/styleForLoggedInWindow.css">
 
 <div class="text-center">
     <h1 class="display-4">Sveiki prisijungę!</h1>
 </div>
-<!-- Paieškos mygtukas -->
-<div class="search-button">
-    <form method="get" action="">
-        <div class="tb">
-            <input type="text" name="ProductName" placeholder="Ieškokite..">
-            <div class="td" id="s-cover">
-                <input id="mvc-action-button" type="submit" asp-area="" asp-controller="SearchLoggedIn" asp-action="Suggestions" style="position: absolute; left: -9999px" />
+<!-- Top content -->
+<div class="slideshow-container">
+    <img class="mySlides w3-animate-fading" src="~/img/suggestions/1.jpg">
+    <img class="mySlides w3-animate-fading" src="~/img/suggestions/2.jpg">
+    <img class="mySlides w3-animate-fading" src="~/img/suggestions/3.jpg">
+    <br />
+    <!-- Paieškos mygtukas -->
+    <div class="search-button">
+        <form method="get" action="">
+            <div class="tb">
+                <input type="text" name="ProductName" placeholder="Ieškokite..">
+                <div class="td" id="s-cover">
+                    <input id="mvc-action-button" type="submit" asp-area="" asp-controller="SearchLoggedIn" asp-action="Suggestions" style="position: absolute; left: -9999px" />
+                </div>
             </div>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>
 
+<br />
+<br />
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 footer-copyright">
+                &copy; SmartShop.LT, 2020.
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!--Loading screen-->
 <div id="overlay" class="overlay">
 
 
     <div class="loader">
-        <img src="~/img/loader.gif" width="400" height="400"/>
+        <img src="~/img/loader.gif" width="400" height="400" />
     </div>
-      
-
 </div>
 
+<!--Scripts-->
+<script src="~/js/scripts.js"></script>
+<script>
+    var myIndex = 0;
+    carousel();
+
+    function carousel() {
+        var i;
+        var x = document.getElementsByClassName("mySlides");
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+        myIndex++;
+        if (myIndex > x.length) { myIndex = 1 }
+        x[myIndex - 1].style.display = "block";
+        setTimeout(carousel, 9000);
+    }
+</script>
