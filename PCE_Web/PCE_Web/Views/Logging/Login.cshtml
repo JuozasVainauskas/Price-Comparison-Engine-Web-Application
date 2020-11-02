@@ -27,6 +27,15 @@
                 <label asp-for="Input.Password"><b>Slaptažodis</b></label>
                 <input asp-for="Input.Password" class="form-control" type="password" placeholder="Įveskite slaptažodį" />
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
+                @if (ViewBag.ShowMessage == true)
+                 { 
+                     <script type="text/javascript">
+                         $(document).ready(function () {
+                             $(".message-box").show();
+                         });
+                     </script>
+                     <div class="text-danger">Klaida slaptažodis, netinkamas.</div>
+                 }
             </div>
 
             <hr>
@@ -39,6 +48,5 @@
             <p>Dar neturite vartotojo? <a asp-controller="Registration" asp-action="Register">Registruokitės</a>.</p>
         </div>
     </form>
-
 </body>
 </html>

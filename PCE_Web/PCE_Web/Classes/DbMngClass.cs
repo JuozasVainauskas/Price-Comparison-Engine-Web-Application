@@ -240,20 +240,10 @@ namespace PCE_Web.Classes
                         user.Email = email;
                         return user;
                     }
-                    else
-                    {
-                        //MessageBox.Show("Blogai įvestas slaptažodis!");
-                    }
-                }
-                else
-                {
-                    //MessageBox.Show("Toks email nerastas arba įvestas blogai!");
                 }
             }
 
-            user.Role = null;
-            user.Email = null;
-            return user;
+            return null;
         }
 
         public static void ChangePassword(string email, string password, string passwordConfirm)

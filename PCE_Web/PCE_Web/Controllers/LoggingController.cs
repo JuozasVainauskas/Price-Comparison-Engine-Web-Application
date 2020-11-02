@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PCE_Web.Classes;
@@ -43,9 +44,13 @@ namespace PCE_Web.Controllers
                 {
                     return View("~/Views/MainWindowLoggedIn/Items.cshtml");
                 }
+                else
+                {
+                    ViewBag.ShowMessage = true;
+                }
             }
 
-            return View("~/Views/Registration/Register.cshtml");
+            return View("~/Views/Logging/Login.cshtml");
         }
     }
 }
