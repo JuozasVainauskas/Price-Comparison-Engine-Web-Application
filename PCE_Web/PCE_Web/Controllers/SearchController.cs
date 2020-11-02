@@ -23,7 +23,10 @@ namespace PCE_Web.Controllers
             if (DbMngClass.ReadSearchedItems(productName).Any())
             {
                 var products = new List<Item>();
-                foreach (var item in DbMngClass.ReadSearchedItems(productName)) products.Add(item);
+                foreach (var item in DbMngClass.ReadSearchedItems(productName))
+                {
+                    products.Add(item);
+                }
                 var suggestionsView = new SuggestionsView
                 {
                     Products = products
