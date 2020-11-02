@@ -13,12 +13,9 @@ namespace PCE_Web.Controllers
 {
     public class SearchLoggedInController : Controller
     {
-        public static int SoldOutBarbora;
-        public static int SoldOut;
-        public delegate List<Item> Sorting<TItem>(List<TItem> products);
-        public delegate void WriteData<THtmlNode, TItem>(List<THtmlNode> productListItems, List<TItem> products);
-        public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
-        public async Task<IActionResult> Suggestions(string productName)
+        public static int soldOutBarbora;
+        public static int soldOut;
+        public async Task<IActionResult> Suggestions(string productName)//Perduodamas produkto pavadinimas
         {
             if (DbMngClass.ReadSearchedItems(productName).Any())
             {
@@ -34,81 +31,39 @@ namespace PCE_Web.Controllers
             {
                 var httpClient = new HttpClient();
                 var products = new List<Item>();
-                await gettingItemsFromRde(productName, products, httpClient);
-                await gettingItemsFromBarbora(productName, products, httpClient);
-                await gettingItemsFromAvitela(productName, products, httpClient);
-                await gettingItemsFromPigu(productName, products, httpClient);
-                await gettingItemsFromGintarineVaistine(productName, products, httpClient);
-                await gettingItemsFromElektromarkt(productName, products, httpClient);
-                await gettingItemsFromBigBox(productName, products, httpClient);
-                products = SortingList(products);
-                DbMngClass.WriteSearchedItems(products, productName);
-                var suggestionsView = new SuggestionsView { Products = products };
+                var urlRde = "https://www.rde.lt/search_result/lt/word/" + productName + "/page/1";
+                var urlAvitela = "https://avitela.lt/paieska/" + productName;
+                var urlBarbora = "https://pagrindinis.barbora.lt/paieska?q=" + productName;
+                var urlPigu = "https://pigu.lt/lt/search?q=" + productName;
+                var urlBigBox =
+                    "https://bigbox.lt/paieska?controller=search&orderby=position&orderway=desc&ssa_submit=&search_query=" +
+                    productName;
+                var urlElektromarkt = "https://elektromarkt.lt/paieska/" +
+                                      productName;
+                var urlGintarineVaistine = "https://www.gintarine.lt/search?adv=false&cid=0&mid=0&vid=0&q=" +
+                                           productName + "%5D&sid=false&isc=true&orderBy=0";
+                var rdeItems = RdeSearch(await Html(httpClient, urlRde));
+                WriteDataFromRde(rdeItems, products);
+                var barboraItems = BarboraSearch(await Html(httpClient, urlBarbora));
+                WriteDataFromBarbora(barboraItems, products);
+                var avitelaItems = AvitelaSearch(await Html(httpClient, urlAvitela));
+                WriteDataFromAvitela(avitelaItems, products);
+                var piguItems = PiguSearch(await Html(httpClient, urlPigu));
+                WriteDataFromPigu(piguItems, products);
+                //var bigBoxItem = BigBoxSearch(await Html(httpClient, urlBigBox));
+                //WriteDataFromBigBox(bigBoxItem, products);
+                var gintarineVaistineItems = GintarineVaistineSearch(await Html(httpClient, urlGintarineVaistine));
+                WriteDataFromgintarineVaistine(gintarineVaistineItems, products);
+                var elektromarktItems = ElektromarktSearch(await Html(httpClient, urlElektromarkt));
+                WriteDataFromElektromarkt(elektromarktItems, products);
+                products = SortAndInsert(products, productName);
+
+                var suggestionsView = new SuggestionsView
+                {
+                    Products = products
+                };
                 return View(suggestionsView);
             }
-        }
-
-        private async Task gettingItemsFromRde(string productName, List<Item> products, HttpClient httpClient)
-        {
-            var urlRde = "https://www.rde.lt/search_result/lt/word/" + productName + "/page/1";
-            Search<HtmlDocument> rdeSearch = RdeSearch;
-            WriteData<HtmlNode, Item> writeDataFromRde = WriteDataFromRde;
-            var rdeItems = rdeSearch(await Html(httpClient, urlRde));
-            writeDataFromRde(rdeItems, products);
-        }
-
-        private async Task gettingItemsFromBarbora(string productName, List<Item> products, HttpClient httpClient)
-        {
-            var urlBarbora = "https://pagrindinis.barbora.lt/paieska?q=" + productName;
-            Search<HtmlDocument> barboraSearch = BarboraSearch;
-            WriteData<HtmlNode, Item> writeDataFromBarbora = WriteDataFromBarbora;
-            var barboraItems = barboraSearch(await Html(httpClient, urlBarbora));
-            writeDataFromBarbora(barboraItems, products);
-        }
-
-        private async Task gettingItemsFromAvitela(string productName, List<Item> products, HttpClient httpClient)
-        {
-            var urlAvitela = "https://avitela.lt/paieska/" + productName;
-            Search<HtmlDocument> avitelaSearch = AvitelaSearch;
-            WriteData<HtmlNode, Item> writeDataFromAvitela = WriteDataFromAvitela;
-            var avitelaItems = avitelaSearch(await Html(httpClient, urlAvitela));
-            writeDataFromAvitela(avitelaItems, products);
-        }
-
-        private async Task gettingItemsFromPigu(string productName, List<Item> products, HttpClient httpClient)
-        {
-            var urlPigu = "https://pigu.lt/lt/search?q=" + productName;
-            Search<HtmlDocument> piguSearch = PiguSearch;
-            WriteData<HtmlNode, Item> writeDataFromPigu = WriteDataFromPigu;
-            var piguItems = piguSearch(await Html(httpClient, urlPigu));
-            writeDataFromPigu(piguItems, products);
-        }
-
-        private async Task gettingItemsFromBigBox(string productName, List<Item> products, HttpClient httpClient)
-        {
-            var urlBigBox = "https://bigbox.lt/paieska?controller=search&orderby=position&orderway=desc&ssa_submit=&search_query=" + productName;
-            Search<HtmlDocument> bigBoxSearch = BigBoxSearch;
-            WriteData<HtmlNode, Item> writeDataFromBigBox = WriteDataFromBigBox;
-            var bigBoxItems = bigBoxSearch(await Html(httpClient, urlBigBox));
-            writeDataFromBigBox(bigBoxItems, products);
-        }
-
-        private async Task gettingItemsFromGintarineVaistine(string productName, List<Item> products, HttpClient httpClient)
-        {
-            var urlGintarineVaistine = "https://www.gintarine.lt/search?adv=false&cid=0&mid=0&vid=0&q=" + productName + "%5D&sid=false&isc=true&orderBy=0";
-            Search<HtmlDocument> gintarineVaistineSearch = GintarineVaistineSearch;
-            WriteData<HtmlNode, Item> writeDataFromGintarineVaistine = WriteDataFromGintarineVaistine;
-            var gintarineVaistineItems = gintarineVaistineSearch(await Html(httpClient, urlGintarineVaistine));
-            writeDataFromGintarineVaistine(gintarineVaistineItems, products);
-        }
-
-        private async Task gettingItemsFromElektromarkt(string productName, List<Item> products, HttpClient httpClient)
-        {
-            var urlElektromarkt = "https://www.elektromarkt.lt/lt/catalogsearch/result/?order=price&dir=desc&q=" + productName;
-            Search<HtmlDocument> elektromarktSearch = ElektromarktSearch;
-            WriteData<HtmlNode, Item> writeDataFromElektromarkt = WriteDataFromElektromarkt;
-            var elektromarktItems = elektromarktSearch(await Html(httpClient, urlElektromarkt));
-            writeDataFromElektromarkt(elektromarktItems, products);
         }
 
         private static async Task<HtmlDocument> Html(HttpClient httpClient, string urlget)
@@ -177,7 +132,7 @@ namespace PCE_Web.Controllers
                         .Contains("b-product-out-of-stock-backdrop")).ToList();
                 foreach (var unused in productListItemsSoldOut)
                 {
-                    SoldOutBarbora++;
+                    soldOutBarbora++;
                 }
                 return productListItems2;
             }
@@ -189,13 +144,12 @@ namespace PCE_Web.Controllers
 
         private static List<HtmlNode> PiguSearch(HtmlDocument htmlDocument2)
         {
-
-            if (htmlDocument2 != null)
+            try
             {
+                if (htmlDocument2 == null) return null;
                 var productsHtml2 = htmlDocument2.DocumentNode.Descendants("div")
                     .Where(node => node.GetAttributeValue("widget-old", "")
                         .Equals("ContentLoader")).ToList();
-
                 var productListItems2 = productsHtml2[0].Descendants("div")
                     .Where(node => node.GetAttributeValue("class", "")
                         .Contains("product-list-item")).ToList();
@@ -204,12 +158,16 @@ namespace PCE_Web.Controllers
                         .Contains("label-soldout")).ToList();
                 foreach (var unused in productListItemsSoldOut)
                 {
-                    SoldOut++;
+                    soldOut++;
                 }
                 return productListItems2;
-            }
 
-            return null;
+            }
+            catch
+            {
+                return null;
+            }
+        
         }
 
         private static List<HtmlNode> BigBoxSearch(HtmlDocument htmlDocument)
@@ -270,7 +228,7 @@ namespace PCE_Web.Controllers
             }
         }
 
-        private static void WriteDataFromRde(List<HtmlNode> productListItems, List<Item> products)
+        private static void WriteDataFromRde(List<HtmlNode> productListItems, List<Item> prices)
         {
             if (productListItems != null)
             {
@@ -306,21 +264,21 @@ namespace PCE_Web.Controllers
 
                             var singleItem = new Item
                             {
-                                Picture = "https://www.rde.lt/" + imgLink,
-                                Seller = "Rde",
-                                Name = name,
-                                PriceDouble = priceDouble,
-                                Price = price,
+                                Picture = "https://www.rde.lt/" + imgLink, 
+                                Seller = "Rde", 
+                                Name = name, 
+                                PriceDouble = priceDouble, 
+                                Price = price, 
                                 Link = "https://www.rde.lt/" + link
                             };
-                            products.Add(singleItem);
+                            prices.Add(singleItem);
                         }
                     }
                 }
             }
         }
 
-        private static void WriteDataFromAvitela(List<HtmlNode> productListItems, List<Item> products)
+        private static void WriteDataFromAvitela(List<HtmlNode> productListItems, List<Item> prices)
         {
             if (productListItems != null)
             {
@@ -351,19 +309,19 @@ namespace PCE_Web.Controllers
                         {
                             var singleItem = new Item
                             {
-                                Picture = imgLink,
-                                Seller = "Avitela",
-                                Name = name,
-                                PriceDouble = priceDouble,
-                                Price = price,
+                                Picture = imgLink, 
+                                Seller = "Avitela", 
+                                Name = name, 
+                                PriceDouble = priceDouble, 
+                                Price = price, 
                                 Link = link
                             };
-                            products.Add(singleItem);
+                            prices.Add(singleItem);
                         }
                         else
                         {
                             var singleItem = new Item { Picture = "https://avitela.lt/image/no_image.jpg", Seller = "Avitela", Name = name, PriceDouble = priceDouble, Price = price, Link = link };
-                            products.Add(singleItem);
+                            prices.Add(singleItem);
                         }
 
                     }
@@ -371,11 +329,11 @@ namespace PCE_Web.Controllers
             }
         }
 
-        private static void WriteDataFromBarbora(List<HtmlNode> productListItems, List<Item> products)
+        private static void WriteDataFromBarbora(List<HtmlNode> productListItems, List<Item> prices)
         {
             if (productListItems != null)
             {
-                var countItems = productListItems.Count - SoldOutBarbora;
+                var countItems = productListItems.Count - soldOutBarbora;
 
                 foreach (var productListItem in productListItems)
                     if (countItems != 0)
@@ -405,14 +363,14 @@ namespace PCE_Web.Controllers
                             var priceDouble = Convert.ToDouble(priceTemporary);
                             var item1 = new Item
                             {
-                                Picture = "https://pagrindinis.barbora.lt/" + imgLink,
-                                Seller = "Barbora",
-                                Name = name,
-                                PriceDouble = priceDouble,
-                                Price = price,
+                                Picture = "https://pagrindinis.barbora.lt/" + imgLink, 
+                                Seller = "Barbora", 
+                                Name = name, 
+                                PriceDouble = priceDouble, 
+                                Price = price, 
                                 Link = "https://pagrindinis.barbora.lt/" + link
                             };
-                            products.Add(item1);
+                            prices.Add(item1);
                         }
 
                         countItems--;
@@ -420,11 +378,11 @@ namespace PCE_Web.Controllers
             }
         }
 
-        private static void WriteDataFromPigu(List<HtmlNode> productListItems, List<Item> products)
+        private static void WriteDataFromPigu(List<HtmlNode> productListItems, List<Item> prices)
         {
             if (productListItems != null)
             {
-                var countItems = productListItems.Count - SoldOut;
+                var countItems = productListItems.Count - soldOut;
 
                 foreach (var productListItem in productListItems)
                     if (countItems != 0)
@@ -463,14 +421,14 @@ namespace PCE_Web.Controllers
                                 Price = price,
                                 Link = link
                             };
-                            products.Add(singleItem);
+                            prices.Add(singleItem);
                             countItems--;
                         }
                     }
             }
         }
 
-        private static void WriteDataFromBigBox(List<HtmlNode> productListItems, List<Item> products)
+        private static void WriteDataFromBigBox(List<HtmlNode> productListItems, List<Item> prices)
         {
             if (productListItems != null)
             {
@@ -501,23 +459,23 @@ namespace PCE_Web.Controllers
                         price += "€";
                         priceAtsarg = PasalinimasEuroSimbol(priceAtsarg);
                         var priceDouble = Convert.ToDouble(priceAtsarg);
-                        var singleItem = new Item
-                        {
-                            Picture = imgLink,
-                            Seller = "BigBox",
-                            Name = name,
-                            PriceDouble = priceDouble,
-                            Price = price,
-                            Link = link
-                        };
+                        var singleItem = new Item 
+                            { 
+                                Picture = imgLink, 
+                                Seller = "BigBox", 
+                                Name = name, 
+                                PriceDouble = priceDouble, 
+                                Price = price, 
+                                Link = link
+                            };
 
-                        products.Add(singleItem);
+                        prices.Add(singleItem);
                     }
                 }
             }
         }
 
-        private static void WriteDataFromElektromarkt(List<HtmlNode> productListItems2, List<Item> products)
+        private static void WriteDataFromElektromarkt(List<HtmlNode> productListItems2, List<Item> prices)
         {
             if (productListItems2 != null)
             {
@@ -545,20 +503,20 @@ namespace PCE_Web.Controllers
                     var priceDouble = double.Parse(priceAtsarg);
                     var item1 = new Item
                     {
-                        Picture = imgLink,
-                        Seller = "Elektromarkt",
-                        Name = name,
-                        PriceDouble = priceDouble,
-                        Price = price,
+                        Picture = imgLink, 
+                        Seller = "Elektromarkt", 
+                        Name = name, 
+                        PriceDouble = priceDouble, 
+                        Price = price, 
                         Link = link
                     };
-                    products.Add(item1);
+                    prices.Add(item1);
 
                 }
             }
         }
 
-        private static void WriteDataFromGintarineVaistine(List<HtmlNode> productListItems, List<Item> products)
+        private static void WriteDataFromgintarineVaistine(List<HtmlNode> productListItems, List<Item> prices)
         {
             if (productListItems != null)
             {
@@ -583,14 +541,14 @@ namespace PCE_Web.Controllers
 
                         var singleItem = new Item
                         {
-                            Picture = imgLink,
-                            Seller = "Gintarine vaistine",
-                            Name = name,
+                            Picture = imgLink, 
+                            Seller = "Gintarine vaistine", 
+                            Name = name, 
                             PriceDouble = priceDouble,
-                            Price = price + '€',
+                            Price = price + '€', 
                             Link = "https://www.gintarine.lt/" + link
                         };
-                        products.Add(singleItem);
+                        prices.Add(singleItem);
                     }
                 }
             }
@@ -642,10 +600,14 @@ namespace PCE_Web.Controllers
             return price;
         }
 
-        private Sorting<Item> SortingList = delegate (List<Item> products)
+        private static List<Item> SortAndInsert(List<Item> products, string productName)
         {
             products = products.OrderBy(o => o.PriceDouble).ToList();
+            foreach (var item in products)
+            {
+                DbMngClass.WriteSearchedItems(item.Link, item.Picture, item.Seller, item.Name, item.Price, productName);
+            }
             return products;
-        };
+        }
     }
 }

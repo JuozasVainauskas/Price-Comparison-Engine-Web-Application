@@ -27,7 +27,7 @@ namespace PCE_Web.Controllers
             var urlBarbora = "https://pagrindinis.barbora.lt/paieska?q=" + particularItem;
             var urlPigu = "https://pigu.lt/lt/search?q=" + particularItem;
             var urlBigBox = "https://bigbox.lt/paieska?controller=search&orderby=position&orderway=desc&ssa_submit=&search_query=" + particularItem;
-            var urlElektromarkt = "https://www.elektromarkt.lt/lt/catalogsearch/result/?order=price&dir=desc&q=" + particularItem;
+            var urlElektromarkt = "https://elektromarkt.lt/paieska/" + particularItem;
             var urlGintarineVaistine = "https://www.gintarine.lt/search?adv=false&cid=0&mid=0&vid=0&q=" + particularItem + "%5D&sid=false&isc=true&orderBy=0";
 
             var rdeItems = RdeSearch(await Html(httpClient, urlRde));

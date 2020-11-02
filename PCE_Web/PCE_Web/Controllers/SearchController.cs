@@ -104,7 +104,7 @@ namespace PCE_Web.Controllers
 
         private async Task gettingItemsFromElektromarkt(string productName, List<Item> products, HttpClient httpClient)
         {
-            var urlElektromarkt = "https://www.elektromarkt.lt/lt/catalogsearch/result/?order=price&dir=desc&q=" + productName;
+            var urlElektromarkt = "https://elektromarkt.lt/paieska/" + productName;
             Search<HtmlDocument> elektromarktSearch = ElektromarktSearch;
             WriteData<HtmlNode, Item> writeDataFromElektromarkt = WriteDataFromElektromarkt;
             var elektromarktItems = elektromarktSearch(await Html(httpClient, urlElektromarkt));
@@ -189,13 +189,15 @@ namespace PCE_Web.Controllers
 
         private static List<HtmlNode> PiguSearch(HtmlDocument htmlDocument2)
         {
-
-            if (htmlDocument2 != null)
+            if (htmlDocument2 == null)
+            {
+                return null;
+            }
+            try
             {
                 var productsHtml2 = htmlDocument2.DocumentNode.Descendants("div")
                     .Where(node => node.GetAttributeValue("widget-old", "")
                         .Equals("ContentLoader")).ToList();
-
                 var productListItems2 = productsHtml2[0].Descendants("div")
                     .Where(node => node.GetAttributeValue("class", "")
                         .Contains("product-list-item")).ToList();
@@ -206,10 +208,13 @@ namespace PCE_Web.Controllers
                 {
                     SoldOut++;
                 }
+
                 return productListItems2;
             }
-
-            return null;
+            catch
+            {
+                return null;
+            }
         }
 
         private static List<HtmlNode> BigBoxSearch(HtmlDocument htmlDocument)
