@@ -90,7 +90,7 @@ namespace PCE_Web.Controllers
 
         private async Task gettingItemsFromElektromarkt(string productName, List<Item> products, HttpClient httpClient)
         {
-            var urlElektromarkt = "https://www.elektromarkt.lt/lt/catalogsearch/result/?order=price&dir=desc&q=" + productName;
+            var urlElektromarkt = "https://elektromarkt.lt/paieska/" + productName;
             Search<HtmlDocument> elektromarktSearch = ElektromarktSearch;
             WriteData<HtmlNode, Item> writeDataFromElektromarkt = WriteDataFromElektromarkt;
             var elektromarktItems = elektromarktSearch(await Html(httpClient, urlElektromarkt));

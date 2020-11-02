@@ -38,7 +38,7 @@ namespace PCE_Web.Controllers
                 var urlBigBox =
                     "https://bigbox.lt/paieska?controller=search&orderby=position&orderway=desc&ssa_submit=&search_query=" +
                     productName;
-                var urlElektromarkt = "https://www.elektromarkt.lt/lt/catalogsearch/result/?order=price&dir=desc&q=" +
+                var urlElektromarkt = "https://elektromarkt.lt/paieska/" +
                                       productName;
                 var urlGintarineVaistine = "https://www.gintarine.lt/search?adv=false&cid=0&mid=0&vid=0&q=" +
                                            productName + "%5D&sid=false&isc=true&orderBy=0";
