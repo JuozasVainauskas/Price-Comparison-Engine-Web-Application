@@ -66,33 +66,24 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="contactsModalLabel" style="color: green" bold>Kontaktai</h5>
-
+                    <h5 class="modal-title" id="contactsModalLabel" style="color: green" bold>Susisiekite</h5>
                 </div>
-                <div class="modal-body">
-                    <p><a>Ernestas Ščevinskas</a></p>
-                    <hr>
-                    <p><a>Justas Vitkauskas</a></p>
-                    <hr>
-                    <p><a>Juozas Vainauskas</a></p>
-                    <hr>
-                    <p><a>Aivaras Rinkevičius</a></p>
-
-                    <header></header>
+                <h2 style="text-align:center">Susisiekite su mumis radus klaidą žemiau pateiktame lange.</h2>
+                <header></header>
                     <div class="textarea">
                         <textarea cols="30" placeholder="Parašykite komentarą.."></textarea>
                     </div>
-                    <br />
+                    <br/>
                     <div class="myButton">
                         <button type="submit">Patvirtinti</button>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn first" data-dismiss="modal" style="color: green" bold>Uždaryti</button>
-                </div>
+                
+                    <div class="modal-footer">
+                        <button type="button" class="btn first" data-dismiss="modal" style="color: green" bold>Uždaryti</button>
+                    </div>
+            </div>
             </div>
         </div>
-    </div>
 
     <!-- Top menu -->
     <nav class="navbar navbar-inverse" role="navigation">
@@ -114,7 +105,7 @@
                 <ul class="nav navbar-nav navbar-right navbar-menu-items wow fadeIn">
                     <li><a asp-area="" asp-controller="Evaluation" asp-action="Evaluate">Parduotuvių įvertinimai</a></li>
                     <li><a href="#" data-toggle="modal" data-target="#dukModal"><strong>DUK</strong></a></li>
-                    <li><a href="#" data-toggle="modal" data-target="#contactsModal">Kontaktai</a></li>
+                    <li><a href="#" data-toggle="modal" data-target="#contactsModal">Susisiekite</a></li>
 
                 </ul>
             </div>
