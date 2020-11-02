@@ -6,15 +6,21 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="~/css/styleForLoggedInWindow.css">
 
-<div class="text-center">
-    <h1 class="display-4">Sveiki prisijungę!</h1>
-</div>
+<div class="seperator"></div>
+
+     <div class="text-center">
+         <div class="alert warning">
+             <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+             Sėkmingai prisijungėte!
+         </div>
+     </div>
 <!-- Top content -->
 <div class="slideshow-container">
     <img class="mySlides w3-animate-fading" src="~/img/suggestions/1.jpg">
     <img class="mySlides w3-animate-fading" src="~/img/suggestions/2.jpg">
     <img class="mySlides w3-animate-fading" src="~/img/suggestions/3.jpg">
-    <br />
+</div>
+<div class="search-container">
     <!-- Paieškos mygtukas -->
     <div class="search-button">
         <form method="get" action="">
@@ -66,5 +72,17 @@
         if (myIndex > x.length) { myIndex = 1 }
         x[myIndex - 1].style.display = "block";
         setTimeout(carousel, 9000);
+    }
+</script>
+<script>
+    var close = document.getElementsByClassName("closebtn");
+    var i;
+
+    for (i = 0; i < close.length; i++) {
+        close[i].onclick = function () {
+            var div = this.parentElement;
+            div.style.opacity = "0";
+            setTimeout(function () { div.style.display = "none"; }, 600);
+        }
     }
 </script>
