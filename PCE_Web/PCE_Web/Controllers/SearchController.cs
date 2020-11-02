@@ -175,7 +175,10 @@ namespace PCE_Web.Controllers
 
         private static List<HtmlNode> PiguSearch(HtmlDocument htmlDocument2)
         {
-            if (htmlDocument2 == null) return null;
+            if (htmlDocument2 == null)
+            {
+                return null;
+            }
             try
             {
                 var productsHtml2 = htmlDocument2.DocumentNode.Descendants("div")
@@ -198,8 +201,6 @@ namespace PCE_Web.Controllers
             {
                 return null;
             }
-
-            return null;
         }
 
         private static List<HtmlNode> BigBoxSearch(HtmlDocument htmlDocument)
