@@ -61,11 +61,11 @@
         </div>
     </div>
 
-    <div class="modal fade" id="contactsModal" tabindex="-1" role="dialog" aria-labelledby="contactsModalLabel" aria-hidden="true">
+    <div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="reportModalLabel" aria-hidden="true">
         <div class="modal-dialog" style="width:600px;height:700px;" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2 class="modal-title" id="contactsModalLabel" style="color: green" bold>Susisiekite</h2>
+                    <h2 class="modal-title" id="reportModalLabel" style="color: green" bold>Susisiekite</h2>
                 </div>
                 <div class="modal-body">
 
@@ -73,7 +73,7 @@
                     <br />
 
                     <div class="textarea">
-                        <textarea rows="20" cols="60" placeholder="Parašykite komentarą.."></textarea>
+                        <textarea rows="20" cols="60" placeholder="Parašykite komentarą.." style="overflow:auto;resize:none"></textarea>
                     </div>
                     <br />
 
@@ -110,7 +110,7 @@
                 <ul class="nav navbar-nav navbar-right navbar-menu-items wow fadeIn">
                     <li><a asp-area="" asp-controller="Evaluation" asp-action="Evaluate">Parduotuvių įvertinimai</a></li>
                     <li><a href="#" data-toggle="modal" data-target="#dukModal">DUK</a></li>
-                    <li><a href="#" data-toggle="modal" data-target="#contactsModal">Susisiekite</a></li>
+                    <li><a href="#" data-toggle="modal" data-target="#reportModal">Susisiekite</a></li>
 
                 </ul>
             </div>
