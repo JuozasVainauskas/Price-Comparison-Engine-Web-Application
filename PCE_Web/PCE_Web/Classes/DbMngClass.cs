@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -175,28 +176,39 @@ namespace PCE_Web.Classes
         }
         /* ------------------------------------------- */
 
+        public static bool CheckIfUserExists(string email)
+        {
+            using (var context = new PCEDatabaseContext())
+            {
+                var result = context.UserData.SingleOrDefault(c => c.Email == email);
+                if (result == null)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         public static void RegisterUser(string email, string password)
         {
             var passwordSalt = GenerateHash.CreateSalt(10);
             var passwordHash = GenerateHash.GenerateSha256Hash(password, passwordSalt);
 
-            var context = new PCEDatabaseContext();
-            var result = context.UserData.SingleOrDefault(c => c.Email == email);
-            if (result != null)
+            using (var context = new PCEDatabaseContext())
             {
-                //MessageBox.Show("Toks email jau panaudotas. Pabandykite kitą.");
-            }
-            else
-            {
-                var userData = new UserData()
+                var result = context.UserData.SingleOrDefault(c => c.Email == email);
+                if (result == null)
                 {
-                    Email = email,
-                    PasswordHash = passwordHash,
-                    PasswordSalt = passwordSalt,
-                    Role = "0"
-                };
-                context.UserData.Add(userData);
-                context.SaveChanges();
+                    var userData = new UserData()
+                    {
+                        Email = email,
+                        PasswordHash = passwordHash,
+                        PasswordSalt = passwordSalt,
+                        Role = "0"
+                    };
+                    context.UserData.Add(userData);
+                    context.SaveChanges();
+                }
             }
         }
 
