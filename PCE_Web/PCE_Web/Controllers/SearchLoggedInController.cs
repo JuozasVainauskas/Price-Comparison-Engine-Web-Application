@@ -144,13 +144,12 @@ namespace PCE_Web.Controllers
 
         private static List<HtmlNode> PiguSearch(HtmlDocument htmlDocument2)
         {
-
-            if (htmlDocument2 != null)
+            try
             {
+                if (htmlDocument2 == null) return null;
                 var productsHtml2 = htmlDocument2.DocumentNode.Descendants("div")
                     .Where(node => node.GetAttributeValue("widget-old", "")
                         .Equals("ContentLoader")).ToList();
-
                 var productListItems2 = productsHtml2[0].Descendants("div")
                     .Where(node => node.GetAttributeValue("class", "")
                         .Contains("product-list-item")).ToList();
@@ -162,9 +161,13 @@ namespace PCE_Web.Controllers
                     soldOut++;
                 }
                 return productListItems2;
-            }
 
-            return null;
+            }
+            catch
+            {
+                return null;
+            }
+        
         }
 
         private static List<HtmlNode> BigBoxSearch(HtmlDocument htmlDocument)
