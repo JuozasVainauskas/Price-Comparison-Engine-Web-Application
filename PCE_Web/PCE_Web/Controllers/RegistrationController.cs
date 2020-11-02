@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using PCE_Web.Classes;
 
 namespace PCE_Web.Controllers
 {
@@ -32,11 +35,22 @@ namespace PCE_Web.Controllers
             public string ConfirmPassword { get; set; }
         }
 
-
         public IActionResult Register()
         {
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SignUp()
+        {
+            if (ModelState.IsValid)
+            {
+                DbMngClass.RegisterUser(Input.Email, Input.Password);
+                return View("~/Views/MainWindowLoggedIn/Items.cshtml");
+            }
+
+            return View("~/Views/Registration/Register.cshtml");
+        }
     }
 }
