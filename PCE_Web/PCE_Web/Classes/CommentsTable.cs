@@ -9,9 +9,7 @@ namespace PCE_Web.Classes
         public string Email { get; set; }
         public int ShopId { get; set; }
         public string Date { get; set; }
-        public int ServiceRating { get; set; }
-        public int ProductsQualityRating { get; set; }
-        public int DeliveryRating { get; set; }
+        public int Rating { get; set; }
         public string Comment { get; set; }
     }
 }

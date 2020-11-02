@@ -376,8 +376,7 @@ namespace PCE_Web.Classes
             return temp;
         }
 
-        public static void WriteComments(string email, int shopId, int serviceRating, int productsQualityRating,
-            int deliveryRating, string comment)
+        public static void WriteComments(string email, int shopId, int rating, string comment)
         {
             using (var context = new PCEDatabaseContext())
             {
@@ -390,9 +389,7 @@ namespace PCE_Web.Classes
                         Email = email,
                         ShopId = shopId,
                         Date = DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
-                        ServiceRating = serviceRating,
-                        ProductsQualityRating = productsQualityRating,
-                        DeliveryRating = deliveryRating,
+                        Rating = rating,
                         Comment = comment
                     };
                     context.CommentsTable.Add(commentsTable);

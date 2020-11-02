@@ -4,8 +4,6 @@
 	[Email] NVARCHAR (MAX) NOT NULL,
     [ShopId] INT NOT NULL,
     [Date] NVARCHAR (MAX) NOT NULL,
-    [ServiceRating] INT NOT NULL,
-    [ProductsQualityRating] INT NOT NULL,
-    [DeliveryRating] INT NOT NULL,
+    [Rating] INT NOT NULL,
     [Comment] NVARCHAR (MAX) NULL
 )
