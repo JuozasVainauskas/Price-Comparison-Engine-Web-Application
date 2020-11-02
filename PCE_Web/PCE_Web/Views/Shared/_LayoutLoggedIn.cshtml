@@ -35,7 +35,6 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="dukModalLabel" style="color: green" bold>DUK</h5>
-
                 </div>
                 <div class="modal-body">
 
@@ -68,14 +67,21 @@
                 <div class="modal-header">
                     <h2 class="modal-title" id="contactsModalLabel" style="color: green" bold>Susisiekite</h2>
                 </div>
-                <h5 style="text-align:center">Susisiekite su mumis radus klaidą žemiau pateiktame lange.</h5>
-                <header></header>
-                <div class="textarea">
-                    <textarea rows="20" cols="60" placeholder="Parašykite komentarą.."></textarea>
-                </div>
-                <br />
-                <div class="myButton">
-                    <button type="submit">Siųsti</button>
+                <div class="modal-body">
+
+                    <h5 style="text-align:center">Susisiekite su mumis radus klaidą žemiau pateiktame lange.</h5>
+                    <br />
+
+                    <div class="textarea">
+                        <textarea rows="20" cols="60" placeholder="Parašykite komentarą.."></textarea>
+                    </div>
+                    <br />
+
+                    <div class="myButton">
+                        <button type="submit">Siųsti</button>
+                    </div>
+                    <br />
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn first" data-dismiss="modal" style="color: green" bold>Uždaryti</button>
@@ -103,7 +109,7 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right navbar-menu-items wow fadeIn">
                     <li><a asp-area="" asp-controller="Evaluation" asp-action="Evaluate">Parduotuvių įvertinimai</a></li>
-                    <li><a href="#" data-toggle="modal" data-target="#dukModal"><strong>DUK</strong></a></li>
+                    <li><a href="#" data-toggle="modal" data-target="#dukModal">DUK</a></li>
                     <li><a href="#" data-toggle="modal" data-target="#contactsModal">Susisiekite</a></li>
 
                 </ul>
