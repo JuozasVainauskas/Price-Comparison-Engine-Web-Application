@@ -144,9 +144,12 @@ namespace PCE_Web.Controllers
 
         private static List<HtmlNode> PiguSearch(HtmlDocument htmlDocument2)
         {
+            if (htmlDocument2 == null)
+            {
+                return null;
+            }
             try
             {
-                if (htmlDocument2 == null) return null;
                 var productsHtml2 = htmlDocument2.DocumentNode.Descendants("div")
                     .Where(node => node.GetAttributeValue("widget-old", "")
                         .Equals("ContentLoader")).ToList();
