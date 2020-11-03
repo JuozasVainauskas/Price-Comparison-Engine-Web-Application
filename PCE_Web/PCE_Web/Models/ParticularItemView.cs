@@ -12,8 +12,6 @@ namespace PCE_Web.Models
     public class ParticularItemView : IEnumerable
     {
         public List<Item> Products { get; set; }
-        public string laikinas;
-
         public IEnumerator GetEnumerator()
         {
             throw new System.NotImplementedException();
