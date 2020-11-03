@@ -12,8 +12,6 @@ namespace PCE_Web.Controllers
 {
     public class LoggingController : Controller
     {
-        [BindProperty]
-        public InputModel Input { get; set; }
         public class InputModel
         {
             [Display(Name = "Email")]
@@ -35,11 +33,11 @@ namespace PCE_Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult SignIn()
+        public IActionResult SignIn(InputModel input)
         {
             if (ModelState.IsValid)
             {
-                var user = DbMngClass.LoginUser(Input.Email, Input.Password);
+                var user = DatabaseManager.LoginUser(input.Email, input.Password);
                 if (user != null)
                 {
                     return View("~/Views/MainWindowLoggedIn/Items.cshtml");

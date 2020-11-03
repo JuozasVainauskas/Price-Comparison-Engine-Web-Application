@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PCE_Web.Classes
 {
-    public static class DbMngClass
+    public static class DatabaseManager
     {
         private static bool EmailVerification(string email)
         {
