@@ -20,18 +20,35 @@ namespace PCE_Web.Controllers
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
         public async Task<IActionResult> Suggestions(string productName)
         {
-            var httpClient = new HttpClient();
-            var products = new List<Item>();
-            await gettingItemsFromRde(productName, products, httpClient);
-            await gettingItemsFromBarbora(productName, products, httpClient);
-            await gettingItemsFromAvitela(productName, products, httpClient);
-            await gettingItemsFromPigu(productName, products, httpClient);
-            await gettingItemsFromGintarineVaistine(productName, products, httpClient);
-            await gettingItemsFromElektromarkt(productName, products, httpClient);
-            await gettingItemsFromBigBox(productName, products, httpClient);
-            products = SortingList(products);
-            var suggestionsView = new SuggestionsView {Products = products};
-            return View(suggestionsView);
+            if (DbMngClass.ReadSearchedItems(productName).Any())
+            {
+                var products = new List<Item>();
+                foreach (var item in DbMngClass.ReadSearchedItems(productName))
+                {
+                    products.Add(item);
+                }
+                var suggestionsView = new SuggestionsView
+                {
+                    Products = products
+                };
+                return View(suggestionsView);
+            }
+            else
+            {
+                var httpClient = new HttpClient();
+                var products = new List<Item>();
+                await gettingItemsFromRde(productName, products, httpClient);
+                await gettingItemsFromBarbora(productName, products, httpClient);
+                await gettingItemsFromAvitela(productName, products, httpClient);
+                await gettingItemsFromPigu(productName, products, httpClient);
+                await gettingItemsFromGintarineVaistine(productName, products, httpClient);
+                await gettingItemsFromElektromarkt(productName, products, httpClient);
+                await gettingItemsFromBigBox(productName, products, httpClient);
+                products = SortingList(products);
+                DbMngClass.WriteSearchedItems(products, productName);
+                var suggestionsView = new SuggestionsView {Products = products};
+                return View(suggestionsView);
+            }
         }
 
         private async Task gettingItemsFromRde(string productName, List<Item> products, HttpClient httpClient)

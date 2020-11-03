@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -24,7 +25,10 @@ namespace PCE_Web.Classes
 
         private static bool PasswordVerification(string password)
         {
-            var pattern = new Regex(@"(\.*\d+\.*[a-zA-Z]\.*[a-zA-Z]\.*[a-zA-Z]\.*)|(\.*[a-zA-Z]\.*\d+\.*[a-zA-Z]\.*[a-zA-Z]\.*)|(\.*[a-zA-Z]\.*[a-zA-Z]\.*\d+\.*[a-zA-Z]\.*)|(\.*[a-zA-Z]\.*[a-zA-Z]\.*[a-zA-Z]\.*\d+\.*)", RegexOptions.Compiled);
+            var pattern =
+                new Regex(
+                    @"(\.*\d+\.*[a-zA-Z]\.*[a-zA-Z]\.*[a-zA-Z]\.*)|(\.*[a-zA-Z]\.*\d+\.*[a-zA-Z]\.*[a-zA-Z]\.*)|(\.*[a-zA-Z]\.*[a-zA-Z]\.*\d+\.*[a-zA-Z]\.*)|(\.*[a-zA-Z]\.*[a-zA-Z]\.*[a-zA-Z]\.*\d+\.*)",
+                    RegexOptions.Compiled);
             if (string.IsNullOrWhiteSpace(password))
             {
                 return false;
@@ -172,28 +176,39 @@ namespace PCE_Web.Classes
         }
         /* ------------------------------------------- */
 
+        public static bool CheckIfUserExists(string email)
+        {
+            using (var context = new PCEDatabaseContext())
+            {
+                var result = context.UserData.SingleOrDefault(c => c.Email == email);
+                if (result == null)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         public static void RegisterUser(string email, string password)
         {
             var passwordSalt = GenerateHash.CreateSalt(10);
             var passwordHash = GenerateHash.GenerateSha256Hash(password, passwordSalt);
 
-            var context = new PCEDatabaseContext();
-            var result = context.UserData.SingleOrDefault(c => c.Email == email);
-            if (result != null)
+            using (var context = new PCEDatabaseContext())
             {
-                //MessageBox.Show("Toks email jau panaudotas. Pabandykite kitą.");
-            }
-            else
-            {
-                var userData = new UserData()
+                var result = context.UserData.SingleOrDefault(c => c.Email == email);
+                if (result == null)
                 {
-                    Email = email,
-                    PasswordHash = passwordHash,
-                    PasswordSalt = passwordSalt,
-                    Role = "0"
-                };
-                context.UserData.Add(userData);
-                context.SaveChanges();
+                    var userData = new UserData()
+                    {
+                        Email = email,
+                        PasswordHash = passwordHash,
+                        PasswordSalt = passwordSalt,
+                        Role = "0"
+                    };
+                    context.UserData.Add(userData);
+                    context.SaveChanges();
+                }
             }
         }
 
@@ -225,20 +240,10 @@ namespace PCE_Web.Classes
                         user.Email = email;
                         return user;
                     }
-                    else
-                    {
-                        //MessageBox.Show("Blogai įvestas slaptažodis!");
-                    }
-                }
-                else
-                {
-                    //MessageBox.Show("Toks email nerastas arba įvestas blogai!");
                 }
             }
 
-            user.Role = null;
-            user.Email = null;
-            return user;
+            return null;
         }
 
         public static void ChangePassword(string email, string password, string passwordConfirm)
@@ -305,7 +310,9 @@ namespace PCE_Web.Classes
         {
             using (var context = new PCEDatabaseContext())
             {
-                var result = context.SavedItems.SingleOrDefault(b => b.Email == email && b.PageUrl == item.Link && b.ImgUrl == item.Picture && b.ShopName == item.Seller && b.ItemName == item.Name && b.Price == item.Price);
+                var result = context.SavedItems.SingleOrDefault(b =>
+                    b.Email == email && b.PageUrl == item.Link && b.ImgUrl == item.Picture &&
+                    b.ShopName == item.Seller && b.ItemName == item.Name && b.Price == item.Price);
 
                 if (result != null)
                 {
@@ -321,21 +328,27 @@ namespace PCE_Web.Classes
 
             using (var context = new PCEDatabaseContext())
             {
-                var itemsList = context.SavedItems.Where(x => x.Email == email).Select(x => new Item { Link = x.PageUrl, Picture = x.ImgUrl, Seller = x.ShopName, Name = x.ItemName, Price = x.Price }).ToList();
+                var itemsList = context.SavedItems.Where(x => x.Email == email).Select(x => new Item
+                        {Link = x.PageUrl, Picture = x.ImgUrl, Seller = x.ShopName, Name = x.ItemName, Price = x.Price})
+                    .ToList();
 
                 foreach (var singleItem in itemsList)
                 {
                     item.Add(singleItem);
                 }
             }
+
             return item;
         }
 
-        public static void WriteSavedItem(string pageUrl, string imgUrl, string shopName, string itemName, string price, string email)
+        public static void WriteSavedItem(string pageUrl, string imgUrl, string shopName, string itemName, string price,
+            string email)
         {
             using (var context = new PCEDatabaseContext())
             {
-                var result = context.SavedItems.SingleOrDefault(c => c.PageUrl == pageUrl && c.ImgUrl == imgUrl && c.ShopName == shopName && c.ItemName == itemName && c.Price == price && c.Email == email);
+                var result = context.SavedItems.SingleOrDefault(c =>
+                    c.PageUrl == pageUrl && c.ImgUrl == imgUrl && c.ShopName == shopName && c.ItemName == itemName &&
+                    c.Price == price && c.Email == email);
 
                 if (result == null)
                 {
@@ -361,10 +374,11 @@ namespace PCE_Web.Classes
             {
                 temp = context.CommentsTable.ToList();
             }
+
             return temp;
         }
 
-        public static void WriteComments(string email, int shopId, int serviceRating, int productsQualityRating, int deliveryRating, string comment)
+        public static void WriteComments(string email, int shopId, int rating, string comment)
         {
             using (var context = new PCEDatabaseContext())
             {
@@ -377,9 +391,7 @@ namespace PCE_Web.Classes
                         Email = email,
                         ShopId = shopId,
                         Date = DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
-                        ServiceRating = serviceRating,
-                        ProductsQualityRating = productsQualityRating,
-                        DeliveryRating = deliveryRating,
+                        Rating = rating,
                         Comment = comment
                     };
                     context.CommentsTable.Add(commentsTable);
@@ -421,7 +433,15 @@ namespace PCE_Web.Classes
             }
         }
 
-        public static void WriteSearchedItems(string pageUrl, string imgUrl, string shopName, string itemName, string price, string keyword)
+        public static void WriteSearchedItems(List<Item> items, string productName)
+        {
+            foreach (var item in items)
+            {
+                WriteSearchedItem(item.Link, item.Picture, item.Seller, item.Name, item.Price, productName);
+            }
+        }
+
+        public static void WriteSearchedItem(string pageUrl, string imgUrl, string shopName, string itemName, string price, string keyword)
         {
             using (var context = new PCEDatabaseContext())
             {
