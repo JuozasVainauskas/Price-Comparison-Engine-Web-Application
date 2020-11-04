@@ -15,7 +15,18 @@ namespace PCE_Web.Controllers
     {
         public IActionResult Items()
         {
-            return View();
+                var products = new List<Item>();
+
+                using (var context = new PCEDatabaseContext())
+                {
+                    var result = context.ItemsTable.Select(x => new Item { Link = x.PageUrl, Picture = x.ImgUrl, Seller = x.ShopName, Name = x.ItemName, Price = x.Price }).ToList();
+
+                    foreach (var product in result)
+                    {
+                        products.Add(product);
+                    }
+                }
+                return View();
         }
 
     }
