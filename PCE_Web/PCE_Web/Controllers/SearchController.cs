@@ -26,6 +26,7 @@ namespace PCE_Web.Controllers
         }
         public async Task<IActionResult> Suggestions(string productName)
         {
+            
             if (DatabaseManager.ReadSearchedItems(productName).Any())
             {
                 var products = new List<Item>();
@@ -40,18 +41,29 @@ namespace PCE_Web.Controllers
             {
                 var httpClient = new HttpClient();
                 var products = new List<Item>();
-                await gettingItemsFromRde(productName, products, httpClient);
-                await gettingItemsFromBarbora(productName, products, httpClient);
-                await gettingItemsFromAvitela(productName, products, httpClient);
-                await gettingItemsFromPigu(productName, products, httpClient);
-                await gettingItemsFromGintarineVaistine(productName, products, httpClient);
-                await gettingItemsFromElektromarkt(productName, products, httpClient);
-                await gettingItemsFromBigBox(productName, products, httpClient);
+                await readingItemsAsync(productName, products, httpClient);
                 products = SortingList(products);
                 DatabaseManager.WriteSearchedItems(products, productName);
                 _suggestionsView.Products = products;
                 return View(_suggestionsView as SuggestionsView);
             }
+        }
+
+        private async Task readingItemsAsync(string productName,List<Item> products,HttpClient httpClient)
+        {
+            var gettingRde = await Task.Factory.StartNew(() => gettingItemsFromRde(productName, products, httpClient));
+            var gettingBarbora = await Task.Factory.StartNew(() => gettingItemsFromBarbora(productName, products, httpClient));
+            var gettingAvitela = await Task.Factory.StartNew(() => gettingItemsFromAvitela(productName, products, httpClient));
+            var gettingPigu = await Task.Factory.StartNew(() => gettingItemsFromPigu(productName, products, httpClient));
+            var gettingGintarine = await Task.Factory.StartNew(() => gettingItemsFromGintarineVaistine(productName, products, httpClient));
+            var gettingElektromarkt = await Task.Factory.StartNew(() => gettingItemsFromElektromarkt(productName, products, httpClient));
+            var gettingBigBox = await Task.Factory.StartNew(() => gettingItemsFromBigBox(productName, products, httpClient));
+            var taskList = new List<Task>
+            {
+                gettingRde, gettingBarbora, gettingAvitela, gettingPigu, gettingGintarine, gettingElektromarkt,
+                gettingBigBox
+            };
+            Task.WaitAll(taskList.ToArray());
         }
 
         private async Task gettingItemsFromRde(string productName, List<Item> products, HttpClient httpClient)
