@@ -1,4 +1,4 @@
-﻿@model InputView
+﻿@model PCE_Web.Controllers.LoggingController.InputModel
 @{
     ViewData["Title"] = "Prisijungimas";
 }
@@ -20,12 +20,12 @@
 
             <div class="form-group">
                 <label asp-for="Email"><b>El. paštas</b></label>
-                <input asp-for="Email" class="form-control" name="EmailTyped" type="email" placeholder="Įveskite el. paštą" />
+                <input asp-for="Email" class="form-control" type="email" placeholder="Įveskite el. paštą" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Password"><b>Slaptažodis</b></label>
-                <input asp-for="Password" class="form-control" name="PasswordTyped" type="password" placeholder="Įveskite slaptažodį" />
+                <input asp-for="Password" class="form-control" type="password" placeholder="Įveskite slaptažodį" />
                 <span asp-validation-for="Password" class="text-danger"></span>
                 @if (ViewBag.ShowMessage == true)
                  { 

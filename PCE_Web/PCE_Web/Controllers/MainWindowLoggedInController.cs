@@ -10,12 +10,8 @@ namespace PCE_Web.Controllers
 {
     public class MainWindowLoggedInController : Controller
     {
-        int a = 0;
-
-        public IActionResult Items(string EmailTyped, string PasswordTyped)
+        public IActionResult Items()
         {
-            Console.WriteLine(EmailTyped);
-            Console.WriteLine(PasswordTyped);
             if (DatabaseManager.ReadSlidesList().Any())
             {
                 var products = DatabaseManager.ReadSlidesList();
