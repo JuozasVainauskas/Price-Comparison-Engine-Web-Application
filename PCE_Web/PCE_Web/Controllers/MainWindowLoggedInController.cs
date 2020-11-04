@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Internal;
@@ -9,8 +10,12 @@ namespace PCE_Web.Controllers
 {
     public class MainWindowLoggedInController : Controller
     {
-        public IActionResult Items()
+        int a = 0;
+
+        public IActionResult Items(string EmailTyped, string PasswordTyped)
         {
+            Console.WriteLine(EmailTyped);
+            Console.WriteLine(PasswordTyped);
             if (DatabaseManager.ReadSlidesList().Any())
             {
                 var products = DatabaseManager.ReadSlidesList();
@@ -23,7 +28,7 @@ namespace PCE_Web.Controllers
             else
             {
                 var products = new List<Slide>();
-                var notExistingItem = new Slide { PageUrl = "", ImgUrl = "~/img/suggestions/1.jpg" };
+                var notExistingItem = new Slide {PageUrl = "", ImgUrl = "~/img/suggestions/1.jpg"};
                 products.Add(notExistingItem);
 
                 var slideshowView = new SlideshowView
