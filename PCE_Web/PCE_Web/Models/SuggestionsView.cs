@@ -4,7 +4,7 @@ using PCE_Web.Classes;
 
 namespace PCE_Web.Models
 {
-    public class SuggestionsView : IEnumerable
+    public class SuggestionsView : IEnumerable,ISuggestionsView
     {
         public List<Item> Products { get; set; }
         public IEnumerator GetEnumerator()

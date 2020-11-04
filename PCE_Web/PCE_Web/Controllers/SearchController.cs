@@ -18,6 +18,12 @@ namespace PCE_Web.Controllers
         public delegate List<Item> Sorting<TItem>(List<TItem> products);
         public delegate void WriteData<THtmlNode, TItem>(List<THtmlNode> productListItems, List<TItem> products);
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
+
+        private readonly ISuggestionsView _suggestionsView;
+        public SearchController(ISuggestionsView suggestionsView)
+        {
+            _suggestionsView = suggestionsView;
+        }
         public async Task<IActionResult> Suggestions(string productName)
         {
             if (DatabaseManager.ReadSearchedItems(productName).Any())
@@ -27,11 +33,8 @@ namespace PCE_Web.Controllers
                 {
                     products.Add(item);
                 }
-                var suggestionsView = new SuggestionsView
-                {
-                    Products = products
-                };
-                return View(suggestionsView);
+                _suggestionsView.Products = products;
+                return View(_suggestionsView as SuggestionsView);
             }
             else
             {
@@ -46,8 +49,8 @@ namespace PCE_Web.Controllers
                 await gettingItemsFromBigBox(productName, products, httpClient);
                 products = SortingList(products);
                 DatabaseManager.WriteSearchedItems(products, productName);
-                var suggestionsView = new SuggestionsView {Products = products};
-                return View(suggestionsView);
+                _suggestionsView.Products = products;
+                return View(_suggestionsView as SuggestionsView);
             }
         }
 
