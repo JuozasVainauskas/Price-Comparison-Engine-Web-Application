@@ -479,5 +479,20 @@ namespace PCE_Web.Classes
             }
             return item;
         }
+        public static List<Item> ReadSearchedItems()
+        {
+            var item = new List<Item>();
+
+            using (var context = new PCEDatabaseContext())
+            {
+                var result = context.ItemsTable.Select(x => new Item { Link = x.PageUrl, Picture = x.ImgUrl, Seller = x.ShopName, Name = x.ItemName, Price = x.Price }).ToList();
+
+                foreach (var singleItem in result)
+                {
+                    item.Add(singleItem);
+                }
+            }
+            return item;
+        }
     }
 }
