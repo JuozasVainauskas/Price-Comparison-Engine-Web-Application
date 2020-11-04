@@ -30,5 +30,25 @@ namespace PCE_Web.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SignIn(InputModel input)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = DatabaseManager.LoginUser(input.Email, input.Password);
+                if (user != null)
+                {
+                    return View("~/Views/MainWindowLoggedIn/Items.cshtml");
+                }
+                else
+                {
+                    ViewBag.ShowMessage = true;
+                }
+            }
+
+            return View("~/Views/Logging/Login.cshtml");
+        }
     }
 }
