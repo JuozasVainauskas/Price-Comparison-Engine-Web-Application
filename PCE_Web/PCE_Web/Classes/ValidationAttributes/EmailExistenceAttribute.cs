@@ -9,7 +9,7 @@ namespace PCE_Web.Classes.ValidationAttributes
         {
             var email = value as string;
 
-            if (DbMngClass.CheckIfUserExists(email))
+            if (DatabaseManager.CheckIfUserExists(email))
             {
                 return new ValidationResult("Toks email jau panaudotas. Pabandykite kitą.");
             }

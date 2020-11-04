@@ -13,9 +13,6 @@ namespace PCE_Web.Controllers
 {
     public class RegistrationController : Controller
     {
-        [BindProperty]
-        public InputModel Input { get; set; }
-
         public class InputModel
         {
             [Display(Name = "Email")]
@@ -46,11 +43,11 @@ namespace PCE_Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult SignUp()
+        public IActionResult SignUp(InputModel input)
         {
             if (ModelState.IsValid)
             {
-                DbMngClass.RegisterUser(Input.Email, Input.Password);
+                DatabaseManager.RegisterUser(input.Email, input.Password);
                 return View("~/Views/MainWindowLoggedIn/Items.cshtml");
             }
 
