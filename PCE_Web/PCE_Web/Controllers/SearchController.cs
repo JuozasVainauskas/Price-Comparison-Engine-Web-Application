@@ -18,8 +18,15 @@ namespace PCE_Web.Controllers
         public delegate List<Item> Sorting<TItem>(List<TItem> products);
         public delegate void WriteData<THtmlNode, TItem>(List<THtmlNode> productListItems, List<TItem> products);
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
+
+        private readonly ISuggestionsView _suggestionsView;
+        public SearchController(ISuggestionsView suggestionsView)
+        {
+            _suggestionsView = suggestionsView;
+        }
         public async Task<IActionResult> Suggestions(string productName)
         {
+            
             if (DatabaseManager.ReadSearchedItems(productName).Any())
             {
                 var products = new List<Item>();
@@ -27,28 +34,36 @@ namespace PCE_Web.Controllers
                 {
                     products.Add(item);
                 }
-                var suggestionsView = new SuggestionsView
-                {
-                    Products = products
-                };
-                return View(suggestionsView);
+                _suggestionsView.Products = products;
+                return View(_suggestionsView as SuggestionsView);
             }
             else
             {
                 var httpClient = new HttpClient();
                 var products = new List<Item>();
-                await gettingItemsFromRde(productName, products, httpClient);
-                await gettingItemsFromBarbora(productName, products, httpClient);
-                await gettingItemsFromAvitela(productName, products, httpClient);
-                await gettingItemsFromPigu(productName, products, httpClient);
-                await gettingItemsFromGintarineVaistine(productName, products, httpClient);
-                await gettingItemsFromElektromarkt(productName, products, httpClient);
-                await gettingItemsFromBigBox(productName, products, httpClient);
+                await readingItemsAsync(productName, products, httpClient);
                 products = SortingList(products);
                 DatabaseManager.WriteSearchedItems(products, productName);
-                var suggestionsView = new SuggestionsView {Products = products};
-                return View(suggestionsView);
+                _suggestionsView.Products = products;
+                return View(_suggestionsView as SuggestionsView);
             }
+        }
+
+        private async Task readingItemsAsync(string productName,List<Item> products,HttpClient httpClient)
+        {
+            var gettingRde = await Task.Factory.StartNew(() => gettingItemsFromRde(productName, products, httpClient));
+            var gettingBarbora = await Task.Factory.StartNew(() => gettingItemsFromBarbora(productName, products, httpClient));
+            var gettingAvitela = await Task.Factory.StartNew(() => gettingItemsFromAvitela(productName, products, httpClient));
+            var gettingPigu = await Task.Factory.StartNew(() => gettingItemsFromPigu(productName, products, httpClient));
+            var gettingGintarine = await Task.Factory.StartNew(() => gettingItemsFromGintarineVaistine(productName, products, httpClient));
+            var gettingElektromarkt = await Task.Factory.StartNew(() => gettingItemsFromElektromarkt(productName, products, httpClient));
+            var gettingBigBox = await Task.Factory.StartNew(() => gettingItemsFromBigBox(productName, products, httpClient));
+            var taskList = new List<Task>
+            {
+                gettingRde, gettingBarbora, gettingAvitela, gettingPigu, gettingGintarine, gettingElektromarkt,
+                gettingBigBox
+            };
+            Task.WaitAll(taskList.ToArray());
         }
 
         private async Task gettingItemsFromRde(string productName, List<Item> products, HttpClient httpClient)
