@@ -11,13 +11,9 @@ namespace PCE_Web.Controllers
     {
         public IActionResult Items()
         {
-            if (DatabaseManager.ReadSearchedItems().Any())
+            if (DatabaseManager.ReadSlidesList().Any())
             {
-                var products = new List<Item>();
-                foreach (var item in DatabaseManager.ReadSearchedItems())
-                {
-                    products.Add(item);
-                }
+                var products = DatabaseManager.ReadSlidesList();
                 var slideshowView = new SlideshowView
                 {
                     Products = products
@@ -26,8 +22,8 @@ namespace PCE_Web.Controllers
             }
             else
             {
-                var products = new List<Item>();
-                var notExistingItem = new Item { Link = "", Picture = "~/img/suggestions/1.jpg", Seller = "", Name = "", Price = "" };
+                var products = new List<Slide>();
+                var notExistingItem = new Slide { PageUrl = "", ImgUrl = "~/img/suggestions/1.jpg" };
                 products.Add(notExistingItem);
 
                 var slideshowView = new SlideshowView

@@ -466,31 +466,11 @@ namespace PCE_Web.Classes
 
         public static List<Item> ReadSearchedItems(string keyword)
         {
-            var item = new List<Item>();
+             List<Item> item;
 
             using (var context = new PCEDatabaseContext())
             {
-                var result = context.ItemsTable.Where(x => x.Keyword == keyword).Select(x => new Item { Link = x.PageUrl, Picture = x.ImgUrl, Seller = x.ShopName, Name = x.ItemName, Price = x.Price }).ToList();
-
-                foreach (var singleItem in result)
-                {
-                    item.Add(singleItem);
-                }
-            }
-            return item;
-        }
-        public static List<Item> ReadSearchedItems()
-        {
-            var item = new List<Item>();
-
-            using (var context = new PCEDatabaseContext())
-            {
-                var result = context.ItemsTable.Select(x => new Item { Link = x.PageUrl, Picture = x.ImgUrl, Seller = x.ShopName, Name = x.ItemName, Price = x.Price }).ToList();
-
-                foreach (var singleItem in result)
-                {
-                    item.Add(singleItem);
-                }
+                item = context.ItemsTable.Where(x => x.Keyword == keyword).Select(x => new Item { Link = x.PageUrl, Picture = x.ImgUrl, Seller = x.ShopName, Name = x.ItemName, Price = x.Price }).ToList();
             }
             return item;
         }
