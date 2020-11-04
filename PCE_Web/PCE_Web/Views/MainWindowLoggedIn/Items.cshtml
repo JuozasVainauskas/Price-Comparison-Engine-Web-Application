@@ -2,7 +2,7 @@
     Layout = "~/Views/Shared/_LayoutLoggedIn.cshtml";
 }
 
-@model SuggestionsView
+@model SlideshowView
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -19,9 +19,10 @@
 </div>
 <!-- Top content -->
 <div class="slideshow-container">
-    <img class="mySlides w3-animate-fading" src="">
-    <img class="mySlides w3-animate-fading" src="">
-    <img class="mySlides w3-animate-fading" src="">
+    @foreach (var product in @Model.Products)
+    {
+        <img class="mySlides w3-animate-fading" src="@product.Picture">
+    }
 </div>
 <div class="search-container">
     <!-- Paieškos mygtukas -->
