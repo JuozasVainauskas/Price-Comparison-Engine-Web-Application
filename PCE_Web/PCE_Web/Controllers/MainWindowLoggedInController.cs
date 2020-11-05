@@ -24,7 +24,10 @@ namespace PCE_Web.Controllers
             else
             {
                 var products = new List<Slide>();
-                var notExistingItem = new Slide {PageUrl = "", ImgUrl = "~/img/suggestions/1.jpg"};
+                var notExistingItem = new Slide
+                {
+                    PageUrl = "", ImgUrl = "~/img/suggestions/1.jpg"
+                };
                 products.Add(notExistingItem);
 
                 var slideshowView = new SlideshowView

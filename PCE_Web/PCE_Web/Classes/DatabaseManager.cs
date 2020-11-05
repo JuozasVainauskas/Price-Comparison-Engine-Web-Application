@@ -287,8 +287,8 @@ namespace PCE_Web.Classes
             var slidesList = new List<Slide>();
             using (var context = new PCEDatabaseContext())
             {
-                var tempPageUrl = context.ItemsTable.Select(column => column.PageUrl).ToList();
-                var tempImgUrl = context.ItemsTable.Select(column => column.ImgUrl).ToList();
+                var tempPageUrl = context.ItemsTable.Where(x => x.Price.Length >= 6).Select(column => column.PageUrl).ToList();
+                var tempImgUrl = context.ItemsTable.Where(x => x.Price.Length >= 6).Select(column => column.ImgUrl).ToList();
 
                 for (var i = 0; i < tempPageUrl.Count; i++)
                 {
