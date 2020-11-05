@@ -51,6 +51,10 @@ namespace PCE_Web.Controllers
             }
         }
 
+        public static void Save(Item item)
+        {
+            DatabaseManager.WriteSavedItem(item.Link, "item.Picture", "item.Name", "item.Name", "price", "????");
+        }
         private async Task gettingItemsFromRde(string productName, List<Item> products, HttpClient httpClient)
         {
             var urlRde = "https://www.rde.lt/search_result/lt/word/" + productName + "/page/1";

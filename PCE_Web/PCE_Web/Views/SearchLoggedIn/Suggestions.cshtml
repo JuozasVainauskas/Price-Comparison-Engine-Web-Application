@@ -1,6 +1,8 @@
 ﻿@{
     Layout = "~/Views/Shared/_LayoutLoggedIn.cshtml";
 }
+@using PCE_Web.Classes
+@using PCE_Web.Controllers
 @model SuggestionsView
 <link rel="stylesheet" href="~/css/styleForSuggestionView.css">
 
@@ -24,7 +26,7 @@
                 </button>
             </td>
             <td>@product.Price</td>
-            <td><button class="myButton">Išsaugoti</button></td>
+            <td><button class="myButton"  onclick="location.href = '@{SearchLoggedInController.Save(product);}'">Išsaugoti</button></td>
         </tr>
     }
 </table>
