@@ -15,11 +15,11 @@ namespace PCE_Web.Controllers
     {
         public static int SoldOutBarbora;
         public static int SoldOut;
-        public delegate List<Item> Sorting<TItem>(List<TItem> products);
         public delegate void WriteData<THtmlNode, TItem>(List<THtmlNode> productListItems, List<TItem> products);
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
         public async Task<IActionResult> Suggestions(string productName)
         {
+            Lazy<HttpClient> httpClient = new Lazy<HttpClient>();
             if (DatabaseManager.ReadSearchedItems(productName).Any())
             {
                 var products = new List<Item>();
@@ -27,30 +27,35 @@ namespace PCE_Web.Controllers
                 {
                     products.Add(item);
                 }
-                var suggestionsView = new SuggestionsView
-                {
-                    Products = products
-                };
+                var suggestionsView = new SuggestionsView { Products = products };
                 return View(suggestionsView);
             }
             else
             {
-                var httpClient = new HttpClient();
                 var products = new List<Item>();
-                await gettingItemsFromRde(productName, products, httpClient);
-                await gettingItemsFromBarbora(productName, products, httpClient);
-                await gettingItemsFromAvitela(productName, products, httpClient);
-                await gettingItemsFromPigu(productName, products, httpClient);
-                await gettingItemsFromGintarineVaistine(productName, products, httpClient);
-                await gettingItemsFromElektromarkt(productName, products, httpClient);
-                await gettingItemsFromBigBox(productName, products, httpClient);
-                products = SortingList(products);
+                await ReadingItemsAsync(productName, products, httpClient.Value);
+                products = SortAndInsert(products);
                 DatabaseManager.WriteSearchedItems(products, productName);
                 var suggestionsView = new SuggestionsView { Products = products };
                 return View(suggestionsView);
             }
         }
-
+        private async Task ReadingItemsAsync(string productName, List<Item> products, HttpClient httpClient)
+        {
+            var gettingRde = await Task.Factory.StartNew(() => gettingItemsFromRde(productName, products, httpClient));
+            var gettingBarbora = await Task.Factory.StartNew(() => gettingItemsFromBarbora(productName, products, httpClient));
+            var gettingAvitela = await Task.Factory.StartNew(() => gettingItemsFromAvitela(productName, products, httpClient));
+            var gettingPigu = await Task.Factory.StartNew(() => gettingItemsFromPigu(productName, products, httpClient));
+            var gettingGintarine = await Task.Factory.StartNew(() => gettingItemsFromGintarineVaistine(productName, products, httpClient));
+            var gettingElektromarkt = await Task.Factory.StartNew(() => gettingItemsFromElektromarkt(productName, products, httpClient));
+            var gettingBigBox = await Task.Factory.StartNew(() => gettingItemsFromBigBox(productName, products, httpClient));
+            var taskList = new List<Task>
+            {
+                gettingRde, gettingBarbora, gettingAvitela, gettingPigu, gettingGintarine, gettingElektromarkt,
+                gettingBigBox
+            };
+            Task.WaitAll(taskList.ToArray());
+        }
         private async Task gettingItemsFromRde(string productName, List<Item> products, HttpClient httpClient)
         {
             var urlRde = "https://www.rde.lt/search_result/lt/word/" + productName + "/page/1";
@@ -649,11 +654,10 @@ namespace PCE_Web.Controllers
             foreach (var c in charsToRemove) price = price.Replace(c, string.Empty);
             return price;
         }
-
-        private Sorting<Item> SortingList = delegate (List<Item> products)
+        private static List<Item> SortAndInsert(List<Item> products)
         {
             products = products.OrderBy(o => o.PriceDouble).ToList();
             return products;
-        };
+        }
     }
 }
