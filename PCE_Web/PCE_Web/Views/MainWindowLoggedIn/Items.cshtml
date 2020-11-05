@@ -1,6 +1,9 @@
 ﻿@{
     Layout = "~/Views/Shared/_LayoutLoggedIn.cshtml";
 }
+
+@model SlideshowView
+
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -8,17 +11,18 @@
 
 <div class="seperator"></div>
 
-     <div class="text-center">
-         <div class="alert warning">
-             <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-             Sėkmingai prisijungėte!
-         </div>
-     </div>
+<div class="text-center">
+    <div class="alert warning">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        Sėkmingai prisijungėte!
+    </div>
+</div>
 <!-- Top content -->
 <div class="slideshow-container">
-    <img class="mySlides w3-animate-fading" src="~/img/suggestions/1.jpg">
-    <img class="mySlides w3-animate-fading" src="~/img/suggestions/2.jpg">
-    <img class="mySlides w3-animate-fading" src="~/img/suggestions/3.jpg">
+    @foreach (var product in @Model.Products)
+    {
+        <img class="mySlides w3-animate-fading" src="@product.ImgUrl">
+    }
 </div>
 <div class="search-container">
     <!-- Paieškos mygtukas -->

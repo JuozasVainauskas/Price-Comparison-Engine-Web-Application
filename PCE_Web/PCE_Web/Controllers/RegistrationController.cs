@@ -43,15 +43,15 @@ namespace PCE_Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult SignUp(InputModel input)
+        public IActionResult Register(InputModel input)
         {
             if (ModelState.IsValid)
             {
                 DatabaseManager.RegisterUser(input.Email, input.Password);
-                return View("~/Views/MainWindowLoggedIn/Items.cshtml");
+                return RedirectToAction("Items", "MainWindowLoggedIn");
             }
 
-            return View("~/Views/Registration/Register.cshtml");
+            return View();
         }
     }
 }
