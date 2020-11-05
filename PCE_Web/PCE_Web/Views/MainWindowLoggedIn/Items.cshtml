@@ -21,7 +21,7 @@
 <div class="slideshow-container">
     @foreach (var product in @Model.Products)
     {
-        <img class="mySlides w3-animate-fading" src="@product.ImgUrl">
+       <a href="@product.PageUrl"> <img class="mySlides w3-animate-fading" src="@product.ImgUrl"></a>
     }
 </div>
 <div class="search-container">
