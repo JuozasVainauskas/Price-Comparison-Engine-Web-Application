@@ -26,6 +26,7 @@ namespace PCE_Web
         {
             services.AddControllersWithViews();
             services.AddSingleton<ISuggestionsView, SuggestionsView>();
+            services.AddSingleton<IParticularItemView, ParticularItemView>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

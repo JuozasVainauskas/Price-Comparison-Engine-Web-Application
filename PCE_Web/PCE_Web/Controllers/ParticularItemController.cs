@@ -17,40 +17,102 @@ namespace PCE_Web.Controllers
         public static int SoldOut;
         public static string[] Divided;
         private static readonly string[] ItemsToSkip = { "Šaldytuvas", "Išmanusis", "telefonas", "Kompiuteris", "mobilusis", "apsauginis", "stiklas" };
+        public delegate void WriteData<THtmlNode, TItem>(List<THtmlNode> productListItems, List<TItem> products);
+        public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
+        private readonly IParticularItemView _particularItemView;
+        public ParticularItemController(IParticularItemView particularItemView)
+        {
+            _particularItemView = particularItemView;
+        }
         public async Task<IActionResult> ParticularItem(string particularItem)
         {
             Divided = particularItem.Split();
             var httpClient = new HttpClient();
             var products = new List<Item>();
-            var urlRde = "https://www.rde.lt/search_result/lt/word/" + particularItem + "/page/1";
-            var urlAvitela = "https://avitela.lt/paieska/" + particularItem;
-            var urlBarbora = "https://pagrindinis.barbora.lt/paieska?q=" + particularItem;
-            var urlPigu = "https://pigu.lt/lt/search?q=" + particularItem;
-            var urlBigBox = "https://bigbox.lt/paieska?controller=search&orderby=position&orderway=desc&ssa_submit=&search_query=" + particularItem;
-            var urlElektromarkt = "https://elektromarkt.lt/paieska/" + particularItem;
-            var urlGintarineVaistine = "https://www.gintarine.lt/search?adv=false&cid=0&mid=0&vid=0&q=" + particularItem + "%5D&sid=false&isc=true&orderBy=0";
-
-            var rdeItems = RdeSearch(await Html(httpClient, urlRde));
-            WriteDataFromRde(rdeItems, products);
-            var barboraItems = BarboraSearch(await Html(httpClient, urlBarbora));
-            WriteDataFromBarbora(barboraItems, products);
-            var avitelaItems = AvitelaSearch(await Html(httpClient, urlAvitela));
-            WriteDataFromAvitela(avitelaItems, products);
-            var piguItems = PiguSearch(await Html(httpClient, urlPigu));
-            WriteDataFromPigu(piguItems, products);
-            var bigBoxItem = BigBoxSearch(await Html(httpClient, urlBigBox));
-            WriteDataFromBigBox(bigBoxItem, products);
-            var gintarineVaistineItems = GintarineVaistineSearch(await Html(httpClient, urlGintarineVaistine));
-            WriteDataFromGintarineVaistine(gintarineVaistineItems, products);
-            var elektromarktItems = ElektromarktSearch(await Html(httpClient, urlElektromarkt));
-            WriteDataFromElektromarkt(elektromarktItems, products);
+            await readingItemsAsync(particularItem, products, httpClient);
             products = SortAndInsert(products);
+            _particularItemView.Products = products;
+            return View(_particularItemView as ParticularItemView);
+        }
 
-            var particularItemView = new ParticularItemView
+        private async Task readingItemsAsync(string productName, List<Item> products, HttpClient httpClient)
+        {
+            var gettingRde = await Task.Factory.StartNew(() => gettingItemsFromRde(productName, products, httpClient));
+            var gettingBarbora = await Task.Factory.StartNew(() => gettingItemsFromBarbora(productName, products, httpClient));
+            var gettingAvitela = await Task.Factory.StartNew(() => gettingItemsFromAvitela(productName, products, httpClient));
+            var gettingPigu = await Task.Factory.StartNew(() => gettingItemsFromPigu(productName, products, httpClient));
+            var gettingGintarine = await Task.Factory.StartNew(() => gettingItemsFromGintarineVaistine(productName, products, httpClient));
+            var gettingElektromarkt = await Task.Factory.StartNew(() => gettingItemsFromElektromarkt(productName, products, httpClient));
+            var gettingBigBox = await Task.Factory.StartNew(() => gettingItemsFromBigBox(productName, products, httpClient));
+            var taskList = new List<Task>
             {
-                Products = products
+                gettingRde, gettingBarbora, gettingAvitela, gettingPigu, gettingGintarine, gettingElektromarkt,
+                gettingBigBox
             };
-            return View(particularItemView);
+            Task.WaitAll(taskList.ToArray());
+        }
+
+        private async Task gettingItemsFromRde(string productName, List<Item> products, HttpClient httpClient)
+        {
+            var urlRde = "https://www.rde.lt/search_result/lt/word/" + productName + "/page/1";
+            Search<HtmlDocument> rdeSearch = RdeSearch;
+            WriteData<HtmlNode, Item> writeDataFromRde = WriteDataFromRde;
+            var rdeItems = rdeSearch(await Html(httpClient, urlRde));
+            writeDataFromRde(rdeItems, products);
+        }
+
+        private async Task gettingItemsFromBarbora(string productName, List<Item> products, HttpClient httpClient)
+        {
+            var urlBarbora = "https://pagrindinis.barbora.lt/paieska?q=" + productName;
+            Search<HtmlDocument> barboraSearch = BarboraSearch;
+            WriteData<HtmlNode, Item> writeDataFromBarbora = WriteDataFromBarbora;
+            var barboraItems = barboraSearch(await Html(httpClient, urlBarbora));
+            writeDataFromBarbora(barboraItems, products);
+        }
+
+        private async Task gettingItemsFromAvitela(string productName, List<Item> products, HttpClient httpClient)
+        {
+            var urlAvitela = "https://avitela.lt/paieska/" + productName;
+            Search<HtmlDocument> avitelaSearch = AvitelaSearch;
+            WriteData<HtmlNode, Item> writeDataFromAvitela = WriteDataFromAvitela;
+            var avitelaItems = avitelaSearch(await Html(httpClient, urlAvitela));
+            writeDataFromAvitela(avitelaItems, products);
+        }
+
+        private async Task gettingItemsFromPigu(string productName, List<Item> products, HttpClient httpClient)
+        {
+            var urlPigu = "https://pigu.lt/lt/search?q=" + productName;
+            Search<HtmlDocument> piguSearch = PiguSearch;
+            WriteData<HtmlNode, Item> writeDataFromPigu = WriteDataFromPigu;
+            var piguItems = piguSearch(await Html(httpClient, urlPigu));
+            writeDataFromPigu(piguItems, products);
+        }
+
+        private async Task gettingItemsFromBigBox(string productName, List<Item> products, HttpClient httpClient)
+        {
+            var urlBigBox = "https://bigbox.lt/paieska?controller=search&orderby=position&orderway=desc&ssa_submit=&search_query=" + productName;
+            Search<HtmlDocument> bigBoxSearch = BigBoxSearch;
+            WriteData<HtmlNode, Item> writeDataFromBigBox = WriteDataFromBigBox;
+            var bigBoxItems = bigBoxSearch(await Html(httpClient, urlBigBox));
+            writeDataFromBigBox(bigBoxItems, products);
+        }
+
+        private async Task gettingItemsFromGintarineVaistine(string productName, List<Item> products, HttpClient httpClient)
+        {
+            var urlGintarineVaistine = "https://www.gintarine.lt/search?adv=false&cid=0&mid=0&vid=0&q=" + productName + "%5D&sid=false&isc=true&orderBy=0";
+            Search<HtmlDocument> gintarineVaistineSearch = GintarineVaistineSearch;
+            WriteData<HtmlNode, Item> writeDataFromGintarineVaistine = WriteDataFromGintarineVaistine;
+            var gintarineVaistineItems = gintarineVaistineSearch(await Html(httpClient, urlGintarineVaistine));
+            writeDataFromGintarineVaistine(gintarineVaistineItems, products);
+        }
+
+        private async Task gettingItemsFromElektromarkt(string productName, List<Item> products, HttpClient httpClient)
+        {
+            var urlElektromarkt = "https://elektromarkt.lt/paieska/" + productName;
+            Search<HtmlDocument> elektromarktSearch = ElektromarktSearch;
+            WriteData<HtmlNode, Item> writeDataFromElektromarkt = WriteDataFromElektromarkt;
+            var elektromarktItems = elektromarktSearch(await Html(httpClient, urlElektromarkt));
+            writeDataFromElektromarkt(elektromarktItems, products);
         }
         private static async Task<HtmlDocument> Html(HttpClient httpClient, string urlget)
         {
