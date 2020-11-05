@@ -24,7 +24,7 @@ namespace PCE_Web.Controllers
             [Required(ErrorMessage = "Turite įrašyti slaptažodį.")]
             public string Password { get; set; }
         }
-        
+
         public IActionResult Login()
         {
             return View();
@@ -32,14 +32,14 @@ namespace PCE_Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult SignIn(InputModel input)
+        public IActionResult Login(InputModel input)
         {
             if (ModelState.IsValid)
             {
                 var user = DatabaseManager.LoginUser(input.Email, input.Password);
                 if (user != null)
                 {
-                    return View("~/Views/MainWindowLoggedIn/Items.cshtml");
+                    return RedirectToAction("Items", "MainWindowLoggedIn");
                 }
                 else
                 {
@@ -47,7 +47,7 @@ namespace PCE_Web.Controllers
                 }
             }
 
-            return View("~/Views/Logging/Login.cshtml");
+            return View();
         }
     }
 }
