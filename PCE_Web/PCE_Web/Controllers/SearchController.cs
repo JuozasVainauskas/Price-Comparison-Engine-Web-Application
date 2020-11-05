@@ -26,7 +26,6 @@ namespace PCE_Web.Controllers
         }
         public async Task<IActionResult> Suggestions(string productName)
         {
-            
             if (DatabaseManager.ReadSearchedItems(productName).Any())
             {
                 var products = new List<Item>();
@@ -383,12 +382,6 @@ namespace PCE_Web.Controllers
                             };
                             products.Add(singleItem);
                         }
-                        else
-                        {
-                            var singleItem = new Item { Picture = "https://avitela.lt/image/no_image.jpg", Seller = "Avitela", Name = name, PriceDouble = priceDouble, Price = price, Link = link };
-                            products.Add(singleItem);
-                        }
-
                     }
                 }
             }
