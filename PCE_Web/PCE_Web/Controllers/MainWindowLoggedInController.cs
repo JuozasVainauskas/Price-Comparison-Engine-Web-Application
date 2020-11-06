@@ -10,12 +10,12 @@ namespace PCE_Web.Controllers
 {
     public class MainWindowLoggedInController : Controller
     {
-        public static string emaill = "";
+        public static string emailCurrentUser = "";
         public IActionResult Items(string email, string link, string pictureUrl, string seller, string name, string price)
         {
             if (email != null)
             {
-                emaill = email;
+                emailCurrentUser = email;
             }
 
             if (link != null)
@@ -28,12 +28,12 @@ namespace PCE_Web.Controllers
                     Name = name,
                     Price = price
                 };
-                DatabaseManager.DeleteSavedItem(emaill, productToDelete);
+                DatabaseManager.DeleteSavedItem(emailCurrentUser, productToDelete);
             }
             if (DatabaseManager.ReadSlidesList().Any())
             {
                 var products = DatabaseManager.ReadSlidesList();
-                var productsSaved = DatabaseManager.ReadSavedItems(emaill);
+                var productsSaved = DatabaseManager.ReadSavedItems(emailCurrentUser);
                 var slideshowView = new SlideshowView
                 {
                     ProductsSaved = productsSaved,
@@ -45,7 +45,7 @@ namespace PCE_Web.Controllers
             else
             {
                 var products = new List<Slide>();
-                var productsSaved = DatabaseManager.ReadSavedItems(emaill);
+                var productsSaved = DatabaseManager.ReadSavedItems(emailCurrentUser);
                 var notExistingItem = new Slide
                 {
                     PageUrl = "",

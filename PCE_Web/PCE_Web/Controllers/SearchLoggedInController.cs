@@ -29,7 +29,7 @@ namespace PCE_Web.Controllers
             {
                 if (link != null)
                 {
-                    DatabaseManager.WriteSavedItem(link, pictureUrl, seller, name, price, MainWindowLoggedInController.emaill);
+                    DatabaseManager.WriteSavedItem(link, pictureUrl, seller, name, price, MainWindowLoggedInController.emailCurrentUser);
                 }
                
                 var products = new List<Item>();
@@ -44,7 +44,7 @@ namespace PCE_Web.Controllers
             {
                 if (link != null)
                 {
-                    DatabaseManager.WriteSavedItem(link, pictureUrl, seller, name, price, MainWindowLoggedInController.emaill);
+                    DatabaseManager.WriteSavedItem(link, pictureUrl, seller, name, price, MainWindowLoggedInController.emailCurrentUser);
                 }
                 var products = new List<Item>();
                 await ReadingItemsAsync(SearchWord, products, httpClient.Value);
