@@ -4,9 +4,9 @@
 
 @{ 
     List<SelectListItem> shopList = new List<SelectListItem>();
-    shopList.Add(new SelectListItem() { Text = "Avitela", Value = "0"});
-    shopList.Add(new SelectListItem() { Text = "Elektromarkt", Value = "1" });
-    shopList.Add(new SelectListItem() { Text = "Gintarine", Value = "2" });
+    shopList.Add(new SelectListItem() { Text = "Avitela", Value = "1"});
+    shopList.Add(new SelectListItem() { Text = "Elektromarkt", Value = "2" });
+    shopList.Add(new SelectListItem() { Text = "Gintarine", Value = "3" });
 }
 
 @model EvaluationView
@@ -26,7 +26,7 @@
     <div class="row">
         <div class="column">
            <div class="selection">
-                @Html.DropDownList("Shoplist", shopList, "Pasirinkite")
+                @Html.DropDownListFor(m => m.SelectedShopIndex, shopList, "Pasirinkite")
                 <button>Atnaujinti</button>
            </div>
             <br />
