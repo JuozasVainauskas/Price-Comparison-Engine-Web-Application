@@ -21,9 +21,32 @@
 <div class="slideshow-container">
     @foreach (var product in @Model.Products)
     {
-       <a href="@product.PageUrl" target="_blank"> <img class="mySlides w3-animate-fading" src="@product.ImgUrl"></a>
+        <a href="@product.PageUrl" target="_blank"> <img class="mySlides w3-animate-fading" src="@product.ImgUrl"></a>
     }
 </div>
+<br>
+<h1>Iš viso išsaugotų prekių: @Model.ProductsSaved.Count</h1>
+<br>
+<table id="items">
+    <tr>
+        <th>Nuotrauka</th>
+        <th>Prekė</th>
+        <th>Kaina</th>
+    </tr>
+    @foreach (var productSaved in @Model.ProductsSaved)
+    {
+        <tr>
+            <td><a href="@productSaved.Link"><img class="image" alt="product.jpg" src="@productSaved.Picture"></a></td>
+            <td>
+                <button id="mvc-action-button" class="link" name="particularItem" onclick="location.href = '@Url.Action("ParticularItem", "ParticularItem", new { particularItem = productSaved.Name })'">
+                    @productSaved.Name
+                </button>
+            </td>
+            <td>@productSaved.Price</td>
+        </tr>
+
+    }
+</table>
 <div class="search-container">
     <!-- Paieškos mygtukas -->
     <div class="search-button">
