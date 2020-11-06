@@ -13,6 +13,12 @@
     font-family: 'Poppins', sans-serif;
 }
 
+.comments-container {
+    height: 510px;
+    overflow-y: scroll;
+    direction: rtl;
+}
+
 .evaluation-container {
     position: relative;
     width: 400px;
@@ -170,8 +176,8 @@ form .btn {
     padding: 10px;
     margin: 10px 0;
     width: 500px;
-    margin-left:auto;
-    margin-right:auto;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .darker {
