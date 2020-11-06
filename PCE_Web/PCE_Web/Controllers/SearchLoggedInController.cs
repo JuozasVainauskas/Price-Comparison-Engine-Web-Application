@@ -13,33 +13,43 @@ namespace PCE_Web.Controllers
 {
     public class SearchLoggedInController : Controller
     {
+        public static string SearchWord  = "";
         public static int SoldOutBarbora;
         public static int SoldOut;
         public delegate void WriteData<THtmlNode, TItem>(List<THtmlNode> productListItems, List<TItem> products);
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
-        public async Task<IActionResult> Suggestions(string productName,  string link, string pictureUrl, string seller, string name, string price)
+        public async Task<IActionResult> Suggestions(string productName, string link, string pictureUrl, string seller, string name, string price)
         {
             Lazy<HttpClient> httpClient = new Lazy<HttpClient>();
-            if (DatabaseManager.ReadSearchedItems(productName).Any())
+            if (productName != null)
             {
                 SearchWord = productName;
             }
-
             if (DatabaseManager.ReadSearchedItems(SearchWord).Any())
             {
                 if (link != null)
                 {
                     DatabaseManager.WriteSavedItem(link, pictureUrl, seller, name, price, MainWindowLoggedInController.emaill);
                 }
+               
+                var products = new List<Item>();
+                foreach (var item in DatabaseManager.ReadSearchedItems(SearchWord))
+                {
+                    products.Add(item);
+                }
                 var suggestionsView = new SuggestionsView { Products = products };
                 return View(suggestionsView);
             }
             else
             {
+                if (link != null)
+                {
+                    DatabaseManager.WriteSavedItem(link, pictureUrl, seller, name, price, MainWindowLoggedInController.emaill);
+                }
                 var products = new List<Item>();
-                await ReadingItemsAsync(productName, products, httpClient.Value);
+                await ReadingItemsAsync(SearchWord, products, httpClient.Value);
                 products = SortAndInsert(products);
-                DatabaseManager.WriteSearchedItems(products, productName);
+                DatabaseManager.WriteSearchedItems(products, SearchWord);
                 var suggestionsView = new SuggestionsView { Products = products };
                 return View(suggestionsView);
             }
