@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Internal;
 using PCE_Web.Classes;
@@ -10,32 +11,34 @@ namespace PCE_Web.Controllers
 {
     public class MainWindowLoggedInController : Controller
     {
-        public IActionResult Items()
+        public static string emaill = "";
+        public IActionResult Items(string email)
         {
-            if (DatabaseManager.ReadSlidesList().Any())
-            {
-                var products = DatabaseManager.ReadSlidesList();
-                var slideshowView = new SlideshowView
+            emaill = email;
+                if (DatabaseManager.ReadSlidesList().Any())
                 {
-                    Products = products
-                };
-                return View(slideshowView);
-            }
-            else
-            {
-                var products = new List<Slide>();
-                var notExistingItem = new Slide
+                        var products = DatabaseManager.ReadSlidesList();
+                        var slideshowView = new SlideshowView
+                        {
+                            Products = products
+                        };
+                        return View(slideshowView);
+                }
+                else
                 {
-                    PageUrl = "", ImgUrl = "~/img/suggestions/1.jpg"
-                };
-                products.Add(notExistingItem);
+                        var products = new List<Slide>();
+                        var notExistingItem = new Slide
+                        {
+                            PageUrl = "", ImgUrl = "~/img/suggestions/1.jpg"
+                        };
+                        products.Add(notExistingItem);
 
-                var slideshowView = new SlideshowView
-                {
-                    Products = products
-                };
-                return View(slideshowView);
-            }
+                        var slideshowView = new SlideshowView
+                        {
+                            Products = products
+                        };
+                        return View(slideshowView);
+                }
         }
     }
 }

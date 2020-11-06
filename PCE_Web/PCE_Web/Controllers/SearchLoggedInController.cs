@@ -15,46 +15,57 @@ namespace PCE_Web.Controllers
     {
         public static int SoldOutBarbora;
         public static int SoldOut;
+        public static string SearchWord  = "";
         public delegate List<Item> Sorting<TItem>(List<TItem> products);
         public delegate void WriteData<THtmlNode, TItem>(List<THtmlNode> productListItems, List<TItem> products);
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
-        public async Task<IActionResult> Suggestions(string productName)
+        public async Task<IActionResult> Suggestions(string productName,  string link, string pictureUrl, string seller, string name, string price)
         {
-            if (DatabaseManager.ReadSearchedItems(productName).Any())
+            if (productName != null)
             {
-                var products = new List<Item>();
-                foreach (var item in DatabaseManager.ReadSearchedItems(productName))
+                SearchWord = productName;
+            }
+
+            if (DatabaseManager.ReadSearchedItems(SearchWord).Any())
+            {
+                if (link != null)
                 {
-                    products.Add(item);
+                    DatabaseManager.WriteSavedItem(link, pictureUrl, seller, name, price, MainWindowLoggedInController.emaill);
                 }
+                var products = DatabaseManager.ReadSearchedItems(SearchWord).ToList();
                 var suggestionsView = new SuggestionsView
-                {
-                    Products = products
-                };
-                return View(suggestionsView);
+                    {
+                        Products = products
+                    };
+                    return View(suggestionsView);
             }
             else
             {
+                if (link != null)
+                {
+                    DatabaseManager.WriteSavedItem(link, pictureUrl, seller, name, price, MainWindowLoggedInController.emaill);
+                }
                 var httpClient = new HttpClient();
-                var products = new List<Item>();
-                await gettingItemsFromRde(productName, products, httpClient);
-                await gettingItemsFromBarbora(productName, products, httpClient);
-                await gettingItemsFromAvitela(productName, products, httpClient);
-                await gettingItemsFromPigu(productName, products, httpClient);
-                await gettingItemsFromGintarineVaistine(productName, products, httpClient);
-                await gettingItemsFromElektromarkt(productName, products, httpClient);
-                await gettingItemsFromBigBox(productName, products, httpClient);
-                products = SortingList(products);
-                DatabaseManager.WriteSearchedItems(products, productName);
-                var suggestionsView = new SuggestionsView { Products = products };
-                return View(suggestionsView);
+                    var products = new List<Item>();
+                    await gettingItemsFromRde(SearchWord, products, httpClient);
+                    await gettingItemsFromBarbora(SearchWord, products, httpClient);
+                    await gettingItemsFromAvitela(SearchWord, products, httpClient);
+                    await gettingItemsFromPigu(SearchWord, products, httpClient);
+                    await gettingItemsFromGintarineVaistine(SearchWord, products, httpClient);
+                    await gettingItemsFromElektromarkt(SearchWord, products, httpClient);
+                    await gettingItemsFromBigBox(SearchWord, products, httpClient);
+                    products = SortingList(products);
+                    DatabaseManager.WriteSearchedItems(products, SearchWord);
+                    var suggestionsView = new SuggestionsView {Products = products};
+                    return View(suggestionsView);
             }
         }
+        
 
-        public static void Save(Item item)
+       /* public static void Save(Item item)
         {
             DatabaseManager.WriteSavedItem(item.Link, "item.Picture", "item.Name", "item.Name", "price", "????");
-        }
+        }*/
         private async Task gettingItemsFromRde(string productName, List<Item> products, HttpClient httpClient)
         {
             var urlRde = "https://www.rde.lt/search_result/lt/word/" + productName + "/page/1";

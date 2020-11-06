@@ -13,6 +13,7 @@ namespace PCE_Web.Controllers
 {
     public class ParticularItemController : Controller
     {
+
         public static int SoldOutBarbora;
         public static int SoldOut;
         public static string[] Divided;
