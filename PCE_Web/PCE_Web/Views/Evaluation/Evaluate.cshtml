@@ -2,6 +2,13 @@
     Layout = "~/Views/Shared/_LayoutLoggedIn.cshtml";
 }
 
+@{ 
+    List<SelectListItem> shopList = new List<SelectListItem>();
+    shopList.Add(new SelectListItem() { Text = "Avitela", Value = "0"});
+    shopList.Add(new SelectListItem() { Text = "Elektromarkt", Value = "1" });
+    shopList.Add(new SelectListItem() { Text = "Gintarine", Value = "2" });
+}
+
 @model EvaluationView
 
 <!DOCTYPE html>
@@ -19,13 +26,7 @@
     <div class="row">
         <div class="column">
            <div class="selection">
-                <select>
-                    <option value="0">Pasirinkite parduotuvę</option>
-                    <option value="1">Avitela</option>
-                    <option value="2">Elektromarkt</option>
-                    <option value="3">Gintarinė vaistinė</option>
-                    <option value="4">...</option>
-                </select>
+                @Html.DropDownList("Shoplist", shopList, "Pasirinkite")
                 <button>Atnaujinti</button>
            </div>
             <br />
