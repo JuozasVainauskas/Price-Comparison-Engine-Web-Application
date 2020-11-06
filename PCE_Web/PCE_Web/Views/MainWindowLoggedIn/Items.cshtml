@@ -18,6 +18,19 @@
     </div>
 </div>
 <!-- Top content -->
+<div class="search-container">
+    <!-- Paieškos mygtukas -->
+    <div class="search-button">
+        <form method="get" action="">
+            <div class="tb">
+                <input type="text" name="ProductName" placeholder="Ieškokite..">
+                <div class="td" id="s-cover">
+                    <input id="mvc-action-button" type="submit" asp-area="" asp-controller="SearchLoggedIn" asp-action="Suggestions" style="position: absolute; left: -9999px" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 <div class="slideshow-container">
     @foreach (var product in @Model.Products)
     {
@@ -47,20 +60,6 @@
 
     }
 </table>
-<div class="search-container">
-    <!-- Paieškos mygtukas -->
-    <div class="search-button">
-        <form method="get" action="">
-            <div class="tb">
-                <input type="text" name="ProductName" placeholder="Ieškokite..">
-                <div class="td" id="s-cover">
-                    <input id="mvc-action-button" type="submit" asp-area="" asp-controller="SearchLoggedIn" asp-action="Suggestions" style="position: absolute; left: -9999px" />
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-
 <br />
 <br />
 <!-- Footer -->
