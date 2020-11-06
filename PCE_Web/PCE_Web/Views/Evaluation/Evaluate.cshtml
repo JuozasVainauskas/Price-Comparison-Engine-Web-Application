@@ -18,61 +18,65 @@
     <div class="seperator"></div>
     <div class="row">
         <div class="column">
-            <select>
-                <option value="0">Pasirinkite parduotuvę</option>
-                <option value="1">Avitela</option>
-                <option value="2">Elektromarkt</option>
-                <option value="3">Gintarinė vaistinė</option>
-                <option value="4">...</option>
-            </select>
-            <div class ="comments-container">
-             @foreach (var comment in Model.Comments)
-             {
-                <div class="comment-container">
-                <img src="~/img/member.jpg" alt="Avatar">
-                <p>@comment.Comment</p>
-                <span class="time-right">11:00</span>
-                </div>
-             }
-                </div>
-         </div>
-
-                <div class="column">
-                    <div class="evaluation-container">
-                        <div class="post">
-                            <div class="text">
-                                Ačiū už įvertinimą!
-                            </div>
-                            <div class="edit">
-                                Redaguoti
-                            </div>
+           <div class="selection">
+                <select>
+                    <option value="0">Pasirinkite parduotuvę</option>
+                    <option value="1">Avitela</option>
+                    <option value="2">Elektromarkt</option>
+                    <option value="3">Gintarinė vaistinė</option>
+                    <option value="4">...</option>
+                </select>
+                <button>Atnaujinti</button>
+           </div>
+            <br />
+                <div class="comments-container">
+                    @foreach (var comment in Model.Comments)
+                    {
+                        <div class="comment-container">
+                            <img src="~/img/member.jpg" alt="Avatar">
+                            <p>@comment.Comment</p>
+                            <span class="time-right">11:00</span>
                         </div>
-                        <h3>Kaip vertinate parduotuvę?</h3>
-                        <div class="star-widget">
-                            <input type="radio" name="rate" id="rate-5">
-                            <label for="rate-5" class="fas fa-star"></label>
-                            <input type="radio" name="rate" id="rate-4">
-                            <label for="rate-4" class="fas fa-star"></label>
-                            <input type="radio" name="rate" id="rate-3">
-                            <label for="rate-3" class="fas fa-star"></label>
-                            <input type="radio" name="rate" id="rate-2">
-                            <label for="rate-2" class="fas fa-star"></label>
-                            <input type="radio" name="rate" id="rate-1">
-                            <label for="rate-1" class="fas fa-star"></label>
-                            <form action="#">
-                                <header></header>
-                                <div class="textarea">
-                                    <textarea cols="30" placeholder="Parašykite komentarą.."></textarea>
-                                </div>
-                            </form>
-                            <br />
-                            <div class="btn">
-                                <button type="submit">Patvirtinti</button>
+                    }
+                </div>
+        </div>
+
+            <div class="column">
+                <div class="evaluation-container">
+                    <div class="post">
+                        <div class="text">
+                            Ačiū už įvertinimą!
+                        </div>
+                        <div class="edit">
+                            Redaguoti
+                        </div>
+                    </div>
+                    <h3>Kaip vertinate parduotuvę?</h3>
+                    <div class="star-widget">
+                        <input type="radio" name="rate" id="rate-5">
+                        <label for="rate-5" class="fas fa-star"></label>
+                        <input type="radio" name="rate" id="rate-4">
+                        <label for="rate-4" class="fas fa-star"></label>
+                        <input type="radio" name="rate" id="rate-3">
+                        <label for="rate-3" class="fas fa-star"></label>
+                        <input type="radio" name="rate" id="rate-2">
+                        <label for="rate-2" class="fas fa-star"></label>
+                        <input type="radio" name="rate" id="rate-1">
+                        <label for="rate-1" class="fas fa-star"></label>
+                        <form action="#">
+                            <header></header>
+                            <div class="textarea">
+                                <textarea cols="30" placeholder="Parašykite komentarą.."></textarea>
                             </div>
+                        </form>
+                        <br />
+                        <div class="btn">
+                            <button type="submit">Patvirtinti</button>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
     <script>
         const btn = document.querySelector("button");
         const post = document.querySelector(".post");

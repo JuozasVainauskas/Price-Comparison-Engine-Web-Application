@@ -6,6 +6,13 @@
     background-color: #64ca87;
 }
 
+.selection {
+    display: flex;
+    padding-left: 250px;
+    margin-left: auto;
+    margin-right: auto
+}
+
 * {
     margin: 0;
     padding: 0;
