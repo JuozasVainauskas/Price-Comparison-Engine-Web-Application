@@ -12,8 +12,8 @@
 <div class="seperator"></div>
 
 <div class="text-center">
-    <div class="alert warning">
-        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+    <div id="alertPrisijungete" class="alert warning">
+        <span  class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
         Sėkmingai prisijungėte!
     </div>
 </div>
@@ -61,7 +61,6 @@
                 <button id="mvc-action-button" class="myButton" onclick="location.href = '@Url.Action("Items", "MainWindowLoggedIn", new {link = productSaved.Link, pictureUrl = productSaved.Picture, seller = productSaved.Seller, name = productSaved.Name, price = productSaved.Price})'">Ištrinti</button>
             </td>
         </tr>
-
     }
 </table>
 <br />
@@ -80,15 +79,22 @@
 <!--Loading screen-->
 <div id="overlay" class="overlay">
 
-
     <div class="loader">
-        <img src="~/img/loader.gif" width="400" height="400" />
+        <img src="~/img/loader.gif" width="400" height="400"/>
     </div>
+
 </div>
 
 <!--Scripts-->
 <script src="~/js/scripts.js"></script>
 <script>
+
+  window.onload = function ()
+    {
+      var duration = 3000; 
+      setTimeout(function () { $('#alertPrisijungete').hide(); }, duration);
+    };
+
     var myIndex = 0;
     carousel();
 
