@@ -15,13 +15,12 @@ namespace PCE_Web.Controllers
     {
         public static int SoldOutBarbora;
         public static int SoldOut;
-        public static string SearchWord  = "";
-        public delegate List<Item> Sorting<TItem>(List<TItem> products);
         public delegate void WriteData<THtmlNode, TItem>(List<THtmlNode> productListItems, List<TItem> products);
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
         public async Task<IActionResult> Suggestions(string productName,  string link, string pictureUrl, string seller, string name, string price)
         {
-            if (productName != null)
+            Lazy<HttpClient> httpClient = new Lazy<HttpClient>();
+            if (DatabaseManager.ReadSearchedItems(productName).Any())
             {
                 SearchWord = productName;
             }
@@ -32,40 +31,35 @@ namespace PCE_Web.Controllers
                 {
                     DatabaseManager.WriteSavedItem(link, pictureUrl, seller, name, price, MainWindowLoggedInController.emaill);
                 }
-                var products = DatabaseManager.ReadSearchedItems(SearchWord).ToList();
-                var suggestionsView = new SuggestionsView
-                    {
-                        Products = products
-                    };
-                    return View(suggestionsView);
+                var suggestionsView = new SuggestionsView { Products = products };
+                return View(suggestionsView);
             }
             else
             {
-                if (link != null)
-                {
-                    DatabaseManager.WriteSavedItem(link, pictureUrl, seller, name, price, MainWindowLoggedInController.emaill);
-                }
-                var httpClient = new HttpClient();
-                    var products = new List<Item>();
-                    await gettingItemsFromRde(SearchWord, products, httpClient);
-                    await gettingItemsFromBarbora(SearchWord, products, httpClient);
-                    await gettingItemsFromAvitela(SearchWord, products, httpClient);
-                    await gettingItemsFromPigu(SearchWord, products, httpClient);
-                    await gettingItemsFromGintarineVaistine(SearchWord, products, httpClient);
-                    await gettingItemsFromElektromarkt(SearchWord, products, httpClient);
-                    await gettingItemsFromBigBox(SearchWord, products, httpClient);
-                    products = SortingList(products);
-                    DatabaseManager.WriteSearchedItems(products, SearchWord);
-                    var suggestionsView = new SuggestionsView {Products = products};
-                    return View(suggestionsView);
+                var products = new List<Item>();
+                await ReadingItemsAsync(productName, products, httpClient.Value);
+                products = SortAndInsert(products);
+                DatabaseManager.WriteSearchedItems(products, productName);
+                var suggestionsView = new SuggestionsView { Products = products };
+                return View(suggestionsView);
             }
         }
-        
-
-       /* public static void Save(Item item)
+        private async Task ReadingItemsAsync(string productName, List<Item> products, HttpClient httpClient)
         {
-            DatabaseManager.WriteSavedItem(item.Link, "item.Picture", "item.Name", "item.Name", "price", "????");
-        }*/
+            var gettingRde = await Task.Factory.StartNew(() => gettingItemsFromRde(productName, products, httpClient));
+            var gettingBarbora = await Task.Factory.StartNew(() => gettingItemsFromBarbora(productName, products, httpClient));
+            var gettingAvitela = await Task.Factory.StartNew(() => gettingItemsFromAvitela(productName, products, httpClient));
+            var gettingPigu = await Task.Factory.StartNew(() => gettingItemsFromPigu(productName, products, httpClient));
+            var gettingGintarine = await Task.Factory.StartNew(() => gettingItemsFromGintarineVaistine(productName, products, httpClient));
+            var gettingElektromarkt = await Task.Factory.StartNew(() => gettingItemsFromElektromarkt(productName, products, httpClient));
+            var gettingBigBox = await Task.Factory.StartNew(() => gettingItemsFromBigBox(productName, products, httpClient));
+            var taskList = new List<Task>
+            {
+                gettingRde, gettingBarbora, gettingAvitela, gettingPigu, gettingGintarine, gettingElektromarkt,
+                gettingBigBox
+            };
+            Task.WaitAll(taskList.ToArray());
+        }
         private async Task gettingItemsFromRde(string productName, List<Item> products, HttpClient httpClient)
         {
             var urlRde = "https://www.rde.lt/search_result/lt/word/" + productName + "/page/1";
@@ -664,11 +658,10 @@ namespace PCE_Web.Controllers
             foreach (var c in charsToRemove) price = price.Replace(c, string.Empty);
             return price;
         }
-
-        private Sorting<Item> SortingList = delegate (List<Item> products)
+        private static List<Item> SortAndInsert(List<Item> products)
         {
             products = products.OrderBy(o => o.PriceDouble).ToList();
             return products;
-        };
+        }
     }
 }
