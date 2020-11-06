@@ -11,7 +11,7 @@ namespace PCE_Web.Controllers
     public class MainWindowLoggedInController : Controller
     {
         public static string emaill = "";
-        public async Task<IActionResult> Items(string email, string link, string pictureUrl, string seller, string name, string price)
+        public IActionResult Items(string email, string link, string pictureUrl, string seller, string name, string price)
         {
             if (email != null)
             {
@@ -48,7 +48,8 @@ namespace PCE_Web.Controllers
                 var productsSaved = DatabaseManager.ReadSavedItems(emaill);
                 var notExistingItem = new Slide
                 {
-                    PageUrl = "", ImgUrl = "~/img/suggestions/1.jpg"
+                    PageUrl = "",
+                    ImgUrl = "~/img/suggestions/1.jpg"
                 };
                 products.Add(notExistingItem);
 
