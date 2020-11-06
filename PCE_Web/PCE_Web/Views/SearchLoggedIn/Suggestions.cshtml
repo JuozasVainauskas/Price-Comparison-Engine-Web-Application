@@ -27,7 +27,7 @@
         </button>
     </td>
     <td>@product.Price</td>                                                                             
-    <td><button id="mvc-action-button" class="myButton" onclick="location.href = '@Url.Action("Suggestions", "SearchLoggedIn", new { link = product.Link, pictureUrl = product.Link, seller = product.Seller, name = product.Name, price = product.Price} )'">Išsaugoti</button></td>
+    <td><button id="mvc-action-button" class="myButton" onclick="location.href = '@Url.Action("Suggestions", "SearchLoggedIn", new { link = product.Link, pictureUrl = product.Picture, seller = product.Seller, name = product.Name, price = product.Price} )'">Išsaugoti</button></td>
 </tr>  
     }
 </table>
