@@ -4,7 +4,7 @@ using PCE_Web.Classes;
 
 namespace PCE_Web.Models
 {
-    public class SlideshowView : IEnumerable,ISuggestionsViewLoggedIn
+    public class SlideshowView : IEnumerable
     {
         public List<Item> ProductsSaved { get; set; }
         public List<Slide> Products { get; set; }
