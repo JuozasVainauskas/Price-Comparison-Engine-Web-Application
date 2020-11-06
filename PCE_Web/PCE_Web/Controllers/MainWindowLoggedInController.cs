@@ -20,8 +20,8 @@ namespace PCE_Web.Controllers
                         var productsSaved = DatabaseManager.ReadSavedItems(emaill);
                         var slideshowView = new SlideshowView
                         {
-                            Products = products,
-                            ProductsSaved = productsSaved
+                            ProductsSaved = productsSaved,
+                            Products = products
                         };
 
                         return View(slideshowView);
