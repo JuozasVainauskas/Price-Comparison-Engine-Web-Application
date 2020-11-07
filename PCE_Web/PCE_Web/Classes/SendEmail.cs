@@ -11,7 +11,7 @@ using System.Linq.Expressions;
 
 namespace PCE_Web.Classes
 {
-    class SendEmail
+    internal class SendEmail
     {
         public SendEmail(string code, string email)
         {
@@ -46,7 +46,6 @@ namespace PCE_Web.Classes
         {
             if (e.Error != null)
             {
-                //ClientScript.RegisterStartupScript(this.GetType(), "Klaida.", "alert('" + "Įvyko klaida: " + e.Error.Message + "');", true);
                 Console.WriteLine(e.Error.Message);
                 return;
             }

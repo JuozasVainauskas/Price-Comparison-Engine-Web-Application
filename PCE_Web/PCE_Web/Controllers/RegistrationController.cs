@@ -41,8 +41,11 @@ namespace PCE_Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                DatabaseManager.RegisterUser(input.Email, input.Password);
-                return RedirectToAction("Items", "MainWindowLoggedIn", new { email = input.Email });
+                var code = GenerateHash.CreateSalt(16);
+                code = code.Remove(code.Length - 2);
+                new SendEmail(code, "ernestas20111@gmail.com");
+
+                return RedirectToAction("Items", "MainWindowLoggedIn", new { email = input.Email, password = input.Password, inputCode = code });
             }
 
             return View();
