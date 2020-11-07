@@ -45,7 +45,7 @@ namespace PCE_Web.Classes
         {
             using (var context = new PCEDatabaseContext())
             {
-                var result = context.UserData.SingleOrDefault(b => b.Email == email);
+                var result = context.UserData.SingleOrDefault(column => column.Email == email);
                 if (result != null)
                 {
                     result.Role = role;
@@ -63,14 +63,14 @@ namespace PCE_Web.Classes
         {
             using (var context = new PCEDatabaseContext())
             {
-                var savedItems = context.SavedItems.Where(c => c.Email == email).ToList();
+                var savedItems = context.SavedItems.Where(column => column.Email == email).ToList();
 
                 foreach (var savedItem in savedItems)
                 {
                     context.SavedItems.Remove(savedItem);
                 }
 
-                var result = context.UserData.SingleOrDefault(c => c.Email == email);
+                var result = context.UserData.SingleOrDefault(column => column.Email == email);
 
                 if (result != null)
                 {
@@ -83,7 +83,7 @@ namespace PCE_Web.Classes
                     //MessageBox.Show("Vartotojas tokiu emailu neegzistuoja arba nebuvo rastas.");
                 }
 
-                var comments = context.CommentsTable.Where(c => c.Email == email).ToList();
+                var comments = context.CommentsTable.Where(column => column.Email == email).ToList();
 
                 foreach (var comment in comments)
                 {
@@ -120,7 +120,7 @@ namespace PCE_Web.Classes
             else
             {
                 var context = new PCEDatabaseContext();
-                var result = context.UserData.SingleOrDefault(c => c.Email == email);
+                var result = context.UserData.SingleOrDefault(column => column.Email == email);
                 if (result != null)
                 {
                     //MessageBox.Show("Toks email jau panaudotas. Pabandykite kitą.");
@@ -180,7 +180,7 @@ namespace PCE_Web.Classes
         {
             using (var context = new PCEDatabaseContext())
             {
-                var result = context.UserData.SingleOrDefault(c => c.Email == email);
+                var result = context.UserData.SingleOrDefault(column => column.Email == email);
                 if (result == null)
                 {
                     return false;
@@ -196,7 +196,7 @@ namespace PCE_Web.Classes
 
             using (var context = new PCEDatabaseContext())
             {
-                var result = context.UserData.SingleOrDefault(c => c.Email == email);
+                var result = context.UserData.SingleOrDefault(column => column.Email == email);
                 if (result == null)
                 {
                     var userData = new UserData()
@@ -218,7 +218,7 @@ namespace PCE_Web.Classes
 
             using (var context = new PCEDatabaseContext())
             {
-                var result = context.UserData.SingleOrDefault(c => c.Email == email);
+                var result = context.UserData.SingleOrDefault(column => column.Email == email);
 
                 if (result != null)
                 {
@@ -267,7 +267,7 @@ namespace PCE_Web.Classes
 
                 using (var context = new PCEDatabaseContext())
                 {
-                    var result = context.UserData.SingleOrDefault(b => b.Email == email);
+                    var result = context.UserData.SingleOrDefault(column => column.Email == email);
                     if (result != null)
                     {
                         result.PasswordHash = passwordHash;
@@ -287,8 +287,8 @@ namespace PCE_Web.Classes
             var slidesList = new List<Slide>();
             using (var context = new PCEDatabaseContext())
             {
-                var tempPageUrl = context.ItemsTable.Where(x => x.Price.Length >= 6).Select(column => column.PageUrl).ToList();
-                var tempImgUrl = context.ItemsTable.Where(x => x.Price.Length >= 6).Select(column => column.ImgUrl).ToList();
+                var tempPageUrl = context.ItemsTable.Where(column => column.Price.Length >= 6).Select(column => column.PageUrl).ToList();
+                var tempImgUrl = context.ItemsTable.Where(column => column.Price.Length >= 6).Select(column => column.ImgUrl).ToList();
 
                 for (var i = 0; i < tempPageUrl.Count; i++)
                 {
@@ -310,9 +310,9 @@ namespace PCE_Web.Classes
         {
             using (var context = new PCEDatabaseContext())
             {
-                var result = context.SavedItems.SingleOrDefault(b =>
-                    b.Email == email && b.PageUrl == item.Link && b.ImgUrl == item.Picture &&
-                    b.ShopName == item.Seller && b.ItemName == item.Name && b.Price == item.Price);
+                var result = context.SavedItems.SingleOrDefault(column =>
+                    column.Email == email && column.PageUrl == item.Link && column.ImgUrl == item.Picture &&
+                    column.ShopName == item.Seller && column.ItemName == item.Name && column.Price == item.Price);
 
                 if (result != null)
                 {
@@ -328,8 +328,8 @@ namespace PCE_Web.Classes
 
             using (var context = new PCEDatabaseContext())
             {
-                var itemsList = context.SavedItems.Where(x => x.Email == email).Select(x => new Item
-                        {Link = x.PageUrl, Picture = x.ImgUrl, Seller = x.ShopName, Name = x.ItemName, Price = x.Price})
+                var itemsList = context.SavedItems.Where(column => column.Email == email).Select(column => new Item
+                        {Link = column.PageUrl, Picture = column.ImgUrl, Seller = column.ShopName, Name = column.ItemName, Price = column.Price})
                     .ToList();
 
                 foreach (var singleItem in itemsList)
@@ -346,9 +346,9 @@ namespace PCE_Web.Classes
         {
             using (var context = new PCEDatabaseContext())
             {
-                var result = context.SavedItems.SingleOrDefault(c =>
-                    c.PageUrl == pageUrl && c.ImgUrl == imgUrl && c.ShopName == shopName && c.ItemName == itemName &&
-                    c.Price == price && c.Email == email);
+                var result = context.SavedItems.SingleOrDefault(column =>
+                    column.PageUrl == pageUrl && column.ImgUrl == imgUrl && column.ShopName == shopName && column.ItemName == itemName &&
+                    column.Price == price && column.Email == email);
 
                 if (result == null)
                 {
@@ -373,8 +373,8 @@ namespace PCE_Web.Classes
             using (var context = new PCEDatabaseContext())
             {
                 temp = context.CommentsTable
-                .Where(x => x.ShopId == index)
-                .Select(x => new CommentsTable {CommentId = x.CommentId, Email = x.Email, ShopId = x.ShopId, Date = x.Date, Rating = 0, Comment = x.Comment})
+                .Where(column => column.ShopId == index)
+                .Select(column => new CommentsTable {CommentId = column.CommentId, Email = column.Email, ShopId = column.ShopId, Date = column.Date, Rating = column.Rating, Comment = column.Comment})
                 .ToList();
             }
 
@@ -385,7 +385,7 @@ namespace PCE_Web.Classes
         {
             using (var context = new PCEDatabaseContext())
             {
-                var result = context.CommentsTable.SingleOrDefault(b => b.Email == email && b.ShopId == shopId);
+                var result = context.CommentsTable.SingleOrDefault(column => column.Email == email && column.ShopId == shopId);
 
                 if (result == null)
                 {
@@ -409,7 +409,7 @@ namespace PCE_Web.Classes
 
             using (var context = new PCEDatabaseContext())
             {
-                var result = context.ShopRatingTable.SingleOrDefault(c => c.ShopName == shopName);
+                var result = context.ShopRatingTable.SingleOrDefault(column => column.ShopName == shopName);
 
                 if (result != null)
                 {
@@ -425,7 +425,7 @@ namespace PCE_Web.Classes
         {
             using (var context = new PCEDatabaseContext())
             {
-                var result = context.ShopRatingTable.SingleOrDefault(b => b.ShopName == shopName);
+                var result = context.ShopRatingTable.SingleOrDefault(column => column.ShopName == shopName);
 
                 if (result != null)
                 {
@@ -448,7 +448,7 @@ namespace PCE_Web.Classes
         {
             using (var context = new PCEDatabaseContext())
             {
-                var result = context.ItemsTable.SingleOrDefault(c => c.PageUrl == pageUrl && c.ImgUrl == imgUrl && c.ShopName == shopName && c.ItemName == itemName && c.Price == price && c.Keyword == keyword);
+                var result = context.ItemsTable.SingleOrDefault(column => column.PageUrl == pageUrl && column.ImgUrl == imgUrl && column.ShopName == shopName && column.ItemName == itemName && column.Price == price && column.Keyword == keyword);
 
                 if (result == null)
                 {
@@ -473,7 +473,7 @@ namespace PCE_Web.Classes
 
             using (var context = new PCEDatabaseContext())
             {
-                item = context.ItemsTable.Where(x => x.Keyword == keyword).Select(x => new Item { Link = x.PageUrl, Picture = x.ImgUrl, Seller = x.ShopName, Name = x.ItemName, Price = x.Price }).ToList();
+                item = context.ItemsTable.Where(column => column.Keyword == keyword).Select(column => new Item { Link = column.PageUrl, Picture = column.ImgUrl, Seller = column.ShopName, Name = column.ItemName, Price = column.Price }).ToList();
             }
             return item;
         }
