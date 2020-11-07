@@ -42,7 +42,7 @@ namespace PCE_Web.Controllers
             if (ModelState.IsValid)
             {
                 DatabaseManager.RegisterUser(input.Email, input.Password);
-                return RedirectToAction("Items", "MainWindowLoggedIn");
+                return RedirectToAction("Items", "MainWindowLoggedIn", new { email = input.Email });
             }
 
             return View();

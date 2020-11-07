@@ -12,18 +12,12 @@
 <div class="seperator"></div>
 
 <div class="text-center">
-    <div class="alert warning">
-        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+    <div id="alertPrisijungete" class="alert warning">
+        <span  class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
         Sėkmingai prisijungėte!
     </div>
 </div>
 <!-- Top content -->
-<div class="slideshow-container">
-    @foreach (var product in @Model.Products)
-    {
-       <a href="@product.PageUrl" target="_blank"> <img class="mySlides w3-animate-fading" src="@product.ImgUrl"></a>
-    }
-</div>
 <div class="search-container">
     <!-- Paieškos mygtukas -->
     <div class="search-button">
@@ -37,7 +31,38 @@
         </form>
     </div>
 </div>
-
+<div class="slideshow-container">
+    @foreach (var product in @Model.Products)
+    {
+        <a href="@product.PageUrl" target="_blank"> <img class="mySlides w3-animate-fading" src="@product.ImgUrl"></a>
+    }
+</div>
+<br>
+<h1>Iš viso išsaugotų prekių: @Model.ProductsSaved.Count</h1>
+<br>
+<table id="items">
+    <tr>
+        <th>Nuotrauka</th>
+        <th>Prekė</th>
+        <th>Kaina</th>
+        <th>Ištrinti prekę</th>
+    </tr>
+    @foreach (var productSaved in @Model.ProductsSaved)
+    {
+        <tr>
+            <td><a href="@productSaved.Link"><img class="image" alt="product.jpg" src="@productSaved.Picture"></a></td>
+            <td>
+                <button id="mvc-action-button" class="link" name="particularItem" onclick="location.href = '@Url.Action("ParticularItem", "ParticularItem", new { particularItem = productSaved.Name })'">
+                    @productSaved.Name
+                </button>
+            </td>
+            <td>@productSaved.Price</td>
+            <td>
+                <button id="mvc-action-button" class="myButton" onclick="location.href = '@Url.Action("Items", "MainWindowLoggedIn", new {link = productSaved.Link, pictureUrl = productSaved.Picture, seller = productSaved.Seller, name = productSaved.Name, price = productSaved.Price})'">Ištrinti</button>
+            </td>
+        </tr>
+    }
+</table>
 <br />
 <br />
 <!-- Footer -->
@@ -54,15 +79,22 @@
 <!--Loading screen-->
 <div id="overlay" class="overlay">
 
-
     <div class="loader">
-        <img src="~/img/loader.gif" width="400" height="400" />
+        <img src="~/img/loader.gif" width="400" height="400"/>
     </div>
+
 </div>
 
 <!--Scripts-->
 <script src="~/js/scripts.js"></script>
 <script>
+
+  window.onload = function ()
+    {
+      var duration = 3000; 
+      setTimeout(function () { $('#alertPrisijungete').hide(); }, duration);
+    };
+
     var myIndex = 0;
     carousel();
 
