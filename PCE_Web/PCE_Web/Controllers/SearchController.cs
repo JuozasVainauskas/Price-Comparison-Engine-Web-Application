@@ -15,7 +15,6 @@ namespace PCE_Web.Controllers
     {
         public static int SoldOutBarbora;
         public static int SoldOut;
-        public delegate List<Item> Sorting<TItem>(List<TItem> products);
         public delegate void WriteData<THtmlNode, TItem>(List<THtmlNode> productListItems, List<TItem> products);
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
 
@@ -26,6 +25,7 @@ namespace PCE_Web.Controllers
         }
         public async Task<IActionResult> Suggestions(string productName)
         {
+            Lazy<HttpClient> httpClient = new Lazy<HttpClient>();
             if (DatabaseManager.ReadSearchedItems(productName).Any())
             {
                 var products = new List<Item>();
@@ -38,17 +38,16 @@ namespace PCE_Web.Controllers
             }
             else
             {
-                var httpClient = new HttpClient();
                 var products = new List<Item>();
-                await readingItemsAsync(productName, products, httpClient);
-                products = SortingList(products);
+                await ReadingItemsAsync(productName, products, httpClient.Value);
+                products = SortAndInsert(products);
                 DatabaseManager.WriteSearchedItems(products, productName);
                 _suggestionsView.Products = products;
                 return View(_suggestionsView as SuggestionsView);
             }
         }
 
-        private async Task readingItemsAsync(string productName,List<Item> products,HttpClient httpClient)
+        private async Task ReadingItemsAsync(string productName,List<Item> products,HttpClient httpClient)
         {
             var gettingRde = await Task.Factory.StartNew(() => gettingItemsFromRde(productName, products, httpClient));
             var gettingBarbora = await Task.Factory.StartNew(() => gettingItemsFromBarbora(productName, products, httpClient));
@@ -658,10 +657,10 @@ namespace PCE_Web.Controllers
             return price;
         }
 
-        private Sorting<Item> SortingList = delegate(List<Item> products)
+        private static List<Item> SortAndInsert(List<Item> products)
         {
             products = products.OrderBy(o => o.PriceDouble).ToList();
             return products;
-        };
+        }
     }
 }
