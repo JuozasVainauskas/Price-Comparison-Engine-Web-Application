@@ -12,7 +12,7 @@ namespace PCE_Web.Controllers
         {
             return View();
         }
-        public IActionResult Evaluate()
+        public IActionResult Evaluate(int index)
         {
             if (DatabaseManager.ReadComments().Any())
             {

@@ -27,7 +27,7 @@
         <div class="column">
             <div class="selection">
                 @Html.DropDownListFor(m => m.SelectedShopIndex, shopList, "Pasirinkite")
-                @Html.ActionLink("Atnaujinti", "Evaluate", "Evaluation", Model.SelectedShopIndex)
+                @Html.ActionLink("Atnaujinti", "Evaluate", "Evaluation", new { index = Model.SelectedShopIndex })
             </div>
             <br />
                 <div class="comments-container">
