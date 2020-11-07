@@ -36,12 +36,6 @@ namespace PCE_Web.Controllers
                     CommentId = 0
                 };
                 comments.Add(notExistingComment);
-                comments.Add(notExistingComment);
-                comments.Add(notExistingComment);
-                comments.Add(notExistingComment);
-                comments.Add(notExistingComment);
-                comments.Add(notExistingComment);
-                comments.Add(notExistingComment);
 
                 var evaluationView = new EvaluationView
                 {

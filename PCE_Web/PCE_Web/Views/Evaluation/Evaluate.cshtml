@@ -2,22 +2,14 @@
     Layout = "~/Views/Shared/_LayoutLoggedIn.cshtml";
 }
 
-@{ 
-    List<SelectListItem> shopList = new List<SelectListItem>();
-    shopList.Add(new SelectListItem() { Text = "Avitela", Value = "1"});
-    shopList.Add(new SelectListItem() { Text = "Elektromarkt", Value = "2" });
-    shopList.Add(new SelectListItem() { Text = "Gintarine", Value = "3" });
-}
-
 @model EvaluationView
 
+
 <!DOCTYPE html>
-<!-- Created By CodingNepal -->
 <html lang="en" dir="ltr">
 <head>
     <meta charset="utf-8">
-    <!-- Somehow I got an error, so I comment the title, just uncomment to show -->
-    <!-- <title>Star Rating Form | CodingNepal</title> -->
+
     <link rel="stylesheet" href="~/css/styleForEvaluationWindow.css">
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 </head>
@@ -26,58 +18,62 @@
     <div class="row">
         <div class="column">
             <div class="selection">
-                @Html.DropDownListFor(m => m.SelectedShopIndex, shopList, "Pasirinkite")
-                @Html.ActionLink("Atnaujinti", "Evaluate", "Evaluation", new { index = Model.SelectedShopIndex })
+                <select id="mySelect" onchange="myFunction()">
+                    <option value="0">--Pasirinkite--</option>
+                    <option value="1">Avitela</option>
+                    <option value="2">Gintarine</option>
+                    <option value="3">Barbora</option>
+                </select>
             </div>
             <br />
-                <div class="comments-container">
-                    @foreach (var comment in Model.Comments)
-                    {
-                        <div class="comment-container">
-                            <img src="~/img/member.jpg" alt="Avatar">
-                            <p>@comment.Comment</p>
-                            <span class="time-right">11:00</span>
-                        </div>
-                    }
-                </div>
+            <div class="comments-container">
+                @foreach (var comment in Model.Comments)
+                {
+                    <div class="comment-container">
+                        <img src="~/img/member.jpg" alt="Avatar">
+                        <p>@comment.Comment</p>
+                        <span class="time-right">11:00</span>
+                    </div>
+                }
+            </div>
         </div>
 
-            <div class="column">
-                <div class="evaluation-container">
-                    <div class="post">
-                        <div class="text">
-                            Ačiū už įvertinimą!
-                        </div>
-                        <div class="edit">
-                            Redaguoti
-                        </div>
+        <div class="column">
+            <div class="evaluation-container">
+                <div class="post">
+                    <div class="text">
+                        Ačiū už įvertinimą!
                     </div>
-                    <h3>Kaip vertinate parduotuvę?</h3>
-                    <div class="star-widget">
-                        <input type="radio" name="rate" id="rate-5">
-                        <label for="rate-5" class="fas fa-star"></label>
-                        <input type="radio" name="rate" id="rate-4">
-                        <label for="rate-4" class="fas fa-star"></label>
-                        <input type="radio" name="rate" id="rate-3">
-                        <label for="rate-3" class="fas fa-star"></label>
-                        <input type="radio" name="rate" id="rate-2">
-                        <label for="rate-2" class="fas fa-star"></label>
-                        <input type="radio" name="rate" id="rate-1">
-                        <label for="rate-1" class="fas fa-star"></label>
-                        <form action="#">
-                            <header></header>
-                            <div class="textarea">
-                                <textarea cols="30" placeholder="Parašykite komentarą.."></textarea>
-                            </div>
-                        </form>
-                        <br />
-                        <div class="btn">
-                            <button type="submit">Patvirtinti</button>
+                    <div class="edit">
+                        Redaguoti
+                    </div>
+                </div>
+                <h3>Kaip vertinate parduotuvę?</h3>
+                <div class="star-widget">
+                    <input type="radio" name="rate" id="rate-5">
+                    <label for="rate-5" class="fas fa-star"></label>
+                    <input type="radio" name="rate" id="rate-4">
+                    <label for="rate-4" class="fas fa-star"></label>
+                    <input type="radio" name="rate" id="rate-3">
+                    <label for="rate-3" class="fas fa-star"></label>
+                    <input type="radio" name="rate" id="rate-2">
+                    <label for="rate-2" class="fas fa-star"></label>
+                    <input type="radio" name="rate" id="rate-1">
+                    <label for="rate-1" class="fas fa-star"></label>
+                    <form action="#">
+                        <header></header>
+                        <div class="textarea">
+                            <textarea cols="30" placeholder="Parašykite komentarą.."></textarea>
                         </div>
+                    </form>
+                    <br />
+                    <div class="btn">
+                        <button type="submit">Patvirtinti</button>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     <script>
         const btn = document.querySelector("button");
         const post = document.querySelector(".post");
@@ -91,6 +87,21 @@
                 post.style.display = "none";
             }
             return false;
+        }
+    </script>
+    <script type="text/javascript">
+        function myFunction() {
+            var x = document.getElementById("mySelect").value;
+            document.getElementById("demo").innerHTML = "You selected: " + x;
+            var currentUrl = $(location).attr('href');
+            var n = currentUrl.includes("index");
+            if (n) {
+                var newurl = currentUrl.slice(0, -1) + x;
+                window.location.href = newurl;
+            }
+            else {
+                window.location.href = currentUrl + "?index=" + x;
+            }
         }
     </script>
 </body>
