@@ -25,10 +25,10 @@
     <div class="seperator"></div>
     <div class="row">
         <div class="column">
-           <div class="selection">
+            <div class="selection">
                 @Html.DropDownListFor(m => m.SelectedShopIndex, shopList, "Pasirinkite")
-                <button>Atnaujinti</button>
-           </div>
+                @Html.ActionLink("Atnaujinti", "Evaluate", "Evaluation", Model.SelectedShopIndex)
+            </div>
             <br />
                 <div class="comments-container">
                     @foreach (var comment in Model.Comments)
