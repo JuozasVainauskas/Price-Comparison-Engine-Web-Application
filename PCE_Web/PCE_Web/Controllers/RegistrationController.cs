@@ -45,7 +45,7 @@ namespace PCE_Web.Controllers
                 code = code.Remove(code.Length - 2);
                 new SendEmail(code, "ernestas20111@gmail.com");
 
-                return RedirectToAction("Items", "MainWindowLoggedIn", new { email = input.Email, password = input.Password, inputCode = code });
+                return RedirectToAction("EmailConfirmation", "ConfirmPassword", new { email = input.Email, password = input.Password, confirmCode = code });
             }
 
             return View();
