@@ -367,12 +367,15 @@ namespace PCE_Web.Classes
             }
         }
 
-        public static List<CommentsTable> ReadComments()
+        public static List<CommentsTable> ReadComments(int index)
         {
             List<CommentsTable> temp;
             using (var context = new PCEDatabaseContext())
             {
-                temp = context.CommentsTable.ToList();
+                temp = context.CommentsTable
+                .Where(x => x.ShopId == index)
+                .Select(x => new CommentsTable {CommentId = x.CommentId, Email = x.Email, ShopId = x.ShopId, Date = x.Date, Rating = 0, Comment = x.Comment})
+                .ToList();
             }
 
             return temp;

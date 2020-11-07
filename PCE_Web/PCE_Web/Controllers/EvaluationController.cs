@@ -14,9 +14,9 @@ namespace PCE_Web.Controllers
         }
         public IActionResult Evaluate(int index)
         {
-            if (DatabaseManager.ReadComments().Any())
+            if (DatabaseManager.ReadComments(index).Any())
             {
-                var comments = DatabaseManager.ReadComments();
+                var comments = DatabaseManager.ReadComments(index);
                 var evaluationView = new EvaluationView
                 {
                     Comments = comments
