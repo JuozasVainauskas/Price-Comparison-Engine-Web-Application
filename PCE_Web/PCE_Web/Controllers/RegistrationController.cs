@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PCE_Web.Classes;
 using PCE_Web.Classes.ValidationAttributes;
 
@@ -48,7 +42,7 @@ namespace PCE_Web.Controllers
             if (ModelState.IsValid)
             {
                 DatabaseManager.RegisterUser(input.Email, input.Password);
-                return RedirectToAction("Items", "MainWindowLoggedIn");
+                return RedirectToAction("Items", "MainWindowLoggedIn", new { email = input.Email });
             }
 
             return View();

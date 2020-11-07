@@ -6,6 +6,7 @@ namespace PCE_Web.Models
 {
     public class SlideshowView : IEnumerable
     {
+        public List<Item> ProductsSaved { get; set; }
         public List<Slide> Products { get; set; }
         public IEnumerator GetEnumerator()
         {

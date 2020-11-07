@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using PCE_Web.Classes;
 using PCE_Web.Classes.ValidationAttributes;
@@ -39,7 +34,7 @@ namespace PCE_Web.Controllers
                 var user = DatabaseManager.LoginUser(input.Email, input.Password);
                 if (user != null)
                 {
-                    return RedirectToAction("Items", "MainWindowLoggedIn");
+                    return RedirectToAction("Items", "MainWindowLoggedIn", new {email = input.Email});
                 }
                 else
                 {
