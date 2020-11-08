@@ -52,7 +52,7 @@
         <tr>
             <td><a href="@productSaved.Link"><img class="image" alt="product.jpg" src="@productSaved.Picture"></a></td>
             <td>
-                <button id="mvc-action-button" class="link" name="particularItem" onclick="location.href = '@Url.Action("ParticularItem", "ParticularItem", new { particularItem = productSaved.Name })'">
+                <button id="mvc-action-button" class="link" name="particularItem" onclick="location.href = '@Url.Action("ParticularItemLoggedIn", "ParticularItemLoggedIn", new { particularItem = productSaved.Name })'">
                     @productSaved.Name
                 </button>
             </td>
