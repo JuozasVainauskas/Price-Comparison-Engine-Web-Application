@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace PCE_Web.Classes
 {
@@ -369,32 +370,27 @@ namespace PCE_Web.Classes
 
         public static List<CommentsTable> ReadComments(int index)
         {
-            List<CommentsTable> temp;
+            List<CommentsTable> comments;
             using (var context = new PCEDatabaseContext())
             {
-                temp = context.CommentsTable
+                comments = context.CommentsTable
                 .Where(column => column.ShopId == index)
                 .Select(column => new CommentsTable {CommentId = column.CommentId, Email = column.Email, ShopId = column.ShopId, Date = column.Date, Rating = column.Rating, Comment = column.Comment})
                 .ToList();
             }
 
-            return temp;
+            return comments;
         }
 
-        public static Boolean isAlreadyCommented(string email, int shopId)
+        public static bool IsAlreadyCommented(string email, int shopId)
         {
-            var item = new List<CommentsTable>();
+            List<CommentsTable> item;
 
             using (var context = new PCEDatabaseContext())
             {
-                var itemsList = context.CommentsTable.Where(column => column.Email == email).Select(column => new CommentsTable
+                item = context.CommentsTable.Where(column => column.Email == email && column.ShopId == shopId).Select(column => new CommentsTable
                 { CommentId = column.CommentId, Email = column.Email, ShopId = column.ShopId, Date = column.Date, Rating = column.Rating, Comment = column.Comment })
                     .ToList();
-
-                foreach (var singleItem in itemsList)
-                {
-                    item.Add(singleItem);
-                }
             }
 
             if (item.Count > 0)
