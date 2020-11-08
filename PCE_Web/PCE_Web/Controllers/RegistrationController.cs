@@ -7,8 +7,8 @@ namespace PCE_Web.Controllers
 {
     public class RegistrationController : Controller
     {
-        public static string Email { get; set; }
-        public static string Password { get; set; }
+        protected internal static string Email { get; set; }
+        protected internal static string Password { get; set; }
 
         public class InputModel
         {
