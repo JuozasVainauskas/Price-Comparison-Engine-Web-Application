@@ -11,40 +11,34 @@ namespace PCE_Web.Controllers
 {
     public class ConfirmPasswordController : Controller
     {
-        public class InputModel
-        {
-            [Display(Name = "Email")]
-            [DataType(DataType.EmailAddress)]
-            public string Email { get; set; }
-            [Display(Name = "Password")]
-            [DataType(DataType.Password)]
-            public string Password { get; set; }
-            [Display(Name = "ConfirmCode")]
-            public string ConfirmCode { get; set; }
-            [Display(Name = "InputCode")]
-            [Compare("ConfirmCode", ErrorMessage = "Blogai įvestas kodas.")]
-            public string InputCode { get; set; }
-        }
+        private static string _email;
+        private static string _password;
+        private static string _confirmCode;
 
-        public IActionResult EmailConfirmation(string email, string password, string confirmCode)
+        [HttpPost]
+        public IActionResult EmailConfirmation(string email, string password)
         {
-            InputModel inputModel = new InputModel()
-            {
-                Email = email,
-                Password = password,
-                ConfirmCode = confirmCode,
-                InputCode = ""
-            };
-            return View(inputModel);
+            var code = GenerateHash.CreateSalt(16);
+            code = code.Remove(code.Length - 2);
+            new SendEmail(code, "ernestas20111@gmail.com");
+
+            _email = email;
+            _password = password;
+            _confirmCode = code;
+            return View();
         }
 
         [HttpPost]
-        public IActionResult EmailConfirmation(InputModel inputModel)
+        public IActionResult EmailConfirmation(string inputCode)
         {
-            if (ModelState.IsValid)
+            if (inputCode!= null && inputCode.Equals(_confirmCode))
             {
-                DatabaseManager.RegisterUser(inputModel.Email, inputModel.Password);
-                return RedirectToAction("Items", "MainWindowLoggedIn", new { email = inputModel.Email });
+                DatabaseManager.RegisterUser(_email, _password);
+                return RedirectToAction("Items", "MainWindowLoggedIn", new { email = _email });
+            }
+            else
+            {
+                ViewBag.ShowMessage = true;
             }
             return View();
         }

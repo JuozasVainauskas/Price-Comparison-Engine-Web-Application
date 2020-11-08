@@ -41,11 +41,7 @@ namespace PCE_Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var code = GenerateHash.CreateSalt(16);
-                code = code.Remove(code.Length - 2);
-                new SendEmail(code, "ernestas20111@gmail.com");
-
-                return RedirectToAction("EmailConfirmation", "ConfirmPassword", new { email = input.Email, password = input.Password, confirmCode = code });
+                return RedirectToAction("EmailConfirmation", "ConfirmPassword", new { email = input.Email, password = input.Password });
             }
 
             return View();

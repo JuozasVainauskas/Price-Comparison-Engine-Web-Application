@@ -1,6 +1,4 @@
-﻿@using Microsoft.CodeAnalysis.CSharp.Syntax
-@model PCE_Web.Controllers.ConfirmPasswordController.InputModel
-@{
+﻿@{
     ViewData["Title"] = "Email patvirtinimas";
 }
 
@@ -13,24 +11,29 @@
 </head>
 <body>
 
-<form asp-action="EmailConfirmation" novalidate="">
+    <form asp-action="EmailConfirmation" novalidate="">
 
-    <div class="container">
-        <h1>Email patvirtinimas</h1>
-        <p>Patikrinkite savo elektroninį paštą, ten turėtų būti nusiųstas patvirtinimo kodas.</p>
-        <hr>
+        <div class="container">
+            <h1>Email patvirtinimas</h1>
+            <p>Patikrinkite savo elektroninį paštą, ten turėtų būti nusiųstas patvirtinimo kodas.</p>
+            <hr>
 
-        @Html.Hidden("Email")
-        @Html.Hidden("Password")
-        @Html.Hidden("ConfirmCode")
-        <div class="form-group">
-            <input asp-for="InputCode" class="form-control" type="email" placeholder="Įveskite kodą." />
-            <span asp-validation-for="InputCode" class="text-danger"></span>
+            <div class="form-group">
+                <input class="form-control" type="email" name="InputCode" placeholder="Įveskite kodą." />
+                @if (ViewBag.ShowMessage == true)
+                {
+                    <script type="text/javascript">
+                        $(document).ready(function () {
+                            $(".message-box").show();
+                        });
+                    </script>
+                    <div class="text-danger">Klaida, blogai įvestas kodas.</div>
+                }
+            </div>
+
+            <button type="submit" class="registerbtn" >Patvirtinti</button>
         </div>
-
-        <button type="submit" class="registerbtn">Patvirtinti</button>
-    </div>
-</form>
+    </form>
 
 </body>
 </html>
