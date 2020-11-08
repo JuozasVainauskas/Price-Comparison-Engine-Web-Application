@@ -381,6 +381,29 @@ namespace PCE_Web.Classes
             return temp;
         }
 
+        public static Boolean isAlreadyCommented(string email, int shopId)
+        {
+            var item = new List<CommentsTable>();
+
+            using (var context = new PCEDatabaseContext())
+            {
+                var itemsList = context.CommentsTable.Where(column => column.Email == email).Select(column => new CommentsTable
+                { CommentId = column.CommentId, Email = column.Email, ShopId = column.ShopId, Date = column.Date, Rating = column.Rating, Comment = column.Comment })
+                    .ToList();
+
+                foreach (var singleItem in itemsList)
+                {
+                    item.Add(singleItem);
+                }
+            }
+
+            if (item.Count > 0)
+            {
+                return true;
+            }
+            else return false;
+        }
+
         public static void WriteComments(string email, int shopId, int rating, string comment)
         {
             using (var context = new PCEDatabaseContext())

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using PCE_Web.Classes;
 
 namespace PCE_Web.Controllers
 {
@@ -13,8 +14,12 @@ namespace PCE_Web.Controllers
             return View();
         }
         
-        public IActionResult Success()
+        public IActionResult Success(string email, int shopId, int rating, string comment)
         {
+           // if (!DatabaseManager.isAlreadyCommented(email,shopId))
+           // {
+           //     DatabaseManager.WriteComments(email, shopId, rating, comment);
+           // }
             return View();
         }
     }
