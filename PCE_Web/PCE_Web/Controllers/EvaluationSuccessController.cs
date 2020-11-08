@@ -9,12 +9,13 @@ namespace PCE_Web.Controllers
 {
     public class EvaluationSuccessController : Controller
     {
-        public IActionResult Success(string email, int shopId, int rating, string comment)
+        public IActionResult Success(int shopId, int rating, string comment)
         {
-            if (!DatabaseManager.IsAlreadyCommented(email,shopId) && email!=null && comment!= null)
+            var currentEmail = MainWindowLoggedInController.emailCurrentUser;
+
+            if (!DatabaseManager.IsAlreadyCommented(currentEmail,shopId) && currentEmail!=null && comment!= null)
             {
-                DatabaseManager.WriteComments(email, shopId, rating, comment);
-               // MainWindowLoggedInController.emailCurrentUser
+                DatabaseManager.WriteComments(currentEmail, shopId, rating, comment);
             }
             return View();
         }
