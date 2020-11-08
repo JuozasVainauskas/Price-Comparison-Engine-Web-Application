@@ -381,7 +381,7 @@ namespace PCE_Web.Classes
             return temp;
         }
 
-        public static Boolean isAlreadyCommented(string email, int shopId)
+        public static Boolean IsAlreadyCommented(string email, int shopId)
         {
             var item = new List<CommentsTable>();
 
