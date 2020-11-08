@@ -61,13 +61,13 @@
                     <label for="rate-2" class="fas fa-star"></label>
                     <input type="radio" name="rate" id="rate-1">
                     <label for="rate-1" class="fas fa-star"></label>
-                    <form action="/EvaluationSuccess/Success">
+                    <form action="@Url.Action("Success", "EvaluationSuccess")" method="post">
                         <header></header>
                         <div class="textarea">
                             <textarea cols="30" placeholder="Parašykite komentarą.."></textarea>
                         </div>
                         <br />
-                            <button id="mvc-action-button" class="myButton">Išsaugoti</button>
+                        <button id="mvc-action-button" class="myButton">Išsaugoti</button>
                     </form>
                     <br />
                 </div>

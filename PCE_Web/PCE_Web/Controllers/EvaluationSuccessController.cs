@@ -19,6 +19,7 @@ namespace PCE_Web.Controllers
             if (!DatabaseManager.isAlreadyCommented(email,shopId) && email!=null && comment!= null)
             {
                 DatabaseManager.WriteComments(email, shopId, rating, comment);
+               // MainWindowLoggedInController.emailCurrentUser
             }
             return View();
         }
