@@ -61,7 +61,7 @@
                     <label for="rate-2" class="fas fa-star"></label>
                     <input type="radio" name="rate" id="rate-1">
                     <label for="rate-1" class="fas fa-star"></label>
-                    <form action="@Url.Action("Success", "EvaluationSuccess", new { shop = 1, shoprating = 5, comment = "Working fine" })" method="post">
+                    <form action="@Url.Action("Success", "EvaluationSuccess", new { shopId = 1, rating = 5, comment = "Working fine" })" method="post">
                         <header></header>
                         <div class="textarea">
                             <textarea cols="30" placeholder="Parašykite komentarą.."></textarea>
