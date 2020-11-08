@@ -15,7 +15,6 @@ namespace PCE_Web.Controllers
         private static string _password;
         private static string _confirmCode;
 
-        [HttpPost]
         public IActionResult EmailConfirmation(string email, string password)
         {
             var code = GenerateHash.CreateSalt(16);
