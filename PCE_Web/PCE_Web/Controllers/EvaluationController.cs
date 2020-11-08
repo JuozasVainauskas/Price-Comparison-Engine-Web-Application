@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using PCE_Web.Classes;
@@ -27,7 +28,7 @@ namespace PCE_Web.Controllers
                 {
                     Email = "info@smartshop.lt",
                     ShopId = 0,
-                    Date = "",
+                    Date = DateTime.Now.ToString("MM/dd/yyyy"),
                     Rating = 0,
                     Comment = "Komentarų dar nėra",
                     CommentId = 0
