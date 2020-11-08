@@ -11,18 +11,14 @@ namespace PCE_Web.Controllers
 {
     public class ConfirmPasswordController : Controller
     {
-        private static string _email;
-        private static string _password;
         private static string _confirmCode;
 
-        public IActionResult EmailConfirmation(string email, string password)
+        public IActionResult EmailConfirmation()
         {
             var code = GenerateHash.CreateSalt(16);
             code = code.Remove(code.Length - 2);
             new SendEmail(code, "ernestas20111@gmail.com");
 
-            _email = email;
-            _password = password;
             _confirmCode = code;
             return View();
         }
@@ -32,8 +28,8 @@ namespace PCE_Web.Controllers
         {
             if (inputCode!= null && inputCode.Equals(_confirmCode))
             {
-                DatabaseManager.RegisterUser(_email, _password);
-                return RedirectToAction("Items", "MainWindowLoggedIn", new { email = _email });
+                DatabaseManager.RegisterUser(RegistrationController.Email, RegistrationController.Password);
+                return RedirectToAction("Items", "MainWindowLoggedIn", new { email = RegistrationController.Email });
             }
             else
             {
