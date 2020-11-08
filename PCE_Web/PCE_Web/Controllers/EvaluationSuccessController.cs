@@ -9,14 +9,18 @@ namespace PCE_Web.Controllers
 {
     public class EvaluationSuccessController : Controller
     {
-        public IActionResult Success(int shopId, int rating, string comment)
+
+        public IActionResult Success(string comment)
         {
-            var currentEmail = MainWindowLoggedInController.emailCurrentUser;
+            
+            var currentEmail = MainWindowLoggedInController.EmailCurrentUser;
 
             if (!DatabaseManager.IsAlreadyCommented(currentEmail,shopId) && currentEmail!=null && comment!= null)
             {
                 DatabaseManager.WriteComments(currentEmail, shopId, rating, comment);
             }
+            
+            Console.WriteLine(comment);
             return View();
         }
     }

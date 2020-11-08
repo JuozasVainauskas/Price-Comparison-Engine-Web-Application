@@ -61,14 +61,25 @@
                     <label for="rate-2" class="fas fa-star"></label>
                     <input type="radio" name="rate" id="rate-1">
                     <label for="rate-1" class="fas fa-star"></label>
-                    <form action="@Url.Action("Success", "EvaluationSuccess", new { shopId = 1, rating = 5, comment = "Working fine" })" method="post">
+
+                    @* <form action="@Url.Action("Success", "EvaluationSuccess", new { shopId = 1, rating = 5, comment = "Working fine" })" method="post">
                         <header></header>
                         <div class="textarea">
                             <textarea cols="30" placeholder="Parašykite komentarą.."></textarea>
                         </div>
                         <br />
                         <button id="mvc-action-button" class="myButton">Išsaugoti</button>
+                    </form>*@
+                    
+                    <form method="get" action="">
+                        <div class="textarea">
+                                <textarea cols="30" name="comment" placeholder="Parašykite komentarą.."></textarea>
+                            </div>
+                            <div class="td" id="s-cover">
+                                <button id="mvc-action-button" type="submit" asp-controller="EvaluationSuccess" asp-action="Success" class="myButton">Išsaugoti</button>
+                            </div>
                     </form>
+
                     <br />
                 </div>
             </div>
