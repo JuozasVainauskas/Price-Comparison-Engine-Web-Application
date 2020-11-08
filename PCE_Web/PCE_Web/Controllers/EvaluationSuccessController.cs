@@ -16,10 +16,10 @@ namespace PCE_Web.Controllers
         
         public IActionResult Success(string email, int shopId, int rating, string comment)
         {
-           // if (!DatabaseManager.isAlreadyCommented(email,shopId))
-           // {
-           //     DatabaseManager.WriteComments(email, shopId, rating, comment);
-           // }
+            if (!DatabaseManager.isAlreadyCommented(email,shopId) && email!=null && comment!= null)
+            {
+                DatabaseManager.WriteComments(email, shopId, rating, comment);
+            }
             return View();
         }
     }
