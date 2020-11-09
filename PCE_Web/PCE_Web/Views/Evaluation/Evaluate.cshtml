@@ -19,7 +19,7 @@
         <div class="column">
             <div class="selection">
                 <select id="mySelect" onchange="myFunction()">
-                    <option value="0">--Pasirinkite--</option>
+                    <option>--Pasirinkite--</option>
                     <option value="1">Avitela</option>
                     <option value="2">Gintarine</option>
                     <option value="3">Barbora</option>
@@ -40,49 +40,49 @@
         </div>
 
         <div class="column">
-            <div class="evaluation-container">
-                <div class="post">
-                    <div class="text">
-                        Ačiū už įvertinimą!
-                    </div>
-                    <div class="edit">
-                        Redaguoti
-                    </div>
-                </div>
-                <h3>Kaip vertinate parduotuvę?</h3>
-                <div class="star-widget">
-                    <input type="radio" name="rate" id="rate-5">
-                    <label for="rate-5" class="fas fa-star"></label>
-                    <input type="radio" name="rate" id="rate-4">
-                    <label for="rate-4" class="fas fa-star"></label>
-                    <input type="radio" name="rate" id="rate-3">
-                    <label for="rate-3" class="fas fa-star"></label>
-                    <input type="radio" name="rate" id="rate-2">
-                    <label for="rate-2" class="fas fa-star"></label>
-                    <input type="radio" name="rate" id="rate-1">
-                    <label for="rate-1" class="fas fa-star"></label>
-
-                    @* <form action="@Url.Action("Success", "EvaluationSuccess", new { shopId = 1, rating = 5, comment = "Working fine" })" method="post">
-                        <header></header>
-                        <div class="textarea">
-                            <textarea cols="30" placeholder="Parašykite komentarą.."></textarea>
+            <form method="get" action="">
+                <div class="evaluation-container">
+                    <div class="post">
+                        <div class="text">
+                            Ačiū už įvertinimą!
                         </div>
-                        <br />
-                        <button id="mvc-action-button" class="myButton">Išsaugoti</button>
-                    </form>*@
-                    
-                    <form method="get" action="">
-                        <div class="textarea">
-                                <textarea cols="30" name="comment" placeholder="Parašykite komentarą.."></textarea>
-                            </div>
-                            <div class="td" id="s-cover">
-                                <button id="mvc-action-button" type="submit" asp-controller="EvaluationSuccess" asp-action="Success" class="myButton">Išsaugoti</button>
-                            </div>
-                    </form>
+                        <div class="edit">
+                            Redaguoti
+                        </div>
+                    </div>
+                    <h3>Kaip vertinate parduotuvę?</h3>
 
-                    <br />
+                    <div class="star-widget">
+                        <input type="radio" name="rate" id="rate-5" value="5">
+                        <label for="rate-5" class="fas fa-star"></label>
+                        <input type="radio" name="rate" id="rate-4" value="4">
+                        <label for="rate-4" class="fas fa-star"></label>
+                        <input type="radio" name="rate" id="rate-3" value="3">
+                        <label for="rate-3" class="fas fa-star"></label>
+                        <input type="radio" name="rate" id="rate-2" value="2">
+                        <label for="rate-2" class="fas fa-star"></label>
+                        <input type="radio" name="rate" id="rate-1" value="1">
+                        <label for="rate-1" class="fas fa-star"></label>
+
+                        <select id="mySelect" name="shopId">
+                            <option>--Pasirinkite--</option>
+                            <option value="1">Avitela</option>
+                            <option value="2">Gintarine</option>
+                            <option value="3">Barbora</option>
+                        </select>
+                        <br />
+
+                        <div class="textarea" style="padding-top:10px; padding-bottom:10px;">
+                            <textarea cols="30" name="comment" placeholder="Parašykite komentarą.."></textarea>
+                        </div>
+                        <div class="td" id="s-cover">
+                            <button id="mvc-action-button" type="submit" asp-controller="EvaluationSuccess" asp-action="Success" class="myButton">Išsaugoti</button>
+                        </div>
+
+                        <br />
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
     <script>
