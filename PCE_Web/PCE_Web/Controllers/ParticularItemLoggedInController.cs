@@ -17,7 +17,7 @@ namespace PCE_Web.Controllers
         public static int SoldOutBarbora;
         public static int SoldOut;
         public static string[] Divided;
-        private static readonly Lazy<string[]> ItemsToSkip = new Lazy<string[]>(() => new[] { "Šaldytuvas", "Išmanusis", "telefonas", "Kompiuteris", "mobilusis", "apsauginis", "stiklas" });
+        private static readonly string[] ItemsToSkip = { "Šaldytuvas", "Išmanusis", "telefonas", "Kompiuteris", "mobilusis", "apsauginis", "stiklas" };
         public delegate void WriteData<THtmlNode, TItem>(List<THtmlNode> productListItems, List<TItem> products);
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
         private readonly IParticularItemLoggedInView _particularItemLoggedInView;
@@ -33,7 +33,7 @@ namespace PCE_Web.Controllers
             await ReadingItemsAsync(particularItem, products, httpClient);
             products = SortAndInsert(products);
             _particularItemLoggedInView.Products = products;
-            return View(_particularItemLoggedInView as ParticularItemLoggedInView);
+            return View(_particularItemLoggedInView);
         }
 
         private async Task ReadingItemsAsync(string productName, List<Item> products, HttpClient httpClient)
@@ -318,7 +318,7 @@ namespace PCE_Web.Controllers
                             {
                                 var pavArray = name.Split();
                                 var numberOfSameWords = AlgorithmHowManyWordsAreTheSame(pavArray);
-                                if (numberOfSameWords >= (Divided.Length / 2) + 1)
+                                if (numberOfSameWords >= (Divided.Length / 2) - 1)
                                 {
                                     var singleItem = new Item
                                     {
@@ -369,7 +369,7 @@ namespace PCE_Web.Controllers
                         {
                             var pavArray = name.Split();
                             var numberOfSameWords = AlgorithmHowManyWordsAreTheSame(pavArray);
-                            if (numberOfSameWords >= (Divided.Length / 2) + 1)
+                            if (numberOfSameWords >= (Divided.Length / 2) - 1)
                             {
                                 var singleItem = new Item
                                 {
@@ -425,7 +425,7 @@ namespace PCE_Web.Controllers
                             {
                                 var pavArray = name.Split();
                                 var numberOfSameWords = AlgorithmHowManyWordsAreTheSame(pavArray);
-                                if (numberOfSameWords >= (Divided.Length / 2) + 1)
+                                if (numberOfSameWords >= (Divided.Length / 2) - 1)
                                 {
                                     var singleItem = new Item
                                     {
@@ -484,7 +484,7 @@ namespace PCE_Web.Controllers
                             {
                                 var pavArray = name.Split();
                                 var numberOfSameWords = AlgorithmHowManyWordsAreTheSame(pavArray);
-                                if (numberOfSameWords >= (Divided.Length / 2) + 1)
+                                if (numberOfSameWords >= (Divided.Length / 2) - 1)
                                 {
                                     var singleItem = new Item
                                     {
@@ -539,7 +539,7 @@ namespace PCE_Web.Controllers
                         {
                             var pavArray = name.Split();
                             var numberOfSameWords = AlgorithmHowManyWordsAreTheSame(pavArray);
-                            if (numberOfSameWords >= (Divided.Length / 2) + 1)
+                            if (numberOfSameWords >= (Divided.Length / 2) - 1)
                             {
                                 var singleItem = new Item
                                 {
@@ -588,7 +588,7 @@ namespace PCE_Web.Controllers
                     {
                         var pavArray = name.Split();
                         var numberOfSameWords = AlgorithmHowManyWordsAreTheSame(pavArray);
-                        if (numberOfSameWords >= (Divided.Length / 2) + 1)
+                        if (numberOfSameWords >= (Divided.Length / 2) - 1)
                         {
                             var singleItem = new Item
                             {
@@ -634,7 +634,7 @@ namespace PCE_Web.Controllers
                         {
                             var pavArray = name.Split();
                             var numberOfSameWords = AlgorithmHowManyWordsAreTheSame(pavArray);
-                            if (numberOfSameWords >= (Divided.Length / 2) + 1)
+                            if (numberOfSameWords >= (Divided.Length / 2) - 1)
                             {
                                 var singleItem = new Item
                                 {
@@ -663,9 +663,8 @@ namespace PCE_Web.Controllers
                     if (t.Equals(t1, StringComparison.CurrentCultureIgnoreCase))
                     {
                         var acceptTheWord = 1;
-                        foreach (var t2 in ItemsToSkip.Value)
+                        foreach (var t2 in ItemsToSkip)
                         {
-                            Console.WriteLine("a");
                             if (t.Equals(t2, StringComparison.CurrentCultureIgnoreCase))
                             {
                                 acceptTheWord = 0;
