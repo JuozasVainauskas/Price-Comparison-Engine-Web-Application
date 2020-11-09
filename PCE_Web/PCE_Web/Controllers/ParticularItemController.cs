@@ -664,7 +664,6 @@ namespace PCE_Web.Controllers
                             var acceptTheWord = 1;
                             foreach (var t2 in ItemsToSkip)
                             {
-                                Console.WriteLine("a");
                                 if (t.Equals(t2, StringComparison.CurrentCultureIgnoreCase))
                                 {
                                     acceptTheWord = 0;
