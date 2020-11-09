@@ -24,9 +24,14 @@ namespace PCE_Web.Controllers
             }
             else
             {
-                return View("~/Views/EvaluationSuccess/Failure.cshtml");
+                return RedirectToAction("Failure", "EvaluationSuccess");
             }
             
+        }
+
+        public IActionResult Failure()
+        {
+            return View();
         }
     }
 }
