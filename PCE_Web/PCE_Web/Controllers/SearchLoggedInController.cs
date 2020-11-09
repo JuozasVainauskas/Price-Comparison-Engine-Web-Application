@@ -13,7 +13,7 @@ namespace PCE_Web.Controllers
 {
     public class SearchLoggedInController : Controller
     {
-        public static int IsSaved = 0;
+        public static int IsSaved;
         public static string SearchWord  = "";
         public static int SoldOutBarbora;
         public static int SoldOut;
