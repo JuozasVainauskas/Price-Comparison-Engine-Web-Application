@@ -15,15 +15,16 @@ namespace PCE_Web.Controllers
             
             var currentEmail = MainWindowLoggedInController.EmailCurrentUser;
 
-            if (!DatabaseManager.IsAlreadyCommented(currentEmail,shopId) && currentEmail!=null && comment!= null)
+            if (!DatabaseManager.IsAlreadyCommented(currentEmail,shopId) && currentEmail!=null && shopId!= 0 && rate!=0)
             {
                 DatabaseManager.WriteComments(currentEmail, shopId, rate, comment);
+                return View();
+            }
+            else
+            {
+                return View("~/Views/EvaluationSuccess/Failure.cshtml");
             }
             
-            Console.WriteLine(comment);
-            Console.WriteLine(rate);
-            Console.WriteLine(shopId);
-            return View();
         }
     }
 }

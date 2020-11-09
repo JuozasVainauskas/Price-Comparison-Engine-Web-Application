@@ -1,0 +1,8 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutLoggedIn.cshtml";
+}
+
+<h1>Klaida!</h1>
+<h3>Bandykite pildyti atsiliepimą iš naujo. Galbūt neįvedėte įvertinimo, nepasirinkote parduotuvės?</h3>
+<h3>Gal jau <strong>vertinote šią parduotuvę?</strong></h3>
+<button id="mvc-action-button" class="myButton" onclick="location.href = '@Url.Action("Evaluate", "Evaluation")'">Grįžti</button>

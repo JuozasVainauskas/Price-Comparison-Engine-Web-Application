@@ -17,12 +17,12 @@
     <div class="seperator"></div>
     <div class="row">
         <div class="column">
-                <select id="mySelect" onchange="changeIndex()">
-                    <option>--Pasirinkite--</option>
-                    <option value="1">Avitela</option>
-                    <option value="2">Gintarine</option>
-                    <option value="3">Barbora</option>
-                </select>
+            <select id="mySelect" onchange="changeIndex()">
+                <option>--Pasirinkite--</option>
+                <option value="1">Avitela</option>
+                <option value="2">Gintarine</option>
+                <option value="3">Barbora</option>
+            </select>
             <br />
             <div class="comments-container">
                 @foreach (var comment in Model.Comments)
@@ -62,8 +62,8 @@
                         <input type="radio" name="rate" id="rate-1" value="1">
                         <label for="rate-1" class="fas fa-star"></label>
 
-                        <select id="mySelect" name="shopId">
-                            <option>--Pasirinkite--</option>
+                        <select id="shopIdSelect" name="shopId">
+                            <option value="0">--Pasirinkite--</option>
                             <option value="1">Avitela</option>
                             <option value="2">Gintarine</option>
                             <option value="3">Barbora</option>
@@ -75,7 +75,7 @@
                         </div>
                         <div class="td" id="s-cover">
                             <div class="form-actions">
-                            <button id="mvc-action-button" type="submit" asp-controller="EvaluationSuccess" asp-action="Success" class="myButton">Išsaugoti</button>
+                                <button id="mvc-action-button" type="submit" asp-controller="EvaluationSuccess" asp-action="Success" class="myButton" onclick="checkRadio()">Išsaugoti</button>
                             </div>
                         </div>
 
