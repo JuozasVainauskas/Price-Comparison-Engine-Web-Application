@@ -35,6 +35,7 @@ namespace PCE_Web.Controllers
                 if (user != null)
                 {
                     MainWindowLoggedInController.EmailCurrentUser = input.Email;
+                    MainWindowLoggedInController.isDeletedOrSaved = 1;
                     return RedirectToAction("Items", "MainWindowLoggedIn");
                 }
                 else

@@ -43,6 +43,7 @@ namespace PCE_Web.Controllers
             {
                 DatabaseManager.RegisterUser(input.Email, input.Password);
                 MainWindowLoggedInController.EmailCurrentUser = input.Email;
+                MainWindowLoggedInController.isDeletedOrSaved = 1;
                 return RedirectToAction("Items", "MainWindowLoggedIn");
             }
 

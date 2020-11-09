@@ -10,9 +10,12 @@ namespace PCE_Web.Controllers
 {
     public class MainWindowLoggedInController : Controller
     {
+        public static int isDeletedOrSaved = 1;
         public static string EmailCurrentUser = "";
+
         public IActionResult Items(string email, string link, string pictureUrl, string seller, string name, string price)
         {
+        
             if (email != null)
             {
                 EmailCurrentUser = email;
@@ -29,17 +32,34 @@ namespace PCE_Web.Controllers
                     Price = price
                 };
                 DatabaseManager.DeleteSavedItem(EmailCurrentUser, productToDelete);
+                isDeletedOrSaved = 0;
             }
+
+            if (isDeletedOrSaved == 1)
+            {
+                SlideshowView.AlertBoxText = "Sėkmingai prisijungėte!";
+            }
+            else if (isDeletedOrSaved == 0)
+            {
+                SlideshowView.AlertBoxText = "Sėkmingai ištrinta prekė!";
+            }
+            else
+            {
+                SlideshowView.AlertBoxText = "Sveiki sugrįžę!";
+            }
+
             if (DatabaseManager.ReadSlidesList().Any())
             {
                 var products = DatabaseManager.ReadSlidesList();
                 var productsSaved = DatabaseManager.ReadSavedItems(EmailCurrentUser);
+               
                 var slideshowView = new SlideshowView
                 {
                     ProductsSaved = productsSaved,
                     Products = products
                 };
 
+                isDeletedOrSaved = 2;
                 return View(slideshowView);
             }
             else
@@ -58,8 +78,10 @@ namespace PCE_Web.Controllers
                     Products = products,
                     ProductsSaved = productsSaved
                 };
+                isDeletedOrSaved = 2;
                 return View(slideshowView);
             }
+  
         }
     }
 }

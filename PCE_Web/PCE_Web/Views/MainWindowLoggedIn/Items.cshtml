@@ -12,9 +12,9 @@
 <div class="seperator"></div>
 
 <div class="text-center">
-    <div id="alertPrisijungete" class="alert warning">
-        <span  class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-        Sėkmingai prisijungėte!
+    <div id="alertBox" class="alert warning">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        @SlideshowView.AlertBoxText
     </div>
 </div>
 <!-- Top content -->
@@ -25,7 +25,7 @@
             <div class="tb">
                 <input type="text" name="ProductName" placeholder="Ieškokite..">
                 <div class="td" id="s-cover">
-                    <input id="mvc-action-button" type="submit" asp-area="" asp-controller="SearchLoggedIn" asp-action="Suggestions" style="position: absolute; left: -9999px" />
+                    <input id="mvc-action-button" type="submit" onclick="ChangeAlertBox" asp-area="" asp-controller="SearchLoggedIn" asp-action="Suggestions" style="position: absolute; left: -9999px" />
                 </div>
             </div>
         </form>
@@ -80,35 +80,42 @@
 <div id="overlay" class="overlay">
 
     <div class="loader">
-        <img src="~/img/loader.gif" width="400" height="400"/>
+        <img src="~/img/loader.gif" width="400" height="400" />
     </div>
 
 </div>
+
+
 
 <!--Scripts-->
 <script src="~/js/scripts.js"></script>
 <script>
 
-  window.onload = function ()
+  
+    function ChangeAlertBox()
     {
-      var duration = 3000; 
-      setTimeout(function () { $('#alertPrisijungete').hide(); }, duration);
-    };
-
-    var myIndex = 0;
-    carousel();
-
-    function carousel() {
-        var i;
-        var x = document.getElementsByClassName("mySlides");
-        for (i = 0; i < x.length; i++) {
-            x[i].style.display = "none";
-        }
-        myIndex++;
-        if (myIndex > x.length) { myIndex = 1 }
-        x[myIndex - 1].style.display = "block";
-        setTimeout(carousel, 9000);
+        SlideshowView.AlertBoxText = "Sekmingai prisijungetė!";
     }
+
+        window.onload = function () {
+            var duration = 3000;
+            setTimeout(function () { $('#alertBox').hide(); }, duration);
+        };
+
+        var myIndex = 0;
+        carousel();
+
+        function carousel() {
+            var i;
+            var x = document.getElementsByClassName("mySlides");
+            for (i = 0; i < x.length; i++) {
+                x[i].style.display = "none";
+            }
+            myIndex++;
+            if (myIndex > x.length) { myIndex = 1 }
+            x[myIndex - 1].style.display = "block";
+            setTimeout(carousel, 9000);
+        }
 </script>
 <script>
     var close = document.getElementsByClassName("closebtn");
