@@ -2,13 +2,14 @@
     Layout = "~/Views/Shared/_LayoutLoggedIn.cshtml";
 }
 
+@model EvaluationView
+
+
 <!DOCTYPE html>
-<!-- Created By CodingNepal -->
 <html lang="en" dir="ltr">
 <head>
     <meta charset="utf-8">
-    <!-- Somehow I got an error, so I comment the title, just uncomment to show -->
-    <!-- <title>Star Rating Form | CodingNepal</title> -->
+
     <link rel="stylesheet" href="~/css/styleForEvaluationWindow.css">
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 </head>
@@ -16,66 +17,75 @@
     <div class="seperator"></div>
     <div class="row">
         <div class="column">
-    <div class="comment-container">
-        <img src="~/img/member.jpg" alt="Avatar">
-        <p>Avitela yra tiesiog nuostabi parduotuvė.<br /> Super kokybė ir aptarnavimas</p>
-        <span class="time-right">11:00</span>
-    </div>
-
-    <div class="comment-container darker">
-        <img src="~/img/member.jpg" class="right">
-        <p>Topocentras geriausias!</p>
-        <span class="time-left">12:01</span>
-    </div>
-
-    <div class="comment-container">
-        <img src="~/img/member.jpg" alt="Avatar">
-        <p>Nusivyliau pigu.lt ... Blogiausias aptarnavimas pasaulyje </p>
-        <span class="time-right">14:54</span>
-    </div>
-
-    <div class="comment-container darker">
-        <img src="~/img/member.jpg" alt="Avatar" class="right">
-        <p>As tai isvis komentaru neturiu, tiesiog megstu sita svetaine</p>
-        <span class="time-left">15:05</span>
-    </div>
-    </div>
-
-    <div class="column">
-    <div class="evaluation-container">
-        <div class="post">
-            <div class="text">
-                Ačiū už įvertinimą!
-            </div>
-            <div class="edit">
-                Redaguoti
+            <select id="mySelect" onchange="changeIndex()">
+                <option>--Pasirinkite--</option>
+                <option value="1">Avitela</option>
+                <option value="2">Gintarine</option>
+                <option value="3">Barbora</option>
+                <option value="4">RDE</option>
+                <option value="5">BigBox</option>
+                <option value="6">Elektromarkt</option>
+                <option value="7">Pigu</option>
+            </select>
+            <br />
+            <div class="comments-container">
+                @foreach (var comment in Model.Comments)
+                {
+                    <div class="comment-container">
+                        <img src="~/img/member.jpg" alt="Avatar">
+                        <p><strong>@comment.Email</strong></p>
+                        <p>@comment.Comment</p>
+                        <span class="time-right">@comment.Date</span>
+                        <span class="time-left">Įvertinimas: @comment.Rating</span>
+                    </div>
+                }
             </div>
         </div>
-        <h3>Kaip vertinate parduotuvę?</h3>
-        <div class="star-widget">
-            <input type="radio" name="rate" id="rate-5">
-            <label for="rate-5" class="fas fa-star"></label>
-            <input type="radio" name="rate" id="rate-4">
-            <label for="rate-4" class="fas fa-star"></label>
-            <input type="radio" name="rate" id="rate-3">
-            <label for="rate-3" class="fas fa-star"></label>
-            <input type="radio" name="rate" id="rate-2">
-            <label for="rate-2" class="fas fa-star"></label>
-            <input type="radio" name="rate" id="rate-1">
-            <label for="rate-1" class="fas fa-star"></label>
-            <form action="#">
-                <header></header>
-                <div class="textarea">
-                    <textarea cols="30" placeholder="Parašykite komentarą.."></textarea>
+
+        <div class="column">
+            <form method="get" action="">
+                <div class="evaluation-container">
+
+                    <h3>Kaip vertinate parduotuvę?</h3>
+
+                    <div class="star-widget">
+                        <input type="radio" name="rate" id="rate-5" value="5">
+                        <label for="rate-5" class="fas fa-star"></label>
+                        <input type="radio" name="rate" id="rate-4" value="4">
+                        <label for="rate-4" class="fas fa-star"></label>
+                        <input type="radio" name="rate" id="rate-3" value="3">
+                        <label for="rate-3" class="fas fa-star"></label>
+                        <input type="radio" name="rate" id="rate-2" value="2">
+                        <label for="rate-2" class="fas fa-star"></label>
+                        <input type="radio" name="rate" id="rate-1" value="1">
+                        <label for="rate-1" class="fas fa-star"></label>
+
+                        <select id="shopIdSelect" name="shopId">
+                            <option value="0">--Pasirinkite--</option>
+                            <option value="1">Avitela</option>
+                            <option value="2">Gintarine</option>
+                            <option value="3">Barbora</option>
+                            <option value="4">RDE</option>
+                            <option value="5">BigBox</option>
+                            <option value="6">Elektromarkt</option>
+                            <option value="7">Pigu</option>
+                        </select>
+                        <br />
+
+                        <div class="textarea" style="padding-top:10px; padding-bottom:10px;">
+                            <textarea cols="30" name="comment" placeholder="Parašykite komentarą.."></textarea>
+                        </div>
+                        <div class="td" id="s-cover">
+                            <div class="form-actions">
+                                <button id="mvc-action-button" type="submit" asp-controller="EvaluationSuccess" asp-action="Success" class="myButton" onclick="checkRadio()">Išsaugoti</button>
+                            </div>
+                        </div>
+
+                        <br />
+                    </div>
                 </div>
             </form>
-            <br />
-            <div class="btn">
-                <button type="submit">Patvirtinti</button>
-            </div>
         </div>
-    </div>
-    </div>
     </div>
     <script>
         const btn = document.querySelector("button");
@@ -90,6 +100,20 @@
                 post.style.display = "none";
             }
             return false;
+        }
+    </script>
+    <script type="text/javascript">
+        function changeIndex() {
+            var x = document.getElementById("mySelect").value;
+            var currentUrl = $(location).attr('href');
+            var n = currentUrl.includes("index");
+            if (n) {
+                var newurl = currentUrl.slice(0, -1) + x;
+                window.location.href = newurl;
+            }
+            else {
+                window.location.href = currentUrl + "?index=" + x;
+            }
         }
     </script>
 </body>
