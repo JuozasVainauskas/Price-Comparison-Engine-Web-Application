@@ -239,3 +239,10 @@ form .btn {
     display: table;
     clear: both;
 }
+
+/*Alignment*/
+
+.form-actions {
+    padding-left:75px;
+    padding-right:100px;
+}
