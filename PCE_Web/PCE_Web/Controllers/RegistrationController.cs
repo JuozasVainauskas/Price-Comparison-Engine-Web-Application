@@ -7,9 +7,6 @@ namespace PCE_Web.Controllers
 {
     public class RegistrationController : Controller
     {
-        protected internal static string Email { get; set; }
-        protected internal static string Password { get; set; }
-
         public class InputModel
         {
             [Display(Name = "Email")]
@@ -44,9 +41,10 @@ namespace PCE_Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                Email = input.Email;
-                Password = input.Password;
-                return RedirectToAction("EmailConfirmation", "ConfirmPassword");
+                DatabaseManager.RegisterUser(input.Email, input.Password);
+                MainWindowLoggedInController.EmailCurrentUser = input.Email;
+                MainWindowLoggedInController.IsDeletedOrSaved = 1;
+                return RedirectToAction("Items", "MainWindowLoggedIn");
             }
 
             return View();
