@@ -7,6 +7,13 @@
 @model SuggestionsView
 <link rel="stylesheet" href="~/css/styleForSuggestionView.css">
 
+<div class="text-center">
+    <div id="alertBox" class="alert warning">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        @SuggestionsView.AlertBoxText
+    </div>
+</div>
+
 <br>
 <h1>Iš viso surasta prekių: @Model.Products.Count</h1>
 <br>
@@ -39,6 +46,11 @@
 </div>
 
 <script>
+
+    window.onload = function () {
+        var duration = 3000;
+        setTimeout(function () { $('#alertBox').hide(); }, duration);
+    };
 
     var buttons = document.getElementsByClassName('link');
     for (var i = 0; i < buttons.length; i++) {

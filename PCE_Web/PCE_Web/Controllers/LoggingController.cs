@@ -34,7 +34,9 @@ namespace PCE_Web.Controllers
                 var user = DatabaseManager.LoginUser(input.Email, input.Password);
                 if (user != null)
                 {
-                    return RedirectToAction("Items", "MainWindowLoggedIn", new {email = input.Email});
+                    MainWindowLoggedInController.EmailCurrentUser = input.Email;
+                    MainWindowLoggedInController.IsDeletedOrSaved = 1;
+                    return RedirectToAction("Items", "MainWindowLoggedIn");
                 }
                 else
                 {

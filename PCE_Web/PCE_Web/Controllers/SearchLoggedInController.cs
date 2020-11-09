@@ -13,6 +13,7 @@ namespace PCE_Web.Controllers
 {
     public class SearchLoggedInController : Controller
     {
+        public static int IsSaved;
         public static string SearchWord  = "";
         public static int SoldOutBarbora;
         public static int SoldOut;
@@ -30,18 +31,25 @@ namespace PCE_Web.Controllers
                 if (link != null)
                 {
                     DatabaseManager.WriteSavedItem(link, pictureUrl, seller, name, price, MainWindowLoggedInController.EmailCurrentUser);
+                    IsSaved = 1;
+                    SuggestionsView.AlertBoxText = "Prekė sėkmingai išsaugota!";
                 }
-               
+                if (IsSaved == 0)
+                {
+                    SuggestionsView.AlertBoxText = "Pasirinkite prekę, kurią norite išsaugoti arba naršykite toliau!";
+                } 
                 var products = new List<Item>();
                 foreach (var item in DatabaseManager.ReadSearchedItems(SearchWord))
                 {
                     products.Add(item);
                 }
                 var suggestionsView = new SuggestionsView { Products = products };
+                IsSaved = 0;
                 return View(suggestionsView);
             }
             else
             {
+                SuggestionsView.AlertBoxText = "Pasirinkite prekę, kurią norite išsaugoti arba naršykite toliau!";
                 if (link != null)
                 {
                     DatabaseManager.WriteSavedItem(link, pictureUrl, seller, name, price, MainWindowLoggedInController.EmailCurrentUser);
