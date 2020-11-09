@@ -6,11 +6,25 @@
     background-color: #64ca87;
 }
 
+.selection {
+    display: flex;
+    padding-left: 250px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
+}
+
+.comments-container {
+    height: 510px;
+    overflow-y: scroll;
+    direction: rtl;
 }
 
 .evaluation-container {
@@ -170,8 +184,8 @@ form .btn {
     padding: 10px;
     margin: 10px 0;
     width: 500px;
-    margin-left:auto;
-    margin-right:auto;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .darker {
@@ -225,4 +239,11 @@ form .btn {
     content: "";
     display: table;
     clear: both;
+}
+
+/*Alignment*/
+
+.form-actions {
+    padding-left:75px;
+    padding-right:100px;
 }
