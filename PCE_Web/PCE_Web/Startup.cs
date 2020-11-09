@@ -30,6 +30,7 @@ namespace PCE_Web
                 .AddCookie(options =>
                 {
                     options.LoginPath = "/Logging/Login";
+                    options.LogoutPath = "/Logging/Logout";
                     options.Cookie.Name = "SmartShopLoginCookie";
                 });
             services.AddMvc();
