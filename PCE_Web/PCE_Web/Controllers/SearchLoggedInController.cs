@@ -89,7 +89,7 @@ namespace PCE_Web.Controllers
 
         private async Task gettingItemsFromBarbora(string productName, List<Item> products, HttpClient httpClient)
         {
-            var urlBarbora = "https://pagrindinis.barbora.lt/paieska?q=" + productName;
+            var urlBarbora = "https://vilnius.barbora.lt/paieska?q=" + productName;
             Search<HtmlDocument> barboraSearch = BarboraSearch;
             WriteData<HtmlNode, Item> writeDataFromBarbora = WriteDataFromBarbora;
             var barboraItems = barboraSearch(await Html(httpClient, urlBarbora));
