@@ -29,7 +29,9 @@ namespace PCE_Web.Controllers
             if (inputCode!= null && inputCode.Equals(_confirmCode))
             {
                 DatabaseManager.RegisterUser(RegistrationController.Email, RegistrationController.Password);
-                return RedirectToAction("Items", "MainWindowLoggedIn", new { email = RegistrationController.Email });
+                MainWindowLoggedInController.EmailCurrentUser = RegistrationController.Email;
+                MainWindowLoggedInController.IsDeletedOrSaved = 1;
+                return RedirectToAction("Items", "MainWindowLoggedIn");
             }
             else
             {
