@@ -39,7 +39,7 @@ namespace PCE_Web.Controllers
                 {
                     Comments = comments
                 };
-                return RedirectToAction("Failure", "EvaluationSuccess");
+                return View(evaluationView);
             }
         }
     }
