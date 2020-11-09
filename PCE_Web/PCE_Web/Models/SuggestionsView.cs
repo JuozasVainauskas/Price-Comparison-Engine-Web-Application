@@ -6,6 +6,7 @@ namespace PCE_Web.Models
 {
     public class SuggestionsView : IEnumerable,ISuggestionsView
     {
+        public static string AlertBoxText { get; set; }
         public List<Item> Products { get; set; }
         public IEnumerator GetEnumerator()
         {
