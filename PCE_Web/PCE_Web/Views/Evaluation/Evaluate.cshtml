@@ -17,14 +17,12 @@
     <div class="seperator"></div>
     <div class="row">
         <div class="column">
-            <div class="selection">
-                <select id="mySelect" onchange="myFunction()">
+                <select id="mySelect" onchange="changeIndex()">
                     <option>--Pasirinkite--</option>
                     <option value="1">Avitela</option>
                     <option value="2">Gintarine</option>
                     <option value="3">Barbora</option>
                 </select>
-            </div>
             <br />
             <div class="comments-container">
                 @foreach (var comment in Model.Comments)
@@ -103,7 +101,7 @@
         }
     </script>
     <script type="text/javascript">
-        function myFunction() {
+        function changeIndex() {
             var x = document.getElementById("mySelect").value;
             var currentUrl = $(location).attr('href');
             var n = currentUrl.includes("index");
