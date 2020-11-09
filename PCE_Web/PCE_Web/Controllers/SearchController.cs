@@ -34,7 +34,7 @@ namespace PCE_Web.Controllers
                     products.Add(item);
                 }
                 _suggestionsView.Products = products;
-                return View(_suggestionsView as SuggestionsView);
+                return View(_suggestionsView);
             }
             else
             {
@@ -43,7 +43,7 @@ namespace PCE_Web.Controllers
                 products = SortAndInsert(products);
                 DatabaseManager.WriteSearchedItems(products, productName);
                 _suggestionsView.Products = products;
-                return View(_suggestionsView as SuggestionsView);
+                return View(_suggestionsView);
             }
         }
 
