@@ -10,7 +10,7 @@ namespace PCE_Web.Controllers
 {
     public class MainWindowLoggedInController : Controller
     {
-        public static int isDeletedOrSaved = 1;
+        public static int IsDeletedOrSaved = 1;
         public static string EmailCurrentUser = "";
 
         public IActionResult Items(string email, string link, string pictureUrl, string seller, string name, string price)
