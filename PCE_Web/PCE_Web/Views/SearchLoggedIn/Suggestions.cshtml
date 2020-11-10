@@ -6,6 +6,7 @@
 @using System.ComponentModel.DataAnnotations
 @model SuggestionsView
 <link rel="stylesheet" href="~/css/styleForSuggestionView.css">
+<link rel="stylesheet" href="~/css/Loading.css">
 
 <div class="text-center">
     <div id="alertBox" class="alert warning">
@@ -26,32 +27,29 @@
     </tr>
     @foreach (var product in @Model.Products)
     {
-<tr>
-    <td><a href="@product.Link"><img class="image" alt="product.jpg" src="@product.Picture"></a></td>
-    <td>
-        <button id="mvc-action-button" class="link" name="particularItem" onclick="location.href = '@Url.Action("ParticularItemLoggedIn", "ParticularItemLoggedIn", new { particularItem = @product.Name })'">
-            @product.Name
-        </button>
-    </td>
-    <td>@product.Price</td>                                                                             
-    <td><button id="mvc-action-button" class="myButton" onclick="location.href = '@Url.Action("Suggestions", "SearchLoggedIn", new { link = product.Link, pictureUrl = product.Picture, seller = product.Seller, name = product.Name, price = product.Price} )'">Išsaugoti</button></td>
-</tr>  
+        <tr>
+            <td><a href="@product.Link"><img class="image" alt="product.jpg" src="@product.Picture"></a></td>
+            <td>
+                <button id="mvc-action-button" class="link" name="particularItem" onclick="location.href = '@Url.Action("ParticularItemLoggedIn", "ParticularItemLoggedIn", new { particularItem = @product.Name })'">
+                    @product.Name
+                </button>
+            </td>
+            <td>@product.Price</td>
+            <td><button id="mvc-action-button" class="myButton" onclick="location.href = '@Url.Action("Suggestions", "SearchLoggedIn", new { link = product.Link, pictureUrl = product.Picture, seller = product.Seller, name = product.Name, price = product.Price} )'">Išsaugoti</button></td>
+        </tr>
+
     }
 </table>
 
 <div id="overlay" class="overlay">
+
     <div class="loader">
         <img src="~/img/loader.gif" width="400" height="400" />
     </div>
+
 </div>
 
 <script>
-
-    window.onload = function () {
-        var duration = 3000;
-        setTimeout(function () { $('#alertBox').hide(); }, duration);
-    };
-
     var buttons = document.getElementsByClassName('link');
     for (var i = 0; i < buttons.length; i++) {
         buttons[i].addEventListener('click', function (e) {
@@ -60,4 +58,12 @@
     }
 </script>
 
+
+<script>
+
+    window.onload = function () {
+        var duration = 3000;
+        setTimeout(function () { $('#alertBox').hide(); }, duration);
+    };
+</script>
 
