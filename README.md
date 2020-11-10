@@ -31,7 +31,7 @@
 - [x] Stars/comments under the shops
 - [x] Saving products
 
-**Features to be added**
+## Features to be added
 - [ ] Comments under the products *Maybe*
 - [ ] Review about the page *Maybe*
 
