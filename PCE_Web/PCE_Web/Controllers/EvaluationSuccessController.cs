@@ -12,8 +12,8 @@ namespace PCE_Web.Controllers
     public class EvaluationSuccessController : Controller
     {
 
-        private int[] allowedShopId = { 1, 2, 3, 4, 5, 6, 7 };
-        private int[] allowedRate = { 1, 2, 3, 4, 5 };
+        private readonly int[] allowedShopId = { 1, 2, 3, 4, 5, 6, 7 };
+        private readonly int[] allowedRate = { 1, 2, 3, 4, 5 };
         public IActionResult Success(int shopId, int rate,string comment)
         {
             
