@@ -331,12 +331,12 @@ namespace PCE_Web.Controllers
                     {
                         var imgLink = productListItem2.Descendants("img").FirstOrDefault()?.GetAttributeValue("src", "");
 
-                        if (price != "")
+                        if (!string.IsNullOrEmpty(price))
                         {
-                            price = PasalinimasTrikdanciuSimboliu2(price);
+                            price = EliminatingSymbols2(price);
                             var priceAtsarg = price;
-                            priceAtsarg = PasalinimasTrikdanciuSimboliu2(priceAtsarg);
-                            priceAtsarg = PasalinimasEuroSimbol(priceAtsarg);
+                            priceAtsarg = EliminatingSymbols2(priceAtsarg);
+                            priceAtsarg = EliminatingEuroSimbol(priceAtsarg);
                             var priceDouble = Convert.ToDouble(priceAtsarg);
 
                             var singleItem = new Item
@@ -376,11 +376,11 @@ namespace PCE_Web.Controllers
 
                     var imgLink = productListItem.Descendants("img").FirstOrDefault()?.GetAttributeValue("data-echo", "");
 
-                    if (price != "")
+                    if (!string.IsNullOrEmpty(price))
                     {
-                        price = PasalinimasTrikdanciuSimboliu(price);
+                        price = EliminatingSymbols(price);
                         var priceAtsarg = price;
-                        priceAtsarg = PasalinimasEuroSimbol(priceAtsarg);
+                        priceAtsarg = EliminatingEuroSimbol(priceAtsarg);
                         var priceDouble = Convert.ToDouble(priceAtsarg);
                         if (imgLink != "")
                         {
@@ -432,11 +432,11 @@ namespace PCE_Web.Controllers
                                 .Contains("image"))
                             ?.GetAttributeValue("src", "");
 
-                        if (price != "")
+                        if (!string.IsNullOrEmpty(price))
                         {
-                            price = PasalinimasTrikdanciuSimboliu(price);
+                            price = EliminatingSymbols(price);
                             var priceTemporary = price;
-                            priceTemporary = PasalinimasEuroSimbol(priceTemporary);
+                            priceTemporary = EliminatingEuroSimbol(priceTemporary);
                             var priceDouble = Convert.ToDouble(priceTemporary);
                             var item1 = new Item
                             {
@@ -480,13 +480,13 @@ namespace PCE_Web.Controllers
                                 .Contains("jpg"))
                             ?.GetAttributeValue("src", "");
 
-                        if (price != null)
+                        if (!string.IsNullOrEmpty(price))
                         {
-                            price = PasalinimasTarpuPigu(price);
+                            price = EliminateSpacesPigu(price);
                             var priceAtsarg = price;
-                            price = PasalinimasEuroSimbol(price);
+                            price = EliminatingEuroSimbol(price);
                             price += "€";
-                            priceAtsarg = PasalinimasEuroSimbol(priceAtsarg);
+                            priceAtsarg = EliminatingEuroSimbol(priceAtsarg);
 
                             var priceDouble = Convert.ToDouble(priceAtsarg);
                             var singleItem = new Item
@@ -528,13 +528,13 @@ namespace PCE_Web.Controllers
                             .Contains("replace-2x img-responsive"))
                         ?.GetAttributeValue("src", "");
 
-                    if (price != "")
+                    if (!string.IsNullOrEmpty(price))
                     {
-                        price = PasalinimasTarpuPigu(price);
+                        price = EliminateSpacesPigu(price);
                         var priceAtsarg = price;
-                        price = PasalinimasEuroSimbol(price);
+                        price = EliminatingEuroSimbol(price);
                         price += "€";
-                        priceAtsarg = PasalinimasEuroSimbol(priceAtsarg);
+                        priceAtsarg = EliminatingEuroSimbol(priceAtsarg);
                         var priceDouble = Convert.ToDouble(priceAtsarg);
                         var singleItem = new Item
                         {
@@ -573,22 +573,24 @@ namespace PCE_Web.Controllers
 
                     var imgLink = productListItem.Descendants("img").FirstOrDefault()?.GetAttributeValue("src", "");
 
-                    price = PasalinimasTarpu(price);
-                    var priceAtsarg = price;
-                    priceAtsarg = PasalinimasEuroSimbol(priceAtsarg);
-
-                    var priceDouble = double.Parse(priceAtsarg);
-                    var item1 = new Item
+                    if (!string.IsNullOrEmpty(price))
                     {
-                        Picture = imgLink,
-                        Seller = "Elektromarkt",
-                        Name = name,
-                        PriceDouble = priceDouble,
-                        Price = price,
-                        Link = link
-                    };
-                    products.Add(item1);
+                        price = EliminateSpaces(price);
+                        var priceAtsarg = price;
+                        priceAtsarg = EliminatingEuroSimbol(priceAtsarg);
 
+                        var priceDouble = double.Parse(priceAtsarg);
+                        var item1 = new Item
+                        {
+                            Picture = imgLink,
+                            Seller = "Elektromarkt",
+                            Name = name,
+                            PriceDouble = priceDouble,
+                            Price = price,
+                            Link = link
+                        };
+                        products.Add(item1);
+                    }
                 }
             }
         }
@@ -610,7 +612,7 @@ namespace PCE_Web.Controllers
                     var link = productListItem.Descendants("a").FirstOrDefault()?.GetAttributeValue("href", "");
                     var imgLink = productListItem.Descendants("img").FirstOrDefault()?.GetAttributeValue("data-lazyloadsrc", "");
 
-                    if (price != "")
+                    if (!string.IsNullOrEmpty(price))
                     {
                         var regex = Regex.Match(price ?? string.Empty, @"[0-9]+\,[0-9][0-9]");
                         price = Convert.ToString(regex);
@@ -631,7 +633,7 @@ namespace PCE_Web.Controllers
             }
         }
 
-        private static string PasalinimasEuroSimbol(string priceAtsarg)
+        private static string EliminatingEuroSimbol(string priceAtsarg)
         {
             var charsToRemove = new[] { "€" };
             foreach (var c in charsToRemove) priceAtsarg = priceAtsarg.Replace(c, string.Empty);
@@ -639,7 +641,7 @@ namespace PCE_Web.Controllers
             return priceAtsarg;
         }
 
-        private static string PasalinimasTrikdanciuSimboliu(string price)
+        private static string EliminatingSymbols(string price)
         {
             var index = price.IndexOf("\n", StringComparison.Ordinal);
             if (index > 0) price = price.Substring(0, index);
@@ -649,7 +651,7 @@ namespace PCE_Web.Controllers
             return price;
         }
 
-        private static string PasalinimasTrikdanciuSimboliu2(string price)
+        private static string EliminatingSymbols2(string price)
         {
             var index = price.IndexOf("\n", StringComparison.Ordinal);
             if (index > 0) price = price.Substring(0, index);
@@ -663,14 +665,14 @@ namespace PCE_Web.Controllers
 
             return price;
         }
-        private static string PasalinimasTarpu(string price)
+        private static string EliminateSpaces(string price)
         {
             var charsToRemove = new[] { " " };
             foreach (var c in charsToRemove) price = price.Replace(c, string.Empty);
             return price;
         }
 
-        private static string PasalinimasTarpuPigu(string price)
+        private static string EliminateSpacesPigu(string price)
         {
             var charsToRemove = new[] { " " };
             foreach (var c in charsToRemove) price = price.Replace(c, string.Empty);

@@ -317,7 +317,7 @@ namespace PCE_Web.Controllers
                     {
                         var imgLink = productListItem2.Descendants("img").FirstOrDefault()?.GetAttributeValue("src", "");
 
-                        if (price != "")
+                        if (!string.IsNullOrEmpty(price))
                         {
                             price = PasalinimasTrikdanciuSimboliu2(price);
                             var priceAtsarg = price;
@@ -362,7 +362,7 @@ namespace PCE_Web.Controllers
 
                     var imgLink = productListItem.Descendants("img").FirstOrDefault()?.GetAttributeValue("data-echo", "");
 
-                    if (price != "")
+                    if (!string.IsNullOrEmpty(price))
                     {
                         price = PasalinimasTrikdanciuSimboliu(price);
                         var priceAtsarg = price;
@@ -412,7 +412,7 @@ namespace PCE_Web.Controllers
                                 .Contains("image"))
                             ?.GetAttributeValue("src", "");
 
-                        if (price != "")
+                        if (!string.IsNullOrEmpty(price))
                         {
                             price = PasalinimasTrikdanciuSimboliu(price);
                             var priceTemporary = price;
@@ -460,7 +460,7 @@ namespace PCE_Web.Controllers
                                 .Contains("jpg"))
                             ?.GetAttributeValue("src", "");
 
-                        if (price != null)
+                        if (!string.IsNullOrEmpty(price))
                         {
                             price = PasalinimasTarpuPigu(price);
                             var priceAtsarg = price;
@@ -508,7 +508,7 @@ namespace PCE_Web.Controllers
                             .Contains("replace-2x img-responsive"))
                         ?.GetAttributeValue("src", "");
 
-                    if (price != "")
+                    if (!string.IsNullOrEmpty(price))
                     {
                         price = PasalinimasTarpuPigu(price);
                         var priceAtsarg = price;
@@ -553,22 +553,26 @@ namespace PCE_Web.Controllers
 
                     var imgLink = productListItem.Descendants("img").FirstOrDefault()?.GetAttributeValue("src", "");
 
-                    price = PasalinimasTarpu(price);
-                    var priceAtsarg = price;
-                    priceAtsarg = PasalinimasEuroSimbol(priceAtsarg);
-
-                    var priceDouble = double.Parse(priceAtsarg);
-                    var item1 = new Item
+                    if (!string.IsNullOrEmpty(price))
                     {
-                        Picture = imgLink, 
-                        Seller = "Elektromarkt", 
-                        Name = name, 
-                        PriceDouble = priceDouble, 
-                        Price = price, 
-                        Link = link
-                    };
-                    products.Add(item1);
 
+                        price = PasalinimasTarpu(price);
+                        var priceAtsarg = price;
+                        priceAtsarg = PasalinimasEuroSimbol(priceAtsarg);
+
+                        var priceDouble = double.Parse(priceAtsarg);
+                        var item1 = new Item
+                        {
+                            Picture = imgLink,
+                            Seller = "Elektromarkt",
+                            Name = name,
+                            PriceDouble = priceDouble,
+                            Price = price,
+                            Link = link
+                        };
+                        products.Add(item1);
+
+                    }
                 }
             }
         }
@@ -590,7 +594,7 @@ namespace PCE_Web.Controllers
                     var link = productListItem.Descendants("a").FirstOrDefault()?.GetAttributeValue("href", "");
                     var imgLink = productListItem.Descendants("img").FirstOrDefault()?.GetAttributeValue("data-lazyloadsrc", "");
 
-                    if (price != "")
+                    if (!string.IsNullOrEmpty(price))
                     {
                         var regex = Regex.Match(price ?? string.Empty, @"[0-9]+\,[0-9][0-9]");
                         price = Convert.ToString(regex);
