@@ -142,8 +142,39 @@ namespace PCE_Web.Classes
                 }
             }
         }
-
         public static List<User> ReadUsersList()
+        {
+            var usersList = new List<User>();
+
+            using (var context = new PCEDatabaseContext())
+            {
+                var users = context.UserData.Select(column => new UserData() { Email = column.Email, Role = column.Role, PasswordHash = "", PasswordSalt = "", UserId = 0}).ToList();
+
+                for (var i = 0; i < users.Count; i++)
+                {
+                    Enum singleTempRole = null;
+
+                    if (users[i].Role == "0")
+                    {
+                        singleTempRole = Role.User;
+                    }
+                    else if (users[i].Role == "1")
+                    {
+                        singleTempRole = Role.Admin;
+                    }
+
+                    usersList.Add(new User()
+                    {
+                        Email = users[i].Email,
+                        Role = singleTempRole
+                    });
+                }
+            }
+
+            return usersList;
+        }
+
+        public static List<User> Bad_ReadUsersList()
         {
             var usersList = new List<User>();
 
