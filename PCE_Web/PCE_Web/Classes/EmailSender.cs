@@ -11,9 +11,9 @@ using System.Linq.Expressions;
 
 namespace PCE_Web.Classes
 {
-    internal class SendEmail
+    internal class EmailSender
     {
-        public SendEmail(string code, string email)
+        public static async void SendEmail(string code, string email)
         {
             var client = new SmtpClient()
             {
@@ -39,10 +39,10 @@ namespace PCE_Web.Classes
             };
             message.To.Add(toEmail);
             client.SendCompleted += ClientSendCompleted;
-            client.SendMailAsync(message);
+            await client.SendMailAsync(message);
         }
 
-        private void ClientSendCompleted(object sender, AsyncCompletedEventArgs e)
+        private static void ClientSendCompleted(object sender, AsyncCompletedEventArgs e)
         {
             if (e.Error != null)
             {

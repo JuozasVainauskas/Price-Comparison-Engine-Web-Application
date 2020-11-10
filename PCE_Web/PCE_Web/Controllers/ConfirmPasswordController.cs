@@ -24,7 +24,7 @@ namespace PCE_Web.Controllers
         {
             var code = GenerateHash.CreateSalt(16);
             code = code.Remove(code.Length - 2);
-            new SendEmail(code, "ernestas20111@gmail.com");
+            EmailSender.SendEmail(code, "ernestas20111@gmail.com");
 
             _confirmCode = code;
             return View();
