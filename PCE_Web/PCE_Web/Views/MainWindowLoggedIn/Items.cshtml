@@ -31,6 +31,13 @@
         </form>
     </div>
 </div>
+<div id="overlay" class="overlay">
+
+    <div class="loader">
+        <img src="~/img/loader.gif" width="400" height="400" />
+    </div>
+
+</div>
 <div class="slideshow-container">
     @foreach (var product in @Model.Products)
     {
@@ -77,19 +84,17 @@
 </footer>
 
 <!--Loading screen-->
-<div id="overlay" class="overlay">
 
-    <div class="loader">
-        <img src="~/img/loader.gif" width="400" height="400" />
-    </div>
-
-</div>
 
 
 
 <!--Scripts-->
 <script src="~/js/scripts.js"></script>
 <script>
+         document.getElementById('mvc-action-button')
+        .addEventListener('click', function (e) {
+            document.getElementById('overlay').style.display = 'flex';
+        });
 
         window.onload = function () {
             var duration = 3000;
