@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PCE_Web.Classes;
 using PCE_Web.Classes.ValidationAttributes;
@@ -7,6 +8,9 @@ namespace PCE_Web.Controllers
 {
     public class RegistrationController : Controller
     {
+        protected internal static string Email { get; set; }
+        protected internal static string Password { get; set; }
+
         public class InputModel
         {
             [Display(Name = "Email")]
@@ -30,21 +34,22 @@ namespace PCE_Web.Controllers
             public string ConfirmPassword { get; set; }
         }
 
+        [AllowAnonymous]
         public IActionResult Register()
         {
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Register(InputModel input)
         {
             if (ModelState.IsValid)
             {
-                DatabaseManager.RegisterUser(input.Email, input.Password);
-                MainWindowLoggedInController.EmailCurrentUser = input.Email;
-                MainWindowLoggedInController.IsDeletedOrSaved = 1;
-                return RedirectToAction("Items", "MainWindowLoggedIn");
+                Email = input.Email;
+                Password = input.Password;
+                return RedirectToAction("EmailConfirmation", "ConfirmPassword");
             }
 
             return View();

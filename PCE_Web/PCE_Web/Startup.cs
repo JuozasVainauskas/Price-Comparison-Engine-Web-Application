@@ -1,21 +1,31 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using PCE_Web.Models;
 
 namespace PCE_Web
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly IWebHostEnvironment _environment;
+        public Startup(IWebHostEnvironment environment, IConfiguration configuration)
         {
+            _environment = environment;
             Configuration = configuration;
         }
 
@@ -24,7 +34,35 @@ namespace PCE_Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            // \/
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.Cookie.HttpOnly = true;
+                    options.Cookie.SecurePolicy = _environment.IsDevelopment()
+                        ? CookieSecurePolicy.None : CookieSecurePolicy.Always;
+                    options.Cookie.SameSite = SameSiteMode.Lax;
+
+                    options.Cookie.Name = "SmartShopLoginCookie";
+                    options.LoginPath = "/Logging/Login";
+                    options.LogoutPath = "/Logging/Logout";
+                });
+            // /\
+
+            // \/
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                options.MinimumSameSitePolicy = SameSiteMode.Strict;
+                options.HttpOnly = HttpOnlyPolicy.None;
+                options.Secure = _environment.IsDevelopment()
+                    ? CookieSecurePolicy.None : CookieSecurePolicy.Always;
+            });
+            // /\
+
+            //services.AddControllersWithViews(); -> services.AddMvc(); ->
+            services.AddMvc(options => options.Filters.Add(new AuthorizeFilter()))
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+
             services.AddSingleton<ISuggestionsView, SuggestionsView>();
             services.AddSingleton<IParticularItemView, ParticularItemView>();
             services.AddSingleton<IParticularItemLoggedInView, ParticularItemLoggedInView>();
@@ -45,11 +83,26 @@ namespace PCE_Web
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            
+            // \/
+            app.UseCookiePolicy();
+            // /\
 
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            // \/
+            //app.Use(async (context, next) =>
+            //{
+            //    var principal = context.User as ClaimsPrincipal;
+            //    var accessToken = principal?.Claims
+            //        .FirstOrDefault(c => c.Type == "access_token");
+
+            //    await next();
+            //});
+            // /\
 
             app.UseEndpoints(endpoints =>
             {

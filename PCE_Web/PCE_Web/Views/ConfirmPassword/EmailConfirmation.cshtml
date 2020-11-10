@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "Email patvirtinimas";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="~/css/styleForRegistration.css">
+
+</head>
+<body>
+
+    <form asp-action="EmailConfirmation" novalidate="">
+
+        <div class="container">
+            <h1>Email patvirtinimas</h1>
+            <p>Patikrinkite savo elektroninį paštą, ten turėtų būti nusiųstas patvirtinimo kodas.</p>
+            <hr>
+
+            <div class="form-group">
+                <input class="form-control" type="email" name="InputCode" placeholder="Įveskite kodą." />
+                @if (ViewBag.ShowMessage == true)
+                {
+                    <script type="text/javascript">
+                        $(document).ready(function () {
+                            $(".message-box").show();
+                        });
+                    </script>
+                    <div class="text-danger">Klaida, blogai įvestas kodas.</div>
+                }
+            </div>
+
+            <button type="submit" class="registerbtn" >Patvirtinti</button>
+        </div>
+    </form>
+
+</body>
+</html>
