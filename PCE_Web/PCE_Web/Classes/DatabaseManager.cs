@@ -285,23 +285,11 @@ namespace PCE_Web.Classes
 
         public static List<Slide> ReadSlidesList()
         {
-            var slidesList = new List<Slide>();
+            List<Slide> slidesList;
+
             using (var context = new PCEDatabaseContext())
             {
-                var tempPageUrl = context.ItemsTable.Where(column => column.Price.Length >= 6).Select(column => column.PageUrl).ToList();
-                var tempImgUrl = context.ItemsTable.Where(column => column.Price.Length >= 6).Select(column => column.ImgUrl).ToList();
-
-                for (var i = 0; i < tempPageUrl.Count; i++)
-                {
-                    if (tempPageUrl.ElementAt(i) != null && tempImgUrl.ElementAt(i) != null)
-                    {
-                        slidesList.Add(new Slide()
-                        {
-                            PageUrl = tempPageUrl[i],
-                            ImgUrl = tempImgUrl[i]
-                        });
-                    }
-                }
+                slidesList = context.ItemsTable.Where(column => column.Price.Length >= 6).Select(column => new Slide() { PageUrl = column.PageUrl, ImgUrl = column.ImgUrl }).ToList();
             }
 
             return slidesList;
@@ -488,12 +476,13 @@ namespace PCE_Web.Classes
 
         public static List<Item> ReadSearchedItems(string keyword)
         {
-             List<Item> item;
+            List<Item> item;
 
             using (var context = new PCEDatabaseContext())
             {
                 item = context.ItemsTable.Where(column => column.Keyword == keyword).Select(column => new Item { Link = column.PageUrl, Picture = column.ImgUrl, Seller = column.ShopName, Name = column.ItemName, Price = column.Price }).ToList();
             }
+
             return item;
         }
     }
