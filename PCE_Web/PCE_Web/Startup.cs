@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -13,6 +14,8 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using PCE_Web.Models;
 
 namespace PCE_Web
@@ -31,6 +34,7 @@ namespace PCE_Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // \/
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
@@ -43,6 +47,7 @@ namespace PCE_Web
                     options.LoginPath = "/Logging/Login";
                     options.LogoutPath = "/Logging/Logout";
                 });
+            // /\
 
             // \/
             services.Configure<CookiePolicyOptions>(options =>
@@ -88,7 +93,16 @@ namespace PCE_Web
             app.UseAuthentication();
             app.UseAuthorization();
 
-            //app.UseCookiePolicy();
+            // \/
+            //app.Use(async (context, next) =>
+            //{
+            //    var principal = context.User as ClaimsPrincipal;
+            //    var accessToken = principal?.Claims
+            //        .FirstOrDefault(c => c.Type == "access_token");
+
+            //    await next();
+            //});
+            // /\
 
             app.UseEndpoints(endpoints =>
             {
