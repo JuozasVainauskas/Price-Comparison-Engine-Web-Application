@@ -10,12 +10,14 @@ namespace PCE_Web.Controllers
     public class EvaluationSuccessController : Controller
     {
 
+        private int[] allowedShopId = { 1, 2, 3, 4, 5, 6, 7 };
+        private int[] allowedRate = { 1, 2, 3, 4, 5 };
         public IActionResult Success(int shopId, int rate,string comment)
         {
             
             var currentEmail = MainWindowLoggedInController.EmailCurrentUser;
 
-            if (!DatabaseManager.IsAlreadyCommented(currentEmail,shopId) && currentEmail!=null && shopId!= 0 && rate!=0)
+            if (!DatabaseManager.IsAlreadyCommented(currentEmail,shopId) && currentEmail!=null && allowedShopId.Contains(shopId) && allowedRate.Contains(rate))
             {
                 DatabaseManager.WriteComments(currentEmail, shopId, rate, comment);
                 return View();
