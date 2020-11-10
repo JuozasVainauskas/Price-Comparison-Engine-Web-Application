@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PCE_Web.Classes;
 using PCE_Web.Models;
@@ -24,6 +25,8 @@ namespace PCE_Web.Controllers
         {
             _particularItemView = particularItemView;
         }
+
+        [AllowAnonymous]
         public async Task<IActionResult> ParticularItem(string particularItem)
         {
             Divided = particularItem.Split();

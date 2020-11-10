@@ -5,12 +5,14 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PCE_Web.Classes;
 using PCE_Web.Models;
 
 namespace PCE_Web.Controllers
 {
+    [Authorize]
     public class ParticularItemLoggedInController : Controller
     {
 
