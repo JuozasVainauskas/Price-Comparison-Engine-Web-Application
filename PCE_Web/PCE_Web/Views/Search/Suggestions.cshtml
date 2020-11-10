@@ -1,5 +1,6 @@
 ﻿@model ISuggestionsView
 <link rel="stylesheet" href="~/css/styleForSuggestionView.css">
+<link rel="stylesheet" href="~/css/Loading.css">
 
 <br>
 <h1>Iš viso surasta prekių: @Model.Products.Count</h1>
@@ -25,9 +26,11 @@
 </table>
 
 <div id="overlay" class="overlay">
+
     <div class="loader">
         <img src="~/img/loader.gif" width="400" height="400" />
     </div>
+
 </div>
 
 <script>

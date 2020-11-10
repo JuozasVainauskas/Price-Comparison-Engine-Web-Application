@@ -1,5 +1,5 @@
 ﻿@{
-    Layout = "~/Views/Shared/_LayoutLoggedIn.cshtml";
+    Layout = "~/Views/Shared/_LayoutLoggedIn.cshtml"; // Problema čia
 }
 
 @model SlideshowView
@@ -8,6 +8,7 @@
 
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="~/css/styleForLoggedInWindow.css">
+<link rel="stylesheet" href="~/css/Loading.css">
 
 <div class="seperator"></div>
 
@@ -31,13 +32,7 @@
         </form>
     </div>
 </div>
-<div id="overlay" class="overlay">
 
-    <div class="loader">
-        <img src="~/img/loader.gif" width="400" height="400" />
-    </div>
-
-</div>
 <div class="slideshow-container">
     @foreach (var product in @Model.Products)
     {
@@ -84,18 +79,23 @@
 </footer>
 
 <!--Loading screen-->
+<div id="overlay" class="overlay">
 
+    <div class="loader">
+        <img src="~/img/loader.gif" width="400" height="400" />
+    </div>
 
-
+</div>
 
 <!--Scripts-->
 <script src="~/js/scripts.js"></script>
 <script>
-         document.getElementById('mvc-action-button')
+    document.getElementById('mvc-action-button')
         .addEventListener('click', function (e) {
             document.getElementById('overlay').style.display = 'flex';
         });
-
+</script>
+<script>
         window.onload = function () {
             var duration = 3000;
             setTimeout(function () { $('#alertBox').hide(); }, duration);
