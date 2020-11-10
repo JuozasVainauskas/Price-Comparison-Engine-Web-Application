@@ -33,8 +33,5 @@
 - [ ] Admin panel
 - [ ] Report
 
-## Features to be added
-- [ ] Comments under the products *Maybe*
-
 ## Initial goal
 Create a program/website/app which takes the data of the prices from different shopping websites and provides a comparison in a visual manner
