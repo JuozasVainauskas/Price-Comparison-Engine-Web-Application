@@ -148,137 +148,161 @@ namespace PCE_Web.Controllers
         }
         private static List<HtmlNode> AvitelaSearch(HtmlDocument htmlDocument)
         {
-            try
+            if (htmlDocument != null)
             {
-                var productsHtml = htmlDocument.DocumentNode.Descendants("div")
-                    .Where(node => node.GetAttributeValue("class", "")
-                        .Equals("product-grid active")).ToList();
+                try
+                {
+                    var productsHtml = htmlDocument.DocumentNode.Descendants("div")
+                        .Where(node => node.GetAttributeValue("class", "")
+                            .Equals("product-grid active")).ToList();
 
-                var productListItems = productsHtml[0].Descendants("div")
-                    .Where(node => node.GetAttributeValue("class", "")
-                        .Contains("col-6 col-md-4 col-lg-4")).ToList();
-                return productListItems;
+                    var productListItems = productsHtml[0].Descendants("div")
+                        .Where(node => node.GetAttributeValue("class", "")
+                            .Contains("col-6 col-md-4 col-lg-4")).ToList();
+                    return productListItems;
+                }
+                catch
+                {
+                    return null;
+                }
             }
-            catch
-            {
-                return null;
-            }
+            return null;
         }
 
-        private static List<HtmlNode> BarboraSearch(HtmlDocument htmlDocument2)
+        private static List<HtmlNode> BarboraSearch(HtmlDocument htmlDocument)
         {
-            try
+            if (htmlDocument != null)
             {
-                var productsHtml2 = htmlDocument2.DocumentNode.Descendants("div")
-                    .Where(node => node.GetAttributeValue("class", "")
-                        .Equals("b-page-specific-content")).ToList();
-
-                var productListItems2 = productsHtml2[0].Descendants("div")
-                    .Where(node => node.GetAttributeValue("class", "")
-                        .Contains("b-product--wrap2 b-product--desktop-grid")).ToList();
-                var productListItemsSoldOut = productsHtml2[0].Descendants("div")
-                    .Where(node => node.GetAttributeValue("class", "")
-                        .Contains("b-product-out-of-stock-backdrop")).ToList();
-                foreach (var unused in productListItemsSoldOut)
+                try
                 {
-                    SoldOutBarbora++;
+                    var productsHtml2 = htmlDocument.DocumentNode.Descendants("div")
+                        .Where(node => node.GetAttributeValue("class", "")
+                            .Equals("b-page-specific-content")).ToList();
+
+                    var productListItems2 = productsHtml2[0].Descendants("div")
+                        .Where(node => node.GetAttributeValue("class", "")
+                            .Contains("b-product--wrap2 b-product--desktop-grid")).ToList();
+                    var productListItemsSoldOut = productsHtml2[0].Descendants("div")
+                        .Where(node => node.GetAttributeValue("class", "")
+                            .Contains("b-product-out-of-stock-backdrop")).ToList();
+                    foreach (var unused in productListItemsSoldOut)
+                    {
+                        SoldOutBarbora++;
+                    }
+
+                    return productListItems2;
                 }
-                return productListItems2;
+                catch
+                {
+                    return null;
+                }
             }
-            catch
-            {
-                return null;
-            }
+            return null;
         }
 
-        private static List<HtmlNode> PiguSearch(HtmlDocument htmlDocument2)
+        private static List<HtmlNode> PiguSearch(HtmlDocument htmlDocument)
         {
-            if (htmlDocument2 == null)
+            if (htmlDocument != null)
             {
-                return null;
-            }
-
-            try
-            {
-                var productsHtml2 = htmlDocument2.DocumentNode.Descendants("div")
-                    .Where(node => node.GetAttributeValue("widget-old", "")
-                        .Equals("ContentLoader")).ToList();
-
-                var productListItems2 = productsHtml2[0].Descendants("div")
-                    .Where(node => node.GetAttributeValue("class", "")
-                        .Contains("product-list-item")).ToList();
-                var productListItemsSoldOut = productsHtml2[0].Descendants("span")
-                    .Where(node => node.GetAttributeValue("class", "")
-                        .Contains("label-soldout")).ToList();
-                foreach (var unused in productListItemsSoldOut)
+                try
                 {
-                    SoldOut++;
-                }
+                    var productsHtml2 = htmlDocument.DocumentNode.Descendants("div")
+                        .Where(node => node.GetAttributeValue("widget-old", "")
+                            .Equals("ContentLoader")).ToList();
 
-                return productListItems2;
+                    var productListItems2 = productsHtml2[0].Descendants("div")
+                        .Where(node => node.GetAttributeValue("class", "")
+                            .Contains("product-list-item")).ToList();
+                    var productListItemsSoldOut = productsHtml2[0].Descendants("span")
+                        .Where(node => node.GetAttributeValue("class", "")
+                            .Contains("label-soldout")).ToList();
+                    foreach (var unused in productListItemsSoldOut)
+                    {
+                        SoldOut++;
+                    }
+
+                    return productListItems2;
+                }
+                catch
+                {
+                    return null;
+                }
             }
-            catch
-            {
-                return null;
-            }
+
+            return null;
         }
 
         private static List<HtmlNode> BigBoxSearch(HtmlDocument htmlDocument)
         {
-            try
+            if (htmlDocument != null)
             {
-                var productsHtml = htmlDocument.DocumentNode.Descendants("div")
-                    .Where(node => node.GetAttributeValue("class", "")
-                        .Equals("col-lg-9 col-md-8")).ToList();
+                try
+                {
+                    var productsHtml = htmlDocument.DocumentNode.Descendants("div")
+                        .Where(node => node.GetAttributeValue("class", "")
+                            .Equals("col-lg-9 col-md-8")).ToList();
 
-                var productListItems = productsHtml[0].Descendants("li")
-                    .Where(node => node.GetAttributeValue("class", "")
-                        .StartsWith("category-item ajax_block_product col-xs-12 col-sm-6 col-md-4 col-lg-3")).ToList();
-                return productListItems;
+                    var productListItems = productsHtml[0].Descendants("li")
+                        .Where(node => node.GetAttributeValue("class", "")
+                            .StartsWith("category-item ajax_block_product col-xs-12 col-sm-6 col-md-4 col-lg-3"))
+                        .ToList();
+                    return productListItems;
 
+                }
+                catch
+                {
+                    return null;
+                }
             }
-            catch
-            {
-                return null;
-            }
+
+            return null;
         }
-        private static List<HtmlNode> ElektromarktSearch(HtmlDocument htmlDocument2)
+        private static List<HtmlNode> ElektromarktSearch(HtmlDocument htmlDocument)
         {
-
-            try
+            if (htmlDocument != null)
             {
-                var productsHtml2 = htmlDocument2.DocumentNode.Descendants("div")
-                    .Where(node => node.GetAttributeValue("class", "")
-                        .Equals("manafilters-category-products category-products")).ToList();
+                try
+                {
+                    var productsHtml2 = htmlDocument.DocumentNode.Descendants("div")
+                        .Where(node => node.GetAttributeValue("class", "")
+                            .Equals("manafilters-category-products category-products")).ToList();
 
-                var productListItems2 = productsHtml2[0].Descendants("li")
-                    .Where(node => node.GetAttributeValue("class", "")
-                        .Contains("item js-ua-item")).ToList();
+                    var productListItems2 = productsHtml2[0].Descendants("li")
+                        .Where(node => node.GetAttributeValue("class", "")
+                            .Contains("item js-ua-item")).ToList();
 
-                return productListItems2;
+                    return productListItems2;
+                }
+                catch
+                {
+                    return null;
+                }
             }
-            catch
-            {
-                return null;
-            }
+
+            return null;
         }
         private static List<HtmlNode> GintarineVaistineSearch(HtmlDocument htmlDocument)
         {
-            try
+            if (htmlDocument != null)
             {
-                var productsHtml = htmlDocument.DocumentNode.Descendants("div")
-                    .Where(node => node.GetAttributeValue("class", "")
-                        .Equals("item-grid")).ToList();
+                try
+                {
+                    var productsHtml = htmlDocument.DocumentNode.Descendants("div")
+                        .Where(node => node.GetAttributeValue("class", "")
+                            .Equals("item-grid")).ToList();
 
-                var productListItems = productsHtml[0].Descendants("div")
-                    .Where(node => node.GetAttributeValue("class", "")
-                        .Contains("item-box")).ToList();
-                return productListItems;
+                    var productListItems = productsHtml[0].Descendants("div")
+                        .Where(node => node.GetAttributeValue("class", "")
+                            .Contains("item-box")).ToList();
+                    return productListItems;
+                }
+                catch
+                {
+                    return null;
+                }
             }
-            catch
-            {
-                return null;
-            }
+
+            return null;
         }
 
         private static void WriteDataFromRde(List<HtmlNode> productListItems, List<Item> prices)

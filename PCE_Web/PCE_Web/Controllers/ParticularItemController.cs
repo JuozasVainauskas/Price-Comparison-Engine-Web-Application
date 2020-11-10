@@ -170,13 +170,13 @@ namespace PCE_Web.Controllers
             return null;
         }
 
-        private static List<HtmlNode> BarboraSearch(HtmlDocument htmlDocument2)
+        private static List<HtmlNode> BarboraSearch(HtmlDocument htmlDocument)
         {
-            if (htmlDocument2 != null)
+            if (htmlDocument != null)
             {
                 try
                 {
-                    var productsHtml2 = htmlDocument2.DocumentNode.Descendants("div")
+                    var productsHtml2 = htmlDocument.DocumentNode.Descendants("div")
                         .Where(node => node.GetAttributeValue("class", "")
                             .Equals("b-page-specific-content")).ToList();
 
@@ -198,40 +198,39 @@ namespace PCE_Web.Controllers
                     return null;
                 }
             }
-
             return null;
         }
 
-        private static List<HtmlNode> PiguSearch(HtmlDocument htmlDocument2)
+        private static List<HtmlNode> PiguSearch(HtmlDocument htmlDocument)
         {
-            if (htmlDocument2 == null)
+            if (htmlDocument != null)
             {
-                return null;
-            }
-
-            try
-            {
-                var productsHtml2 = htmlDocument2.DocumentNode.Descendants("div")
-                    .Where(node => node.GetAttributeValue("widget-old", "")
-                        .Equals("ContentLoader")).ToList();
-
-                var productListItems2 = productsHtml2[0].Descendants("div")
-                    .Where(node => node.GetAttributeValue("class", "")
-                        .Contains("product-list-item")).ToList();
-                var productListItemsSoldOut = productsHtml2[0].Descendants("span")
-                    .Where(node => node.GetAttributeValue("class", "")
-                        .Contains("label-soldout")).ToList();
-                foreach (var unused in productListItemsSoldOut)
+                try
                 {
-                    SoldOut++;
-                }
+                    var productsHtml2 = htmlDocument.DocumentNode.Descendants("div")
+                        .Where(node => node.GetAttributeValue("widget-old", "")
+                            .Equals("ContentLoader")).ToList();
 
-                return productListItems2;
+                    var productListItems2 = productsHtml2[0].Descendants("div")
+                        .Where(node => node.GetAttributeValue("class", "")
+                            .Contains("product-list-item")).ToList();
+                    var productListItemsSoldOut = productsHtml2[0].Descendants("span")
+                        .Where(node => node.GetAttributeValue("class", "")
+                            .Contains("label-soldout")).ToList();
+                    foreach (var unused in productListItemsSoldOut)
+                    {
+                        SoldOut++;
+                    }
+
+                    return productListItems2;
+                }
+                catch
+                {
+                    return null;
+                }
             }
-            catch
-            {
-                return null;
-            }
+
+            return null;
         }
 
         private static List<HtmlNode> BigBoxSearch(HtmlDocument htmlDocument)
@@ -260,13 +259,13 @@ namespace PCE_Web.Controllers
             return null;
         }
 
-        private static List<HtmlNode> ElektromarktSearch(HtmlDocument htmlDocument2)
+        private static List<HtmlNode> ElektromarktSearch(HtmlDocument htmlDocument)
         {
-            if (htmlDocument2 != null)
+            if (htmlDocument != null)
             {
                 try
                 {
-                    var productsHtml2 = htmlDocument2.DocumentNode.Descendants("div")
+                    var productsHtml2 = htmlDocument.DocumentNode.Descendants("div")
                         .Where(node => node.GetAttributeValue("class", "")
                             .Equals("manafilters-category-products category-products")).ToList();
 
