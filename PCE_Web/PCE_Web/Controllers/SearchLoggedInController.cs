@@ -176,135 +176,161 @@ namespace PCE_Web.Controllers
         }
         private static List<HtmlNode> AvitelaSearch(HtmlDocument htmlDocument)
         {
-            try
+            if (htmlDocument != null)
             {
-                var productsHtml = htmlDocument.DocumentNode.Descendants("div")
-                    .Where(node => node.GetAttributeValue("class", "")
-                        .Equals("product-grid active")).ToList();
+                try
+                {
+                    var productsHtml = htmlDocument.DocumentNode.Descendants("div")
+                        .Where(node => node.GetAttributeValue("class", "")
+                            .Equals("product-grid active")).ToList();
 
-                var productListItems = productsHtml[0].Descendants("div")
-                    .Where(node => node.GetAttributeValue("class", "")
-                        .Contains("col-6 col-md-4 col-lg-4")).ToList();
-                return productListItems;
+                    var productListItems = productsHtml[0].Descendants("div")
+                        .Where(node => node.GetAttributeValue("class", "")
+                            .Contains("col-6 col-md-4 col-lg-4")).ToList();
+                    return productListItems;
+                }
+                catch
+                {
+                    return null;
+                }
             }
-            catch
-            {
-                return null;
-            }
+            return null;
         }
 
-        private static List<HtmlNode> BarboraSearch(HtmlDocument htmlDocument2)
+        private static List<HtmlNode> BarboraSearch(HtmlDocument htmlDocument)
         {
-            try
+            if (htmlDocument != null)
             {
-                var productsHtml2 = htmlDocument2.DocumentNode.Descendants("div")
-                    .Where(node => node.GetAttributeValue("class", "")
-                        .Equals("b-page-specific-content")).ToList();
-
-                var productListItems2 = productsHtml2[0].Descendants("div")
-                    .Where(node => node.GetAttributeValue("class", "")
-                        .Contains("b-product--wrap2 b-product--desktop-grid")).ToList();
-                var productListItemsSoldOut = productsHtml2[0].Descendants("div")
-                    .Where(node => node.GetAttributeValue("class", "")
-                        .Contains("b-product-out-of-stock-backdrop")).ToList();
-                foreach (var unused in productListItemsSoldOut)
+                try
                 {
-                    SoldOutBarbora++;
+                    var productsHtml2 = htmlDocument.DocumentNode.Descendants("div")
+                        .Where(node => node.GetAttributeValue("class", "")
+                            .Equals("b-page-specific-content")).ToList();
+
+                    var productListItems2 = productsHtml2[0].Descendants("div")
+                        .Where(node => node.GetAttributeValue("class", "")
+                            .Contains("b-product--wrap2 b-product--desktop-grid")).ToList();
+                    var productListItemsSoldOut = productsHtml2[0].Descendants("div")
+                        .Where(node => node.GetAttributeValue("class", "")
+                            .Contains("b-product-out-of-stock-backdrop")).ToList();
+                    foreach (var unused in productListItemsSoldOut)
+                    {
+                        SoldOutBarbora++;
+                    }
+
+                    return productListItems2;
                 }
-                return productListItems2;
+                catch
+                {
+                    return null;
+                }
             }
-            catch
-            {
-                return null;
-            }
+            return null;
         }
 
-        private static List<HtmlNode> PiguSearch(HtmlDocument htmlDocument2)
+        private static List<HtmlNode> PiguSearch(HtmlDocument htmlDocument)
         {
-            if (htmlDocument2 == null)
+            if (htmlDocument != null)
             {
-                return null;
-            }
-            try
-            {
-                var productsHtml2 = htmlDocument2.DocumentNode.Descendants("div")
-                    .Where(node => node.GetAttributeValue("widget-old", "")
-                        .Equals("ContentLoader")).ToList();
-                var productListItems2 = productsHtml2[0].Descendants("div")
-                    .Where(node => node.GetAttributeValue("class", "")
-                        .Contains("product-list-item")).ToList();
-                var productListItemsSoldOut = productsHtml2[0].Descendants("span")
-                    .Where(node => node.GetAttributeValue("class", "")
-                        .Contains("label-soldout")).ToList();
-                foreach (var unused in productListItemsSoldOut)
+                try
                 {
-                    SoldOut++;
-                }
+                    var productsHtml2 = htmlDocument.DocumentNode.Descendants("div")
+                        .Where(node => node.GetAttributeValue("widget-old", "")
+                            .Equals("ContentLoader")).ToList();
 
-                return productListItems2;
+                    var productListItems2 = productsHtml2[0].Descendants("div")
+                        .Where(node => node.GetAttributeValue("class", "")
+                            .Contains("product-list-item")).ToList();
+                    var productListItemsSoldOut = productsHtml2[0].Descendants("span")
+                        .Where(node => node.GetAttributeValue("class", "")
+                            .Contains("label-soldout")).ToList();
+                    foreach (var unused in productListItemsSoldOut)
+                    {
+                        SoldOut++;
+                    }
+
+                    return productListItems2;
+                }
+                catch
+                {
+                    return null;
+                }
             }
-            catch
-            {
-                return null;
-            }
+
+            return null;
         }
 
         private static List<HtmlNode> BigBoxSearch(HtmlDocument htmlDocument)
         {
-            try
+            if (htmlDocument != null)
             {
-                var productsHtml = htmlDocument.DocumentNode.Descendants("div")
-                    .Where(node => node.GetAttributeValue("class", "")
-                        .Equals("col-lg-9 col-md-8")).ToList();
+                try
+                {
+                    var productsHtml = htmlDocument.DocumentNode.Descendants("div")
+                        .Where(node => node.GetAttributeValue("class", "")
+                            .Equals("col-lg-9 col-md-8")).ToList();
 
-                var productListItems = productsHtml[0].Descendants("li")
-                    .Where(node => node.GetAttributeValue("class", "")
-                        .StartsWith("category-item ajax_block_product col-xs-12 col-sm-6 col-md-4 col-lg-3")).ToList();
-                return productListItems;
+                    var productListItems = productsHtml[0].Descendants("li")
+                        .Where(node => node.GetAttributeValue("class", "")
+                            .StartsWith("category-item ajax_block_product col-xs-12 col-sm-6 col-md-4 col-lg-3"))
+                        .ToList();
+                    return productListItems;
 
+                }
+                catch
+                {
+                    return null;
+                }
             }
-            catch
-            {
-                return null;
-            }
+
+            return null;
         }
-        private static List<HtmlNode> ElektromarktSearch(HtmlDocument htmlDocument2)
+        private static List<HtmlNode> ElektromarktSearch(HtmlDocument htmlDocument)
         {
-
-            try
+            if (htmlDocument != null)
             {
-                var productsHtml2 = htmlDocument2.DocumentNode.Descendants("div")
-                    .Where(node => node.GetAttributeValue("class", "")
-                        .Equals("manafilters-category-products category-products")).ToList();
+                try
+                {
+                    var productsHtml2 = htmlDocument.DocumentNode.Descendants("div")
+                        .Where(node => node.GetAttributeValue("class", "")
+                            .Equals("manafilters-category-products category-products")).ToList();
 
-                var productListItems2 = productsHtml2[0].Descendants("li")
-                    .Where(node => node.GetAttributeValue("class", "")
-                        .Contains("item js-ua-item")).ToList();
+                    var productListItems2 = productsHtml2[0].Descendants("li")
+                        .Where(node => node.GetAttributeValue("class", "")
+                            .Contains("item js-ua-item")).ToList();
 
-                return productListItems2;
+                    return productListItems2;
+                }
+                catch
+                {
+                    return null;
+                }
             }
-            catch
-            {
-                return null;
-            }
+
+            return null;
         }
         private static List<HtmlNode> GintarineVaistineSearch(HtmlDocument htmlDocument)
         {
-            try
+            if (htmlDocument != null)
             {
-                var productsHtml = htmlDocument.DocumentNode.Descendants("div")
-                    .Where(node => node.GetAttributeValue("class", "")
-                        .Equals("item-grid")).ToList();
+                try
+                {
+                    var productsHtml = htmlDocument.DocumentNode.Descendants("div")
+                        .Where(node => node.GetAttributeValue("class", "")
+                            .Equals("item-grid")).ToList();
 
-                var productListItems = productsHtml[0].Descendants("div")
-                    .Where(node => node.GetAttributeValue("class", "")
-                        .Contains("item-box")).ToList();
-                return productListItems;
+                    var productListItems = productsHtml[0].Descendants("div")
+                        .Where(node => node.GetAttributeValue("class", "")
+                            .Contains("item-box")).ToList();
+                    return productListItems;
+                }
+                catch
+                {
+                    return null;
+                }
             }
-            catch
-            {
-                return null;
-            }
+
+            return null;
         }
 
         private static void WriteDataFromRde(List<HtmlNode> productListItems, List<Item> products)
@@ -333,12 +359,12 @@ namespace PCE_Web.Controllers
                     {
                         var imgLink = productListItem2.Descendants("img").FirstOrDefault()?.GetAttributeValue("src", "");
 
-                        if (price != "")
+                        if (!string.IsNullOrEmpty(price))
                         {
-                            price = PasalinimasTrikdanciuSimboliu2(price);
+                            price = EliminatingSymbols2(price);
                             var priceAtsarg = price;
-                            priceAtsarg = PasalinimasTrikdanciuSimboliu2(priceAtsarg);
-                            priceAtsarg = PasalinimasEuroSimbol(priceAtsarg);
+                            priceAtsarg = EliminatingSymbols2(priceAtsarg);
+                            priceAtsarg = EliminatingEuroSimbol(priceAtsarg);
                             var priceDouble = Convert.ToDouble(priceAtsarg);
 
                             var singleItem = new Item
@@ -378,11 +404,11 @@ namespace PCE_Web.Controllers
 
                     var imgLink = productListItem.Descendants("img").FirstOrDefault()?.GetAttributeValue("data-echo", "");
 
-                    if (price != "")
+                    if (!string.IsNullOrEmpty(price))
                     {
-                        price = PasalinimasTrikdanciuSimboliu(price);
+                        price = EliminatingSymbols(price);
                         var priceAtsarg = price;
-                        priceAtsarg = PasalinimasEuroSimbol(priceAtsarg);
+                        priceAtsarg = EliminatingEuroSimbol(priceAtsarg);
                         var priceDouble = Convert.ToDouble(priceAtsarg);
                         if (imgLink != "")
                         {
@@ -434,11 +460,11 @@ namespace PCE_Web.Controllers
                                 .Contains("image"))
                             ?.GetAttributeValue("src", "");
 
-                        if (price != "")
+                        if (!string.IsNullOrEmpty(price))
                         {
-                            price = PasalinimasTrikdanciuSimboliu(price);
+                            price = EliminatingSymbols(price);
                             var priceTemporary = price;
-                            priceTemporary = PasalinimasEuroSimbol(priceTemporary);
+                            priceTemporary = EliminatingEuroSimbol(priceTemporary);
                             var priceDouble = Convert.ToDouble(priceTemporary);
                             var item1 = new Item
                             {
@@ -482,13 +508,13 @@ namespace PCE_Web.Controllers
                                 .Contains("jpg"))
                             ?.GetAttributeValue("src", "");
 
-                        if (price != null)
+                        if (!string.IsNullOrEmpty(price))
                         {
-                            price = PasalinimasTarpuPigu(price);
+                            price = EliminateSpacesPigu(price);
                             var priceAtsarg = price;
-                            price = PasalinimasEuroSimbol(price);
+                            price = EliminatingEuroSimbol(price);
                             price += "€";
-                            priceAtsarg = PasalinimasEuroSimbol(priceAtsarg);
+                            priceAtsarg = EliminatingEuroSimbol(priceAtsarg);
 
                             var priceDouble = Convert.ToDouble(priceAtsarg);
                             var singleItem = new Item
@@ -530,13 +556,13 @@ namespace PCE_Web.Controllers
                             .Contains("replace-2x img-responsive"))
                         ?.GetAttributeValue("src", "");
 
-                    if (price != "")
+                    if (!string.IsNullOrEmpty(price))
                     {
-                        price = PasalinimasTarpuPigu(price);
+                        price = EliminateSpacesPigu(price);
                         var priceAtsarg = price;
-                        price = PasalinimasEuroSimbol(price);
+                        price = EliminatingEuroSimbol(price);
                         price += "€";
-                        priceAtsarg = PasalinimasEuroSimbol(priceAtsarg);
+                        priceAtsarg = EliminatingEuroSimbol(priceAtsarg);
                         var priceDouble = Convert.ToDouble(priceAtsarg);
                         var singleItem = new Item
                         {
@@ -575,22 +601,24 @@ namespace PCE_Web.Controllers
 
                     var imgLink = productListItem.Descendants("img").FirstOrDefault()?.GetAttributeValue("src", "");
 
-                    price = PasalinimasTarpu(price);
-                    var priceAtsarg = price;
-                    priceAtsarg = PasalinimasEuroSimbol(priceAtsarg);
-
-                    var priceDouble = double.Parse(priceAtsarg);
-                    var item1 = new Item
+                    if (!string.IsNullOrEmpty(price))
                     {
-                        Picture = imgLink,
-                        Seller = "Elektromarkt",
-                        Name = name,
-                        PriceDouble = priceDouble,
-                        Price = price,
-                        Link = link
-                    };
-                    products.Add(item1);
+                        price = EliminateSpaces(price);
+                        var priceAtsarg = price;
+                        priceAtsarg = EliminatingEuroSimbol(priceAtsarg);
 
+                        var priceDouble = double.Parse(priceAtsarg);
+                        var item1 = new Item
+                        {
+                            Picture = imgLink,
+                            Seller = "Elektromarkt",
+                            Name = name,
+                            PriceDouble = priceDouble,
+                            Price = price,
+                            Link = link
+                        };
+                        products.Add(item1);
+                    }
                 }
             }
         }
@@ -612,7 +640,7 @@ namespace PCE_Web.Controllers
                     var link = productListItem.Descendants("a").FirstOrDefault()?.GetAttributeValue("href", "");
                     var imgLink = productListItem.Descendants("img").FirstOrDefault()?.GetAttributeValue("data-lazyloadsrc", "");
 
-                    if (price != "")
+                    if (!string.IsNullOrEmpty(price))
                     {
                         var regex = Regex.Match(price ?? string.Empty, @"[0-9]+\,[0-9][0-9]");
                         price = Convert.ToString(regex);
@@ -633,7 +661,7 @@ namespace PCE_Web.Controllers
             }
         }
 
-        private static string PasalinimasEuroSimbol(string priceAtsarg)
+        private static string EliminatingEuroSimbol(string priceAtsarg)
         {
             var charsToRemove = new[] { "€" };
             foreach (var c in charsToRemove) priceAtsarg = priceAtsarg.Replace(c, string.Empty);
@@ -641,7 +669,7 @@ namespace PCE_Web.Controllers
             return priceAtsarg;
         }
 
-        private static string PasalinimasTrikdanciuSimboliu(string price)
+        private static string EliminatingSymbols(string price)
         {
             var index = price.IndexOf("\n", StringComparison.Ordinal);
             if (index > 0) price = price.Substring(0, index);
@@ -651,7 +679,7 @@ namespace PCE_Web.Controllers
             return price;
         }
 
-        private static string PasalinimasTrikdanciuSimboliu2(string price)
+        private static string EliminatingSymbols2(string price)
         {
             var index = price.IndexOf("\n", StringComparison.Ordinal);
             if (index > 0) price = price.Substring(0, index);
@@ -665,14 +693,14 @@ namespace PCE_Web.Controllers
 
             return price;
         }
-        private static string PasalinimasTarpu(string price)
+        private static string EliminateSpaces(string price)
         {
             var charsToRemove = new[] { " " };
             foreach (var c in charsToRemove) price = price.Replace(c, string.Empty);
             return price;
         }
 
-        private static string PasalinimasTarpuPigu(string price)
+        private static string EliminateSpacesPigu(string price)
         {
             var charsToRemove = new[] { " " };
             foreach (var c in charsToRemove) price = price.Replace(c, string.Empty);
