@@ -21,9 +21,15 @@ namespace PCE_Web.Controllers
         public static int SoldOut;
         public delegate void WriteData<THtmlNode, TItem>(List<THtmlNode> productListItems, List<TItem> products);
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
+
+        private readonly IHttpClientFactory _httpClient;
+
+        public SearchLoggedInController(IHttpClientFactory httpClient)
+        {
+            _httpClient = httpClient;
+        }
         public async Task<IActionResult> Suggestions(string productName, string link, string pictureUrl, string seller, string name, string price)
         {
-            Lazy<HttpClient> httpClient = new Lazy<HttpClient>();
             if (productName != null)
             {
                 SearchWord = productName;
@@ -56,8 +62,9 @@ namespace PCE_Web.Controllers
                 {
                     DatabaseManager.WriteSavedItem(link, pictureUrl, seller, name, price, MainWindowLoggedInController.EmailCurrentUser);
                 }
+                var httpClient = _httpClient.CreateClient();
                 var products = new List<Item>();
-                await ReadingItemsAsync(SearchWord, products, httpClient.Value);
+                await ReadingItemsAsync(SearchWord, products, httpClient);
                 products = SortAndInsert(products);
                 DatabaseManager.WriteSearchedItems(products, SearchWord);
                 var suggestionsView = new SuggestionsView { Products = products };

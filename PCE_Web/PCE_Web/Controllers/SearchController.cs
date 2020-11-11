@@ -18,17 +18,17 @@ namespace PCE_Web.Controllers
         public static int SoldOut;
         public delegate void WriteData<THtmlNode, TItem>(List<THtmlNode> productListItems, List<TItem> products);
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
+        private readonly IHttpClientFactory _httpClient;
 
-        private readonly ISuggestionsView _suggestionsView;
-        public SearchController(ISuggestionsView suggestionsView)
+        public SearchController(IHttpClientFactory httpClient)
         {
-            _suggestionsView = suggestionsView;
+            _httpClient = httpClient;
         }
 
         [AllowAnonymous]
         public async Task<IActionResult> Suggestions(string productName)
         {
-            Lazy<HttpClient> httpClient = new Lazy<HttpClient>();
+
             if (DatabaseManager.ReadSearchedItems(productName).Any())
             {
                 var products = new List<Item>();
@@ -36,17 +36,19 @@ namespace PCE_Web.Controllers
                 {
                     products.Add(item);
                 }
-                _suggestionsView.Products = products;
-                return View(_suggestionsView);
+
+                var suggestionsView = new SuggestionsView {Products = products};
+                return View(suggestionsView);
             }
             else
             {
+                var httpClient = _httpClient.CreateClient();
                 var products = new List<Item>();
-                await ReadingItemsAsync(productName, products, httpClient.Value);
+                await ReadingItemsAsync(productName, products, httpClient);
                 products = SortAndInsert(products);
-                DatabaseManager.WriteSearchedItems(products, productName);
-                _suggestionsView.Products = products;
-                return View(_suggestionsView);
+                //DatabaseManager.WriteSearchedItems(products, productName);
+                var suggestionsView = new SuggestionsView {Products = products};
+                return View(suggestionsView);
             }
         }
 
@@ -69,11 +71,13 @@ namespace PCE_Web.Controllers
 
         private async Task gettingItemsFromRde(string productName, List<Item> products, HttpClient httpClient)
         {
+            
             var urlRde = "https://www.rde.lt/search_result/lt/word/" + productName + "/page/1"; 
             Search<HtmlDocument> rdeSearch = RdeSearch;
             WriteData<HtmlNode, Item> writeDataFromRde = WriteDataFromRde;
             var rdeItems = rdeSearch(await Html(httpClient, urlRde));
             writeDataFromRde(rdeItems, products);
+            
         }
 
         private async Task gettingItemsFromBarbora(string productName, List<Item> products, HttpClient httpClient)

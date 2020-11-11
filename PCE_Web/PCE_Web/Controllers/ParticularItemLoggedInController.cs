@@ -21,20 +21,20 @@ namespace PCE_Web.Controllers
         private static readonly string[] ItemsToSkip = { "Šaldytuvas", "Išmanusis", "telefonas", "Kompiuteris", "mobilusis", "apsauginis", "stiklas" };
         public delegate void WriteData<THtmlNode, TItem>(List<THtmlNode> productListItems, List<TItem> products);
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
-        private readonly IParticularItemLoggedInView _particularItemLoggedInView;
-        public ParticularItemLoggedInController(IParticularItemLoggedInView particularItemLoggedInView)
+        private readonly IHttpClientFactory _httpClient;
+        public ParticularItemLoggedInController(IHttpClientFactory httpClient)
         {
-            _particularItemLoggedInView = particularItemLoggedInView;
+            _httpClient = httpClient;
         }
         public async Task<IActionResult> ParticularItemLoggedIn(string particularItem)
         {
             Divided = particularItem.Split();
-            var httpClient = new HttpClient();
+            var httpClient = _httpClient.CreateClient();
             var products = new List<Item>();
             await ReadingItemsAsync(particularItem, products, httpClient);
             products = SortAndInsert(products);
-            _particularItemLoggedInView.Products = products;
-            return View(_particularItemLoggedInView);
+            var particularItemLoggedInView = new ParticularItemLoggedInView {Products = products};
+            return View(particularItemLoggedInView);
         }
 
         private async Task ReadingItemsAsync(string productName, List<Item> products, HttpClient httpClient)

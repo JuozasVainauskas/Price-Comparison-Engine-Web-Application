@@ -66,6 +66,7 @@ namespace PCE_Web
             services.AddSingleton<ISuggestionsView, SuggestionsView>();
             services.AddSingleton<IParticularItemView, ParticularItemView>();
             services.AddSingleton<IParticularItemLoggedInView, ParticularItemLoggedInView>();
+            services.AddHttpClient();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
