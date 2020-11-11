@@ -36,7 +36,6 @@ namespace PCE_Web.Controllers
                 {
                     products.Add(item);
                 }
-
                 var suggestionsView = new SuggestionsView {Products = products};
                 return View(suggestionsView);
             }
@@ -46,7 +45,7 @@ namespace PCE_Web.Controllers
                 var products = new List<Item>();
                 await ReadingItemsAsync(productName, products, httpClient);
                 products = SortAndInsert(products);
-                //DatabaseManager.WriteSearchedItems(products, productName);
+                DatabaseManager.WriteSearchedItems(products, productName);
                 var suggestionsView = new SuggestionsView {Products = products};
                 return View(suggestionsView);
             }
