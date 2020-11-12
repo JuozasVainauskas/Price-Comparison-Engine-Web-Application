@@ -11,12 +11,18 @@ namespace PCE_Web.Controllers
     [Authorize]
     public class EvaluationController : Controller
     {
+        private readonly IDatabaseManager _databaseManager;
+
+        public EvaluationController(IDatabaseManager databaseManager)
+        {
+            _databaseManager = databaseManager;
+        }
 
         public IActionResult Evaluate(int index)
         {
-            if (DatabaseManager.ReadComments(index).Any())
+            if (_databaseManager.ReadComments(index).Any())
             {
-                var comments = DatabaseManager.ReadComments(index);
+                var comments = _databaseManager.ReadComments(index);
                 var evaluationView = new EvaluationView
                 {
                     Comments = comments

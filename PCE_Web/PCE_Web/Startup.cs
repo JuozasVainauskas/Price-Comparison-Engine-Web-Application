@@ -11,11 +11,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using PCE_Web.Classes;
 using PCE_Web.Models;
 
 namespace PCE_Web
@@ -63,6 +65,7 @@ namespace PCE_Web
             services.AddMvc(options => options.Filters.Add(new AuthorizeFilter()))
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
+            services.AddSingleton<IDatabaseManager, DatabaseManager>();
             services.AddSingleton<ISuggestionsView, SuggestionsView>();
             services.AddSingleton<IParticularItemView, ParticularItemView>();
             services.AddSingleton<IParticularItemLoggedInView, ParticularItemLoggedInView>();

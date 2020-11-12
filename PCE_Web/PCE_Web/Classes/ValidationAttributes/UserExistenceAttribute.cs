@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
+using PCE_Web.Models;
 
 namespace PCE_Web.Classes.ValidationAttributes
 {

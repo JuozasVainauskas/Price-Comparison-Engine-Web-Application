@@ -14,6 +14,12 @@ namespace PCE_Web.Controllers
     {
         public static int IsDeletedOrSaved = 1;
         public static string EmailCurrentUser = "";
+        private readonly IDatabaseManager _databaseManager;
+
+        public MainWindowLoggedInController(IDatabaseManager databaseManager)
+        {
+            _databaseManager = databaseManager;
+        }
 
         public IActionResult Items(string email, string link, string pictureUrl, string seller, string name, string price)
         {
@@ -33,7 +39,7 @@ namespace PCE_Web.Controllers
                     Name = name,
                     Price = price
                 };
-                DatabaseManager.DeleteSavedItem(EmailCurrentUser, productToDelete);
+                _databaseManager.DeleteSavedItem(EmailCurrentUser, productToDelete);
                 IsDeletedOrSaved = 0;
             }
 
@@ -50,10 +56,10 @@ namespace PCE_Web.Controllers
                 SlideshowView.AlertBoxText = "Sveiki sugrįžę!";
             }
 
-            if (DatabaseManager.ReadSlidesList().Any())
+            if (_databaseManager.ReadSlidesList().Any())
             {
-                var products = DatabaseManager.ReadSlidesList();
-                var productsSaved = DatabaseManager.ReadSavedItems(EmailCurrentUser);
+                var products = _databaseManager.ReadSlidesList();
+                var productsSaved = _databaseManager.ReadSavedItems(EmailCurrentUser);
                
                 var slideshowView = new SlideshowView
                 {
@@ -67,7 +73,7 @@ namespace PCE_Web.Controllers
             else
             {
                 var products = new List<Slide>();
-                var productsSaved = DatabaseManager.ReadSavedItems(EmailCurrentUser);
+                var productsSaved = _databaseManager.ReadSavedItems(EmailCurrentUser);
                 var notExistingItem = new Slide
                 {
                     PageUrl = "",
