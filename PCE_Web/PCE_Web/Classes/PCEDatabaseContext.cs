@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using System;
 
 namespace PCE_Web.Classes
 {
@@ -23,7 +25,11 @@ namespace PCE_Web.Classes
         {
             if (!optionsBuilder.IsConfigured)
             {
-               optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=PCEDatabase;Trusted_Connection=True;");
+                IConfigurationRoot configuration = new ConfigurationBuilder()
+               .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+               .AddJsonFile("appsettings.json")
+               .Build();
+                optionsBuilder.UseSqlServer(configuration.GetConnectionString("PCEConnectionString"));
             }
         }
 
