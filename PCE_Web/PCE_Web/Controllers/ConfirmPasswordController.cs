@@ -8,11 +8,12 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.V3.Pages.Account.Manage.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using PCE_Web.Classes;
-using PCE_Web.Classes.ValidationAttributes;
+using PCE_Web.Classes;
 using PCE_Web.Models;
 
 namespace PCE_Web.Controllers
@@ -44,12 +45,15 @@ namespace PCE_Web.Controllers
         {
             if (inputCode!= null && inputCode.Equals(_confirmCode))
             {
-                _databaseManager.RegisterUser(RegistrationController.Email, RegistrationController.Password);
+                var email = TempData["userEmail"].ToString();
+                var password = TempData["userPassword"].ToString();
+
+                _databaseManager.RegisterUser(email, password);
                 MainWindowLoggedInController.IsDeletedOrSaved = 1;
 
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, RegistrationController.Email)
+                    new Claim(ClaimTypes.Name, email)
                 };
                 var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var principal = new ClaimsPrincipal(identity);
