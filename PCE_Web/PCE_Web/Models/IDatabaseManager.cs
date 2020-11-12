@@ -18,8 +18,6 @@ namespace PCE_Web.Models
 
         List<User> Bad_ReadUsersList();
 
-        bool CheckIfUserExists(string email);
-
         void RegisterUser(string email, string password);
 
         User LoginUser(string email, string password);

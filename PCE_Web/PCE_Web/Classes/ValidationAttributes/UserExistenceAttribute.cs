@@ -6,22 +6,11 @@ namespace PCE_Web.Classes.ValidationAttributes
 {
     public class UserExistenceAttribute : ValidationAttribute
     {
-        private readonly IDatabaseManager _databaseManager;
-
-        public UserExistenceAttribute()
-        {
-        }
-
-        public UserExistenceAttribute(IDatabaseManager databaseManager)
-        {
-            _databaseManager = databaseManager;
-        }
-
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             var email = value as string;
 
-            if (!_databaseManager.CheckIfUserExists(email))
+            if (!DatabaseManager.CheckIfUserExists(email))
             {
                 return new ValidationResult("Toks naudotojas neegzistuoja.");
             }

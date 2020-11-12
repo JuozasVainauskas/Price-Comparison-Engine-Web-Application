@@ -209,7 +209,7 @@ namespace PCE_Web.Classes
         }
         /* ------------------------------------------- */
 
-        public bool CheckIfUserExists(string email)
+        public static bool CheckIfUserExists(string email)
         {
             using (var context = new PCEDatabaseContext())
             {
