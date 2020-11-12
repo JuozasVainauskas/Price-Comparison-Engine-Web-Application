@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.Eventing.Reader;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
@@ -21,7 +21,6 @@ namespace PCE_Web.Controllers
     {
         private static string _confirmCode;
         private readonly IDatabaseManager _databaseManager;
-
         public ConfirmPasswordController(IDatabaseManager databaseManager)
         {
             _databaseManager = databaseManager;
@@ -32,8 +31,10 @@ namespace PCE_Web.Controllers
         {
             var code = GenerateHash.CreateSalt(16);
             code = code.Remove(code.Length - 2);
-            EmailSender.SendEmail(code, "ernestas20111@gmail.com");
-
+            var sendingInformation=new SendingInformation();
+            var mailService=new MailService();
+            sendingInformation.ButtonPushed += mailService.OnButtonPushed;
+            sendingInformation.Pushed(code);
             _confirmCode = code;
             return View();
         }
