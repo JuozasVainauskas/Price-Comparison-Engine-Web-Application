@@ -72,20 +72,19 @@ namespace PCE_Web.Controllers
                     //    new ClaimsPrincipal(claimsIdentity),
                     //    authProperties);
 
-                    //var claims = new List<Claim>
-                    //{
-                    //    new Claim(ClaimTypes.Name, input.Email)
-                    //};
                     var claims = new List<Claim>
                     {
-                        new Claim(ClaimTypes.Name, Guid.NewGuid().ToString())
+                        new Claim(ClaimTypes.Name, input.Email)
                     };
+                    //var claims = new List<Claim>
+                    //{
+                    //    new Claim(ClaimTypes.Name, Guid.NewGuid().ToString())
+                    //};
                     var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     var principal = new ClaimsPrincipal(identity);
                     var properties = new AuthenticationProperties();
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, properties);
 
-                    MainWindowLoggedInController.EmailCurrentUser = input.Email;
                     MainWindowLoggedInController.IsDeletedOrSaved = 1;
                     return RedirectToAction("Items", "MainWindowLoggedIn");
                 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace PCE_Web.Controllers
     public class MainWindowLoggedInController : Controller
     {
         public static int IsDeletedOrSaved = 1;
-        public static string EmailCurrentUser = "";
+        public string EmailCurrentUser = "";
         private readonly IDatabaseManager _databaseManager;
 
         public MainWindowLoggedInController(IDatabaseManager databaseManager)
@@ -24,10 +25,11 @@ namespace PCE_Web.Controllers
         public IActionResult Items(string email, string link, string pictureUrl, string seller, string name, string price)
         {
         
-            if (email != null)
-            {
-                EmailCurrentUser = email;
-            }
+            //if (email != null)
+            //{
+                EmailCurrentUser = User.Identity.Name;
+                Console.WriteLine(EmailCurrentUser);
+            //}
 
             if (link != null)
             {

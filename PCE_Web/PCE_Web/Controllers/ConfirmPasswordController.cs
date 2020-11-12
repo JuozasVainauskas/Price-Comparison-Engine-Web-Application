@@ -7,6 +7,7 @@ using HtmlAgilityPack;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
@@ -26,7 +27,6 @@ namespace PCE_Web.Controllers
             _databaseManager = databaseManager;
         }
 
-
         [AllowAnonymous]
         public IActionResult EmailConfirmation()
         {
@@ -45,17 +45,16 @@ namespace PCE_Web.Controllers
             if (inputCode!= null && inputCode.Equals(_confirmCode))
             {
                 _databaseManager.RegisterUser(RegistrationController.Email, RegistrationController.Password);
-                MainWindowLoggedInController.EmailCurrentUser = RegistrationController.Email;
                 MainWindowLoggedInController.IsDeletedOrSaved = 1;
 
-                //var claims = new List<Claim>
-                //{
-                //    new Claim(ClaimTypes.Name, RegistrationController.Email)
-                //};
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, Guid.NewGuid().ToString())
+                    new Claim(ClaimTypes.Name, RegistrationController.Email)
                 };
+                //var claims = new List<Claim>
+                //{
+                //    new Claim(ClaimTypes.Name, Guid.NewGuid().ToString())
+                //};
                 var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var principal = new ClaimsPrincipal(identity);
                 var properties = new AuthenticationProperties();
