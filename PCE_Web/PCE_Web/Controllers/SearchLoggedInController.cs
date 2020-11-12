@@ -21,24 +21,26 @@ namespace PCE_Web.Controllers
         public static int SoldOut;
         public delegate void WriteData<THtmlNode, TItem>(List<THtmlNode> productListItems, List<TItem> products);
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
-
         private readonly IHttpClientFactory _httpClient;
+        private readonly IDatabaseManager _databaseManager;
 
-        public SearchLoggedInController(IHttpClientFactory httpClient)
+        public SearchLoggedInController(IHttpClientFactory httpClient, IDatabaseManager databaseManager)
         {
             _httpClient = httpClient;
+            _databaseManager = databaseManager;
         }
+
         public async Task<IActionResult> Suggestions(string productName, string link, string pictureUrl, string seller, string name, string price)
         {
             if (productName != null)
             {
                 SearchWord = productName;
             }
-            if (DatabaseManager.ReadSearchedItems(SearchWord).Any())
+            if (_databaseManager.ReadSearchedItems(SearchWord).Any())
             {
                 if (link != null)
                 {
-                    DatabaseManager.WriteSavedItem(link, pictureUrl, seller, name, price, MainWindowLoggedInController.EmailCurrentUser);
+                    _databaseManager.WriteSavedItem(link, pictureUrl, seller, name, price, MainWindowLoggedInController.EmailCurrentUser);
                     IsSaved = 1;
                     SuggestionsView.AlertBoxText = "Prekė sėkmingai išsaugota!";
                 }
@@ -47,7 +49,7 @@ namespace PCE_Web.Controllers
                     SuggestionsView.AlertBoxText = "Pasirinkite prekę, kurią norite išsaugoti arba naršykite toliau!";
                 } 
                 var products = new List<Item>();
-                foreach (var item in DatabaseManager.ReadSearchedItems(SearchWord))
+                foreach (var item in _databaseManager.ReadSearchedItems(SearchWord))
                 {
                     products.Add(item);
                 }
@@ -60,13 +62,13 @@ namespace PCE_Web.Controllers
                 SuggestionsView.AlertBoxText = "Pasirinkite prekę, kurią norite išsaugoti arba naršykite toliau!";
                 if (link != null)
                 {
-                    DatabaseManager.WriteSavedItem(link, pictureUrl, seller, name, price, MainWindowLoggedInController.EmailCurrentUser);
+                    _databaseManager.WriteSavedItem(link, pictureUrl, seller, name, price, MainWindowLoggedInController.EmailCurrentUser);
                 }
                 var httpClient = _httpClient.CreateClient();
                 var products = new List<Item>();
                 await ReadingItemsAsync(SearchWord, products, httpClient);
                 products = SortAndInsert(products);
-                DatabaseManager.WriteSearchedItems(products, SearchWord);
+                _databaseManager.WriteSearchedItems(products, SearchWord);
                 var suggestionsView = new SuggestionsView { Products = products };
                 return View(suggestionsView);
             }

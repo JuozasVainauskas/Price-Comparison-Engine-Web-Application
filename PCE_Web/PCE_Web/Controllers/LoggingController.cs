@@ -14,11 +14,19 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.IdentityModel.Tokens;
 using PCE_Web.Classes;
 using PCE_Web.Classes.ValidationAttributes;
+using PCE_Web.Models;
 
 namespace PCE_Web.Controllers
 {
     public class LoggingController : Controller
     {
+        private readonly IDatabaseManager _databaseManager;
+
+        public LoggingController(IDatabaseManager databaseManager)
+        {
+            _databaseManager = databaseManager;
+        }
+
         public class InputModel
         {
             [Display(Name = "Email")]
@@ -45,7 +53,7 @@ namespace PCE_Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = DatabaseManager.LoginUser(input.Email, input.Password);
+                var user = _databaseManager.LoginUser(input.Email, input.Password);
                 if (user != null)
                 {
                     //var userId = Guid.NewGuid().ToString();

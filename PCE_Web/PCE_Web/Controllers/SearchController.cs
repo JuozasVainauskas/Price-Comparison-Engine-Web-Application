@@ -19,20 +19,22 @@ namespace PCE_Web.Controllers
         public delegate void WriteData<THtmlNode, TItem>(List<THtmlNode> productListItems, List<TItem> products);
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
         private readonly IHttpClientFactory _httpClient;
+        private readonly IDatabaseManager _databaseManager;
 
-        public SearchController(IHttpClientFactory httpClient)
+        public SearchController(IHttpClientFactory httpClient, IDatabaseManager databaseManager)
         {
             _httpClient = httpClient;
+            _databaseManager = databaseManager;
         }
 
         [AllowAnonymous]
         public async Task<IActionResult> Suggestions(string productName)
         {
 
-            if (DatabaseManager.ReadSearchedItems(productName).Any())
+            if (_databaseManager.ReadSearchedItems(productName).Any())
             {
                 var products = new List<Item>();
-                foreach (var item in DatabaseManager.ReadSearchedItems(productName))
+                foreach (var item in _databaseManager.ReadSearchedItems(productName))
                 {
                     products.Add(item);
                 }
@@ -45,7 +47,7 @@ namespace PCE_Web.Controllers
                 var products = new List<Item>();
                 await ReadingItemsAsync(productName, products, httpClient);
                 products = SortAndInsert(products);
-                DatabaseManager.WriteSearchedItems(products, productName);
+                _databaseManager.WriteSearchedItems(products, productName);
                 var suggestionsView = new SuggestionsView {Products = products};
                 return View(suggestionsView);
             }

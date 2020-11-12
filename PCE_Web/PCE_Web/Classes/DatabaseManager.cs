@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Storage;
+using PCE_Web.Models;
 
 namespace PCE_Web.Classes
 {
-    public static class DatabaseManager
+    public class DatabaseManager : IDatabaseManager
     {
         private static bool EmailVerification(string email)
         {
@@ -42,7 +43,7 @@ namespace PCE_Web.Classes
         }
 
         /* Admin klasei */
-        public static void SetRole(string email, string role)
+        public void SetRole(string email, string role)
         {
             using (var context = new PCEDatabaseContext())
             {
@@ -60,7 +61,7 @@ namespace PCE_Web.Classes
             }
         }
 
-        public static void DeleteAccount(string email)
+        public void DeleteAccount(string email)
         {
             using (var context = new PCEDatabaseContext())
             {
@@ -105,7 +106,7 @@ namespace PCE_Web.Classes
             //}
         }
 
-        public static void CreateAccount(string email, string password)
+        public void CreateAccount(string email, string password)
         {
             var passwordSalt = GenerateHash.CreateSalt(10);
             var passwordHash = GenerateHash.GenerateSha256Hash(password, passwordSalt);
@@ -142,7 +143,7 @@ namespace PCE_Web.Classes
                 }
             }
         }
-        public static List<User> ReadUsersList()
+        public List<User> ReadUsersList()
         {
             var usersList = new List<User>();
 
@@ -174,7 +175,7 @@ namespace PCE_Web.Classes
             return usersList;
         }
 
-        public static List<User> Bad_ReadUsersList()
+        public List<User> Bad_ReadUsersList()
         {
             var usersList = new List<User>();
 
@@ -208,7 +209,7 @@ namespace PCE_Web.Classes
         }
         /* ------------------------------------------- */
 
-        public static bool CheckIfUserExists(string email)
+        public bool CheckIfUserExists(string email)
         {
             using (var context = new PCEDatabaseContext())
             {
@@ -221,7 +222,7 @@ namespace PCE_Web.Classes
             return true;
         }
 
-        public static void RegisterUser(string email, string password)
+        public void RegisterUser(string email, string password)
         {
             var passwordSalt = GenerateHash.CreateSalt(10);
             var passwordHash = GenerateHash.GenerateSha256Hash(password, passwordSalt);
@@ -244,7 +245,7 @@ namespace PCE_Web.Classes
             }
         }
 
-        public static User LoginUser(string email, string password)
+        public User LoginUser(string email, string password)
         {
             var user = new User();
 
@@ -278,7 +279,7 @@ namespace PCE_Web.Classes
             return null;
         }
 
-        public static void ChangePassword(string email, string password, string passwordConfirm)
+        public void ChangePassword(string email, string password, string passwordConfirm)
         {
             if (string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(passwordConfirm))
             {
@@ -314,7 +315,7 @@ namespace PCE_Web.Classes
             }
         }
 
-        public static List<Slide> ReadSlidesList()
+        public List<Slide> ReadSlidesList()
         {
             List<Slide> slidesList;
 
@@ -326,7 +327,7 @@ namespace PCE_Web.Classes
             return slidesList;
         }
 
-        public static void DeleteSavedItem(string email, Item item)
+        public void DeleteSavedItem(string email, Item item)
         {
             using (var context = new PCEDatabaseContext())
             {
@@ -342,7 +343,7 @@ namespace PCE_Web.Classes
             }
         }
 
-        public static List<Item> ReadSavedItems(string email)
+        public List<Item> ReadSavedItems(string email)
         {
             var item = new List<Item>();
 
@@ -361,7 +362,7 @@ namespace PCE_Web.Classes
             return item;
         }
 
-        public static void WriteSavedItem(string pageUrl, string imgUrl, string shopName, string itemName, string price,
+        public void WriteSavedItem(string pageUrl, string imgUrl, string shopName, string itemName, string price,
             string email)
         {
             using (var context = new PCEDatabaseContext())
@@ -387,7 +388,7 @@ namespace PCE_Web.Classes
             }
         }
 
-        public static List<CommentsTable> ReadComments(int index)
+        public List<CommentsTable> ReadComments(int index)
         {
             List<CommentsTable> comments;
             using (var context = new PCEDatabaseContext())
@@ -401,7 +402,7 @@ namespace PCE_Web.Classes
             return comments;
         }
 
-        public static bool IsAlreadyCommented(string email, int shopId)
+        public bool IsAlreadyCommented(string email, int shopId)
         {
             List<CommentsTable> item;
 
@@ -419,7 +420,7 @@ namespace PCE_Web.Classes
             else return false;
         }
 
-        public static void WriteComments(string email, int shopId, int rating, string comment)
+        public void WriteComments(string email, int shopId, int rating, string comment)
         {
             using (var context = new PCEDatabaseContext())
             {
@@ -441,7 +442,7 @@ namespace PCE_Web.Classes
             }
         }
 
-        public static ShopRating ReadRatings(string shopName)
+        public ShopRating ReadRatings(string shopName)
         {
             var shopRating = new ShopRating();
 
@@ -459,7 +460,7 @@ namespace PCE_Web.Classes
             return shopRating;
         }
 
-        public static void WriteRatings(string shopName, int votesNumber, int votersNumber)
+        public void WriteRatings(string shopName, int votesNumber, int votersNumber)
         {
             using (var context = new PCEDatabaseContext())
             {
@@ -474,7 +475,7 @@ namespace PCE_Web.Classes
             }
         }
 
-        public static void WriteSearchedItems(List<Item> items, string productName)
+        public void WriteSearchedItems(List<Item> items, string productName)
         {
             foreach (var item in items)
             {
@@ -482,7 +483,7 @@ namespace PCE_Web.Classes
             }
         }
 
-        public static void WriteSearchedItem(string pageUrl, string imgUrl, string shopName, string itemName, string price, string keyword)
+        public void WriteSearchedItem(string pageUrl, string imgUrl, string shopName, string itemName, string price, string keyword)
         {
             using (var context = new PCEDatabaseContext())
             {
@@ -505,7 +506,7 @@ namespace PCE_Web.Classes
             }
         }
 
-        public static List<Item> ReadSearchedItems(string keyword)
+        public List<Item> ReadSearchedItems(string keyword)
         {
             List<Item> item;
 

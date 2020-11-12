@@ -12,12 +12,20 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using PCE_Web.Classes;
 using PCE_Web.Classes.ValidationAttributes;
+using PCE_Web.Models;
 
 namespace PCE_Web.Controllers
 {
     public class ConfirmPasswordController : Controller
     {
         private static string _confirmCode;
+        private readonly IDatabaseManager _databaseManager;
+
+        public ConfirmPasswordController(IDatabaseManager databaseManager)
+        {
+            _databaseManager = databaseManager;
+        }
+
 
         [AllowAnonymous]
         public IActionResult EmailConfirmation()
@@ -36,7 +44,7 @@ namespace PCE_Web.Controllers
         {
             if (inputCode!= null && inputCode.Equals(_confirmCode))
             {
-                DatabaseManager.RegisterUser(RegistrationController.Email, RegistrationController.Password);
+                _databaseManager.RegisterUser(RegistrationController.Email, RegistrationController.Password);
                 MainWindowLoggedInController.EmailCurrentUser = RegistrationController.Email;
                 MainWindowLoggedInController.IsDeletedOrSaved = 1;
 
