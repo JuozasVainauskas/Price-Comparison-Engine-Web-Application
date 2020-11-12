@@ -19,7 +19,7 @@ namespace PCE_Web.Controllers
         public delegate void WriteData<THtmlNode, TItem>(List<THtmlNode> productListItems, List<TItem> products);
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
         private readonly IHttpClientFactory _httpClient;
-
+        private readonly Lazy<int[]> _allowedShopId = new Lazy<int[]>(() => new int[] { 1, 2, 3, 4, 5, 6, 7 });
         public SearchController(IHttpClientFactory httpClient)
         {
             _httpClient = httpClient;
@@ -28,6 +28,10 @@ namespace PCE_Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Suggestions(string productName)
         {
+            foreach (var a in _allowedShopId.Value)
+            {
+                Console.WriteLine(a);
+            }
             if (DatabaseManager.ReadSearchedItems(productName).Any())
             {
                 var products = new List<Item>();
