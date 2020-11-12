@@ -56,30 +56,10 @@ namespace PCE_Web.Controllers
                 var user = _databaseManager.LoginUser(input.Email, input.Password);
                 if (user != null)
                 {
-                    //var userId = Guid.NewGuid().ToString();
-                    //var claims = new List<Claim>
-                    //{
-                    //    new Claim(ClaimTypes.Name, userId),
-                    //    new Claim("access_token", GetAccessToken(userId))
-                    //};
-
-                    //var claimsIdentity = new ClaimsIdentity(
-                    //    claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                    //var authProperties = new AuthenticationProperties();
-
-                    //await HttpContext.SignInAsync(
-                    //    CookieAuthenticationDefaults.AuthenticationScheme,
-                    //    new ClaimsPrincipal(claimsIdentity),
-                    //    authProperties);
-
                     var claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.Name, input.Email)
-                };
-                    //var claims = new List<Claim>
-                    //{
-                    //    new Claim(ClaimTypes.Name, Guid.NewGuid().ToString())
-                    //};
+                    };
                     var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     var principal = new ClaimsPrincipal(identity);
                     var properties = new AuthenticationProperties();
@@ -96,32 +76,6 @@ namespace PCE_Web.Controllers
 
             return View();
         }
-
-        //private static string GetAccessToken(string userId)
-        //{
-        //    const string issuer = "localhost";
-        //    const string audience = "localhost";
-
-        //    var identity = new ClaimsIdentity(new List<Claim>
-        //    {
-        //        new Claim("sub", userId)
-        //    });
-
-        //    var bytes = Encoding.UTF8.GetBytes(userId);
-        //    var key = new SymmetricSecurityKey(bytes);
-        //    var signingCredentials = new SigningCredentials(
-        //        key, SecurityAlgorithms.HmacSha256);
-
-        //    var now = DateTime.UtcNow;
-        //    var handler = new JwtSecurityTokenHandler();
-
-        //    var token = handler.CreateJwtSecurityToken(
-        //        issuer, audience, identity,
-        //        now, now.Add(TimeSpan.FromHours(1)),
-        //        now, signingCredentials);
-
-        //    return handler.WriteToken(token);
-        //}
 
         [AllowAnonymous]
         public async Task<IActionResult> Logout()

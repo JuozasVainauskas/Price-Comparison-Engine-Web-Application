@@ -51,10 +51,6 @@ namespace PCE_Web.Controllers
                 {
                     new Claim(ClaimTypes.Name, RegistrationController.Email)
                 };
-                //var claims = new List<Claim>
-                //{
-                //    new Claim(ClaimTypes.Name, Guid.NewGuid().ToString())
-                //};
                 var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var principal = new ClaimsPrincipal(identity);
                 var properties = new AuthenticationProperties();
