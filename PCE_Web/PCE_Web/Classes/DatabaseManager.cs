@@ -151,22 +151,22 @@ namespace PCE_Web.Classes
             {
                 var users = context.UserData.Select(column => new UserData() { Email = column.Email, Role = column.Role, PasswordHash = "", PasswordSalt = "", UserId = 0}).ToList();
 
-                for (var i = 0; i < users.Count; i++)
+                foreach (var user in users)
                 {
                     Enum singleTempRole = null;
 
-                    if (users[i].Role == "0")
+                    if (user.Role == "0")
                     {
                         singleTempRole = Role.User;
                     }
-                    else if (users[i].Role == "1")
+                    else if (user.Role == "1")
                     {
                         singleTempRole = Role.Admin;
                     }
 
                     usersList.Add(new User()
                     {
-                        Email = users[i].Email,
+                        Email = user.Email,
                         Role = singleTempRole
                     });
                 }
