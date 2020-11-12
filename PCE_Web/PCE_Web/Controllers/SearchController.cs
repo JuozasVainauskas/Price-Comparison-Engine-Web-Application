@@ -19,22 +19,18 @@ namespace PCE_Web.Controllers
         public delegate void WriteData<THtmlNode, TItem>(List<THtmlNode> productListItems, List<TItem> products);
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
         private readonly IHttpClientFactory _httpClient;
-        private readonly IDatabaseManager _databaseManager;
-
-        public SearchController(IHttpClientFactory httpClient, IDatabaseManager databaseManager)
+        public SearchController(IHttpClientFactory httpClient)
         {
             _httpClient = httpClient;
-            _databaseManager = databaseManager;
         }
 
         [AllowAnonymous]
         public async Task<IActionResult> Suggestions(string productName)
         {
-
-            if (_databaseManager.ReadSearchedItems(productName).Any())
+            if (DatabaseManager.ReadSearchedItems(productName).Any())
             {
                 var products = new List<Item>();
-                foreach (var item in _databaseManager.ReadSearchedItems(productName))
+                foreach (var item in DatabaseManager.ReadSearchedItems(productName))
                 {
                     products.Add(item);
                 }
@@ -43,11 +39,12 @@ namespace PCE_Web.Controllers
             }
             else
             {
+            
                 var httpClient = _httpClient.CreateClient();
                 var products = new List<Item>();
                 await ReadingItemsAsync(productName, products, httpClient);
                 products = SortAndInsert(products);
-                _databaseManager.WriteSearchedItems(products, productName);
+                DatabaseManager.WriteSearchedItems(products, productName);
                 var suggestionsView = new SuggestionsView {Products = products};
                 return View(suggestionsView);
             }
@@ -325,6 +322,8 @@ namespace PCE_Web.Controllers
             return null;
         }
 
+        private static readonly object Lock=new object();
+
         private static void WriteDataFromRde(List<HtmlNode> productListItems, List<Item> products)
         {
             if (productListItems != null)
@@ -345,11 +344,12 @@ namespace PCE_Web.Controllers
                     var link = productListItem.Descendants("a").FirstOrDefault()?.GetAttributeValue("href", "");
 
                     var productListItems2 = productListItem.Descendants("div")
-                    .Where(node => node.GetAttributeValue("class", "")
-                    .Contains("photo_box")).ToList();
+                        .Where(node => node.GetAttributeValue("class", "")
+                            .Contains("photo_box")).ToList();
                     foreach (var productListItem2 in productListItems2)
                     {
-                        var imgLink = productListItem2.Descendants("img").FirstOrDefault()?.GetAttributeValue("src", "");
+                        var imgLink = productListItem2.Descendants("img").FirstOrDefault()
+                            ?.GetAttributeValue("src", "");
 
                         if (!string.IsNullOrEmpty(price))
                         {
@@ -361,14 +361,17 @@ namespace PCE_Web.Controllers
 
                             var singleItem = new Item
                             {
-                                Picture = "https://www.rde.lt/" + imgLink, 
-                                Seller = "Rde", 
-                                Name = name, 
-                                PriceDouble = priceDouble, 
-                                Price = price, 
+                                Picture = "https://www.rde.lt/" + imgLink,
+                                Seller = "Rde",
+                                Name = name,
+                                PriceDouble = priceDouble,
+                                Price = price,
                                 Link = "https://www.rde.lt/" + link
                             };
-                            products.Add(singleItem);
+                            lock (Lock)
+                            {
+                                products.Add(singleItem);
+                            }
                         }
                     }
                 }
@@ -413,7 +416,10 @@ namespace PCE_Web.Controllers
                                 Price = price, 
                                 Link = link
                             };
-                            products.Add(singleItem);
+                            lock (Lock)
+                            {
+                                products.Add(singleItem);
+                            }
                         }
                     }
                 }
@@ -461,7 +467,10 @@ namespace PCE_Web.Controllers
                                 Price = price, 
                                 Link = "https://pagrindinis.barbora.lt/" + link
                             };
-                            products.Add(item1);
+                            lock (Lock)
+                            {
+                                products.Add(item1);
+                            }
                         }
 
                         countItems--;
@@ -512,7 +521,11 @@ namespace PCE_Web.Controllers
                                 Price = price,
                                 Link = link
                             };
-                            products.Add(singleItem);
+                            lock (Lock)
+                            {
+                                products.Add(singleItem);
+                            }
+
                             countItems--;
                         }
                     }
@@ -559,8 +572,10 @@ namespace PCE_Web.Controllers
                                 Price = price, 
                                 Link = link
                             };
-
-                        products.Add(singleItem);
+                        lock (Lock)
+                        {
+                            products.Add(singleItem);
+                        }
                     }
                 }
             }
@@ -604,7 +619,10 @@ namespace PCE_Web.Controllers
                             Price = price,
                             Link = link
                         };
-                        products.Add(item1);
+                        lock (Lock)
+                        {
+                            products.Add(item1);
+                        }
 
                     }
                 }
@@ -630,7 +648,7 @@ namespace PCE_Web.Controllers
 
                     if (!string.IsNullOrEmpty(price))
                     {
-                        var regex = Regex.Match(price ?? string.Empty, @"[0-9]+\,[0-9][0-9]");
+                        var regex = Regex.Match(price, @"[0-9]+\,[0-9][0-9]");
                         price = Convert.ToString(regex);
                         var priceDouble = Convert.ToDouble(price);
 
@@ -643,7 +661,10 @@ namespace PCE_Web.Controllers
                             Price = price + '€', 
                             Link = "https://www.gintarine.lt/" + link
                         };
-                        products.Add(singleItem);
+                        lock (Lock)
+                        {
+                            products.Add(singleItem);
+                        }
                     }
                 }
             }

@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PCE_Web.Classes;
-using PCE_Web.Models;
 
 namespace PCE_Web.Controllers
 {
@@ -13,22 +12,16 @@ namespace PCE_Web.Controllers
     public class EvaluationSuccessController : Controller
     {
 
-        private readonly int[] allowedShopId = { 1, 2, 3, 4, 5, 6, 7 };
-        private readonly int[] allowedRate = { 1, 2, 3, 4, 5 };
-        private readonly IDatabaseManager _databaseManager;
-
-        public EvaluationSuccessController(IDatabaseManager databaseManager)
-        {
-            _databaseManager = databaseManager;
-        }
+        private readonly Lazy<int[]> _allowedShopId = new Lazy<int[]>(() => new[] { 1, 2, 3, 4, 5, 6, 7 });
+        private readonly Lazy<int[]> _allowedRate = new Lazy<int[]>(() => new[] { 1, 2, 3, 4, 5});
         public IActionResult Success(int shopId, int rate,string comment)
         {
             
             var currentEmail = MainWindowLoggedInController.EmailCurrentUser;
 
-            if (!_databaseManager.IsAlreadyCommented(currentEmail,shopId) && currentEmail!=null && allowedShopId.Contains(shopId) && allowedRate.Contains(rate))
+            if (!DatabaseManager.IsAlreadyCommented(currentEmail,shopId) && currentEmail!=null && _allowedShopId.Value.Contains(shopId) && _allowedRate.Value.Contains(rate))
             {
-                _databaseManager.WriteComments(currentEmail, shopId, rate, comment);
+                DatabaseManager.WriteComments(currentEmail, shopId, rate, comment);
                 return View();
             }
             else
