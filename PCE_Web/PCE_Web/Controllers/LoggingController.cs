@@ -75,7 +75,7 @@ namespace PCE_Web.Controllers
                     var claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.Name, input.Email)
-                    };
+                };
                     //var claims = new List<Claim>
                     //{
                     //    new Claim(ClaimTypes.Name, Guid.NewGuid().ToString())
