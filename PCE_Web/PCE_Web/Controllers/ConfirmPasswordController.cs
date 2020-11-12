@@ -34,7 +34,9 @@ namespace PCE_Web.Controllers
             var sendingInformation=new SendingInformation();
             var mailService=new MailService();
             sendingInformation.ButtonPushed += mailService.OnButtonPushed;
-            sendingInformation.Pushed(code);
+            var email = TempData["userEmail"].ToString();
+            TempData["userEmail"] = email;
+            sendingInformation.Pushed(code, email);
             _confirmCode = code;
             return View();
         }
