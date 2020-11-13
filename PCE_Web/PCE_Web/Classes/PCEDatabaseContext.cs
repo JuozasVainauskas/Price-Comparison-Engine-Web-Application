@@ -29,6 +29,8 @@ namespace PCE_Web.Classes
                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
                .AddJsonFile("appsettings.json")
                .Build();
+
+                //Console.WriteLine(configuration.GetValue<string>("SecretMail"));
                 optionsBuilder.UseSqlServer(configuration.GetConnectionString("PCEConnectionString"));
             }
         }
