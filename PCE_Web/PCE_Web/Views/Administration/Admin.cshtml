@@ -2,3 +2,22 @@
     Layout = "~/Views/Shared/_LayoutLoggedIn.cshtml";
 }
 
+@model AdminView
+
+<link rel="stylesheet" href="~/css/styleForSuggestionView.css">
+<br>
+<h1>Visi registruoti svetainės nariai</h1>
+<br>
+<table id="items">
+    <tr>
+        <th>Email</th>
+        <th>Rolė</th>
+    </tr>
+    @foreach (var user in @Model.Users)
+    {
+        <tr>
+            <td>@user.Email</td>
+            <td>@user.Role</td>
+        </tr>
+    }
+</table>
