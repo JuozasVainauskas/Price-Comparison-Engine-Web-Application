@@ -14,6 +14,7 @@ namespace PCE_Web.Controllers
     {
         public static int IsDeletedOrSaved = 1;
         public static string EmailCurrentUser = "";
+
         private readonly IDatabaseManager _databaseManager;
 
         public MainWindowLoggedInController(IDatabaseManager databaseManager)

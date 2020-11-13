@@ -8,7 +8,7 @@ namespace PCE_Web.Controllers
 {
     public class AdministrationController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Admin()
         {
             return View();
         }
