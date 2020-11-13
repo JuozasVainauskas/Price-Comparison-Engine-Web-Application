@@ -24,6 +24,7 @@ namespace PCE_Web.Controllers
         private readonly IHttpClientFactory _httpClient;
         private readonly IDatabaseManager _databaseManager;
 
+       
         public SearchLoggedInController(IHttpClientFactory httpClient, IDatabaseManager databaseManager)
         {
             _httpClient = httpClient;
@@ -32,6 +33,8 @@ namespace PCE_Web.Controllers
 
         public async Task<IActionResult> Suggestions(string productName, string link, string pictureUrl, string seller, string name, string price)
         {
+            throw new Exception("bad search");
+
             if (productName != null)
             {
                 SearchWord = productName;
