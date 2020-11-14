@@ -43,7 +43,7 @@ namespace PCE_Web.Controllers
             {
                 if (link != null)
                 {
-                    _databaseManager.WriteSavedItem(link, pictureUrl, seller, name, price, MainWindowLoggedInController.EmailCurrentUser);
+                    _databaseManager.WriteSavedItem(link, pictureUrl, seller, name, price,User.Identity.Name);
                     IsSaved = 1;
                     SuggestionsView.AlertBoxText = "Prekė sėkmingai išsaugota!";
                 }
@@ -65,7 +65,7 @@ namespace PCE_Web.Controllers
                 SuggestionsView.AlertBoxText = "Pasirinkite prekę, kurią norite išsaugoti arba naršykite toliau!";
                 if (link != null)
                 {
-                    _databaseManager.WriteSavedItem(link, pictureUrl, seller, name, price, MainWindowLoggedInController.EmailCurrentUser);
+                    _databaseManager.WriteSavedItem(link, pictureUrl, seller, name, price, User.Identity.Name);
                 }
                 var httpClient = _httpClient.CreateClient();
                 var products = new List<Item>();

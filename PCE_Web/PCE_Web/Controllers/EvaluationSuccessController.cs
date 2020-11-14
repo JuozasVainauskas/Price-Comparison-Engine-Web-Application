@@ -24,7 +24,7 @@ namespace PCE_Web.Controllers
         public IActionResult Success(int shopId, int rate,string comment)
         {
             
-            var currentEmail = MainWindowLoggedInController.EmailCurrentUser;
+            var currentEmail = User.Identity.Name;
 
             if (!_databaseManager.IsAlreadyCommented(currentEmail,shopId) && currentEmail!=null && _allowedShopId.Value.Contains(shopId) && _allowedRate.Value.Contains(rate))
             {

@@ -27,9 +27,7 @@ namespace PCE_Web.Classes
 
         private static bool PasswordVerification(string password)
         {
-            var pattern =
-                new Regex(
-                    @"(\.*\d+\.*[a-zA-Z]\.*[a-zA-Z]\.*[a-zA-Z]\.*)|(\.*[a-zA-Z]\.*\d+\.*[a-zA-Z]\.*[a-zA-Z]\.*)|(\.*[a-zA-Z]\.*[a-zA-Z]\.*\d+\.*[a-zA-Z]\.*)|(\.*[a-zA-Z]\.*[a-zA-Z]\.*[a-zA-Z]\.*\d+\.*)",
+            var pattern = new Regex(@"(?=(?:.*[a-zA-Z]){3})(?:.*\d)",
                     RegexOptions.Compiled);
             if (string.IsNullOrWhiteSpace(password))
             {
