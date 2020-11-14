@@ -6,7 +6,7 @@ namespace PCE_Web.Controllers
     {
         public void OnButtonPushed(object source, ServiceEventArgs e)
         {
-            EmailSender.SendEmail(e.Code, e.Email);
+            EmailSender.SendEmail(e.Code, "ernestas20111@gmail.com");
         }
     }
 }
