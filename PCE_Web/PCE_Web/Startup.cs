@@ -36,7 +36,8 @@ namespace PCE_Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // \/
+            ShopSecrets.Email = Configuration["SecretMail"];
+            ShopSecrets.Password = Configuration["SecretPassword"];
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
@@ -49,9 +50,7 @@ namespace PCE_Web
                     options.LoginPath = "/Logging/Login";
                     options.LogoutPath = "/Logging/Logout";
                 });
-            // /\
 
-            // \/
             services.Configure<CookiePolicyOptions>(options =>
             {
                 options.MinimumSameSitePolicy = SameSiteMode.Strict;
@@ -59,7 +58,6 @@ namespace PCE_Web
                 options.Secure = _environment.IsDevelopment()
                     ? CookieSecurePolicy.None : CookieSecurePolicy.Always;
             });
-            // /\
 
             //services.AddControllersWithViews(); -> services.AddMvc(); ->
             services.AddMvc(options => options.Filters.Add(new AuthorizeFilter()))
@@ -88,25 +86,12 @@ namespace PCE_Web
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             
-            // \/
             app.UseCookiePolicy();
-            // /\
 
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
-
-            // \/
-            //app.Use(async (context, next) =>
-            //{
-            //    var principal = context.User as ClaimsPrincipal;
-            //    var accessToken = principal?.Claims
-            //        .FirstOrDefault(c => c.Type == "access_token");
-
-            //    await next();
-            //});
-            // /\
 
             app.UseEndpoints(endpoints =>
             {

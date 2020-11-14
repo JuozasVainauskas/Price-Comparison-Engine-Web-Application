@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
@@ -13,7 +14,6 @@ namespace PCE_Web.Controllers
     public class MainWindowLoggedInController : Controller
     {
         public static int IsDeletedOrSaved = 1;
-        public static string EmailCurrentUser = "";
         private readonly IDatabaseManager _databaseManager;
 
         public MainWindowLoggedInController(IDatabaseManager databaseManager)
@@ -21,14 +21,8 @@ namespace PCE_Web.Controllers
             _databaseManager = databaseManager;
         }
 
-        public IActionResult Items(string email, string link, string pictureUrl, string seller, string name, string price)
+        public IActionResult Items(string link, string pictureUrl, string seller, string name, string price)
         {
-        
-            if (email != null)
-            {
-                EmailCurrentUser = email;
-            }
-
             if (link != null)
             {
                 var productToDelete = new Item
@@ -39,7 +33,7 @@ namespace PCE_Web.Controllers
                     Name = name,
                     Price = price
                 };
-                _databaseManager.DeleteSavedItem(EmailCurrentUser, productToDelete);
+                _databaseManager.DeleteSavedItem(User.Identity.Name, productToDelete);
                 IsDeletedOrSaved = 0;
             }
 
@@ -59,7 +53,7 @@ namespace PCE_Web.Controllers
             if (_databaseManager.ReadSlidesList().Any())
             {
                 var products = _databaseManager.ReadSlidesList();
-                var productsSaved = _databaseManager.ReadSavedItems(EmailCurrentUser);
+                var productsSaved = _databaseManager.ReadSavedItems(User.Identity.Name);
                
                 var slideshowView = new SlideshowView
                 {
@@ -73,7 +67,7 @@ namespace PCE_Web.Controllers
             else
             {
                 var products = new List<Slide>();
-                var productsSaved = _databaseManager.ReadSavedItems(EmailCurrentUser);
+                var productsSaved = _databaseManager.ReadSavedItems(User.Identity.Name);
                 var notExistingItem = new Slide
                 {
                     PageUrl = "",
