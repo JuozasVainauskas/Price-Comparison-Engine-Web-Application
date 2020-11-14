@@ -38,5 +38,21 @@ namespace PCE_Web.Controllers
             return View(adminView);
 
         }
+
+        public IActionResult Remove(string email)
+        {
+            var DBmanager = new DatabaseManager();
+            var users = DBmanager.ReadUsersList();
+            var temp = users.FindAll(x => x.Email == email);
+            if (temp.Count > 0)
+            {
+                DBmanager.DeleteAccount(email);
+                var adminView = new AdminView() { Users = users.Except(temp).ToList() };
+                return View(adminView);
+            }
+
+            return View();
+
+        }
     }
 }
