@@ -52,5 +52,13 @@ namespace PCE_Web.Controllers
             return RedirectToAction("Admin", "Administration");
 
         }
+
+        public IActionResult Set(string email, int roleID)
+        {
+            var DBmanager = new DatabaseManager();
+            DBmanager.SetRole(email, roleID.ToString());
+            return RedirectToAction("Admin", "Administration");
+
+        }
     }
 }

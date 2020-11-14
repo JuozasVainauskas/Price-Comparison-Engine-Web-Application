@@ -99,7 +99,7 @@ body {
     box-sizing: border-box;
 }
 
-form.example input[type=text] {
+form.styledInput input[type=text] {
     padding: 10px;
     font-size: 17px;
     border: 1px solid grey;
@@ -109,7 +109,7 @@ form.example input[type=text] {
     background: #f1f1f1;
 }
 
-form.example button {
+form.styledInput button {
     float: left;
     width: 20%;
     padding: 10px;
@@ -121,11 +121,11 @@ form.example button {
     cursor: pointer;
 }
 
-    form.example button:hover {
+    form.styledInput button:hover {
         background: #f44336;
     }
 
-form.example::after {
+form.styledInput::after {
     content: "";
     clear: both;
     display: table;
