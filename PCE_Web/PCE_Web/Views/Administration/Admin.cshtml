@@ -5,6 +5,9 @@
 @model AdminView
 
 <link rel="stylesheet" href="~/css/styleForAdminView.css">
+
+
+@ViewBag.MyMessage
 <br>
 <h1>Visi registruoti svetainės nariai</h1>
 <br>
@@ -26,23 +29,23 @@
 <form class="styledInput" method="get" action="@Url.Action("Add", "Administration")" style="margin:auto;max-width:300px">
     <input class="styledInput" type="text" placeholder="El.Paštas..." name="email" style="margin-bottom:5px;">
     <input class="styledInput" type="text" placeholder="Slaptažodis..." name="password">
-    <button type="submit"><i class="fa fa-check"></i></button>
+    <button type="submit" onclick="alertUser()"><i class="fa fa-check"></i></button>
 </form>
 <br />
 <h3>Ištrinti vartotoją:</h3>
 <form class="styledInput" method="get" action="@Url.Action("Remove", "Administration")" style="margin:auto;max-width:300px">
     <input class="styledInput" type="text" placeholder="El.Paštas..." name="email">
-    <button type="submit"><i class="fa fa-check"></i></button>
+    <button type="submit" onclick="alertUser()"><i class="fa fa-check"></i></button>
 </form>
 
 <h3>Suteikti vartotojui rolę:</h3>
 <form class="styledInput" method="get" action="@Url.Action("Set", "Administration")" style="margin:auto;max-width:300px">
-    <select class="styledInput" id="shopIdSelect" name="roleID" style="margin-bottom:5px;">
+    <select id="shopIdSelect" name="roleID" style="margin-bottom:5px;">
         <option value="0">Vartotojas</option>
         <option value="1">Administratorius</option>
     </select>
     <input class="styledInput" type="text" placeholder="El.Paštas..." name="email">
-    <button type="submit"><i class="fa fa-check"></i></button>
+    <button type="submit" onclick="alertUser()"><i class="fa fa-check"></i></button>
 </form>
 
 <div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="emailModalLabel" aria-hidden="true">

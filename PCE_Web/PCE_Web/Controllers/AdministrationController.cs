@@ -10,8 +10,9 @@ namespace PCE_Web.Controllers
 {
     public class AdministrationController : Controller
     {
-        public IActionResult Admin()
+        public IActionResult Admin(string messageString = "")
         {
+            ViewBag.MyMessage = messageString;
             var users = new List<User>();
             var DBmanager = new DatabaseManager();
             users = DBmanager.ReadUsersList();
@@ -28,7 +29,7 @@ namespace PCE_Web.Controllers
             {
                 if(user.Email == email)
                 {
-                    return RedirectToAction("Admin", "Administration");
+                    return RedirectToAction("Admin", "Administration", new { messageString = "Toks vartotojas jau egzistuoja!" });
                 }
             }
             var newUser = new User(){ Email = email, Role = Role.User};
@@ -48,8 +49,10 @@ namespace PCE_Web.Controllers
                 var adminView = new AdminView() { Users = users.Except(temp).ToList() };
                 return RedirectToAction("Admin", "Administration");
             }
-
-            return RedirectToAction("Admin", "Administration");
+            else
+            {
+                return RedirectToAction("Admin", "Administration", new { messageString = "Toks vartotojas neegzistuoja!" });
+            }
 
         }
 
@@ -57,7 +60,7 @@ namespace PCE_Web.Controllers
         {
             var DBmanager = new DatabaseManager();
             DBmanager.SetRole(email, roleID.ToString());
-            return RedirectToAction("Admin", "Administration");
+            return RedirectToAction("Admin", "Administration", new { messageString = "Rolė suteikta sėkmingai" });
 
         }
     }
