@@ -19,54 +19,55 @@
 </table>
 
 <h3>Sukurti vartotoją:</h3>
-<form class="example" action="/action_page.php" style="margin:auto;max-width:300px">
-    <input class="example" type="text" placeholder="Įveskite.." name="search2">
+<form class="example" method="get" action="@Url.Action("Add", "Administration")" style="margin:auto;max-width:300px">
+    <input class="example" type="text" placeholder="El.Paštas..." name="email">
+    <input class="example" type="text" placeholder="Slaptažodis..." name="password">
     <button type="submit"><i class="fa fa-check"></i></button>
 </form>
-<br />
-<h3>Ištrinti vartotoją:</h3>
-<form class="example" action="/action_page.php" style="margin:auto;max-width:300px">
-    <input class="example" type="text" placeholder="Įveskite.." name="search2">
-    <button type="submit"><i class="fa fa-check"></i></button>
-</form>
+    <br />
+    <h3>Ištrinti vartotoją:</h3>
+    <form class="example" method="get" action="@Url.Action("Remove", "Administration")" style="margin:auto;max-width:300px">
+        <input class="example" type="text" placeholder="El.Paštas..." name="email">
+        <button type="submit"><i class="fa fa-check"></i></button>
+    </form>
 
-<div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="emailModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="width:600px;height:700px;" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title" id="emailModalLabel" style="color: green" bold>Susisiekite</h2>
-            </div>
-            <div class="modal-body">
-
-                <h5 style="text-align:center">Susisiekite su vartotoju parašydami jam žinute žemiau esančiame lange</h5>
-                <br />
-
-                <div class="textarea" style="height:50px;">
-                    <textarea rows="2" cols="60" placeholder="Parašykite komentarą.." style="overflow:auto;resize:none"></textarea>
+    <div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="emailModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width:600px;height:700px;" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="emailModalLabel" style="color: green" bold>Susisiekite</h2>
                 </div>
-                <br />
+                <div class="modal-body">
 
-                <div class="myButton">
-                    <button type="submit">Siųsti</button>
+                    <h5 style="text-align:center">Susisiekite su vartotoju parašydami jam žinute žemiau esančiame lange</h5>
+                    <br />
+
+                    <div class="textarea" style="height:50px;">
+                        <textarea rows="2" cols="60" placeholder="Parašykite komentarą.." style="overflow:auto;resize:none"></textarea>
+                    </div>
+                    <br />
+
+                    <div class="myButton">
+                        <button type="submit">Siųsti</button>
+                    </div>
+                    <br />
+
                 </div>
-                <br />
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn first" data-dismiss="modal" style="color: green" bold>Uždaryti</button>
+                <div class="modal-footer">
+                    <button type="button" class="btn first" data-dismiss="modal" style="color: green" bold>Uždaryti</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<script>
-$(function(){
-    $('#emailModal').modal({
-        keyboard: true,
-        backdrop: "static",
-        show:false,
+    <script>
+        $(function () {
+            $('#emailModal').modal({
+                keyboard: true,
+                backdrop: "static",
+                show: false,
 
-    }).on('show', function(){ //subscribe to show method
-          var getIdFromRow = $(event.target).closest('tr').data('id'); //get the id from tr
-    });
-});
-</script>
+            }).on('show', function () { //subscribe to show method
+                var getIdFromRow = $(event.target).closest('tr').data('id'); //get the id from tr
+            });
+        });
+    </script>

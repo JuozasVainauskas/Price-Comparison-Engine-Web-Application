@@ -20,7 +20,7 @@ namespace PCE_Web.Controllers
             return View(AdminView);
         }
 
-        public IActionResult Add(string email, string password)
+         public IActionResult Add(string email, string password)
         {
             var DBmanager = new DatabaseManager();
             var users = DBmanager.ReadUsersList();
@@ -33,9 +33,7 @@ namespace PCE_Web.Controllers
             }
             var newUser = new User(){ Email = email, Role = Role.User};
             DBmanager.CreateAccount(email, password);
-            users.Add(newUser);
-            var adminView = new AdminView() { Users = users };
-            return View(adminView);
+            return RedirectToAction("Admin", "Administration");
 
         }
 
