@@ -28,7 +28,7 @@ namespace PCE_Web.Controllers
             {
                 if(user.Email == email)
                 {
-                    return View();
+                    return RedirectToAction("Admin", "Administration");
                 }
             }
             var newUser = new User(){ Email = email, Role = Role.User};
@@ -46,10 +46,10 @@ namespace PCE_Web.Controllers
             {
                 DBmanager.DeleteAccount(email);
                 var adminView = new AdminView() { Users = users.Except(temp).ToList() };
-                return View(adminView);
+                return RedirectToAction("Admin", "Administration");
             }
 
-            return View();
+            return RedirectToAction("Admin", "Administration");
 
         }
     }
