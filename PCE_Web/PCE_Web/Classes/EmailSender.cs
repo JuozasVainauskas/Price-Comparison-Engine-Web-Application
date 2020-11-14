@@ -14,24 +14,24 @@ namespace PCE_Web.Classes
 {
     internal class EmailSender
     {
-        public IConfiguration Configuration { get; }
         public static async void SendEmail(string code, string email) 
         {
 
-        var client = new SmtpClient()
-            {
-                Host = "smtp.gmail.com",
-                Port = 587,
-                EnableSsl = true,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                
-            Credentials = new NetworkCredential()
+            var client = new SmtpClient()
                 {
-                    UserName = ShopSecrets.Email,
-                    Password = ShopSecrets.Password
-            }
+                    Host = "smtp.gmail.com",
+                    Port = 587,
+                    EnableSsl = true,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    
+                    Credentials = new NetworkCredential()
+                        {
+                            UserName = ShopSecrets.Email,
+                            Password = ShopSecrets.Password
+                    }
             };
+
             var fromEmail = new MailAddress("smartshopautobot@gmail.com", "Smart Shop");
             var toEmail = new MailAddress(email, "Naudotojas");
             var message = new MailMessage()
