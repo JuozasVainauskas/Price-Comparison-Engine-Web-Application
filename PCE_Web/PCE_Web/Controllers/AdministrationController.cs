@@ -12,21 +12,23 @@ namespace PCE_Web.Controllers
     [Authorize]
     public class AdministrationController : Controller
     {
+        private readonly IDatabaseManager _databaseManager;
+        public AdministrationController(IDatabaseManager databaseManager)
+        {
+            _databaseManager = databaseManager;
+        }
         public IActionResult Admin(string messageString = "")
         {
             ViewBag.MyMessage = messageString;
-            var users = new List<User>();
-            var DBmanager = new DatabaseManager();
-            users = DBmanager.ReadUsersList();
-            var AdminView = new AdminView() {Users = users};
+            var users = _databaseManager.ReadUsersList();
+            var adminView = new AdminView() {Users = users};
 
-            return View(AdminView);
+            return View(adminView);
         }
 
          public IActionResult Add(string email, string password)
         {
-            var DBmanager = new DatabaseManager();
-            var users = DBmanager.ReadUsersList();
+            var users = _databaseManager.ReadUsersList();
             foreach(var user in users)
             {
                 if(user.Email == email)
@@ -35,19 +37,18 @@ namespace PCE_Web.Controllers
                 }
             }
             var newUser = new User(){ Email = email, Role = Role.User};
-            DBmanager.CreateAccount(email, password);
+            _databaseManager.CreateAccount(email, password);
             return RedirectToAction("Admin", "Administration");
 
         }
 
         public IActionResult Remove(string email)
         {
-            var DBmanager = new DatabaseManager();
-            var users = DBmanager.ReadUsersList();
+            var users = _databaseManager.ReadUsersList();
             var temp = users.FindAll(x => x.Email == email);
             if (temp.Count > 0)
             {
-                DBmanager.DeleteAccount(email);
+                _databaseManager.DeleteAccount(email);
                 var adminView = new AdminView() { Users = users.Except(temp).ToList() };
                 return RedirectToAction("Admin", "Administration");
             }
@@ -60,8 +61,7 @@ namespace PCE_Web.Controllers
 
         public IActionResult Set(string email, int roleID)
         {
-            var DBmanager = new DatabaseManager();
-            DBmanager.SetRole(email, roleID.ToString());
+            _databaseManager.SetRole(email, roleID.ToString());
             return RedirectToAction("Admin", "Administration", new { messageString = "Rolė suteikta sėkmingai" });
 
         }
