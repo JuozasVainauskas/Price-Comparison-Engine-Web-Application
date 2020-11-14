@@ -66,6 +66,7 @@
     <Build Include="dbo\Tables\CommentsTable.sql" />
     <Build Include="dbo\Tables\ItemsTable.sql" />
     <Build Include="dbo\Tables\ShopRatingTable.sql" />
+    <Build Include="dbo\Tables\ReportsTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="PCEDatabase.refactorlog" />
