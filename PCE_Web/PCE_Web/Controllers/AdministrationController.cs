@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +23,8 @@ namespace PCE_Web.Controllers
             ViewBag.MyMessage = messageString;
             var users = _databaseManager.ReadUsersList();
             var adminView = new AdminView() {Users = users};
+            //Testavimo tikslais
+            Console.WriteLine(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value);
 
             return View(adminView);
         }

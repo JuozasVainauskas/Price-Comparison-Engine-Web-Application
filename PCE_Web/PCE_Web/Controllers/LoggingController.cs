@@ -56,9 +56,11 @@ namespace PCE_Web.Controllers
                 var user = _databaseManager.LoginUser(input.Email, input.Password);
                 if (user != null)
                 {
+                    Console.WriteLine(user.Role);
                     var claims = new List<Claim>
                     {
-                        new Claim(ClaimTypes.Name, input.Email)
+                        new Claim(ClaimTypes.Name, input.Email),
+                        new Claim(ClaimTypes.Role, user.Role.ToString())
                     };
                     var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     var principal = new ClaimsPrincipal(identity);
