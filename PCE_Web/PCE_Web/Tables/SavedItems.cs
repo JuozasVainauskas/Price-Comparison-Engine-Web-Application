@@ -1,4 +1,7 @@
-﻿namespace PCE_Web.Tables
+﻿using System;
+using System.Collections.Generic;
+
+namespace PCE_Web.Tables
 {
     public partial class SavedItems
     {
@@ -10,5 +13,4 @@
         public string ItemName { get; set; }
         public string Price { get; set; }
     }
-
 }
