@@ -3,16 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using PCE_Web.Models;
 
 namespace PCE_Web.Controllers
 {
     public class ExceptionHandlingController : Controller
     {
-
+        private readonly IDatabaseManager databaseManager;
         [Route("Error")]
-        public IActionResult Error()
+        public IActionResult Error(Exception exception)
         {
+            //databaseManager.
+            //exception.InnerException.GetType().ToString()
             return View("Error");
         }
+        
     }
 }

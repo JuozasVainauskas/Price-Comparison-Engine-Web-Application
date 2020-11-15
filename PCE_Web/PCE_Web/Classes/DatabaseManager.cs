@@ -351,8 +351,28 @@ namespace PCE_Web.Classes
                 }
             }
         }
+        
+        public void WriteLoggedException(string message)
+            {
+                using (var context = new PCEDatabaseContext())
+                {
+                    var result = context.SavedExceptions.SingleOrDefault(column =>
+                        column.Type == message);
 
-        public List<CommentsTable> ReadComments(int index)
+                    if (result == null)
+                    {
+                        var savedExceptions = new SavedExceptions()
+                        {
+                            Type = message
+                        };
+                        context.SavedExceptions.Add(savedExceptions);
+                    context.SaveChanges();
+                    }
+                }
+            }
+
+
+            public List<CommentsTable> ReadComments(int index)
         {
             List<CommentsTable> comments;
             using (var context = new PCEDatabaseContext())

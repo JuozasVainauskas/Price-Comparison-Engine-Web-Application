@@ -20,6 +20,7 @@ namespace PCE_Web.Classes
         public virtual DbSet<SavedItems> SavedItems { get; set; }
         public virtual DbSet<ShopRatingTable> ShopRatingTable { get; set; }
         public virtual DbSet<UserData> UserData { get; set; }
+        public virtual DbSet<SavedExceptions> SavedExceptions { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -86,6 +87,14 @@ namespace PCE_Web.Classes
                 entity.Property(e => e.Price).HasMaxLength(50);
 
                 entity.Property(e => e.ShopName).HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<SavedExceptions>(entity =>
+            {
+                entity.HasKey(e => e.SavedExceptionId).HasName("");
+
+                entity.Property(e => e.Type).HasMaxLength(100);
+
             });
 
             modelBuilder.Entity<ShopRatingTable>(entity =>
