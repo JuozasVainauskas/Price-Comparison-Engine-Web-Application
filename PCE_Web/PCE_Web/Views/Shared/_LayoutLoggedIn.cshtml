@@ -77,15 +77,17 @@
                     <h5 style="text-align:center">Susisiekite su mumis radus klaidą žemiau pateiktame lange.</h5>
                     <br />
 
-                    <div class="textarea">
-                        <textarea rows="20" cols="60" placeholder="Parašykite komentarą.." style="overflow:auto;resize:none"></textarea>
-                    </div>
-                    <br />
+                    <form method="get" action="">
+                        <div class="textarea">
+                            <textarea name="report" rows="20" cols="60" placeholder="Parašykite komentarą.." style="overflow:auto;resize:none"></textarea>
+                        </div>
+                        <br />
 
-                    <div class="myButton">
-                        <button type="submit">Siųsti</button>
-                    </div>
-                    <br />
+                        <div class="myButton">
+                            <button type="submit" asp-controller="MainWindowLoggedIn" asp-action="Report">Siųsti</button>
+                        </div>
+                     </form>
+                        <br />
 
                 </div>
                 <div class="modal-footer">

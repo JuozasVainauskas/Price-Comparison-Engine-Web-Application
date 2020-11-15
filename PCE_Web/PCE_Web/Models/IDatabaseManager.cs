@@ -50,5 +50,7 @@ namespace PCE_Web.Models
             string keyword);
 
         List<Item> ReadSearchedItems(string keyword);
+
+        void WriteReport(string email, string report);
     }
 }

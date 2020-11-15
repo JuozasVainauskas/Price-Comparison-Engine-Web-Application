@@ -502,7 +502,7 @@ namespace PCE_Web.Classes
             return item;
         }
 
-        public void WriteReport(string email,string report)
+        public void WriteReport(string email, string report)
         {
             using (var context = new PCEDatabaseContext())
             {
