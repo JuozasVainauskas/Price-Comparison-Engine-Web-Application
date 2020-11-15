@@ -8,7 +8,18 @@
 
 @if (Model.Role == "Admin")
 {
-    @ViewBag.MyMessage
+    @if (!ViewBag.MyMessage.Equals(""))
+    {
+      <script type="text/javascript">
+          $(document).ready(function() {
+              $(".message-box").show();
+          });
+      </script>
+        <div id="alertBox" class="alert warning">
+            <span class="closebtn" onclick="this.parentElement.style.display = 'none';">&times;</span>
+            @ViewBag.MyMessage
+        </div>
+    }
     <br>
     <h1>Visi registruoti svetainės nariai</h1>
     <br>
