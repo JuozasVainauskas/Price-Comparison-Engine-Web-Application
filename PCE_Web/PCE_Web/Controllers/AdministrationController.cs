@@ -22,50 +22,79 @@ namespace PCE_Web.Controllers
         {
             ViewBag.MyMessage = messageString;
             var users = _databaseManager.ReadUsersList();
-            var adminView = new AdminView() {Users = users};
-            //Testavimo tikslais
-            Console.WriteLine(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value);
+            var role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
+            var adminView = new AdminView() { Users = users, Role = role };
 
             return View(adminView);
         }
 
          public IActionResult Add(string email, string password)
         {
-            var users = _databaseManager.ReadUsersList();
-            foreach(var user in users)
+
+            var role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
+            if (role == "Admin")
             {
-                if(user.Email == email)
+                var users = _databaseManager.ReadUsersList();
+                foreach (var user in users)
                 {
-                    return RedirectToAction("Admin", "Administration", new { messageString = "Toks vartotojas jau egzistuoja!" });
+                    if (user.Email == email)
+                    {
+                        return RedirectToAction("Admin", "Administration", new { messageString = "Toks vartotojas jau egzistuoja!" });
+                    }
                 }
+                var newUser = new User() { Email = email, Role = Role.User };
+                _databaseManager.CreateAccount(email, password);
+                return RedirectToAction("Admin", "Administration");
             }
-            var newUser = new User(){ Email = email, Role = Role.User};
-            _databaseManager.CreateAccount(email, password);
-            return RedirectToAction("Admin", "Administration");
+            else
+            {
+                return RedirectToAction("Admin", "Administration");
+            }
 
         }
 
         public IActionResult Remove(string email)
         {
-            var users = _databaseManager.ReadUsersList();
-            var temp = users.FindAll(x => x.Email == email);
-            if (temp.Count > 0)
+            var role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
+            var currentEmail = User.Identity.Name;
+            if (role == "Admin")
             {
-                _databaseManager.DeleteAccount(email);
-                var adminView = new AdminView() { Users = users.Except(temp).ToList() };
-                return RedirectToAction("Admin", "Administration");
-            }
-            else
-            {
-                return RedirectToAction("Admin", "Administration", new { messageString = "Toks vartotojas neegzistuoja!" });
-            }
+                var users = _databaseManager.ReadUsersList();
+                var temp = users.FindAll(x => x.Email == email);
 
+                if (email != currentEmail)
+                {
+                    if (temp.Count > 0)
+                    {
+                        _databaseManager.DeleteAccount(email);
+                        var adminView = new AdminView() { Users = users.Except(temp).ToList() };
+                        return RedirectToAction("Admin", "Administration");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Admin", "Administration", new { messageString = "Toks vartotojas neegzistuoja!" });
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("Admin", "Administration", new { messageString = "Savęs ištrinti negalite!" });
+                }
+            }
+            return RedirectToAction("Admin", "Administration");
         }
 
         public IActionResult Set(string email, int roleID)
         {
-            _databaseManager.SetRole(email, roleID.ToString());
-            return RedirectToAction("Admin", "Administration", new { messageString = "Rolė suteikta sėkmingai" });
+            var role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
+            if (role == "Admin")
+            {
+                _databaseManager.SetRole(email, roleID.ToString());
+                return RedirectToAction("Admin", "Administration", new { messageString = "Rolė suteikta sėkmingai" });
+            }
+            else
+            {
+                return RedirectToAction("Admin", "Administration");
+            }
 
         }
     }
