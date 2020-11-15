@@ -29,6 +29,7 @@ namespace PCE_Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Suggestions(string productName)
         {
+            
             if (_databaseManager.ReadSearchedItems(productName).Any())
             {
                 var products = new List<Item>();
@@ -41,7 +42,6 @@ namespace PCE_Web.Controllers
             }
             else
             {
-            
                 var httpClient = _httpClient.CreateClient();
                 var products = new List<Item>();
                 await ReadingItemsAsync(productName, products, httpClient);
@@ -372,7 +372,7 @@ namespace PCE_Web.Controllers
                             };
                             lock (Lock)
                             {
-                                products.Add(singleItem);
+                                AddingToAList(products, singleItem);
                             }
                         }
                     }
@@ -420,7 +420,7 @@ namespace PCE_Web.Controllers
                             };
                             lock (Lock)
                             {
-                                products.Add(singleItem);
+                                AddingToAList(products, singleItem);
                             }
                         }
                     }
@@ -460,7 +460,7 @@ namespace PCE_Web.Controllers
                             var priceTemporary = price;
                             priceTemporary = EliminatingEuroSimbol(priceTemporary);
                             var priceDouble = Convert.ToDouble(priceTemporary);
-                            var item1 = new Item
+                            var singleItem = new Item
                             {
                                 Picture = "https://pagrindinis.barbora.lt/" + imgLink, 
                                 Seller = "Barbora", 
@@ -471,7 +471,7 @@ namespace PCE_Web.Controllers
                             };
                             lock (Lock)
                             {
-                                products.Add(item1);
+                                AddingToAList(products, singleItem);
                             }
                         }
 
@@ -525,7 +525,7 @@ namespace PCE_Web.Controllers
                             };
                             lock (Lock)
                             {
-                                products.Add(singleItem);
+                                AddingToAList(products, singleItem);
                             }
 
                             countItems--;
@@ -576,7 +576,7 @@ namespace PCE_Web.Controllers
                             };
                         lock (Lock)
                         {
-                            products.Add(singleItem);
+                            AddingToAList(products, singleItem);
                         }
                     }
                 }
@@ -612,7 +612,7 @@ namespace PCE_Web.Controllers
                         priceAtsarg = EliminatingEuroSimbol(priceAtsarg);
 
                         var priceDouble = double.Parse(priceAtsarg);
-                        var item1 = new Item
+                        var singleItem = new Item
                         {
                             Picture = imgLink,
                             Seller = "Elektromarkt",
@@ -623,7 +623,7 @@ namespace PCE_Web.Controllers
                         };
                         lock (Lock)
                         {
-                            products.Add(item1);
+                            AddingToAList(products, singleItem);
                         }
 
                     }
@@ -665,11 +665,16 @@ namespace PCE_Web.Controllers
                         };
                         lock (Lock)
                         {
-                            products.Add(singleItem);
+                            AddingToAList(products,singleItem);
                         }
                     }
                 }
             }
+        }
+
+        private static void AddingToAList<T>(ICollection<T> list,T variable)
+        {
+            list.Add(variable);
         }
 
         private static string EliminatingEuroSimbol(string priceAtsarg)
