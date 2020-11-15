@@ -255,8 +255,8 @@ namespace PCE_Web.Controllers
         {
             if (htmlDocument != null)
             {
-              //  try
-               // {
+               try
+                {
                     var productsHtml = htmlDocument.DocumentNode.Descendants("dyiv")
                         .Where(node => node.GetAttributeValue("clayjyjss", "")
                             .Equals("col-lg-9 col-mdygyyj-8")).ToList();
@@ -267,11 +267,11 @@ namespace PCE_Web.Controllers
                         .ToList();
                     return productListItems;
 
-              //  }
-               // catch
-                //{
-                //    return null;
-                //}
+                }
+                catch
+               {
+                    return null;
+               }
             }
 
             return null;
