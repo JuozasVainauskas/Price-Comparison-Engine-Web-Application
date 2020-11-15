@@ -42,7 +42,7 @@ namespace PCE_Web.Tables
             modelBuilder.Entity<CommentsTable>(entity =>
             {
                 entity.HasKey(e => e.CommentId)
-                    .HasName("PK__tmp_ms_x__C3B4DFCA01486395");
+                    .HasName("PK__tmp_ms_x__C3B4DFCAC10B5339");
 
                 entity.Property(e => e.Date).IsRequired();
 
@@ -52,13 +52,13 @@ namespace PCE_Web.Tables
             modelBuilder.Entity<ItemsTable>(entity =>
             {
                 entity.HasKey(e => e.ItemId)
-                    .HasName("PK__ItemsTab__727E838B9BA0A08C");
+                    .HasName("PK__ItemsTab__727E838B40E775AA");
             });
 
             modelBuilder.Entity<ReportsTable>(entity =>
             {
                 entity.HasKey(e => e.ReportsId)
-                    .HasName("PK__tmp_ms_x__37856ECB6CD7432D");
+                    .HasName("PK__tmp_ms_x__37856ECB40CD5A24");
 
                 entity.Property(e => e.Comment).IsRequired();
 
@@ -68,19 +68,19 @@ namespace PCE_Web.Tables
             modelBuilder.Entity<SavedExceptions>(entity =>
             {
                 entity.HasKey(e => e.SavedExceptionId)
-                    .HasName("PK__SavedExc__1365928E961A2AFE");
+                    .HasName("PK__SavedExc__1365928E5D4ABF5E");
 
                 entity.Property(e => e.Message).IsRequired();
 
-                entity.Property(e => e.StackTrace).IsRequired();
-
                 entity.Property(e => e.Source).IsRequired();
+
+                entity.Property(e => e.StackTrace).IsRequired();
             });
 
             modelBuilder.Entity<SavedItems>(entity =>
             {
                 entity.HasKey(e => e.SavedItemId)
-                    .HasName("PK__SavedIte__1CBC88C858E6ACD1");
+                    .HasName("PK__SavedIte__1CBC88C89260BAFE");
 
                 entity.Property(e => e.Email).IsRequired();
             });
@@ -88,7 +88,7 @@ namespace PCE_Web.Tables
             modelBuilder.Entity<ShopRatingTable>(entity =>
             {
                 entity.HasKey(e => e.ShopId)
-                    .HasName("PK__ShopRati__67C557C9184615A1");
+                    .HasName("PK__ShopRati__67C557C9DA68B75D");
 
                 entity.Property(e => e.ShopName).IsRequired();
             });
@@ -96,7 +96,7 @@ namespace PCE_Web.Tables
             modelBuilder.Entity<UserData>(entity =>
             {
                 entity.HasKey(e => e.UserId)
-                    .HasName("PK__UserData__1788CC4C5812A428");
+                    .HasName("PK__UserData__1788CC4C58702D6E");
 
                 entity.Property(e => e.Email).IsRequired();
 

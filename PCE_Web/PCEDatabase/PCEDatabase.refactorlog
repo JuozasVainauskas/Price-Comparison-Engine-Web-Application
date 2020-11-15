@@ -35,4 +35,32 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="Message" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="4e325585-885d-4808-b71b-40f41c37c074" ChangeDateTime="11/15/2020 18:55:10">
+    <Property Name="ElementName" Value="[dbo].[SavedExceptions].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[SavedExceptions]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="SavedExceptionId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="f0259c7b-9689-4c92-96bb-30f2393a1bb8" ChangeDateTime="11/15/2020 19:06:50">
+    <Property Name="ElementName" Value="[dbo].[SavedExceptions].[SavedExceptionId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[SavedExceptions]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Id" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="97eb0a93-9916-48be-ae44-edde8cad8ff3" ChangeDateTime="11/15/2020 19:07:43">
+    <Property Name="ElementName" Value="[dbo].[SavedExceptions].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[SavedExceptions]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="SavedExceptionId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="9bcb93aa-5463-4a98-b8bc-5a2d1a561503" ChangeDateTime="11/15/2020 19:08:27">
+    <Property Name="ElementName" Value="[dbo].[SavedExceptions].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[SavedExceptions]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="SavedExceptionId" />
+  </Operation>
 </Operations>
