@@ -9,11 +9,15 @@ namespace PCE_Web.Controllers
 {
     public class ExceptionHandlingController : Controller
     {
-        private readonly IDatabaseManager databaseManager;
+        private readonly IDatabaseManager _databaseManager;
+        public ExceptionHandlingController(IDatabaseManager databaseManager)
+        {
+            _databaseManager = databaseManager;
+        }
         [Route("Error")]
         public IActionResult Error(Exception exception)
         {
-            //databaseManager.
+            _databaseManager.WriteLoggedException(exception.InnerException.GetType().ToString());
             //exception.InnerException.GetType().ToString()
             return View("Error");
         }

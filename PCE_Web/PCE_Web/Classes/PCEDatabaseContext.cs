@@ -89,14 +89,7 @@ namespace PCE_Web.Classes
                 entity.Property(e => e.ShopName).HasMaxLength(50);
             });
 
-            modelBuilder.Entity<SavedExceptions>(entity =>
-            {
-                entity.HasKey(e => e.SavedExceptionId).HasName("");
-
-                entity.Property(e => e.Type).HasMaxLength(100);
-
-            });
-
+      
             modelBuilder.Entity<ShopRatingTable>(entity =>
             {
                 entity.HasKey(e => e.ShopId)

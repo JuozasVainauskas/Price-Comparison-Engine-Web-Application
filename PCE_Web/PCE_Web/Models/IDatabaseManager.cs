@@ -41,6 +41,8 @@ namespace PCE_Web.Models
 
         void WriteRatings(string shopName, int votesNumber, int votersNumber);
 
+        void WriteLoggedException(string type);
+
         void WriteSearchedItems(List<Item> items, string productName);
 
         void WriteSearchedItem(string pageUrl, string imgUrl, string shopName, string itemName, string price,

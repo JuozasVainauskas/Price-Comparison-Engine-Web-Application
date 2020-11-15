@@ -352,18 +352,18 @@ namespace PCE_Web.Classes
             }
         }
         
-        public void WriteLoggedException(string message)
+        public void WriteLoggedException(string type)
             {
                 using (var context = new PCEDatabaseContext())
                 {
                     var result = context.SavedExceptions.SingleOrDefault(column =>
-                        column.Type == message);
+                        column.Type == type);
 
                     if (result == null)
                     {
                         var savedExceptions = new SavedExceptions()
                         {
-                            Type = message
+                            Type = type
                         };
                         context.SavedExceptions.Add(savedExceptions);
                     context.SaveChanges();
