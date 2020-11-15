@@ -14,10 +14,14 @@ namespace PCE_Web.Controllers
         {
             _databaseManager = databaseManager;
         }
+
         [Route("Error")]
         public IActionResult Error(Exception exception)
         {
-            _databaseManager.WriteLoggedException(exception.InnerException.GetType().ToString());
+            if (exception.InnerException != null)
+            {
+                _databaseManager.WriteLoggedExceptions(exception.InnerException.GetType().ToString());
+            }
             //exception.InnerException.GetType().ToString()
             return View("Error");
         }

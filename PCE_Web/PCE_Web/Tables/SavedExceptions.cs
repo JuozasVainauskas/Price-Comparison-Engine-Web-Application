@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace PCE_Web.Classes
+﻿namespace PCE_Web.Tables
 {
     public partial class SavedExceptions
     {

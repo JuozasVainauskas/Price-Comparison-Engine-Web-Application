@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Storage;
 using PCE_Web.Models;
+using PCE_Web.Tables;
 
 namespace PCE_Web.Classes
 {
@@ -352,12 +353,11 @@ namespace PCE_Web.Classes
             }
         }
         
-        public void WriteLoggedException(string type)
+        public void WriteLoggedExceptions(string type)
             {
                 using (var context = new PCEDatabaseContext())
                 {
-                    var result = context.SavedExceptions.SingleOrDefault(column =>
-                        column.Type == type);
+                    var result = context.SavedExceptions.SingleOrDefault(column => column.Type == type);
 
                     if (result == null)
                     {
@@ -366,13 +366,13 @@ namespace PCE_Web.Classes
                             Type = type
                         };
                         context.SavedExceptions.Add(savedExceptions);
-                    context.SaveChanges();
+                        context.SaveChanges();
                     }
                 }
             }
 
 
-            public List<CommentsTable> ReadComments(int index)
+        public List<CommentsTable> ReadComments(int index)
         {
             List<CommentsTable> comments;
             using (var context = new PCEDatabaseContext())
