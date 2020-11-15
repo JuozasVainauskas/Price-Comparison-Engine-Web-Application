@@ -27,15 +27,20 @@ namespace PCE_Web.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> Suggestions(string productName)
+        public async Task<IActionResult> Suggestions(string productName, int minPrice,int maxPrice)
         {
-            
+            Console.WriteLine("minPrice:"+minPrice);
+            Console.WriteLine("maxPrice:" + maxPrice);
             if (_databaseManager.ReadSearchedItems(productName).Any())
             {
                 var products = new List<Item>();
                 foreach (var item in _databaseManager.ReadSearchedItems(productName))
                 {
-                    products.Add(item);
+                    //Console.WriteLine(item.Price);
+                    //if ((item.PriceDouble>= minPrice) && (item.PriceDouble <= maxPrice))
+                    //{
+                        products.Add(item);
+                    //}
                 }
                 var suggestionsView = new SuggestionsView {Products = products};
                 return View(suggestionsView);
@@ -726,6 +731,11 @@ namespace PCE_Web.Controllers
         private static List<Item> SortAndInsert(List<Item> products)
         {
             products = products.OrderBy(o => o.PriceDouble).ToList();
+            return products;
+        }
+        private static List<Item> SortAndInsertByDescending(List<Item> products)
+        {
+            products = products.OrderByDescending(o => o.PriceDouble).ToList();
             return products;
         }
     }

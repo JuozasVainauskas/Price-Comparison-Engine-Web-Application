@@ -29,18 +29,48 @@
     </div>
 
     <!-- Paieškos mygtukas -->
-    <div class="search-button">
-        <form method="get" action="">
-            <div class="tb">
-                <input type="text" name="ProductName" placeholder="Ieškokite..">
-                <div class="td" id="s-cover">
-                    <input id="mvc-action-button" type="submit" asp-area="" asp-controller="Search" asp-action="Suggestions" style="position: absolute; left: -9999px" />
-                </div>
-            </div>
-        </form>
-    </div>
+<div class="search-button">
+    <form method="get" action="">
+        <div class="tb">
+            <input type="text" name="ProductName" placeholder="Ieškokite..">
+            <div class="slidecontainer">
+                <input type="range" min="1" max="5000" value="1" class="slider" id="minPrice" name="minPrice">
+                <p>Minimali kaina: <span id="demo"></span></p>
 
-    <!-- Features -->
+                <input type="range" min="1" max="5000" value="5000" class="slider2" id="maxPrice" name="maxPrice">
+                <p>Maksimali kaina: <span id="demo2"></span></p>
+            </div>
+
+            <div class="td" id="s-cover">
+                <input id="mvc-action-button" type="submit" asp-area="" asp-controller="Search" asp-action="Suggestions" style="position: absolute; left: -9999px" />
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+<script>
+    var slider = document.getElementById("minPrice");
+    var output = document.getElementById("demo");
+    output.innerHTML = slider.value;
+
+    slider.oninput = function ()
+    {
+        output.innerHTML = slider.value;
+    }
+
+    var slider2 = document.getElementById("maxPrice");
+    var output2 = document.getElementById("demo2");
+    output2.innerHTML = slider2.value;
+
+    slider2.oninput = function () {
+        output2.innerHTML = slider2.value;
+    }
+</script>
+
+
+<!-- Features -->
     <div class="features-container section-container">
         <div class="container">
             <div class="row">
