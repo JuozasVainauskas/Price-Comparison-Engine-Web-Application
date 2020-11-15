@@ -357,10 +357,10 @@ namespace PCE_Web.Classes
             {
                 using (var context = new PCEDatabaseContext())
                 {
-                    //var result = context.SavedExceptions.SingleOrDefault(column => column.Message == message);
+                    var result = context.SavedExceptions.SingleOrDefault(column => column.Message == message && column.Source == source && column.StackTrace == stackTrace);
 
-                   // if (result == null)
-                   // {
+                    if (result == null)
+                    {
                         var savedExceptions = new SavedExceptions()
                         {
                             Message = message,
@@ -369,7 +369,7 @@ namespace PCE_Web.Classes
                         };
                         context.SavedExceptions.Add(savedExceptions);
                         context.SaveChanges();
-                   // }
+                    }
                 }
             }
 
