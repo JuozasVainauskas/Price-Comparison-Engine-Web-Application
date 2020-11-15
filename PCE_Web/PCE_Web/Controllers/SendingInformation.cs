@@ -1,9 +1,11 @@
-﻿namespace PCE_Web.Controllers
+﻿using System;
+
+namespace PCE_Web.Controllers
 {
     public class SendingInformation
     {
-        public delegate void ButtonPushedEventHandler(object source, ServiceEventArgs args);
-        public event ButtonPushedEventHandler ButtonPushed;
+        public delegate void ButtonPushedEventHandler<in TArgs>(object source, TArgs args) where TArgs : EventArgs;
+        public event ButtonPushedEventHandler<ServiceEventArgs> ButtonPushed;
         public void Pushed(string code, string email)
         {
             OnButtonPushed(code, email);
