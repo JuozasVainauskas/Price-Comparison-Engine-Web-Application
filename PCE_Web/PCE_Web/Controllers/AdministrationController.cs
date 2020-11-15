@@ -56,26 +56,31 @@ namespace PCE_Web.Controllers
         public IActionResult Remove(string email)
         {
             var role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
+            var currentEmail = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
             if (role == "Admin")
             {
                 var users = _databaseManager.ReadUsersList();
                 var temp = users.FindAll(x => x.Email == email);
-                if (temp.Count > 0)
+
+                if (email != currentEmail)
                 {
-                    _databaseManager.DeleteAccount(email);
-                    var adminView = new AdminView() { Users = users.Except(temp).ToList() };
-                    return RedirectToAction("Admin", "Administration");
+                    if (temp.Count > 0)
+                    {
+                        _databaseManager.DeleteAccount(email);
+                        var adminView = new AdminView() { Users = users.Except(temp).ToList() };
+                        return RedirectToAction("Admin", "Administration");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Admin", "Administration", new { messageString = "Toks vartotojas neegzistuoja!" });
+                    }
                 }
                 else
                 {
-                    return RedirectToAction("Admin", "Administration", new { messageString = "Toks vartotojas neegzistuoja!" });
+                    return RedirectToAction("Admin", "Administration", new { messageString = "Savęs ištrinti negalite!" });
                 }
             }
-            else
-            {
-                return RedirectToAction("Admin", "Administration");
-            }
-
+            return RedirectToAction("Admin", "Administration");
         }
 
         public IActionResult Set(string email, int roleID)
