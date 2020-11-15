@@ -372,7 +372,7 @@ namespace PCE_Web.Controllers
                             };
                             lock (Lock)
                             {
-                                AddingToAList(products, singleItem);
+                                AddingToACollection(products, singleItem);
                             }
                         }
                     }
@@ -420,7 +420,7 @@ namespace PCE_Web.Controllers
                             };
                             lock (Lock)
                             {
-                                AddingToAList(products, singleItem);
+                                AddingToACollection(products, singleItem);
                             }
                         }
                     }
@@ -471,7 +471,7 @@ namespace PCE_Web.Controllers
                             };
                             lock (Lock)
                             {
-                                AddingToAList(products, singleItem);
+                                AddingToACollection(products, singleItem);
                             }
                         }
 
@@ -525,7 +525,7 @@ namespace PCE_Web.Controllers
                             };
                             lock (Lock)
                             {
-                                AddingToAList(products, singleItem);
+                                AddingToACollection(products, singleItem);
                             }
 
                             countItems--;
@@ -576,7 +576,7 @@ namespace PCE_Web.Controllers
                             };
                         lock (Lock)
                         {
-                            AddingToAList(products, singleItem);
+                            AddingToACollection(products, singleItem);
                         }
                     }
                 }
@@ -623,7 +623,7 @@ namespace PCE_Web.Controllers
                         };
                         lock (Lock)
                         {
-                            AddingToAList(products, singleItem);
+                            AddingToACollection(products, singleItem);
                         }
 
                     }
@@ -665,14 +665,14 @@ namespace PCE_Web.Controllers
                         };
                         lock (Lock)
                         {
-                            AddingToAList(products,singleItem);
+                            AddingToACollection(products,singleItem);
                         }
                     }
                 }
             }
         }
 
-        private static void AddingToAList<T>(ICollection<T> list,T variable)
+        private static void AddingToACollection<T>(ICollection<T> list,T variable)
         {
             list.Add(variable);
         }
