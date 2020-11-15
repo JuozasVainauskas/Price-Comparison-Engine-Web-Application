@@ -353,21 +353,23 @@ namespace PCE_Web.Classes
             }
         }
         
-        public void WriteLoggedExceptions(string type)
+        public void WriteLoggedExceptions(string message, string source, string stackTrace)
             {
                 using (var context = new PCEDatabaseContext())
                 {
-                    var result = context.SavedExceptions.SingleOrDefault(column => column.Type == type);
+                    //var result = context.SavedExceptions.SingleOrDefault(column => column.Message == message);
 
-                    if (result == null)
-                    {
+                   // if (result == null)
+                   // {
                         var savedExceptions = new SavedExceptions()
                         {
-                            Type = type
+                            Message = message,
+                            Source = source,
+                            StackTrace = stackTrace
                         };
                         context.SavedExceptions.Add(savedExceptions);
                         context.SaveChanges();
-                    }
+                   // }
                 }
             }
 

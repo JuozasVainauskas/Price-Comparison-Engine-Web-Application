@@ -10,7 +10,7 @@ namespace PCE_Web.Controllers
     public class ExceptionHandlingController : Controller
     {
         private readonly IDatabaseManager _databaseManager;
-        public ExceptionHandlingController(IDatabaseManager databaseManager)
+        public  ExceptionHandlingController(IDatabaseManager databaseManager)
         {
             _databaseManager = databaseManager;
         }
@@ -18,6 +18,8 @@ namespace PCE_Web.Controllers
         [Route("Error")]
         public IActionResult Error(Exception exception)
         {
+            Console.WriteLine("aaaaaaaaaaaaaa)");
+            _databaseManager.WriteLoggedExceptions("aaaaaaaaaaaa");
             if (exception.InnerException != null)
             {
                 _databaseManager.WriteLoggedExceptions(exception.InnerException.GetType().ToString());

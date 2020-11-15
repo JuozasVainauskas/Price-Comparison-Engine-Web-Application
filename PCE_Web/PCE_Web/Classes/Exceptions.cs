@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace PCE_Web.Tables
+namespace PCE_Web.Classes
 {
-    public partial class SavedExceptions
+    public class Exceptions
     {
-        public int SavedExceptionId { get; set; }
         public string Message { get; set; }
+
         public string StackTrace { get; set; }
+
         public string Source { get; set; }
+
     }
 }

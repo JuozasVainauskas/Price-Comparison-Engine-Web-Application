@@ -70,7 +70,11 @@ namespace PCE_Web.Tables
                 entity.HasKey(e => e.SavedExceptionId)
                     .HasName("PK__SavedExc__1365928E961A2AFE");
 
-                entity.Property(e => e.Type).IsRequired();
+                entity.Property(e => e.Message).IsRequired();
+
+                entity.Property(e => e.StackTrace).IsRequired();
+
+                entity.Property(e => e.Source).IsRequired();
             });
 
             modelBuilder.Entity<SavedItems>(entity =>

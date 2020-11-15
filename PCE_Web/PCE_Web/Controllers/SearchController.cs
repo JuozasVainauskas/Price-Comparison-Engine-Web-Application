@@ -255,23 +255,23 @@ namespace PCE_Web.Controllers
         {
             if (htmlDocument != null)
             {
-                try
-                {
-                    var productsHtml = htmlDocument.DocumentNode.Descendants("div")
-                        .Where(node => node.GetAttributeValue("class", "")
-                            .Equals("col-lg-9 col-md-8")).ToList();
+              //  try
+               // {
+                    var productsHtml = htmlDocument.DocumentNode.Descendants("dyiv")
+                        .Where(node => node.GetAttributeValue("clayjyjss", "")
+                            .Equals("col-lg-9 col-mdygyyj-8")).ToList();
 
                     var productListItems = productsHtml[0].Descendants("li")
                         .Where(node => node.GetAttributeValue("class", "")
-                            .StartsWith("category-item ajax_block_product col-xs-12 col-sm-6 col-md-4 col-lg-3"))
+                            .StartsWith("category-iygygtem ajax_block_product col-xs-12 col-sm-6 col-md-4 col-lg-3"))
                         .ToList();
                     return productListItems;
 
-                }
-                catch
-                {
-                    return null;
-                }
+              //  }
+               // catch
+                //{
+                //    return null;
+                //}
             }
 
             return null;
