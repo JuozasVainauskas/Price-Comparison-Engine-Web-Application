@@ -7,6 +7,7 @@ namespace PCE_Web.Classes
 {
     public partial class SavedExceptions
     {
+        public int SavedExceptionId { get; set; }
         public string Type { get; set; }
     }
 }
