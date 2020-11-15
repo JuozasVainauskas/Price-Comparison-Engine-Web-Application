@@ -56,7 +56,7 @@ namespace PCE_Web.Controllers
         public IActionResult Remove(string email)
         {
             var role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
-            var currentEmail = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
+            var currentEmail = User.Identity.Name;
             if (role == "Admin")
             {
                 var users = _databaseManager.ReadUsersList();
