@@ -9,7 +9,7 @@ using PCE_Web.Models;
 
 namespace PCE_Web.Models
 {
-    public class ParticularItemLoggedInView : IEnumerable, IParticularItemLoggedInView
+    public class ParticularItemLoggedInView : IEnumerable
     {
         public List<Item> Products { get; set; }
         public IEnumerator GetEnumerator()
