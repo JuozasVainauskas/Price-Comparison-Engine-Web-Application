@@ -373,6 +373,25 @@ namespace PCE_Web.Classes
                 }
             }
 
+        public List<SavedExceptions> ReadLoggedExceptions()
+        {
+            var exceptions = new List<SavedExceptions>(); 
+            using (var context = new PCEDatabaseContext())
+            {
+                var exception = context.SavedExceptions
+                .Where(row => row.SavedExceptionId > 0)
+                .Select(column => new SavedExceptions { Message = column.Message, StackTrace = column.StackTrace, Source = column.Source })
+                .ToList();
+
+                foreach (var exceptionss in exception)
+                {
+                    exceptions.Add(exceptionss);
+                }
+            }
+
+            return exceptions;
+        }
+
 
         public List<CommentsTable> ReadComments(int index)
         {
