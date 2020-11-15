@@ -38,18 +38,9 @@ namespace PCE_Web.Controllers
         public IActionResult Error()
         {
             var feature = this.HttpContext.Features.Get<IExceptionHandlerFeature>();
-            Console.WriteLine("exception.StackTracettttttttttt1" + feature.Error.Message);
-            Console.WriteLine("exception.StackTracettttttttttt2" + feature.Error.StackTrace);
-                Console.WriteLine("/n exception.StackTracetttttttttttexception.Source3" + feature.Error.Source);
+
             _databaseManager.WriteLoggedExceptions(feature.Error.Message, feature.Error.StackTrace, feature.Error.Source);
 
-            // _databaseManager.WriteLoggedExceptions(exception.Message);
-            //exception.GetType().FullName
-            // if (exception.InnerException != null)
-            // {
-            //_databaseManager.WriteLoggedExceptions(exception.StackTrace);
-            //}
-            //exception.InnerException.GetType().ToString()
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
