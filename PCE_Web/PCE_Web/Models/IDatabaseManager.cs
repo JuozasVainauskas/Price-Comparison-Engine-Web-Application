@@ -16,8 +16,6 @@ namespace PCE_Web.Models
 
         List<User> ReadUsersList();
 
-        List<User> Bad_ReadUsersList();
-
         void RegisterUser(string email, string password);
 
         User LoginUser(string email, string password);

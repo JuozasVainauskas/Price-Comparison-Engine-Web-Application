@@ -136,11 +136,10 @@ namespace PCE_Web.Classes
                     };
                     context.UserData.Add(userData);
                     context.SaveChanges();
-                    //UpdateStatistics();
-                    //MessageBox.Show("Vartotojas sekmingai sukurtas!");
                 }
             }
         }
+
         public List<User> ReadUsersList()
         {
             var usersList = new List<User>();
@@ -165,39 +164,6 @@ namespace PCE_Web.Classes
                     usersList.Add(new User()
                     {
                         Email = user.Email,
-                        Role = singleTempRole
-                    });
-                }
-            }
-
-            return usersList;
-        }
-
-        public List<User> Bad_ReadUsersList()
-        {
-            var usersList = new List<User>();
-
-            using (var context = new PCEDatabaseContext())
-            {
-                var tempEmail = context.UserData.Select(column => column.Email).ToList();
-                var tempRole = context.UserData.Select(column => column.Role).ToList();
-
-                for (var i = 0; i < tempRole.Count; i++)
-                {
-                    Enum singleTempRole = null;
-
-                    if (tempRole[i] == "0")
-                    {
-                        singleTempRole = Role.User;
-                    }
-                    else if (tempRole[i] == "1")
-                    {
-                        singleTempRole = Role.Admin;
-                    }
-
-                    usersList.Add(new User()
-                    {
-                        Email = tempEmail[i],
                         Role = singleTempRole
                     });
                 }

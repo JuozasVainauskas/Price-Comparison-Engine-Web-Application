@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.Eventing.Reader;
 using System.Security.Claims;
@@ -32,8 +33,10 @@ namespace PCE_Web.Controllers
             var code = GenerateHash.CreateSalt(16);
             code = code.Remove(code.Length - 2);
             var sendingInformation=new SendingInformation();
-            var mailService=new MailService();
-            sendingInformation.ButtonPushed += mailService.OnButtonPushed;
+            sendingInformation.ButtonPushed += (sender, e)=>
+            {
+                EmailSender.SendEmail(e.Code, "ernestas20111@gmail.com");
+            };
             var email = TempData["userEmail"].ToString();
             TempData["userEmail"] = email;
             sendingInformation.Pushed(code, email);
@@ -55,7 +58,8 @@ namespace PCE_Web.Controllers
 
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, email)
+                    new Claim(ClaimTypes.Name, email),
+                    new Claim(ClaimTypes.Role, "User")
                 };
                 var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var principal = new ClaimsPrincipal(identity);
