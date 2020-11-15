@@ -501,5 +501,19 @@ namespace PCE_Web.Classes
 
             return item;
         }
+
+        public void WriteReport(string email,string report)
+        {
+            using (var context = new PCEDatabaseContext())
+            {
+                var newReport = new ReportsTable()
+                {
+                    Email = email,
+                    Comment = report
+                };
+                    context.ReportsTable.Add(newReport);
+                    context.SaveChanges();
+            }
+        }
     }
 }
