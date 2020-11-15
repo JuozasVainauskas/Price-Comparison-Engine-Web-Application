@@ -1,4 +1,7 @@
 ﻿@using PCE_Web.Controllers
+@using System.Security.Claims;
+
+
 <link rel="icon" href="/img/logo.png">
 <!DOCTYPE html>
 <html lang="en">
@@ -31,8 +34,7 @@
 
 <body>
 
-    <div class="modal fade" id="dukModal" tabindex="-1" 
-         
+    <div class="modal fade" id="dukModal" tabindex="-1"
          ="dialog" aria-labelledby="dukModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -55,7 +57,7 @@
 
                     <h2 style="color: green" bold>Ką daryti, jeigu radau klaidą?</h2>
                     <p>Praneškite klaidą administracijai paštu.</p>
-                    
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn first" data-dismiss="modal" style="color: green" bold>Uždaryti</button>
@@ -96,20 +98,23 @@
     <!-- Top menu -->
     <nav class="navbar navbar-inverse" role="navigation">
         <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#top-navbar-1">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#top-navbar-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
 
-            </button>
-            <button class="navbar-brand" onclick="location.href ='@Url.Action("Items", "MainWindowLoggedIn")'"></button>
-        </div>
+                </button>
+                <button class="navbar-brand" onclick="location.href ='@Url.Action("Items", "MainWindowLoggedIn")'"></button>
+            </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="top-navbar-1">
                 <ul class="nav navbar-nav navbar-left navbar-menu-items wow fadeIn">
-                    <li><a asp-area="" asp-controller="Administration" asp-action="Admin">Administruoti</a></li>
+                    @if (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Admin")
+                    {
+                        <li><a asp-area="" asp-controller="Administration" asp-action="Admin">Administruoti</a></li>
+                    }
                     <li><a asp-area="" asp-controller="Logging" asp-action="Logout">Atsijungti</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right navbar-menu-items wow fadeIn">
@@ -119,7 +124,7 @@
 
                 </ul>
             </div>
-        
+
         </div>
     </nav>
     <!-- Footer -->
