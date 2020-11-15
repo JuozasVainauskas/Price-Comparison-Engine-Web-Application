@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using HtmlAgilityPack;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PCE_Web.Classes;
 using PCE_Web.Models;
 
@@ -17,7 +16,7 @@ namespace PCE_Web.Controllers
     {
         public static int SoldOutBarbora;
         public static int SoldOut;
-        public delegate void WriteData<THtmlNode, TItem, in TInt>(List<THtmlNode> productListItems, List<TItem> products, TInt minPrice, TInt maxPrice);
+        public delegate void WriteData<THtmlNode, TItem>(List<THtmlNode> productListItems, List<TItem> products);
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
         private readonly IHttpClientFactory _httpClient;
         private readonly IDatabaseManager _databaseManager;
@@ -28,7 +27,7 @@ namespace PCE_Web.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> Suggestions(string productName, int minPrice,int maxPrice)
+        public async Task<IActionResult> Suggestions(string productName)
         {
             
             if (_databaseManager.ReadSearchedItems(productName).Any())
@@ -36,13 +35,8 @@ namespace PCE_Web.Controllers
                 var products = new List<Item>();
                 foreach (var item in _databaseManager.ReadSearchedItems(productName))
                 {
-                    var price = ConvertingToDouble(item.Price);
-                    if ((price>= minPrice) && (price <= maxPrice))
-                    {
-                        products.Add(item);
-                    }
+                    products.Add(item);
                 }
-                products = SortAndInsert(products);
                 var suggestionsView = new SuggestionsView {Products = products};
                 return View(suggestionsView);
             }
@@ -50,23 +44,23 @@ namespace PCE_Web.Controllers
             {
                 var httpClient = _httpClient.CreateClient();
                 var products = new List<Item>();
-                await ReadingItemsAsync(productName, products, httpClient, minPrice, maxPrice);
+                await ReadingItemsAsync(productName, products, httpClient);
                 products = SortAndInsert(products);
-                //_databaseManager.WriteSearchedItems(products, productName);
+                _databaseManager.WriteSearchedItems(products, productName);
                 var suggestionsView = new SuggestionsView {Products = products};
                 return View(suggestionsView);
             }
         }
 
-        private async Task ReadingItemsAsync(string productName,List<Item> products,HttpClient httpClient,int minPrice,int maxPrice)
+        private async Task ReadingItemsAsync(string productName,List<Item> products,HttpClient httpClient)
         {
-            var gettingRde = await Task.Factory.StartNew(() => gettingItemsFromRde(productName, products, httpClient, minPrice, maxPrice));
-            var gettingBarbora = await Task.Factory.StartNew(() => gettingItemsFromBarbora(productName, products, httpClient, minPrice, maxPrice));
-            var gettingAvitela = await Task.Factory.StartNew(() => gettingItemsFromAvitela(productName, products, httpClient, minPrice, maxPrice));
-            var gettingPigu = await Task.Factory.StartNew(() => gettingItemsFromPigu(productName, products, httpClient, minPrice, maxPrice));
-            var gettingGintarine = await Task.Factory.StartNew(() => gettingItemsFromGintarineVaistine(productName, products, httpClient, minPrice, maxPrice));
-            var gettingElektromarkt = await Task.Factory.StartNew(() => gettingItemsFromElektromarkt(productName, products, httpClient, minPrice, maxPrice));
-            var gettingBigBox = await Task.Factory.StartNew(() => gettingItemsFromBigBox(productName, products, httpClient, minPrice, maxPrice));
+            var gettingRde = await Task.Factory.StartNew(() => gettingItemsFromRde(productName, products, httpClient));
+            var gettingBarbora = await Task.Factory.StartNew(() => gettingItemsFromBarbora(productName, products, httpClient));
+            var gettingAvitela = await Task.Factory.StartNew(() => gettingItemsFromAvitela(productName, products, httpClient));
+            var gettingPigu = await Task.Factory.StartNew(() => gettingItemsFromPigu(productName, products, httpClient));
+            var gettingGintarine = await Task.Factory.StartNew(() => gettingItemsFromGintarineVaistine(productName, products, httpClient));
+            var gettingElektromarkt = await Task.Factory.StartNew(() => gettingItemsFromElektromarkt(productName, products, httpClient));
+            var gettingBigBox = await Task.Factory.StartNew(() => gettingItemsFromBigBox(productName, products, httpClient));
             var taskList = new List<Task>
             {
                 gettingRde, gettingBarbora, gettingAvitela, gettingPigu, gettingGintarine, gettingElektromarkt,
@@ -75,69 +69,69 @@ namespace PCE_Web.Controllers
             Task.WaitAll(taskList.ToArray());
         }
 
-        private async Task gettingItemsFromRde(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice)
+        private async Task gettingItemsFromRde(string productName, List<Item> products, HttpClient httpClient)
         {
             
             var urlRde = "https://www.rde.lt/search_result/lt/word/" + productName + "/page/1"; 
             Search<HtmlDocument> rdeSearch = RdeSearch;
-            WriteData<HtmlNode, Item,int> writeDataFromRde = WriteDataFromRde;
+            WriteData<HtmlNode, Item> writeDataFromRde = WriteDataFromRde;
             var rdeItems = rdeSearch(await Html(httpClient, urlRde));
-            writeDataFromRde(rdeItems, products, minPrice, maxPrice);
+            writeDataFromRde(rdeItems, products);
             
         }
 
-        private async Task gettingItemsFromBarbora(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice)
+        private async Task gettingItemsFromBarbora(string productName, List<Item> products, HttpClient httpClient)
         {
             var urlBarbora = "https://pagrindinis.barbora.lt/paieska?q=" + productName;
             Search<HtmlDocument> barboraSearch = BarboraSearch;
-            WriteData<HtmlNode, Item, int> writeDataFromBarbora = WriteDataFromBarbora;
+            WriteData<HtmlNode, Item> writeDataFromBarbora = WriteDataFromBarbora;
             var barboraItems = barboraSearch(await Html(httpClient, urlBarbora));
-            writeDataFromBarbora(barboraItems, products, minPrice, maxPrice);
+            writeDataFromBarbora(barboraItems, products);
         }
 
-        private async Task gettingItemsFromAvitela(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice)
+        private async Task gettingItemsFromAvitela(string productName, List<Item> products, HttpClient httpClient)
         {
             var urlAvitela = "https://avitela.lt/paieska/" + productName;
             Search<HtmlDocument> avitelaSearch = AvitelaSearch;
-            WriteData<HtmlNode, Item, int> writeDataFromAvitela = WriteDataFromAvitela;
+            WriteData<HtmlNode, Item> writeDataFromAvitela = WriteDataFromAvitela;
             var avitelaItems = avitelaSearch(await Html(httpClient, urlAvitela));
-            writeDataFromAvitela(avitelaItems, products, minPrice, maxPrice);
+            writeDataFromAvitela(avitelaItems, products);
         }
 
-        private async Task gettingItemsFromPigu(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice)
+        private async Task gettingItemsFromPigu(string productName, List<Item> products, HttpClient httpClient)
         {
             var urlPigu = "https://pigu.lt/lt/search?q=" + productName;
             Search<HtmlDocument> piguSearch = PiguSearch;
-            WriteData<HtmlNode, Item, int> writeDataFromPigu = WriteDataFromPigu;
+            WriteData<HtmlNode, Item> writeDataFromPigu = WriteDataFromPigu;
             var piguItems = piguSearch(await Html(httpClient, urlPigu));
-            writeDataFromPigu(piguItems, products, minPrice, maxPrice);
+            writeDataFromPigu(piguItems, products);
         }
 
-        private async Task gettingItemsFromBigBox(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice)
+        private async Task gettingItemsFromBigBox(string productName, List<Item> products, HttpClient httpClient)
         {
             var urlBigBox = "https://bigbox.lt/paieska?controller=search&orderby=position&orderway=desc&ssa_submit=&search_query=" + productName;
             Search<HtmlDocument> bigBoxSearch = BigBoxSearch;
-            WriteData<HtmlNode, Item, int> writeDataFromBigBox = WriteDataFromBigBox;
+            WriteData<HtmlNode, Item> writeDataFromBigBox = WriteDataFromBigBox;
             var bigBoxItems = bigBoxSearch(await Html(httpClient, urlBigBox));
-            writeDataFromBigBox(bigBoxItems, products, minPrice, maxPrice);
+            writeDataFromBigBox(bigBoxItems, products);
         }
 
-        private async Task gettingItemsFromGintarineVaistine(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice)
+        private async Task gettingItemsFromGintarineVaistine(string productName, List<Item> products, HttpClient httpClient)
         {
             var urlGintarineVaistine = "https://www.gintarine.lt/search?adv=false&cid=0&mid=0&vid=0&q=" + productName + "%5D&sid=false&isc=true&orderBy=0";
             Search<HtmlDocument> gintarineVaistineSearch = GintarineVaistineSearch;
-            WriteData<HtmlNode, Item, int> writeDataFromGintarineVaistine = WriteDataFromGintarineVaistine;
+            WriteData<HtmlNode, Item> writeDataFromGintarineVaistine = WriteDataFromGintarineVaistine;
             var gintarineVaistineItems = gintarineVaistineSearch(await Html(httpClient, urlGintarineVaistine));
-            writeDataFromGintarineVaistine(gintarineVaistineItems, products, minPrice, maxPrice);
+            writeDataFromGintarineVaistine(gintarineVaistineItems, products);
         }
 
-        private async Task gettingItemsFromElektromarkt(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice)
+        private async Task gettingItemsFromElektromarkt(string productName, List<Item> products, HttpClient httpClient)
         {
             var urlElektromarkt = "https://elektromarkt.lt/paieska/" + productName;
             Search<HtmlDocument> elektromarktSearch = ElektromarktSearch;
-            WriteData<HtmlNode, Item, int> writeDataFromElektromarkt = WriteDataFromElektromarkt;
+            WriteData<HtmlNode, Item> writeDataFromElektromarkt = WriteDataFromElektromarkt;
             var elektromarktItems = elektromarktSearch(await Html(httpClient, urlElektromarkt));
-            writeDataFromElektromarkt(elektromarktItems, products, minPrice, maxPrice);
+            writeDataFromElektromarkt(elektromarktItems, products);
         }
 
         private static async Task<HtmlDocument> Html(HttpClient httpClient, string urlget)
@@ -332,7 +326,7 @@ namespace PCE_Web.Controllers
 
         private static readonly object Lock=new object();
 
-        private static void WriteDataFromRde(List<HtmlNode> productListItems, List<Item> products, int minPrice, int maxPrice)
+        private static void WriteDataFromRde(List<HtmlNode> productListItems, List<Item> products)
         {
             if (productListItems != null)
             {
@@ -344,45 +338,41 @@ namespace PCE_Web.Controllers
                             .Equals("product_price_wo_discount_listing"))
                         ?.InnerText.Trim();
 
-                    price = EliminatingSymbols2(price);
-                    var priceAtsarg = price;
-                    priceAtsarg = EliminatingSymbols2(priceAtsarg);
-                    priceAtsarg = EliminatingEuroSimbol(priceAtsarg);
-                    var priceDouble = Convert.ToDouble(priceAtsarg);
+                    var name = productListItem
+                        .Descendants("div").FirstOrDefault(node => node.GetAttributeValue("class", "")
+                            .Equals("product_name"))
+                        ?.InnerText.Trim();
 
-                    if ((priceDouble > minPrice) && (priceDouble < maxPrice))
+                    var link = productListItem.Descendants("a").FirstOrDefault()?.GetAttributeValue("href", "");
+
+                    var productListItems2 = productListItem.Descendants("div")
+                        .Where(node => node.GetAttributeValue("class", "")
+                            .Contains("photo_box")).ToList();
+                    foreach (var productListItem2 in productListItems2)
                     {
+                        var imgLink = productListItem2.Descendants("img").FirstOrDefault()
+                            ?.GetAttributeValue("src", "");
 
-                        var name = productListItem
-                            .Descendants("div").FirstOrDefault(node => node.GetAttributeValue("class", "")
-                                .Equals("product_name"))
-                            ?.InnerText.Trim();
-
-                        var link = productListItem.Descendants("a").FirstOrDefault()?.GetAttributeValue("href", "");
-
-                        var productListItems2 = productListItem.Descendants("div")
-                            .Where(node => node.GetAttributeValue("class", "")
-                                .Contains("photo_box")).ToList();
-                        foreach (var productListItem2 in productListItems2)
+                        if (!string.IsNullOrEmpty(price))
                         {
-                            var imgLink = productListItem2.Descendants("img").FirstOrDefault()
-                                ?.GetAttributeValue("src", "");
+                            price = EliminatingSymbols2(price);
+                            var priceAtsarg = price;
+                            priceAtsarg = EliminatingSymbols2(priceAtsarg);
+                            priceAtsarg = EliminatingEuroSimbol(priceAtsarg);
+                            var priceDouble = Convert.ToDouble(priceAtsarg);
 
-                            if (!string.IsNullOrEmpty(price))
+                            var singleItem = new Item
                             {
-                                var singleItem = new Item
-                                {
-                                    Picture = "https://www.rde.lt/" + imgLink,
-                                    Seller = "Rde",
-                                    Name = name,
-                                    PriceDouble = priceDouble,
-                                    Price = price,
-                                    Link = "https://www.rde.lt/" + link
-                                };
-                                lock (Lock)
-                                {
-                                    AddingToACollection(products, singleItem);
-                                }
+                                Picture = "https://www.rde.lt/" + imgLink,
+                                Seller = "Rde",
+                                Name = name,
+                                PriceDouble = priceDouble,
+                                Price = price,
+                                Link = "https://www.rde.lt/" + link
+                            };
+                            lock (Lock)
+                            {
+                                AddingToACollection(products, singleItem);
                             }
                         }
                     }
@@ -390,7 +380,7 @@ namespace PCE_Web.Controllers
             }
         }
 
-        private static void WriteDataFromAvitela(List<HtmlNode> productListItems, List<Item> products, int minPrice, int maxPrice)
+        private static void WriteDataFromAvitela(List<HtmlNode> productListItems, List<Item> products)
         {
             if (productListItems != null)
             {
@@ -402,41 +392,35 @@ namespace PCE_Web.Controllers
                             .Equals("price"))
                         ?.InnerText.Trim();
 
-                    price = EliminatingSymbols(price);
-                    var priceAtsarg = price;
-                    priceAtsarg = EliminatingEuroSimbol(priceAtsarg);
-                    var priceDouble = Convert.ToDouble(priceAtsarg);
+                    var name = productListItem
+                        .Descendants("div").FirstOrDefault(node => node.GetAttributeValue("class", "")
+                            .Equals("name"))
+                        ?.InnerText.Trim();
 
-                    if ((priceDouble > minPrice) && (priceDouble < maxPrice))
+                    var link = productListItem.Descendants("a").FirstOrDefault()?.GetAttributeValue("href", "");
+
+                    var imgLink = productListItem.Descendants("img").FirstOrDefault()?.GetAttributeValue("data-echo", "");
+
+                    if (!string.IsNullOrEmpty(price))
                     {
-
-                        var name = productListItem
-                            .Descendants("div").FirstOrDefault(node => node.GetAttributeValue("class", "")
-                                .Equals("name"))
-                            ?.InnerText.Trim();
-
-                        var link = productListItem.Descendants("a").FirstOrDefault()?.GetAttributeValue("href", "");
-
-                        var imgLink = productListItem.Descendants("img").FirstOrDefault()
-                            ?.GetAttributeValue("data-echo", "");
-
-                        if (!string.IsNullOrEmpty(price))
+                        price = EliminatingSymbols(price);
+                        var priceAtsarg = price;
+                        priceAtsarg = EliminatingEuroSimbol(priceAtsarg);
+                        var priceDouble = Convert.ToDouble(priceAtsarg);
+                        if (imgLink != "")
                         {
-                            if (imgLink != "")
+                            var singleItem = new Item
                             {
-                                var singleItem = new Item
-                                {
-                                    Picture = imgLink,
-                                    Seller = "Avitela",
-                                    Name = name,
-                                    PriceDouble = priceDouble,
-                                    Price = price,
-                                    Link = link
-                                };
-                                lock (Lock)
-                                {
-                                    AddingToACollection(products, singleItem);
-                                }
+                                Picture = imgLink, 
+                                Seller = "Avitela", 
+                                Name = name, 
+                                PriceDouble = priceDouble, 
+                                Price = price, 
+                                Link = link
+                            };
+                            lock (Lock)
+                            {
+                                AddingToACollection(products, singleItem);
                             }
                         }
                     }
@@ -444,7 +428,7 @@ namespace PCE_Web.Controllers
             }
         }
 
-        private static void WriteDataFromBarbora(List<HtmlNode> productListItems, List<Item> products, int minPrice, int maxPrice)
+        private static void WriteDataFromBarbora(List<HtmlNode> productListItems, List<Item> products)
         {
             if (productListItems != null)
             {
@@ -458,50 +442,45 @@ namespace PCE_Web.Controllers
                                 .Equals("b-product-price-current-number"))
                             ?.InnerText.Trim();
 
-                        price = EliminatingSymbols(price);
-                        var priceTemporary = price;
-                        priceTemporary = EliminatingEuroSimbol(priceTemporary);
-                        var priceDouble = Convert.ToDouble(priceTemporary);
+                        var name = productListItem
+                            .Descendants("span").FirstOrDefault(node => node.GetAttributeValue("itemprop", "")
+                                .Equals("name"))
+                            ?.InnerText.Trim();
 
-                        if ((priceDouble > minPrice) && (priceDouble < maxPrice))
+                        var link = productListItem.Descendants("a").FirstOrDefault()?.GetAttributeValue("href", "");
+
+                        var imgLink = productListItem
+                            .Descendants("img").FirstOrDefault(node => node.GetAttributeValue("itemprop", "")
+                                .Contains("image"))
+                            ?.GetAttributeValue("src", "");
+
+                        if (!string.IsNullOrEmpty(price))
                         {
-
-                            var name = productListItem
-                                .Descendants("span").FirstOrDefault(node => node.GetAttributeValue("itemprop", "")
-                                    .Equals("name"))
-                                ?.InnerText.Trim();
-
-                            var link = productListItem.Descendants("a").FirstOrDefault()?.GetAttributeValue("href", "");
-
-                            var imgLink = productListItem
-                                .Descendants("img").FirstOrDefault(node => node.GetAttributeValue("itemprop", "")
-                                    .Contains("image"))
-                                ?.GetAttributeValue("src", "");
-
-                            if (!string.IsNullOrEmpty(price))
+                            price = EliminatingSymbols(price);
+                            var priceTemporary = price;
+                            priceTemporary = EliminatingEuroSimbol(priceTemporary);
+                            var priceDouble = Convert.ToDouble(priceTemporary);
+                            var singleItem = new Item
                             {
-                                var singleItem = new Item
-                                {
-                                    Picture = "https://pagrindinis.barbora.lt/" + imgLink,
-                                    Seller = "Barbora",
-                                    Name = name,
-                                    PriceDouble = priceDouble,
-                                    Price = price,
-                                    Link = "https://pagrindinis.barbora.lt/" + link
-                                };
-                                lock (Lock)
-                                {
-                                    AddingToACollection(products, singleItem);
-                                }
+                                Picture = "https://pagrindinis.barbora.lt/" + imgLink, 
+                                Seller = "Barbora", 
+                                Name = name, 
+                                PriceDouble = priceDouble, 
+                                Price = price, 
+                                Link = "https://pagrindinis.barbora.lt/" + link
+                            };
+                            lock (Lock)
+                            {
+                                AddingToACollection(products, singleItem);
                             }
-
-                            countItems--;
                         }
+
+                        countItems--;
                     }
             }
         }
 
-        private static void WriteDataFromPigu(List<HtmlNode> productListItems, List<Item> products, int minPrice, int maxPrice)
+        private static void WriteDataFromPigu(List<HtmlNode> productListItems, List<Item> products)
         {
             if (productListItems != null)
             {
@@ -514,53 +493,48 @@ namespace PCE_Web.Controllers
                             .Descendants("span").FirstOrDefault(node => node.GetAttributeValue("class", "")
                                 .Equals("price notranslate"))
                             ?.InnerText.Trim();
+                        var name = productListItem
+                            .Descendants("p").FirstOrDefault(node => node.GetAttributeValue("class", "")
+                                .Equals("product-name"))
+                            ?.InnerText.Trim();
 
-                        price = EliminateSpacesPigu(price);
-                        var priceAtsarg = price;
-                        price = EliminatingEuroSimbol(price);
-                        price += "€";
-                        priceAtsarg = EliminatingEuroSimbol(priceAtsarg);
-                        var priceDouble = Convert.ToDouble(priceAtsarg);
+                        var link = "https://pigu.lt/" + productListItem.Descendants("a").FirstOrDefault()?.GetAttributeValue("href", "");
 
-                        if ((priceDouble > minPrice) && (priceDouble < maxPrice))
+                        var imgLink = productListItem
+                            .Descendants("img").FirstOrDefault(node => node.GetAttributeValue("src", "")
+                                .Contains("jpg"))
+                            ?.GetAttributeValue("src", "");
+
+                        if (!string.IsNullOrEmpty(price))
                         {
-                            var name = productListItem
-                                .Descendants("p").FirstOrDefault(node => node.GetAttributeValue("class", "")
-                                    .Equals("product-name"))
-                                ?.InnerText.Trim();
+                            price = EliminateSpacesPigu(price);
+                            var priceAtsarg = price;
+                            price = EliminatingEuroSimbol(price);
+                            price += "€";
+                            priceAtsarg = EliminatingEuroSimbol(priceAtsarg);
 
-                            var link = "https://pigu.lt/" + productListItem.Descendants("a").FirstOrDefault()
-                                ?.GetAttributeValue("href", "");
-
-                            var imgLink = productListItem
-                                .Descendants("img").FirstOrDefault(node => node.GetAttributeValue("src", "")
-                                    .Contains("jpg"))
-                                ?.GetAttributeValue("src", "");
-
-                            if (!string.IsNullOrEmpty(price))
+                            var priceDouble = Convert.ToDouble(priceAtsarg);
+                            var singleItem = new Item
                             {
-                                var singleItem = new Item
-                                {
-                                    Picture = imgLink,
-                                    Seller = "Pigu",
-                                    Name = name,
-                                    PriceDouble = priceDouble,
-                                    Price = price,
-                                    Link = link
-                                };
-                                lock (Lock)
-                                {
-                                    AddingToACollection(products, singleItem);
-                                }
-
-                                countItems--;
+                                Picture = imgLink,
+                                Seller = "Pigu",
+                                Name = name,
+                                PriceDouble = priceDouble,
+                                Price = price,
+                                Link = link
+                            };
+                            lock (Lock)
+                            {
+                                AddingToACollection(products, singleItem);
                             }
+
+                            countItems--;
                         }
                     }
             }
         }
 
-        private static void WriteDataFromBigBox(List<HtmlNode> productListItems, List<Item> products, int minPrice, int maxPrice)
+        private static void WriteDataFromBigBox(List<HtmlNode> productListItems, List<Item> products)
         {
             if (productListItems != null)
             {
@@ -571,49 +545,45 @@ namespace PCE_Web.Controllers
                             .Equals("price product-price"))
                         ?.InnerText.Trim();
 
-                    price = EliminateSpacesPigu(price);
-                    var priceAtsarg = price;
-                    price = EliminatingEuroSimbol(price);
-                    price += "€";
-                    priceAtsarg = EliminatingEuroSimbol(priceAtsarg);
-                    var priceDouble = Convert.ToDouble(priceAtsarg);
+                    var name = productListItem
+                        .Descendants("a").FirstOrDefault(node => node.GetAttributeValue("class", "")
+                            .Equals("product-name"))
+                        ?.InnerText.Trim();
 
-                    if ((priceDouble > minPrice) && (priceDouble < maxPrice))
+                    var link = productListItem.Descendants("a").FirstOrDefault()?.GetAttributeValue("href", "");
+
+                    var imgLink = productListItem
+                        .Descendants("img").FirstOrDefault(node => node.GetAttributeValue("class", "")
+                            .Contains("replace-2x img-responsive"))
+                        ?.GetAttributeValue("src", "");
+
+                    if (!string.IsNullOrEmpty(price))
                     {
-                        var name = productListItem
-                            .Descendants("a").FirstOrDefault(node => node.GetAttributeValue("class", "")
-                                .Equals("product-name"))
-                            ?.InnerText.Trim();
-
-                        var link = productListItem.Descendants("a").FirstOrDefault()?.GetAttributeValue("href", "");
-
-                        var imgLink = productListItem
-                            .Descendants("img").FirstOrDefault(node => node.GetAttributeValue("class", "")
-                                .Contains("replace-2x img-responsive"))
-                            ?.GetAttributeValue("src", "");
-
-                        if (!string.IsNullOrEmpty(price))
-                        {
-                            var singleItem = new Item
-                            {
-                                Picture = imgLink,
-                                Seller = "BigBox",
-                                Name = name,
-                                PriceDouble = priceDouble,
-                                Price = price,
+                        price = EliminateSpacesPigu(price);
+                        var priceAtsarg = price;
+                        price = EliminatingEuroSimbol(price);
+                        price += "€";
+                        priceAtsarg = EliminatingEuroSimbol(priceAtsarg);
+                        var priceDouble = Convert.ToDouble(priceAtsarg);
+                        var singleItem = new Item 
+                            { 
+                                Picture = imgLink, 
+                                Seller = "BigBox", 
+                                Name = name, 
+                                PriceDouble = priceDouble, 
+                                Price = price, 
                                 Link = link
                             };
-                            lock (Lock)
-                            {
-                                AddingToACollection(products, singleItem);
-                            }
+                        lock (Lock)
+                        {
+                            AddingToACollection(products, singleItem);
                         }
                     }
                 }
             }
         }
 
-        private static void WriteDataFromElektromarkt(List<HtmlNode> productListItems2, List<Item> products, int minPrice, int maxPrice)
+        private static void WriteDataFromElektromarkt(List<HtmlNode> productListItems2, List<Item> products)
         {
             if (productListItems2 != null)
             {
@@ -630,41 +600,38 @@ namespace PCE_Web.Controllers
                             .Equals("price"))
                         ?.InnerText.Trim();
 
-                    price = EliminateSpaces(price);
-                    var priceAtsarg = price;
-                    priceAtsarg = EliminatingEuroSimbol(priceAtsarg);
+                    var link = productListItem.Descendants("a").FirstOrDefault()?.GetAttributeValue("href", "");
 
-                    var priceDouble = double.Parse(priceAtsarg);
+                    var imgLink = productListItem.Descendants("img").FirstOrDefault()?.GetAttributeValue("src", "");
 
-                    if ((priceDouble > minPrice) && (priceDouble < maxPrice))
+                    if (!string.IsNullOrEmpty(price))
                     {
-                        var link = productListItem.Descendants("a").FirstOrDefault()?.GetAttributeValue("href", "");
 
-                        var imgLink = productListItem.Descendants("img").FirstOrDefault()?.GetAttributeValue("src", "");
+                        price = EliminateSpaces(price);
+                        var priceAtsarg = price;
+                        priceAtsarg = EliminatingEuroSimbol(priceAtsarg);
 
-                        if (!string.IsNullOrEmpty(price))
+                        var priceDouble = double.Parse(priceAtsarg);
+                        var singleItem = new Item
                         {
-                            var singleItem = new Item
-                            {
-                                Picture = imgLink,
-                                Seller = "Elektromarkt",
-                                Name = name,
-                                PriceDouble = priceDouble,
-                                Price = price,
-                                Link = link
-                            };
-                            lock (Lock)
-                            {
-                                AddingToACollection(products, singleItem);
-                            }
-
+                            Picture = imgLink,
+                            Seller = "Elektromarkt",
+                            Name = name,
+                            PriceDouble = priceDouble,
+                            Price = price,
+                            Link = link
+                        };
+                        lock (Lock)
+                        {
+                            AddingToACollection(products, singleItem);
                         }
+
                     }
                 }
             }
         }
 
-        private static void WriteDataFromGintarineVaistine(List<HtmlNode> productListItems, List<Item> products, int minPrice, int maxPrice)
+        private static void WriteDataFromGintarineVaistine(List<HtmlNode> productListItems, List<Item> products)
         {
             if (productListItems != null)
             {
@@ -676,33 +643,29 @@ namespace PCE_Web.Controllers
                             .Equals("price actual-price"))
                         ?.InnerText.Trim();
 
-                    var regex = Regex.Match(price, @"[0-9]+\,[0-9][0-9]");
-                    price = Convert.ToString(regex);
-                    var priceDouble = Convert.ToDouble(price);
-                    if ((priceDouble > minPrice) && (priceDouble < maxPrice))
+                    var name = productListItem.Descendants("input").FirstOrDefault()?.GetAttributeValue("value", "");
+
+                    var link = productListItem.Descendants("a").FirstOrDefault()?.GetAttributeValue("href", "");
+                    var imgLink = productListItem.Descendants("img").FirstOrDefault()?.GetAttributeValue("data-lazyloadsrc", "");
+
+                    if (!string.IsNullOrEmpty(price))
                     {
-                        var name = productListItem.Descendants("input").FirstOrDefault()
-                            ?.GetAttributeValue("value", "");
+                        var regex = Regex.Match(price, @"[0-9]+\,[0-9][0-9]");
+                        price = Convert.ToString(regex);
+                        var priceDouble = Convert.ToDouble(price);
 
-                        var link = productListItem.Descendants("a").FirstOrDefault()?.GetAttributeValue("href", "");
-                        var imgLink = productListItem.Descendants("img").FirstOrDefault()
-                            ?.GetAttributeValue("data-lazyloadsrc", "");
-
-                        if (!string.IsNullOrEmpty(price))
+                        var singleItem = new Item
                         {
-                            var singleItem = new Item
-                            {
-                                Picture = imgLink,
-                                Seller = "Gintarine vaistine",
-                                Name = name,
-                                PriceDouble = priceDouble,
-                                Price = price + '€',
-                                Link = "https://www.gintarine.lt/" + link
-                            };
-                            lock (Lock)
-                            {
-                                AddingToACollection(products, singleItem);
-                            }
+                            Picture = imgLink, 
+                            Seller = "Gintarine vaistine", 
+                            Name = name, 
+                            PriceDouble = priceDouble,
+                            Price = price + '€', 
+                            Link = "https://www.gintarine.lt/" + link
+                        };
+                        lock (Lock)
+                        {
+                            AddingToACollection(products,singleItem);
                         }
                     }
                 }
@@ -760,23 +723,9 @@ namespace PCE_Web.Controllers
             return price;
         }
 
-        private static double ConvertingToDouble(string price)
-        {
-            var charsToRemove = new[] { "," };
-            foreach (var c in charsToRemove) price = price.Replace(c, ".");
-            price = EliminatingEuroSimbol(price);
-            var convertedPrice=double.Parse(price, System.Globalization.CultureInfo.InvariantCulture);
-            return convertedPrice;
-        }
-
         private static List<Item> SortAndInsert(List<Item> products)
         {
             products = products.OrderBy(o => o.PriceDouble).ToList();
-            return products;
-        }
-        private static List<Item> SortAndInsertByDescending(List<Item> products)
-        {
-            products = products.OrderByDescending(o => o.PriceDouble).ToList();
             return products;
         }
     }

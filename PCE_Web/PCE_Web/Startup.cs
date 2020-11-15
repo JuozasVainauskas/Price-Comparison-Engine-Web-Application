@@ -64,8 +64,6 @@ namespace PCE_Web
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             services.AddSingleton<IDatabaseManager, DatabaseManager>();
-            services.AddSingleton<ISuggestionsView, SuggestionsView>();
-            services.AddSingleton<IParticularItemView, ParticularItemView>();
             services.AddSingleton<IParticularItemLoggedInView, ParticularItemLoggedInView>();
             services.AddHttpClient();
         }

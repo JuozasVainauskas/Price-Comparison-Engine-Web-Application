@@ -28,7 +28,7 @@ namespace PCE_Web.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> Suggestions(string productName, int minPrice, int maxPrice)
+        public async Task<IActionResult> SuggestionsSpecifications(string productName, int minPrice, int maxPrice)
         {
 
             if (_databaseManager.ReadSearchedItems(productName).Any())
@@ -43,8 +43,8 @@ namespace PCE_Web.Controllers
                     }
                 }
                 products = SortAndInsert(products);
-                var suggestionsView = new SuggestionsView { Products = products };
-                return View(suggestionsView);
+                var suggestionsSpecificationsView = new SuggestionsSpecificationsView { Products = products };
+                return View(suggestionsSpecificationsView);
             }
             else
             {
@@ -53,8 +53,8 @@ namespace PCE_Web.Controllers
                 await ReadingItemsAsync(productName, products, httpClient, minPrice, maxPrice);
                 products = SortAndInsert(products);
                 //_databaseManager.WriteSearchedItems(products, productName);
-                var suggestionsView = new SuggestionsView { Products = products };
-                return View(suggestionsView);
+                var suggestionsSpecificationsView = new SuggestionsSpecificationsView { Products = products };
+                return View(suggestionsSpecificationsView);
             }
         }
 
