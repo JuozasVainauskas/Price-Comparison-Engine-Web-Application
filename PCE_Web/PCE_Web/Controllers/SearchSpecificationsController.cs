@@ -13,7 +13,7 @@ using PCE_Web.Models;
 
 namespace PCE_Web.Controllers
 {
-    public class SearchController : Controller
+    public class SearchSpecificationsController : Controller
     {
         public static int SoldOutBarbora;
         public static int SoldOut;
@@ -21,29 +21,29 @@ namespace PCE_Web.Controllers
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
         private readonly IHttpClientFactory _httpClient;
         private readonly IDatabaseManager _databaseManager;
-        public SearchController(IHttpClientFactory httpClient, IDatabaseManager databaseManager)
+        public SearchSpecificationsController(IHttpClientFactory httpClient, IDatabaseManager databaseManager)
         {
             _httpClient = httpClient;
             _databaseManager = databaseManager;
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> Suggestions(string productName, int minPrice,int maxPrice)
+        public async Task<IActionResult> Suggestions(string productName, int minPrice, int maxPrice)
         {
-            
+
             if (_databaseManager.ReadSearchedItems(productName).Any())
             {
                 var products = new List<Item>();
                 foreach (var item in _databaseManager.ReadSearchedItems(productName))
                 {
                     var price = ConvertingToDouble(item.Price);
-                    if ((price>= minPrice) && (price <= maxPrice))
+                    if ((price >= minPrice) && (price <= maxPrice))
                     {
                         products.Add(item);
                     }
                 }
                 products = SortAndInsert(products);
-                var suggestionsView = new SuggestionsView {Products = products};
+                var suggestionsView = new SuggestionsView { Products = products };
                 return View(suggestionsView);
             }
             else
@@ -53,12 +53,12 @@ namespace PCE_Web.Controllers
                 await ReadingItemsAsync(productName, products, httpClient, minPrice, maxPrice);
                 products = SortAndInsert(products);
                 //_databaseManager.WriteSearchedItems(products, productName);
-                var suggestionsView = new SuggestionsView {Products = products};
+                var suggestionsView = new SuggestionsView { Products = products };
                 return View(suggestionsView);
             }
         }
 
-        private async Task ReadingItemsAsync(string productName,List<Item> products,HttpClient httpClient,int minPrice,int maxPrice)
+        private async Task ReadingItemsAsync(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice)
         {
             var gettingRde = await Task.Factory.StartNew(() => gettingItemsFromRde(productName, products, httpClient, minPrice, maxPrice));
             var gettingBarbora = await Task.Factory.StartNew(() => gettingItemsFromBarbora(productName, products, httpClient, minPrice, maxPrice));
@@ -77,13 +77,13 @@ namespace PCE_Web.Controllers
 
         private async Task gettingItemsFromRde(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice)
         {
-            
-            var urlRde = "https://www.rde.lt/search_result/lt/word/" + productName + "/page/1"; 
+
+            var urlRde = "https://www.rde.lt/search_result/lt/word/" + productName + "/page/1";
             Search<HtmlDocument> rdeSearch = RdeSearch;
-            WriteData<HtmlNode, Item,int> writeDataFromRde = WriteDataFromRde;
+            WriteData<HtmlNode, Item, int> writeDataFromRde = WriteDataFromRde;
             var rdeItems = rdeSearch(await Html(httpClient, urlRde));
             writeDataFromRde(rdeItems, products, minPrice, maxPrice);
-            
+
         }
 
         private async Task gettingItemsFromBarbora(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice)
@@ -330,7 +330,7 @@ namespace PCE_Web.Controllers
             return null;
         }
 
-        private static readonly object Lock=new object();
+        private static readonly object Lock = new object();
 
         private static void WriteDataFromRde(List<HtmlNode> productListItems, List<Item> products, int minPrice, int maxPrice)
         {
@@ -709,7 +709,7 @@ namespace PCE_Web.Controllers
             }
         }
 
-        private static void AddingToACollection<T>(ICollection<T> list,T variable)
+        private static void AddingToACollection<T>(ICollection<T> list, T variable)
         {
             list.Add(variable);
         }
@@ -765,7 +765,7 @@ namespace PCE_Web.Controllers
             var charsToRemove = new[] { "," };
             foreach (var c in charsToRemove) price = price.Replace(c, ".");
             price = EliminatingEuroSimbol(price);
-            var convertedPrice=double.Parse(price, System.Globalization.CultureInfo.InvariantCulture);
+            var convertedPrice = double.Parse(price, System.Globalization.CultureInfo.InvariantCulture);
             return convertedPrice;
         }
 
