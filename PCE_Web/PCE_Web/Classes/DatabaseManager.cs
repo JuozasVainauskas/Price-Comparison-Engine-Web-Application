@@ -353,7 +353,7 @@ namespace PCE_Web.Classes
             }
         }
         
-        public void WriteLoggedExceptions(string date, string message, string source, string stackTrace)
+        public void WriteLoggedExceptions(string message, string source, string stackTrace, string date)
             {
                 using (var context = new PCEDatabaseContext())
                 {
@@ -363,10 +363,10 @@ namespace PCE_Web.Classes
                     {
                         var savedExceptions = new SavedExceptions()
                         {
-                            Date = date,
                             Message = message,
                             Source = source,
-                            StackTrace = stackTrace
+                            StackTrace = stackTrace,
+                            Date = date
                         };
                         context.SavedExceptions.Add(savedExceptions);
                         context.SaveChanges();
@@ -376,18 +376,12 @@ namespace PCE_Web.Classes
 
         public List<Exceptions> ReadLoggedExceptions()
         {
-            var exceptions = new List<Exceptions>(); 
+            List<Exceptions> exceptions; 
             using (var context = new PCEDatabaseContext())
             {
-                var exception = context.SavedExceptions
-                .Where(row => row.SavedExceptionId > 0)
+                exceptions = context.SavedExceptions.Where(row => row.SavedExceptionId > 0)
                 .Select(column => new Exceptions { Date = column.Date, Message = column.Message, StackTrace = column.StackTrace, Source = column.Source })
                 .ToList();
-
-                foreach (var exceptionss in exception)
-                {
-                    exceptions.Add(exceptionss);
-                }
             }
 
             return exceptions;
@@ -414,8 +408,7 @@ namespace PCE_Web.Classes
             List<CommentsTable> comments;
             using (var context = new PCEDatabaseContext())
             {
-                comments = context.CommentsTable
-                .Where(column => column.ShopId == index)
+                comments = context.CommentsTable.Where(column => column.ShopId == index)
                 .Select(column => new CommentsTable {CommentId = column.CommentId, Email = column.Email, ShopId = column.ShopId, Date = column.Date, Rating = column.Rating, Comment = column.Comment})
                 .ToList();
             }
