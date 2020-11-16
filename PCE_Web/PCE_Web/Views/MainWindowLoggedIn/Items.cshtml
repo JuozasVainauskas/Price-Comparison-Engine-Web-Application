@@ -21,81 +21,154 @@
 <!-- Top content -->
 <div class="search-container">
     <!-- Paieškos mygtukas -->
-    <div class="search-button">
-        <form method="get" action="">
-            <div class="tb">
-                <input type="text" name="ProductName" placeholder="Ieškokite..">
-                <div class="td" id="s-cover">
-                    <input id="mvc-action-button" type="submit" onclick="ChangeAlertBox" asp-area="" asp-controller="SearchLoggedIn" asp-action="Suggestions" style="position: absolute; left: -9999px" />
+        <div class="search-button">
+            <form method="get" action="">
+                <div class="tb">
+                    <input type="text" name="ProductName" placeholder="Ieškokite..">
+                    <div class="td" id="s-cover">
+                        <input id="mvc-action-button" type="submit" onclick="ChangeAlertBox" asp-area="" asp-controller="SearchLoggedIn" asp-action="Suggestions" style="position: absolute; left: -9999px" />
+                    </div>
                 </div>
-            </div>
-        </form>
-    </div>
+            </form>
+            <i class="fa fa-search" style="color:white;" data-toggle="modal" data-target="#advancedModal"></i>
+        </div>
 </div>
 
-<div class="slideshow-container">
-    @foreach (var product in @Model.Products)
-    {
-        <a href="@product.PageUrl" target="_blank"> <img class="mySlides w3-animate-fading" src="@product.ImgUrl"></a>
-    }
-</div>
-<br>
-<h1>Iš viso išsaugotų prekių: @Model.ProductsSaved.Count</h1>
-<br>
-<table id="items">
-    <tr>
-        <th>Nuotrauka</th>
-        <th>Prekė</th>
-        <th>Kaina</th>
-        <th>Ištrinti prekę</th>
-    </tr>
-    @foreach (var productSaved in @Model.ProductsSaved)
-    {
+
+    <div class="slideshow-container">
+        @foreach (var product in @Model.Products)
+        {
+            <a href="@product.PageUrl" target="_blank"> <img class="mySlides w3-animate-fading" src="@product.ImgUrl"></a>
+        }
+    </div>
+    <br>
+    <h1>Iš viso išsaugotų prekių: @Model.ProductsSaved.Count</h1>
+    <br>
+    <table id="items">
         <tr>
-            <td><a href="@productSaved.Link"><img class="image" alt="product.jpg" src="@productSaved.Picture"></a></td>
-            <td>
-                <button id="mvc-action-button" class="link" name="particularItem" onclick="location.href = '@Url.Action("ParticularItemLoggedIn", "ParticularItemLoggedIn", new { particularItem = productSaved.Name })'">
-                    @productSaved.Name
-                </button>
-            </td>
-            <td>@productSaved.Price</td>
-            <td>
-                <button id="mvc-action-button" class="myButton" onclick="location.href = '@Url.Action("Items", "MainWindowLoggedIn", new {link = productSaved.Link, pictureUrl = productSaved.Picture, seller = productSaved.Seller, name = productSaved.Name, price = productSaved.Price})'">Ištrinti</button>
-            </td>
+            <th>Nuotrauka</th>
+            <th>Prekė</th>
+            <th>Kaina</th>
+            <th>Ištrinti prekę</th>
         </tr>
-    }
-</table>
-<br />
-<br />
-<!-- Footer -->
-<footer>
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12 footer-copyright">
-                &copy; SmartShop.LT, 2020.
+        @foreach (var productSaved in @Model.ProductsSaved)
+        {
+            <tr>
+                <td><a href="@productSaved.Link"><img class="image" alt="product.jpg" src="@productSaved.Picture"></a></td>
+                <td>
+                    <button id="mvc-action-button" class="link" name="particularItem" onclick="location.href = '@Url.Action("ParticularItemLoggedIn", "ParticularItemLoggedIn", new { particularItem = productSaved.Name })'">
+                        @productSaved.Name
+                    </button>
+                </td>
+                <td>@productSaved.Price</td>
+                <td>
+                    <button id="mvc-action-button" class="myButton" onclick="location.href = '@Url.Action("Items", "MainWindowLoggedIn", new {link = productSaved.Link, pictureUrl = productSaved.Picture, seller = productSaved.Seller, name = productSaved.Name, price = productSaved.Price})'">Ištrinti</button>
+                </td>
+            </tr>
+        }
+    </table>
+    <br />
+    <br />
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 footer-copyright">
+                    &copy; SmartShop.LT, 2020.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!--Loading screen-->
+    <div id="overlay" class="overlay">
+
+        <div class="loader">
+            <img src="~/img/loader.gif" width="400" height="400" />
+        </div>
+    </div>
+
+
+    <!--Modal window for advanced options-->
+
+    <div class="modal fade" id="advancedModal" tabindex="-1" role="dialog" aria-labelledby="advancedModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width:600px;height:700px;" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="advancedModalLabel" style="color: green" bold>Papildomos parinktys</h2>
+                </div>
+                <div class="modal-body">
+                    <h3>Mažiausia kaina:</h3>
+                    <input type="range" min="1" max="100" value="50" class="slider" id="lowestPrice">
+                    <h3>Didžiausia kaina:</h3>
+                    <input type="range" min="1" max="100" value="50" class="slider" id="biggestPrice">
+                    <br />
+
+                    <label class="checkcontainer">
+                        Avitela
+                        <input type="checkbox" checked="checked">
+                        <span class="checkmark"></span>
+                    </label>
+
+                    <label class="checkcontainer">
+                        Gintarinė
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                    </label>
+
+                    <label class="checkcontainer">
+                        Barbora
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                    </label>
+
+                    <label class="checkcontainer">
+                        RDE
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                    </label>
+
+                    <label class="checkcontainer">
+                        BigBox
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                    </label>
+
+                    <label class="checkcontainer">
+                        Elektromarkt
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                    </label>
+
+                    <label class="checkcontainer">
+                        Pigu
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                    </label>
+
+                    <div class="td" id="s-cover">
+                        <div class="form-actions">
+                            <button id="mvc-action-button" type="submit" asp-controller="" asp-action="" class="myButton" style="position:relative; left:175px;">Išsaugoti pasirinkimus</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn first" data-dismiss="modal" style="color: green" bold>Uždaryti</button>
+                </div>
             </div>
         </div>
     </div>
-</footer>
 
-<!--Loading screen-->
-<div id="overlay" class="overlay">
 
-    <div class="loader">
-        <img src="~/img/loader.gif" width="400" height="400" />
-    </div>
-
-</div>
-
-<!--Scripts-->
-<script src="~/js/scripts.js"></script>
-<script>
-    document.getElementById('mvc-action-button')
-        .addEventListener('click', function (e) {
-            document.getElementById('overlay').style.display = 'flex';
-        });
-</script>
-<script>
+    <!--Scripts-->
+    <script src="~/js/scripts.js"></script>
+    <script>
+        document.getElementById('mvc-action-button')
+            .addEventListener('click', function (e) {
+                document.getElementById('overlay').style.display = 'flex';
+            });
+    </script>
+    <script>
         window.onload = function () {
             var duration = 3000;
             setTimeout(function () { $('#alertBox').hide(); }, duration);
@@ -115,16 +188,16 @@
             x[myIndex - 1].style.display = "block";
             setTimeout(carousel, 9000);
         }
-</script>
-<script>
-    var close = document.getElementsByClassName("closebtn");
-    var i;
+    </script>
+    <script>
+        var close = document.getElementsByClassName("closebtn");
+        var i;
 
-    for (i = 0; i < close.length; i++) {
-        close[i].onclick = function () {
-            var div = this.parentElement;
-            div.style.opacity = "0";
-            setTimeout(function () { div.style.display = "none"; }, 600);
+        for (i = 0; i < close.length; i++) {
+            close[i].onclick = function () {
+                var div = this.parentElement;
+                div.style.opacity = "0";
+                setTimeout(function () { div.style.display = "none"; }, 600);
+            }
         }
-    }
-</script>
+    </script>
