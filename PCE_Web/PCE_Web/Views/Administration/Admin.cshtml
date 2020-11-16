@@ -28,6 +28,14 @@
             <th>Email</th>
             <th>Rolė</th>
         </tr>
+        @foreach (var user in @Model.ReportedUsers)
+        {
+            <tr data-toggle="modal" data-id="0" data-target="#emailModal">
+                <td style="font-weight:bold;color:red;">@user.Email</td>
+                <td style="font-weight:bold;color:red;">@user.Role</td>
+            </tr>
+        }
+
         @foreach (var user in @Model.Users)
         {
             <tr data-toggle="modal" data-id="0" data-target="#emailModal">

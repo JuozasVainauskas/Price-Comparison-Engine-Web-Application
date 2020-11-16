@@ -23,9 +23,20 @@ namespace PCE_Web.Controllers
             
             var exceptions = _databaseManager.ReadLoggedExceptions();
             ViewBag.MyMessage = messageString;
-            var users = _databaseManager.ReadUsersList();
+            var allUsers = _databaseManager.ReadUsersList();
+            List<User> reportedUsers = new List<User>();
+
+            foreach( var user in allUsers)
+            {
+                if(_databaseManager.isReported(user.Email))
+                {
+                    reportedUsers.Add(user);
+                }
+            }
+
+            List<User> users = allUsers.Except(reportedUsers).ToList();
             var role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
-            var adminView = new AdminView() { Users = users, Role = role, Exceptions = exceptions };
+            var adminView = new AdminView() { Users = users, ReportedUsers = reportedUsers, Role = role, Exceptions = exceptions };
             
             return View(adminView);
         }
