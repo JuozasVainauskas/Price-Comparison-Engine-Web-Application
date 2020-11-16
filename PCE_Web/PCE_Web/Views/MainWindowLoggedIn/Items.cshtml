@@ -30,8 +30,12 @@
                 </div>
             </div>
         </form>
+        <div class="text-center">
+            <a href="#" style="color:white;" data-toggle="modal" data-target="#advancedModal">Papildomos parinktys</a>
+        </div>
     </div>
 </div>
+
 
 <div class="slideshow-container">
     @foreach (var product in @Model.Products)
@@ -84,8 +88,29 @@
     <div class="loader">
         <img src="~/img/loader.gif" width="400" height="400" />
     </div>
-
 </div>
+
+
+<!--Modal window for advanced options-->
+
+<div class="modal fade" id="advancedModal" tabindex="-1" role="dialog" aria-labelledby="advancedModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:600px;height:700px;" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="advancedModalLabel" style="color: green" bold>Papildomos parinktys</h2>
+            </div>
+            <div class="modal-body">
+
+                <!--PILDOMI DUOMENYS-->
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn first" data-dismiss="modal" style="color: green" bold>Uždaryti</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <!--Scripts-->
 <script src="~/js/scripts.js"></script>
@@ -96,25 +121,25 @@
         });
 </script>
 <script>
-        window.onload = function () {
-            var duration = 3000;
-            setTimeout(function () { $('#alertBox').hide(); }, duration);
-        };
+    window.onload = function () {
+        var duration = 3000;
+        setTimeout(function () { $('#alertBox').hide(); }, duration);
+    };
 
-        var myIndex = 0;
-        carousel();
+    var myIndex = 0;
+    carousel();
 
-        function carousel() {
-            var i;
-            var x = document.getElementsByClassName("mySlides");
-            for (i = 0; i < x.length; i++) {
-                x[i].style.display = "none";
-            }
-            myIndex++;
-            if (myIndex > x.length) { myIndex = 1 }
-            x[myIndex - 1].style.display = "block";
-            setTimeout(carousel, 9000);
+    function carousel() {
+        var i;
+        var x = document.getElementsByClassName("mySlides");
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
         }
+        myIndex++;
+        if (myIndex > x.length) { myIndex = 1 }
+        x[myIndex - 1].style.display = "block";
+        setTimeout(carousel, 9000);
+    }
 </script>
 <script>
     var close = document.getElementsByClassName("closebtn");
