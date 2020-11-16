@@ -33,7 +33,6 @@ namespace PCE_Web
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             ShopSecrets.Email = Configuration["SecretMail"];
@@ -59,7 +58,6 @@ namespace PCE_Web
                     ? CookieSecurePolicy.None : CookieSecurePolicy.Always;
             });
 
-            //services.AddControllersWithViews(); -> services.AddMvc(); ->
             services.AddMvc(options => options.Filters.Add(new AuthorizeFilter()))
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
@@ -67,7 +65,6 @@ namespace PCE_Web
             services.AddHttpClient();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
