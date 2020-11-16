@@ -32,15 +32,19 @@ namespace PCE_Web.Controllers
         {
             var code = GenerateHash.CreateSalt(16);
             code = code.Remove(code.Length - 2);
+
             var email = TempData["userEmail"].ToString();
             TempData["userEmail"] = email;
+
+            _confirmCode = code;
+
             var sendingInformation=new SendingInformation();
             sendingInformation.ButtonPushed += (sender, e)=>
             {
                 EmailSender.SendEmail(e.Code, "ernestas20111@gmail.com");
             };
             sendingInformation.Pushed(code, email);
-            _confirmCode = code;
+
             return View();
         }
 
