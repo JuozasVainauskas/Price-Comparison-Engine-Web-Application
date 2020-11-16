@@ -545,5 +545,22 @@ namespace PCE_Web.Classes
                     context.SaveChanges();
             }
         }
+
+        public bool isReported(string email)
+        {
+            List<ReportsTable> item;
+            using (var context = new PCEDatabaseContext())
+            {
+                item = context.ReportsTable.Where(column => column.Email == email).Select(column => new ReportsTable
+                { Email = column.Email, Comment = column.Comment })
+                    .ToList();
+            }
+
+            if (item.Count > 0)
+            {
+                return true;
+            }
+            else return false;
+        }
     }
 }
