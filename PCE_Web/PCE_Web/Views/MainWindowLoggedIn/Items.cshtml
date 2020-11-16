@@ -100,9 +100,59 @@
                 <h2 class="modal-title" id="advancedModalLabel" style="color: green" bold>Papildomos parinktys</h2>
             </div>
             <div class="modal-body">
+                <h3>Mažiausia kaina:</h3>
+                <input type="range" min="1" max="100" value="50" class="slider" id="lowestPrice">
+                <h3>Didžiausia kaina:</h3>
+                <input type="range" min="1" max="100" value="50" class="slider" id="biggestPrice">
+                <br />
 
-                <!--PILDOMI DUOMENYS-->
+                <label class="checkcontainer">
+                    Avitela
+                    <input type="checkbox" checked="checked">
+                    <span class="checkmark"></span>
+                </label>
 
+                <label class="checkcontainer">
+                    Gintarinė
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                </label>
+
+                <label class="checkcontainer">
+                    Barbora
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                </label>
+
+                <label class="checkcontainer">
+                    RDE
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                </label>
+
+                <label class="checkcontainer">
+                    BigBox
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                </label>
+
+                <label class="checkcontainer">
+                    Elektromarkt
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                </label>
+
+                <label class="checkcontainer">
+                    Pigu
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                </label>
+
+                <div class="td" id="s-cover">
+                    <div class="form-actions">
+                        <button id="mvc-action-button" type="submit" asp-controller="" asp-action="" class="myButton" style="position:relative; left:175px;">Išsaugoti pasirinkimus</button>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn first" data-dismiss="modal" style="color: green" bold>Uždaryti</button>
