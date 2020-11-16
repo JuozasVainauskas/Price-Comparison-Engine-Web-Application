@@ -32,12 +32,12 @@ namespace PCE_Web.Controllers
 
         public IActionResult Delete(int id)
         {
-            Console.WriteLine(id);
-                _databaseManager.DeleteLoggedExceptions(id);
+            _databaseManager.DeleteLoggedExceptions(id);
 
             return RedirectToAction("Admin", "Administration");
         }
-            public IActionResult Add(string email, string password)
+
+        public IActionResult Add(string email, string password)
         {
 
             var role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
@@ -92,12 +92,12 @@ namespace PCE_Web.Controllers
             return RedirectToAction("Admin", "Administration");
         }
 
-        public IActionResult Set(string email, int roleID)
+        public IActionResult Set(string email, int roleId)
         {
             var role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
             if (role == "Admin")
             {
-                _databaseManager.SetRole(email, roleID.ToString());
+                _databaseManager.SetRole(email, roleId.ToString());
                 return RedirectToAction("Admin", "Administration", new { messageString = "Rolė suteikta sėkmingai" });
             }
             else

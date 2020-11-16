@@ -387,11 +387,11 @@ namespace PCE_Web.Classes
             return exceptions;
         }
 
-        public void DeleteLoggedExceptions(int Id)
+        public void DeleteLoggedExceptions(int id)
         {
             using (var context = new PCEDatabaseContext())
             {
-                var result = context.SavedExceptions.SingleOrDefault(column => column.SavedExceptionId == Id );
+                var result = context.SavedExceptions.SingleOrDefault(column => column.SavedExceptionId == id );
 
                 if (result != null)
                 {
