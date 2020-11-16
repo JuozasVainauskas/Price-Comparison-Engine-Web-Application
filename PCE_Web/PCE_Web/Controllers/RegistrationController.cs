@@ -52,5 +52,27 @@ namespace PCE_Web.Controllers
 
             return View();
         }
+
+        [AllowAnonymous]
+        public IActionResult ConfirmEmail()
+        {
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("Register", "Registration");
+            }
+
+            return RedirectToAction("Register", "Registration");
+        }
+
+        [AllowAnonymous]
+        public IActionResult ChangePassword()
+        {
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("Register", "Registration");
+            }
+
+            return RedirectToAction("Register", "Registration");
+        }
     }
 }
