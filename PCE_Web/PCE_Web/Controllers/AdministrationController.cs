@@ -30,10 +30,10 @@ namespace PCE_Web.Controllers
             return View(adminView);
         }
 
-        public IActionResult Delete()
+        public IActionResult Delete(int id)
         {
-                var exception = new Exceptions { Date = TempData["date"].ToString(), Message = TempData["message"].ToString(), Source = TempData["source"].ToString(), StackTrace = TempData["stacktrace"].ToString() };
-                _databaseManager.DeleteLoggedExceptions(exception);
+            Console.WriteLine(id);
+                _databaseManager.DeleteLoggedExceptions(id);
 
             return RedirectToAction("Admin", "Administration");
         }

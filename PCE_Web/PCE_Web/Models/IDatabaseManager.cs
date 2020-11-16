@@ -44,7 +44,7 @@ namespace PCE_Web.Models
 
         void WriteLoggedExceptions(string message, string source, string stackTrace, string date);
 
-        void DeleteLoggedExceptions(Exceptions exceptions);
+        void DeleteLoggedExceptions(int Id);
 
         List<Exceptions> ReadLoggedExceptions();
 
