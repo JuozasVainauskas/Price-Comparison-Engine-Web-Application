@@ -29,7 +29,6 @@ namespace PCE_Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Suggestions(string productName)
         {
-            
             if (_databaseManager.ReadSearchedItems(productName).Any())
             {
                 var products = new List<Item>();

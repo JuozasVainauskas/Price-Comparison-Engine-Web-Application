@@ -42,7 +42,7 @@ namespace PCE_Web.Models
 
         void WriteRatings(string shopName, int votesNumber, int votersNumber);
 
-        void WriteLoggedExceptions(string message, string stackTrace, string source);
+        void WriteLoggedExceptions(string date, string message, string stackTrace, string source);
 
         void WriteSearchedItems(List<Item> items, string productName);
 

@@ -39,7 +39,7 @@ namespace PCE_Web.Controllers
         {
             var feature = this.HttpContext.Features.Get<IExceptionHandlerFeature>();
 
-            _databaseManager.WriteLoggedExceptions(feature.Error.Message, feature.Error.StackTrace, feature.Error.Source);
+            _databaseManager.WriteLoggedExceptions(DateTime.Now.ToString(),feature.Error.Message, feature.Error.StackTrace, feature.Error.Source);
 
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }

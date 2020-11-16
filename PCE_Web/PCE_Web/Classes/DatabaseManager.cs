@@ -353,16 +353,17 @@ namespace PCE_Web.Classes
             }
         }
         
-        public void WriteLoggedExceptions(string message, string source, string stackTrace)
+        public void WriteLoggedExceptions(string date, string message, string source, string stackTrace)
             {
                 using (var context = new PCEDatabaseContext())
                 {
-                    var result = context.SavedExceptions.SingleOrDefault(column => column.Message == message && column.Source == source && column.StackTrace == stackTrace);
+                    var result = context.SavedExceptions.SingleOrDefault(column => column.Date == date && column.Message == message && column.Source == source && column.StackTrace == stackTrace);
 
                     if (result == null)
                     {
                         var savedExceptions = new SavedExceptions()
                         {
+                            Date = date,
                             Message = message,
                             Source = source,
                             StackTrace = stackTrace
@@ -373,14 +374,14 @@ namespace PCE_Web.Classes
                 }
             }
 
-        public static List<SavedExceptions> ReadLoggedExceptions()
+        public static List<Exceptions> ReadLoggedExceptions()
         {
-            var exceptions = new List<SavedExceptions>(); 
+            var exceptions = new List<Exceptions>(); 
             using (var context = new PCEDatabaseContext())
             {
                 var exception = context.SavedExceptions
                 .Where(row => row.SavedExceptionId > 0)
-                .Select(column => new SavedExceptions { Message = column.Message, StackTrace = column.StackTrace, Source = column.Source })
+                .Select(column => new Exceptions { Date = column.Date, Message = column.Message, StackTrace = column.StackTrace, Source = column.Source })
                 .ToList();
 
                 foreach (var exceptionss in exception)
