@@ -18,7 +18,8 @@
     height: 120px;
     border: 3px solid #fff;
     position: relative;
-    margin: auto;
+    margin-left:auto;
+    margin-right:auto;
     margin-top: 10px;
     object-fit: fill;
     background-color: #64ca87;
@@ -161,7 +162,6 @@ td {
 
 /**Checkbox**/
 
-/* Customize the label (the container) */
 .checkcontainer {
     display: block;
     position: relative;
@@ -174,7 +174,6 @@ td {
     user-select: none;
 }
 
-    /* Hide the browser's default checkbox */
     .checkcontainer input {
         position: absolute;
         opacity: 0;
@@ -183,7 +182,6 @@ td {
         width: 0;
     }
 
-/* Create a custom checkbox */
 .checkmark {
     position: absolute;
     top: 0;
@@ -201,7 +199,6 @@ td {
     background-color: #64ca87;
 }
 
-/* Create the checkmark/indicator (hidden when not checked) */
 .checkmark:after {
     content: "";
     position: absolute;
