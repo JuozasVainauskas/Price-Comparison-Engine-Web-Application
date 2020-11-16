@@ -37,18 +37,17 @@ namespace PCE_Web
         {
             ShopSecrets.Email = Configuration["SecretMail"];
             ShopSecrets.Password = Configuration["SecretPassword"];
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
-                {
-                    options.Cookie.HttpOnly = true;
-                    options.Cookie.SecurePolicy = _environment.IsDevelopment()
-                        ? CookieSecurePolicy.None : CookieSecurePolicy.Always;
-                    options.Cookie.SameSite = SameSiteMode.Lax;
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.Cookie.SecurePolicy = _environment.IsDevelopment()
+                    ? CookieSecurePolicy.None : CookieSecurePolicy.Always;
+                options.Cookie.SameSite = SameSiteMode.Lax;
 
-                    options.Cookie.Name = "SmartShopLoginCookie";
-                    options.LoginPath = "/Logging/Login";
-                    options.LogoutPath = "/Logging/Logout";
-                });
+                options.Cookie.Name = "SmartShopLoginCookie";
+                options.LoginPath = "/Logging/Login";
+                options.LogoutPath = "/Logging/Logout";
+            });
 
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -75,6 +74,7 @@ namespace PCE_Web
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             
