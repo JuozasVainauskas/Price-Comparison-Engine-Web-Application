@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using PCE_Web.Classes;
+using PCE_Web.Tables;
 
 namespace PCE_Web.Models
 {
@@ -40,6 +41,12 @@ namespace PCE_Web.Models
         ShopRating ReadRatings(string shopName);
 
         void WriteRatings(string shopName, int votesNumber, int votersNumber);
+
+        void WriteLoggedExceptions(string message, string source, string stackTrace, string date);
+
+        void DeleteLoggedExceptions(Exceptions exceptions);
+
+        List<Exceptions> ReadLoggedExceptions();
 
         void WriteSearchedItems(List<Item> items, string productName);
 

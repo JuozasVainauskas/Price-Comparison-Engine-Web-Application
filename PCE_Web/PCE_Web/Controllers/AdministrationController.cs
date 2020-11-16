@@ -20,15 +20,24 @@ namespace PCE_Web.Controllers
         }
         public IActionResult Admin(string messageString = "")
         {
+            
+            var exceptions = _databaseManager.ReadLoggedExceptions();
             ViewBag.MyMessage = messageString;
             var users = _databaseManager.ReadUsersList();
             var role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
-            var adminView = new AdminView() { Users = users, Role = role };
-
+            var adminView = new AdminView() { Users = users, Role = role, Exceptions = exceptions };
+            
             return View(adminView);
         }
 
-         public IActionResult Add(string email, string password)
+        public IActionResult Delete()
+        {
+                var exception = new Exceptions { Date = TempData["date"].ToString(), Message = TempData["message"].ToString(), Source = TempData["source"].ToString(), StackTrace = TempData["stacktrace"].ToString() };
+                _databaseManager.DeleteLoggedExceptions(exception);
+
+            return RedirectToAction("Admin", "Administration");
+        }
+            public IActionResult Add(string email, string password)
         {
 
             var role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;

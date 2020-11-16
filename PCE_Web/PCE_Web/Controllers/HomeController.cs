@@ -1,5 +1,7 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
@@ -11,9 +13,12 @@ namespace PCE_Web.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IDatabaseManager _databaseManager;
+
+        public HomeController(ILogger<HomeController> logger, IDatabaseManager databaseManager)
         {
             _logger = logger;
+            _databaseManager = databaseManager;
         }
 
         [AllowAnonymous]
@@ -27,11 +32,15 @@ namespace PCE_Web.Controllers
         {
             return View();
         }
-
+      
         [AllowAnonymous]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
+            var feature = HttpContext.Features.Get<IExceptionHandlerFeature>();
+
+            _databaseManager.WriteLoggedExceptions(feature.Error.Message, feature.Error.Source, feature.Error.StackTrace, DateTime.Now.ToString());
+
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }

@@ -33,23 +33,21 @@ namespace PCE_Web
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             ShopSecrets.Email = Configuration["SecretMail"];
             ShopSecrets.Password = Configuration["SecretPassword"];
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
-                {
-                    options.Cookie.HttpOnly = true;
-                    options.Cookie.SecurePolicy = _environment.IsDevelopment()
-                        ? CookieSecurePolicy.None : CookieSecurePolicy.Always;
-                    options.Cookie.SameSite = SameSiteMode.Lax;
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.Cookie.SecurePolicy = _environment.IsDevelopment()
+                    ? CookieSecurePolicy.None : CookieSecurePolicy.Always;
+                options.Cookie.SameSite = SameSiteMode.Lax;
 
-                    options.Cookie.Name = "SmartShopLoginCookie";
-                    options.LoginPath = "/Logging/Login";
-                    options.LogoutPath = "/Logging/Logout";
-                });
+                options.Cookie.Name = "SmartShopLoginCookie";
+                options.LoginPath = "/Logging/Login";
+                options.LogoutPath = "/Logging/Logout";
+            });
 
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -59,7 +57,6 @@ namespace PCE_Web
                     ? CookieSecurePolicy.None : CookieSecurePolicy.Always;
             });
 
-            //services.AddControllersWithViews(); -> services.AddMvc(); ->
             services.AddMvc(options => options.Filters.Add(new AuthorizeFilter()))
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
@@ -67,7 +64,6 @@ namespace PCE_Web
             services.AddHttpClient();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -77,9 +73,8 @@ namespace PCE_Web
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
             }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             

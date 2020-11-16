@@ -24,6 +24,7 @@ namespace PCE_Web.Controllers
         private readonly IHttpClientFactory _httpClient;
         private readonly IDatabaseManager _databaseManager;
 
+       
         public SearchLoggedInController(IHttpClientFactory httpClient, IDatabaseManager databaseManager)
         {
             _httpClient = httpClient;

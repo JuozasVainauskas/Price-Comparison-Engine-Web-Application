@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PCE_Web.Classes
+namespace PCE_Web.Tables
 {
     public partial class CommentsTable
     {

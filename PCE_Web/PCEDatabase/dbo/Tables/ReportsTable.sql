@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[ReportsTable]
 (
-	[Id] INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+	[ReportsId] INT NOT NULL PRIMARY KEY IDENTITY(1,1),
     [Email] NVARCHAR (MAX) NOT NULL,
     [Comment] NVARCHAR (MAX) NOT NULL
 )
