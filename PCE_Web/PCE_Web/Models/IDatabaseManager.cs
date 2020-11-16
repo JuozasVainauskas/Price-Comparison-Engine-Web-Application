@@ -44,6 +44,8 @@ namespace PCE_Web.Models
 
         void WriteLoggedExceptions(string date, string message, string stackTrace, string source);
 
+        void DeleteLoggedExceptions(Exceptions exceptions);
+
         List<Exceptions> ReadLoggedExceptions();
 
         void WriteSearchedItems(List<Item> items, string productName);

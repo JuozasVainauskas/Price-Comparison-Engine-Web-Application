@@ -393,6 +393,21 @@ namespace PCE_Web.Classes
             return exceptions;
         }
 
+        public void DeleteLoggedExceptions(Exceptions exceptions)
+        {
+            using (var context = new PCEDatabaseContext())
+            {
+                var result = context.SavedExceptions.SingleOrDefault(column => column.Date == exceptions.Date && column.Source == exceptions.Source &&
+                    column.Message == exceptions.Message && column.StackTrace == exceptions.StackTrace);
+
+                if (result != null)
+                {
+                    context.SavedExceptions.Remove(result);
+                    context.SaveChanges();
+                }
+            }
+        }
+
 
         public List<CommentsTable> ReadComments(int index)
         {

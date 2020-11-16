@@ -18,11 +18,14 @@ namespace PCE_Web.Controllers
         {
             _databaseManager = databaseManager;
         }
-        public IActionResult Admin(string messageString = "")
+        public IActionResult Admin( string date, string message, string source, string stacktrace, string messageString = "")
         {
-           // var exceptions = new List<Exception>();
+            if(date != null)
+            {
+                var exception = new Exceptions { Date = date, Message = message, Source = source, StackTrace = stacktrace };
+                _databaseManager.DeleteLoggedExceptions(exception);
+            }
             var exceptions = _databaseManager.ReadLoggedExceptions();
-
             ViewBag.MyMessage = messageString;
             var users = _databaseManager.ReadUsersList();
             var role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;

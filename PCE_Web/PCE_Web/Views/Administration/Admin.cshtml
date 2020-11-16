@@ -89,12 +89,13 @@
         </div>
     </div>
 
-    <table id="exceptions">
+    <table id="items">
         <tr>
             <th>Data</th>
             <th>Žinutė</th>
             <th>Šaltinis</th>
             <th>Steko šaltinis</th>
+            <th>Klaida sutvarkyta, ištrinti</th>
         </tr>
         @foreach (var exception in @Model.Exceptions)
         { 
@@ -103,6 +104,9 @@
         <td>@exception.Message</td>
         <td>@exception.Source</td>
         <td>@exception.StackTrace</td>
+        <td>
+            <button id="mvc-action-button" class="myButton" onclick="location.href = '@Url.Action("Admin", "Administration", new {date = exception.Date, message = exception.Message, source = exception.Source, stacktrace = exception.StackTrace})'">Ištrinti</button>
+        </td>
     </tr>
         }
     </table>
