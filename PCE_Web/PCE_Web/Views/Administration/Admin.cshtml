@@ -10,11 +10,11 @@
 {
     @if (!ViewBag.MyMessage.Equals(""))
     {
-      <script type="text/javascript">
-          $(document).ready(function() {
-              $(".message-box").show();
-          });
-      </script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $(".message-box").show();
+            });
+        </script>
         <div id="alertBox" class="alert warning">
             <span class="closebtn" onclick="this.parentElement.style.display = 'none';">&times;</span>
             @ViewBag.MyMessage
@@ -88,6 +88,26 @@
             </div>
         </div>
     </div>
+
+    <table id="exceptions">
+        <tr>
+            <th>Data</th>
+            <th>Žinutė</th>
+            <th>Šaltinis</th>
+            <th>Steko šaltinis</th>
+        </tr>
+        @foreach (var exception in @Model.Exceptions)
+        { 
+    <tr>
+        <td>@exception.Date</td>
+        <td>@exception.Message</td>
+        <td>@exception.Source</td>
+        <td>@exception.StackTrace</td>
+    </tr>
+        }
+    </table>
+
+
     <script>
         $(function () {
             $('#emailModal').modal({

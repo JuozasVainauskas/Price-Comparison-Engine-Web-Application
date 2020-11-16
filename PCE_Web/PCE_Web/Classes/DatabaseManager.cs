@@ -374,7 +374,7 @@ namespace PCE_Web.Classes
                 }
             }
 
-        public static List<Exceptions> ReadLoggedExceptions()
+        public List<Exceptions> ReadLoggedExceptions()
         {
             var exceptions = new List<Exceptions>(); 
             using (var context = new PCEDatabaseContext())

@@ -20,11 +20,14 @@ namespace PCE_Web.Controllers
         }
         public IActionResult Admin(string messageString = "")
         {
+           // var exceptions = new List<Exception>();
+            var exceptions = _databaseManager.ReadLoggedExceptions();
+
             ViewBag.MyMessage = messageString;
             var users = _databaseManager.ReadUsersList();
             var role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
-            var adminView = new AdminView() { Users = users, Role = role };
-
+            var adminView = new AdminView() { Users = users, Role = role, Exceptions = exceptions };
+            
             return View(adminView);
         }
 
