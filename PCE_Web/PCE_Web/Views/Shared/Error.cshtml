@@ -1,18 +1,27 @@
 ﻿@model ErrorViewModel
 @{
     ViewData["Title"] = "Error";
+    @if (User.Identity.Name != null)
+    {
+        Layout = "~/Views/Shared/_LayoutLoggedIn.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+
 }
 
 <div class="container">
     <div class="row">
         <div class="col-md-12">
             <div class="error-template">
-                <h1 sstyle=><strong>Atsiprašome, įvyko klaida. Ieškomas puslapis nėra rastas!</strong></h1>
-    <div class="error">
-        <a href="javascript:void(0);" onclick="history.go(-1);"><strong>Grižti atgal</strong></a>
-    </div>
-    <img src="~/img/error.png" />
-</div>
+                <h1><strong>Atsiprašome, įvyko klaida. Ieškomas puslapis nėra rastas!</strong></h1>
+                <div class="error">
+                    <a href="javascript:void(0);" onclick="history.go(-1);"><strong>Grižti atgal</strong></a>
+                </div>
+                <img src="~/img/error.png" />
+            </div>
         </div>
     </div>
 </div>

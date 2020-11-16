@@ -1,5 +1,8 @@
 ﻿CREATE TABLE [dbo].[SavedExceptions]
 (
 	[SavedExceptionId] INT NOT NULL PRIMARY KEY IDENTITY(1,1), 
-    [Type] NVARCHAR (MAX) NOT NULL
+    [Message] NVARCHAR (MAX) NOT NULL, 
+    [StackTrace] NVARCHAR(MAX) NOT NULL, 
+    [Source] NVARCHAR(MAX) NOT NULL, 
+    [Date] NVARCHAR(MAX) NOT NULL
 )

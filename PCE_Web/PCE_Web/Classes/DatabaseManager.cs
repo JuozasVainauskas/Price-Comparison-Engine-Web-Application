@@ -353,17 +353,20 @@ namespace PCE_Web.Classes
             }
         }
         
-        public void WriteLoggedExceptions(string type)
+        public void WriteLoggedExceptions(string message, string source, string stackTrace, string date)
             {
                 using (var context = new PCEDatabaseContext())
                 {
-                    var result = context.SavedExceptions.SingleOrDefault(column => column.Type == type);
+                    var result = context.SavedExceptions.SingleOrDefault(column => column.Date == date && column.Message == message && column.Source == source && column.StackTrace == stackTrace);
 
                     if (result == null)
                     {
                         var savedExceptions = new SavedExceptions()
                         {
-                            Type = type
+                            Message = message,
+                            Source = source,
+                            StackTrace = stackTrace,
+                            Date = date
                         };
                         context.SavedExceptions.Add(savedExceptions);
                         context.SaveChanges();
@@ -371,14 +374,41 @@ namespace PCE_Web.Classes
                 }
             }
 
+        public List<Exceptions> ReadLoggedExceptions()
+        {
+            List<Exceptions> exceptions; 
+            using (var context = new PCEDatabaseContext())
+            {
+                exceptions = context.SavedExceptions.Where(row => row.SavedExceptionId > 0)
+                .Select(column => new Exceptions { Date = column.Date, Message = column.Message, StackTrace = column.StackTrace, Source = column.Source })
+                .ToList();
+            }
+
+            return exceptions;
+        }
+
+        public void DeleteLoggedExceptions(Exceptions exceptions)
+        {
+            using (var context = new PCEDatabaseContext())
+            {
+                var result = context.SavedExceptions.SingleOrDefault(column => column.Date == exceptions.Date && column.Source == exceptions.Source &&
+                    column.Message == exceptions.Message && column.StackTrace == exceptions.StackTrace);
+
+                if (result != null)
+                {
+                    context.SavedExceptions.Remove(result);
+                    context.SaveChanges();
+                }
+            }
+        }
+
 
         public List<CommentsTable> ReadComments(int index)
         {
             List<CommentsTable> comments;
             using (var context = new PCEDatabaseContext())
             {
-                comments = context.CommentsTable
-                .Where(column => column.ShopId == index)
+                comments = context.CommentsTable.Where(column => column.ShopId == index)
                 .Select(column => new CommentsTable {CommentId = column.CommentId, Email = column.Email, ShopId = column.ShopId, Date = column.Date, Rating = column.Rating, Comment = column.Comment})
                 .ToList();
             }
