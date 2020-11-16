@@ -18,7 +18,7 @@ namespace PCE_Web.Controllers
         {
             _databaseManager = databaseManager;
         }
-        public IActionResult Admin(int delete, string messageString = "")
+        public IActionResult Admin(string messageString = "")
         {
             
             var exceptions = _databaseManager.ReadLoggedExceptions();

@@ -33,6 +33,7 @@ namespace PCE_Web.Controllers
 
         public async Task<IActionResult> Suggestions(string productName, string link, string pictureUrl, string seller, string name, string price)
         {
+            throw new Exception("error");
             if (productName != null)
             {
                 SearchWord = productName;
