@@ -88,7 +88,7 @@
             </div>
         </div>
     </div>
-
+    <h2>Įvykusios klaidos:</h2>
     <table id="items">
         <tr>
             <th>Data</th>
@@ -105,7 +105,7 @@
         <td>@exception.Source</td>
         <td>@exception.StackTrace</td>
         <td>
-            <button id="mvc-action-button" class="myButton" onclick="location.href = '@Url.Action("Admin", "Administration", new {date = exception.Date, message = exception.Message, source = exception.Source, stacktrace = exception.StackTrace})'">Ištrinti</button>
+            <button id="mvc-action-button" class="myButton" onclick="location.href = '@Url.Action("Delete", "Administration", (TempData["date"] = exception.Date, TempData["source"] = exception.Source,TempData["message"] = exception.Message,TempData["stacktrace"] = exception.StackTrace))'">Ištrinti</button>
         </td>
     </tr>
         }

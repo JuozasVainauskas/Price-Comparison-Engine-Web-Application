@@ -37,7 +37,7 @@ namespace PCE_Web.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            var feature = this.HttpContext.Features.Get<IExceptionHandlerFeature>();
+            var feature = HttpContext.Features.Get<IExceptionHandlerFeature>();
 
             _databaseManager.WriteLoggedExceptions(DateTime.Now.ToString(),feature.Error.Message, feature.Error.StackTrace, feature.Error.Source);
 

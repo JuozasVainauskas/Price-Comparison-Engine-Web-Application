@@ -18,13 +18,9 @@ namespace PCE_Web.Controllers
         {
             _databaseManager = databaseManager;
         }
-        public IActionResult Admin( string date, string message, string source, string stacktrace, string messageString = "")
+        public IActionResult Admin(int delete, string messageString = "")
         {
-            if(date != null)
-            {
-                var exception = new Exceptions { Date = date, Message = message, Source = source, StackTrace = stacktrace };
-                _databaseManager.DeleteLoggedExceptions(exception);
-            }
+            
             var exceptions = _databaseManager.ReadLoggedExceptions();
             ViewBag.MyMessage = messageString;
             var users = _databaseManager.ReadUsersList();
@@ -34,7 +30,14 @@ namespace PCE_Web.Controllers
             return View(adminView);
         }
 
-         public IActionResult Add(string email, string password)
+        public IActionResult Delete()
+        {
+                var exception = new Exceptions { Date = TempData["date"].ToString(), Message = TempData["message"].ToString(), Source = TempData["source"].ToString(), StackTrace = TempData["stacktrace"].ToString() };
+                _databaseManager.DeleteLoggedExceptions(exception);
+
+            return RedirectToAction("Admin", "Administration");
+        }
+            public IActionResult Add(string email, string password)
         {
 
             var role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
