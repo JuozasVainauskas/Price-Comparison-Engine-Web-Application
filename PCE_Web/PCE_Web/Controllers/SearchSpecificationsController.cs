@@ -21,6 +21,7 @@ namespace PCE_Web.Controllers
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
         private readonly IHttpClientFactory _httpClient;
         private readonly IDatabaseManager _databaseManager;
+
         public SearchSpecificationsController(IHttpClientFactory httpClient, IDatabaseManager databaseManager)
         {
             _httpClient = httpClient;
@@ -28,7 +29,7 @@ namespace PCE_Web.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> SuggestionsSpecifications(string productName, int minPrice, int maxPrice)
+        public async Task<IActionResult> SuggestionsSpecifications(string productName, int lowestPrice, int biggestPrice, string avitela, string gintarine, string barbora, string rde, string bigbox, string elektromarkt, string pigu)
         {
 
             if (_databaseManager.ReadSearchedItems(productName).Any())
@@ -37,7 +38,7 @@ namespace PCE_Web.Controllers
                 foreach (var item in _databaseManager.ReadSearchedItems(productName))
                 {
                     var price = ConvertingToDouble(item.Price);
-                    if ((price >= minPrice) && (price <= maxPrice))
+                    if ((price >= lowestPrice) && (price <= biggestPrice))
                     {
                         products.Add(item);
                     }
@@ -50,7 +51,7 @@ namespace PCE_Web.Controllers
             {
                 var httpClient = _httpClient.CreateClient();
                 var products = new List<Item>();
-                await ReadingItemsAsync(productName, products, httpClient, minPrice, maxPrice);
+                await ReadingItemsAsync(productName, products, httpClient, lowestPrice, biggestPrice);
                 products = SortAndInsert(products);
                 //_databaseManager.WriteSearchedItems(products, productName);
                 var suggestionsSpecificationsView = new SuggestionsSpecificationsView { Products = products };
