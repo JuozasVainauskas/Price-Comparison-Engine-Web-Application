@@ -16,7 +16,6 @@ namespace PCE_Web.Classes
     {
         public static async void SendEmail(string code, string email) 
         {
-
             var client = new SmtpClient()
             {
                 Host = "smtp.gmail.com",
@@ -27,12 +26,12 @@ namespace PCE_Web.Classes
                 
                 Credentials = new NetworkCredential()
                 {
-                        UserName = ShopSecrets.Email,
-                        Password = ShopSecrets.Password
+                    UserName = "smartshopautobot@gmail.com",
+                    Password = "adminNull0"
                 }
             };
 
-            var fromEmail = new MailAddress(ShopSecrets.Email, "Smart Shop");
+            var fromEmail = new MailAddress("smartshopautobot@gmail.com", "Smart Shop");
             var toEmail = new MailAddress(email, "Naudotojas");
             var message = new MailMessage()
             {
