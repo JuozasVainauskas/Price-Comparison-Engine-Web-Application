@@ -1,7 +1,9 @@
 ﻿@model SuggestionsSpecificationsView
 <link rel="stylesheet" href="~/css/styleForSuggestionView.css">
 <link rel="stylesheet" href="~/css/Loading.css">
-
+@{
+    Layout = "~/Views/Shared/_LayoutLoggedIn.cshtml";
+}
 <br>
 <h1>Iš viso surasta prekių: @Model.Products.Count</h1>
 <br>
