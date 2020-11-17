@@ -54,38 +54,27 @@
     @foreach (var productSaved in @Model.ProductsSaved)
     {
         <tr>
-            <th>Pardavėjas</th>
-            <th>Nuotrauka</th>
-            <th>Prekė</th>
-            <th>Kaina</th>
-            <th>Ištrinti prekę</th>
+            <td><a href="@productSaved.Link"><img class="image" alt="product.jpg" src="@productSaved.Picture"></a></td>
+            <td>
+                <button id="mvc-action-button" class="link" name="particularItem" onclick="location.href = '@Url.Action("ParticularItemLoggedIn", "ParticularItemLoggedIn", new { particularItem = productSaved.Name })'">
+                    @productSaved.Name
+                </button>
+            </td>
+            <td>@productSaved.Price</td>
+            <td>
+                <button id="mvc-action-button" class="myButton" onclick="location.href = '@Url.Action("Items", "MainWindowLoggedIn", new {link = productSaved.Link, pictureUrl = productSaved.Picture, seller = productSaved.Seller, name = productSaved.Name, price = productSaved.Price})'">Ištrinti</button>
+            </td>
         </tr>
-        @foreach (var productSaved in @Model.ProductsSaved)
-        {
-    <tr>
-        <td>@productSaved.Seller</td>
-        <td><a href="@productSaved.Link"><img class="image" alt="product.jpg" src="@productSaved.Picture"></a></td>
-        <td>
-            <button id="mvc-action-button" class="link" name="particularItem" onclick="location.href = '@Url.Action("ParticularItemLoggedIn", "ParticularItemLoggedIn", new { particularItem = productSaved.Name })'">
-                @productSaved.Name
-            </button>
-        </td>
-        <td>@productSaved.Price</td>
-        <td>
-            <button id="mvc-action-button" class="myButton" onclick="location.href = '@Url.Action("Items", "MainWindowLoggedIn", new {link = productSaved.Link, pictureUrl = productSaved.Picture, seller = productSaved.Seller, name = productSaved.Name, price = productSaved.Price})'">Ištrinti</button>
-        </td>
-    </tr>
-        }
-    </table>
-    <br />
-    <br />
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12 footer-copyright">
-                    &copy; SmartShop.LT, 2020.
-                </div>
+    }
+</table>
+<br />
+<br />
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 footer-copyright">
+                &copy; SmartShop.LT, 2020.
             </div>
         </div>
     </div>
@@ -176,7 +165,7 @@
                     </div>
                 </div>
             </div>
-            
+
 
             <div class="modal-footer">
                 <button type="button" class="btn first" data-dismiss="modal" style="color: green" bold>Uždaryti</button>
@@ -191,8 +180,7 @@
     var output = document.getElementById("demo");
     output.innerHTML = slider.value;
 
-    slider.oninput = function ()
-    {
+    slider.oninput = function () {
         output.innerHTML = slider.value;
     }
 
@@ -200,8 +188,7 @@
     var output2 = document.getElementById("demo2");
     output2.innerHTML = slider2.value;
 
-    slider2.oninput = function ()
-    {
+    slider2.oninput = function () {
         output2.innerHTML = slider2.value;
     }
 </script>
