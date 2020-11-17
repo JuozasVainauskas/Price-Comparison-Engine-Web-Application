@@ -12,7 +12,12 @@ using PCE_Web.Classes;
 using PCE_Web.Models;
 
 namespace PCE_Web.Controllers
-{
+{ 
+    struct ShopFlag
+    {
+        public string ShopName { get; set; }
+        public string Flag { get; set; }
+    }
     public class SearchSpecificationsController : Controller
     {
         public static int SoldOutBarbora;
@@ -21,6 +26,7 @@ namespace PCE_Web.Controllers
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
         private readonly IHttpClientFactory _httpClient;
         private readonly IDatabaseManager _databaseManager;
+        readonly ShopFlag[] _shopFlags = new ShopFlag[4];
 
         public SearchSpecificationsController(IHttpClientFactory httpClient, IDatabaseManager databaseManager)
         {
@@ -31,6 +37,20 @@ namespace PCE_Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> SuggestionsSpecifications(string productName, int lowestPrice, int biggestPrice, string avitela, string gintarine, string barbora, string rde, string bigbox, string elektromarkt, string pigu)
         {
+            _shopFlags[0].ShopName = "Avitela";
+            _shopFlags[0].Flag = avitela;
+            _shopFlags[1].ShopName = "Gintarine";
+            _shopFlags[1].Flag = gintarine;
+            _shopFlags[2].ShopName = "Barbora";
+            _shopFlags[2].Flag = barbora;
+            _shopFlags[3].ShopName = "Rde";
+            _shopFlags[3].Flag = rde;
+            _shopFlags[4].ShopName = "Bigbox";
+            _shopFlags[4].Flag = bigbox;
+            _shopFlags[5].ShopName = "Elektromarkt";
+            _shopFlags[5].Flag = elektromarkt;
+            _shopFlags[6].ShopName = "Pigu";
+            _shopFlags[6].Flag = pigu;
 
             if (_databaseManager.ReadSearchedItems(productName).Any())
             {
@@ -61,7 +81,12 @@ namespace PCE_Web.Controllers
 
         private async Task ReadingItemsAsync(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice)
         {
-            var gettingRde = await Task.Factory.StartNew(() => gettingItemsFromRde(productName, products, httpClient, minPrice, maxPrice));
+            if (_shopFlags[3].Flag == "on")
+            {
+                var gettingRde = await Task.Factory.StartNew(() =>
+                    gettingItemsFromRde(productName, products, httpClient, minPrice, maxPrice));
+            }
+
             var gettingBarbora = await Task.Factory.StartNew(() => gettingItemsFromBarbora(productName, products, httpClient, minPrice, maxPrice));
             var gettingAvitela = await Task.Factory.StartNew(() => gettingItemsFromAvitela(productName, products, httpClient, minPrice, maxPrice));
             var gettingPigu = await Task.Factory.StartNew(() => gettingItemsFromPigu(productName, products, httpClient, minPrice, maxPrice));
