@@ -18,18 +18,18 @@ namespace PCE_Web.Classes
         {
 
             var client = new SmtpClient()
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                
+                Credentials = new NetworkCredential()
                 {
-                    Host = "smtp.gmail.com",
-                    Port = 587,
-                    EnableSsl = true,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    UseDefaultCredentials = false,
-                    
-                    Credentials = new NetworkCredential()
-                    {
-                            UserName = ShopSecrets.Email,
-                            Password = ShopSecrets.Password
-                    }
+                        UserName = ShopSecrets.Email,
+                        Password = ShopSecrets.Password
+                }
             };
 
             var fromEmail = new MailAddress(ShopSecrets.Email, "Smart Shop");
