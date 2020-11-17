@@ -546,6 +546,18 @@ namespace PCE_Web.Classes
             }
         }
 
+        List<string> ReadReport(string email)
+        {
+            List<string> comments;
+            using (var context = new PCEDatabaseContext())
+            {
+                comments = context.ReportsTable.Where(column => column.Email == email).Select(column => column.Comment).ToList();
+            }
+
+            return comments;
+
+        }
+
         public bool isReported(string email)
         {
             List<ReportsTable> item;

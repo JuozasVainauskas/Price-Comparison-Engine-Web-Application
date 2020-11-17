@@ -35,7 +35,7 @@
         <td style="font-weight:bold;color:red;">@user.Email</td>
         <td style="font-weight:bold;color:red;">@user.Role</td>
         <td style="width:50px;">
-            <button id="mvc-action-button" class="myButton">Peržiūrėti</button>
+            <button id="mvc-action-button" class="myButton" onclick="location.href = '@Url.Action("Report", "Reports", new {Email = @user.Email }))'">Peržiūrėti</button>
         </td>
     </tr>
         }
