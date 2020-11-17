@@ -57,6 +57,7 @@ namespace PCE_Web.Models
 
         void WriteReport(string email, string report);
 
+        List<string> ReadReport(string email);
         bool isReported(string email);
     }
 }

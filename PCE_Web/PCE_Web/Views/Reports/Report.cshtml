@@ -1,3 +1,32 @@
 ﻿@{
     Layout = "~/Views/Shared/_LayoutLoggedIn.cshtml";
 }
+
+@model ReportView
+@if (Model.Role == "Admin")
+{
+    <link rel="stylesheet" href="~/css/styleForAdminView.css">
+    <br>
+    <h1>Pranešimai</h1>
+    <br>
+    <table id="items">
+        <tr>
+            <th>Data</th>
+            <th>Pranešimas</th>
+        </tr>
+        @foreach (var comment in @Model.comments)
+        {
+            <tr>
+                <td style="font-weight:bold;color:red;">2020-11-17</td>
+                <td style="font-weight:bold;color:red;max-width:500px; word-wrap:break-word;">@comment</td>
+            </tr>
+        }
+
+    </table>
+}
+else
+{
+    <h1>Klaida!</h1>
+    <h3><strong>Neturite prieigos </strong> prie šios svetainės dalies!</h3>
+    <button id="mvc-action-button" class="myButton" onclick="location.href = '@Url.Action("Items", "MainWindowLoggedIn")'">Grįžti</button>
+}

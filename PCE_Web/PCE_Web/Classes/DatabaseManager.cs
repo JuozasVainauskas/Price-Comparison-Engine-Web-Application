@@ -546,7 +546,7 @@ namespace PCE_Web.Classes
             }
         }
 
-        List<string> ReadReport(string email)
+        public List<string> ReadReport(string email)
         {
             List<string> comments;
             using (var context = new PCEDatabaseContext())

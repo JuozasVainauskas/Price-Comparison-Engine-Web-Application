@@ -7,6 +7,9 @@ namespace PCE_Web.Models
 {
     public class ReportView : IEnumerable
     {
+        public List<string> comments { get; set; }
+
+        public string Role;
         public IEnumerator GetEnumerator()
         {
             throw new System.NotImplementedException();
