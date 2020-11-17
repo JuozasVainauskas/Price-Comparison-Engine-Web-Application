@@ -55,7 +55,6 @@ namespace PCE_Web.Controllers
             
             if (_databaseManager.ReadSearchedItems(productName).Any())
             {
-                Console.WriteLine("aaa");
                 var products = new List<Item>();
                 foreach (var item in _databaseManager.ReadSearchedItems(productName))
                 {
