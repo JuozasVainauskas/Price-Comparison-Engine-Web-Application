@@ -12,41 +12,136 @@
 </head>
 <body>
 @Html.AntiForgeryToken()
-<form asp-action="Login" novalidate>
-    <div class="container">
-        <h1>Prisijungimas</h1>
-        <p>Užpildykite šią formą, norėdami prisijungti</p>
-        <hr>
+    <form asp-action="Login" novalidate>
+        <div class="container">
+            <h1>Prisijungimas</h1>
+            <p>Užpildykite šią formą, norėdami prisijungti</p>
+            <hr>
 
-        <div class="form-group">
-            <label asp-for="Email"><b>El. paštas</b></label>
-            <input asp-for="Email" class="form-control" type="email" placeholder="Įveskite el. paštą"/>
-            <span asp-validation-for="Email" class="text-danger"></span>
+            <div class="form-group">
+                <label asp-for="Email"><b>El. paštas</b></label>
+                <input asp-for="Email" class="form-control" type="email" placeholder="Įveskite el. paštą" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password"><b>Slaptažodis</b></label>
+                <input asp-for="Password" class="form-control" type="password" placeholder="Įveskite slaptažodį" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+                @if (ViewBag.ShowMessage == true)
+                {
+                    <script type="text/javascript">
+                        $(document).ready(function () {
+                            $(".message-box").show();
+                        });
+                    </script>
+                    <div class="text-danger">Klaida slaptažodis, netinkamas.</div>
+                }
+            </div>
+
+            <hr>
+            <p>Prisijungdami Jūs sutinkate su mūsų <a asp-controller="Home" asp-action="Privacy">privatumo politika</a>.</p>
+
+            <button type="submit" class="registerbtn">Prisijungti</button>
         </div>
-        <div class="form-group">
-            <label asp-for="Password"><b>Slaptažodis</b></label>
-            <input asp-for="Password" class="form-control" type="password" placeholder="Įveskite slaptažodį"/>
-            <span asp-validation-for="Password" class="text-danger"></span>
-            @if (ViewBag.ShowMessage == true)
-            {
-                <script type="text/javascript">
-                    $(document).ready(function() {
-                        $(".message-box").show();
-                    });
-                </script>
-                <div class="text-danger">Klaida slaptažodis, netinkamas.</div>
-            }
+
+        <div class="container signin">
+            <p>Pamiršote slaptažodį? <a asp-controller="Logging" asp-action="SendCode">Spauskite čia</a>.</p>
         </div>
+        <div class="container signin">
+            <p>Dar neturite vartotojo? <a asp-controller="Registration" asp-action="Register">Registruokitės</a>.</p>
+        </div>
+    </form>
 
-        <hr>
-        <p>Prisijungdami Jūs sutinkate su mūsų <a asp-controller="Home" asp-action="Privacy">privatumo politika</a>.</p>
+<div class="modal fade" id="inputEmailModal" tabindex="-1" role="dialog" aria-labelledby="inputEmailModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:600px;height:700px;" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="inputEmailModalLabel" style="color: green" bold>Susisiekite</h2>
+            </div>
+            <div class="modal-body">
 
-        <button type="submit" class="registerbtn">Prisijungti</button>
+                <h5 style="text-align:center">Įveskite savo email, kad galėtume išsiųsti patvirtinimo kodą.</h5>
+                <br />
+
+                <div class="textarea">
+                    <textarea rows="1" cols="60" placeholder="Įveskite savo email.." style="overflow:auto;resize:none"></textarea>
+                </div>
+                <br />
+
+                <div class="myButton">
+                    <button type="submit">Siųsti</button>
+                </div>
+                <br />
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn first" data-dismiss="modal" style="color: green" bold>Uždaryti</button>
+            </div>
+        </div>
     </div>
+</div>
 
-    <div class="container signin">
-        <p>Dar neturite vartotojo? <a asp-controller="Registration" asp-action="Register">Registruokitės</a>.</p>
+<div class="modal fade" id="inputCodelModal" tabindex="-1" role="dialog" aria-labelledby="inputCodeModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:600px;height:700px;" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="inputCodeModalLabel" style="color: green" bold>Susisiekite</h2>
+            </div>
+            <div class="modal-body">
+
+                <h5 style="text-align:center">Patikrinkite savo email ar gavote patvirtinimo kodą ir įveskite jį į laukelį.</h5>
+                <br />
+
+                <div class="textarea">
+                    <textarea rows="1" cols="60" placeholder="Įveskite savo patvirtinimo kodą.." style="overflow:auto;resize:none"></textarea>
+                </div>
+                <br />
+
+                <div class="myButton">
+                    <button type="submit">Patvirtinti</button>
+                </div>
+                <br />
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn first" data-dismiss="modal" style="color: green" bold>Uždaryti</button>
+            </div>
+        </div>
     </div>
-</form>
+</div>
+
+<div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:600px;height:700px;" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="changePasswordModalLabel" style="color: green" bold>Susisiekite</h2>
+            </div>
+            <div class="modal-body">
+
+                <h5 style="text-align:center">Patikrinkite savo email ar gavote patvirtinimo kodą ir įveskite jį į laukelį.</h5>
+                <br />
+
+                <div class="textarea">
+                    <textarea rows="1" cols="60" placeholder="Įveskite naują slaptažodį.." style="overflow:auto;resize:none"></textarea>
+                </div>
+                <br />
+
+                <div class="textarea">
+                    <textarea rows="1" cols="60" placeholder="Patvirtinkite savo slaptažodį.." style="overflow:auto;resize:none"></textarea>
+                </div>
+                <br />
+
+                <div class="myButton">
+                    <button type="submit">Patvirtinti</button>
+                </div>
+                <br />
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn first" data-dismiss="modal" style="color: green" bold>Uždaryti</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

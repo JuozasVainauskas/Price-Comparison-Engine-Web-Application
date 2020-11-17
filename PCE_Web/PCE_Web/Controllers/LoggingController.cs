@@ -86,15 +86,21 @@ namespace PCE_Web.Controllers
         }
 
         [AllowAnonymous]
+        public IActionResult SendCode()
+        {
+            return RedirectToAction("Login", "Logging");
+        }
+
+        [AllowAnonymous]
         public IActionResult ConfirmEmail()
         {
-            return RedirectToAction("Register", "Registration");
+            return RedirectToAction("Login", "Logging");
         }
 
         [AllowAnonymous]
         public IActionResult ChangePassword()
         {
-            return RedirectToAction("Register", "Registration");
+            return RedirectToAction("Login", "Logging");
         }
     }
 }
