@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -12,6 +13,13 @@ namespace PCE_Web.Classes
 {
     public class DatabaseManager : IDatabaseManager
     {
+        private readonly PCEDatabaseContext _pceDatabaseContext;
+
+        public DatabaseManager(PCEDatabaseContext pceDatabaseContext)
+        {
+            _pceDatabaseContext = pceDatabaseContext;
+        }
+
         private static bool EmailVerification(string email)
         {
             var pattern = new Regex(@"([a-zA-Z0-9._-]*[a-zA-Z0-9][a-zA-Z0-9._-]*)(@gmail.com)$", RegexOptions.Compiled);
@@ -28,8 +36,7 @@ namespace PCE_Web.Classes
 
         private static bool PasswordVerification(string password)
         {
-            var pattern = new Regex(@"(?=(?:.*[a-zA-Z]){3})(?:.*\d)",
-                    RegexOptions.Compiled);
+            var pattern = new Regex(@"(?=(?:.*[a-zA-Z]){3})(?:.*\d)", RegexOptions.Compiled);
             if (string.IsNullOrWhiteSpace(password))
             {
                 return false;
@@ -44,54 +51,34 @@ namespace PCE_Web.Classes
         /* Admin klasei */
         public void SetRole(string email, string role)
         {
-            using (var context = new PCEDatabaseContext())
+            var result = _pceDatabaseContext.UserData.SingleOrDefault(column => column.Email == email);
+            if (result != null)
             {
-                var result = context.UserData.SingleOrDefault(column => column.Email == email);
-                if (result != null)
-                {
-                    result.Role = role;
-                    context.SaveChanges();
-                    //UpdateStatistics();
-                }
-                else
-                {
-                    //MessageBox.Show("Vartotojas tokiu emailu neegzistuoja arba nebuvo rastas.");
-                }
+                result.Role = role;
+                _pceDatabaseContext.SaveChanges();
             }
         }
 
-        public void DeleteAccount(string email)
+        public void DeleteAccount(string email) 
         {
-            using (var context = new PCEDatabaseContext())
+            var savedItems = _pceDatabaseContext.SavedItems.Where(column => column.Email == email).ToList();
+            foreach (var savedItem in savedItems)
             {
-                var savedItems = context.SavedItems.Where(column => column.Email == email).ToList();
-
-                foreach (var savedItem in savedItems)
-                {
-                    context.SavedItems.Remove(savedItem);
-                }
-
-                var result = context.UserData.SingleOrDefault(column => column.Email == email);
-
-                if (result != null)
-                {
-                    context.UserData.Remove(result);
-                    //UpdateStatistics();
-                }
-                else
-                {
-                    //MessageBox.Show("Vartotojas tokiu emailu neegzistuoja arba nebuvo rastas.");
-                }
-
-                var comments = context.CommentsTable.Where(column => column.Email == email).ToList();
-
-                foreach (var comment in comments)
-                {
-                    context.CommentsTable.Remove(comment);
-                }
-
-                context.SaveChanges();
+                _pceDatabaseContext.SavedItems.Remove(savedItem);
             }
+
+            var result = _pceDatabaseContext.UserData.SingleOrDefault(column => column.Email == email);
+            if (result != null)
+            {
+                _pceDatabaseContext.UserData.Remove(result);
+            }
+
+            var comments = _pceDatabaseContext.CommentsTable.Where(column => column.Email == email).ToList();
+            foreach (var comment in comments)
+            {
+                _pceDatabaseContext.CommentsTable.Remove(comment);
+            }
+            _pceDatabaseContext.SaveChanges();
         }
 
         public void CreateAccount(string email, string password)
@@ -99,23 +86,11 @@ namespace PCE_Web.Classes
             var passwordSalt = GenerateHash.CreateSalt(10);
             var passwordHash = GenerateHash.GenerateSha256Hash(password, passwordSalt);
 
-            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+            if(!string.IsNullOrWhiteSpace(email) && !string.IsNullOrWhiteSpace(password) && EmailVerification(email))
             {
-                //MessageBox.Show("Prašome užpildyti visus laukus.");
-            }
-            else if (!EmailVerification(email))
-            {
-                //MessageBox.Show("Neteisingai suformatuotas el. paštas!");
-            }
-            else
-            {
-                var context = new PCEDatabaseContext();
-                var result = context.UserData.SingleOrDefault(column => column.Email == email);
-                if (result != null)
-                {
-                    //MessageBox.Show("Toks email jau panaudotas. Pabandykite kitą.");
-                }
-                else
+                var result = _pceDatabaseContext.UserData.SingleOrDefault(column => column.Email == email);
+
+                if (result == null)
                 {
                     var userData = new UserData()
                     {
@@ -124,8 +99,8 @@ namespace PCE_Web.Classes
                         PasswordSalt = passwordSalt,
                         Role = "0"
                     };
-                    context.UserData.Add(userData);
-                    context.SaveChanges();
+                    _pceDatabaseContext.UserData.Add(userData);
+                    _pceDatabaseContext.SaveChanges();
                 }
             }
         }
@@ -133,32 +108,28 @@ namespace PCE_Web.Classes
         public List<User> ReadUsersList()
         {
             var usersList = new List<User>();
+            var users = _pceDatabaseContext.UserData.Select(column => new UserData() { Email = column.Email, Role = column.Role, PasswordHash = "", PasswordSalt = "", UserId = 0}).ToList();
 
-            using (var context = new PCEDatabaseContext())
+            foreach (var user in users)
             {
-                var users = context.UserData.Select(column => new UserData() { Email = column.Email, Role = column.Role, PasswordHash = "", PasswordSalt = "", UserId = 0}).ToList();
+                Enum singleTempRole = null;
 
-                foreach (var user in users)
+                if (user.Role == "0")
                 {
-                    Enum singleTempRole = null;
-
-                    if (user.Role == "0")
-                    {
-                        singleTempRole = Role.User;
-                    }
-                    else if (user.Role == "1")
-                    {
-                        singleTempRole = Role.Admin;
-                    }
-
-                    usersList.Add(new User()
-                    {
-                        Email = user.Email,
-                        Role = singleTempRole
-                    });
+                    singleTempRole = Role.User;
                 }
-            }
+                else if (user.Role == "1")
+                {
+                    singleTempRole = Role.Admin;
+                }
 
+                usersList.Add(new User()
+                {
+                    Email = user.Email,
+                    Role = singleTempRole
+                });
+            
+            }
             return usersList;
         }
         /* ------------------------------------------- */
@@ -181,52 +152,45 @@ namespace PCE_Web.Classes
             var passwordSalt = GenerateHash.CreateSalt(10);
             var passwordHash = GenerateHash.GenerateSha256Hash(password, passwordSalt);
 
-            using (var context = new PCEDatabaseContext())
+            var result = _pceDatabaseContext.UserData.SingleOrDefault(column => column.Email == email);
+            if (result == null)
             {
-                var result = context.UserData.SingleOrDefault(column => column.Email == email);
-                if (result == null)
+                var userData = new UserData()
                 {
-                    var userData = new UserData()
-                    {
-                        Email = email,
-                        PasswordHash = passwordHash,
-                        PasswordSalt = passwordSalt,
-                        Role = "0"
-                    };
-                    context.UserData.Add(userData);
-                    context.SaveChanges();
-                }
+                    Email = email,
+                    PasswordHash = passwordHash,
+                    PasswordSalt = passwordSalt,
+                    Role = "0"
+                };
+                _pceDatabaseContext.UserData.Add(userData);
+                _pceDatabaseContext.SaveChanges();
             }
         }
 
         public User LoginUser(string email, string password)
         {
             var user = new User();
+            var result = _pceDatabaseContext.UserData.SingleOrDefault(column => column.Email == email);
 
-            using (var context = new PCEDatabaseContext())
+            if (result != null)
             {
-                var result = context.UserData.SingleOrDefault(column => column.Email == email);
-
-                if (result != null)
+                var passwordSalt = result.PasswordSalt;
+                var passwordHash = result.PasswordHash;
+                if (result.Role == "0")
                 {
-                    var passwordSalt = result.PasswordSalt;
-                    var passwordHash = result.PasswordHash;
-                    if (result.Role == "0")
-                    {
-                        user.Role = Role.User;
-                    }
-                    else if (result.Role == "1")
-                    {
-                        user.Role = Role.Admin;
-                    }
+                    user.Role = Role.User;
+                }
+                else if (result.Role == "1")
+                {
+                    user.Role = Role.Admin;
+                }
 
-                    var userEnteredPassword = GenerateHash.GenerateSha256Hash(password, passwordSalt);
+                var userEnteredPassword = GenerateHash.GenerateSha256Hash(password, passwordSalt);
 
-                    if (passwordHash.Equals(userEnteredPassword))
-                    {
-                        user.Email = email;
-                        return user;
-                    }
+                if (passwordHash.Equals(userEnteredPassword))
+                {
+                    user.Email = email;
+                    return user;
                 }
             }
 
@@ -235,19 +199,7 @@ namespace PCE_Web.Classes
 
         public void ChangePassword(string email, string password, string passwordConfirm)
         {
-            if (string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(passwordConfirm))
-            {
-                //MessageBox.Show("Prašome užpildyti visus laukus.");
-            }
-            else if (!PasswordVerification(password))
-            {
-                //MessageBox.Show("Slaptažodyje turi būti bent trys raidės ir vienas skaičius!!!");
-            }
-            else if (!password.Equals(passwordConfirm))
-            {
-                //MessageBox.Show("Slaptažodžiai nesutampa.");
-            }
-            else
+            if (!string.IsNullOrWhiteSpace(password) && !string.IsNullOrWhiteSpace(passwordConfirm) && PasswordVerification(password) && password.Equals(passwordConfirm))
             {
                 var passwordSalt = GenerateHash.CreateSalt(10);
                 var passwordHash = GenerateHash.GenerateSha256Hash(password, passwordSalt);
@@ -261,160 +213,106 @@ namespace PCE_Web.Classes
                         result.PasswordSalt = passwordSalt;
                         context.SaveChanges();
                     }
-                    else
-                    {
-                        //MessageBox.Show("Vartotojas tokiu emailu neegzistuoja arba nebuvo rastas.");
-                    }
                 }
             }
         }
 
         public List<Slide> ReadSlidesList()
         {
-            List<Slide> slidesList;
-
-            using (var context = new PCEDatabaseContext())
-            {
-                slidesList = context.ItemsTable.Where(column => column.Price.Length >= 6).Select(column => new Slide() { PageUrl = column.PageUrl, ImgUrl = column.ImgUrl }).ToList();
-            }
-
+            var slidesList = _pceDatabaseContext.ItemsTable.Where(column => column.Price.Length >= 6).Select(column => new Slide() { PageUrl = column.PageUrl, ImgUrl = column.ImgUrl }).ToList();
             return slidesList;
         }
 
         public void DeleteSavedItem(string email, Item item)
         {
-            using (var context = new PCEDatabaseContext())
-            {
-                var result = context.SavedItems.SingleOrDefault(column =>
-                    column.Email == email && column.PageUrl == item.Link && column.ImgUrl == item.Picture &&
-                    column.ShopName == item.Seller && column.ItemName == item.Name && column.Price == item.Price);
+            var result = _pceDatabaseContext.SavedItems.SingleOrDefault(column =>
+                column.Email == email && column.PageUrl == item.Link && column.ImgUrl == item.Picture &&
+                column.ShopName == item.Seller && column.ItemName == item.Name && column.Price == item.Price);
 
-                if (result != null)
-                {
-                    context.SavedItems.Remove(result);
-                    context.SaveChanges();
-                }
+            if (result != null)
+            {
+                _pceDatabaseContext.SavedItems.Remove(result);
+                _pceDatabaseContext.SaveChanges();
             }
         }
 
         public List<Item> ReadSavedItems(string email)
         {
-            var item = new List<Item>();
+            var items = _pceDatabaseContext.SavedItems.Where(column => column.Email == email).Select(column => new Item
+                    {Link = column.PageUrl, Picture = column.ImgUrl, Seller = column.ShopName, Name = column.ItemName, Price = column.Price}).ToList();
 
-            using (var context = new PCEDatabaseContext())
-            {
-                var itemsList = context.SavedItems.Where(column => column.Email == email).Select(column => new Item
-                        {Link = column.PageUrl, Picture = column.ImgUrl, Seller = column.ShopName, Name = column.ItemName, Price = column.Price})
-                    .ToList();
-
-                foreach (var singleItem in itemsList)
-                {
-                    item.Add(singleItem);
-                }
-            }
-
-            return item;
+            return items;
         }
 
-        public void WriteSavedItem(string pageUrl, string imgUrl, string shopName, string itemName, string price,
-            string email)
+        public void WriteSavedItem(string pageUrl, string imgUrl, string shopName, string itemName, string price, string email)
         {
-            using (var context = new PCEDatabaseContext())
-            {
-                var result = context.SavedItems.SingleOrDefault(column =>
-                    column.PageUrl == pageUrl && column.ImgUrl == imgUrl && column.ShopName == shopName && column.ItemName == itemName &&
-                    column.Price == price && column.Email == email);
+            
+            var result = _pceDatabaseContext.SavedItems.SingleOrDefault(column =>
+                column.PageUrl == pageUrl && column.ImgUrl == imgUrl && column.ShopName == shopName && column.ItemName == itemName &&
+                column.Price == price && column.Email == email);
 
-                if (result == null)
+            if (result == null)
+            {
+                var savedItems = new SavedItems()
                 {
-                    var savedItems = new SavedItems()
-                    {
-                        PageUrl = pageUrl,
-                        ImgUrl = imgUrl,
-                        ShopName = shopName,
-                        ItemName = itemName,
-                        Price = price,
-                        Email = email
-                    };
-                    context.SavedItems.Add(savedItems);
-                    context.SaveChanges();
-                }
+                    PageUrl = pageUrl,
+                    ImgUrl = imgUrl,
+                    ShopName = shopName,
+                    ItemName = itemName,
+                    Price = price,
+                    Email = email
+                };
+                _pceDatabaseContext.SavedItems.Add(savedItems);
+                _pceDatabaseContext.SaveChanges();
             }
         }
         
         public void WriteLoggedExceptions(string message, string source, string stackTrace, string date)
-            {
-                using (var context = new PCEDatabaseContext())
-                {
-                    var result = context.SavedExceptions.SingleOrDefault(column => column.Date == date && column.Message == message && column.Source == source && column.StackTrace == stackTrace);
+        {
+            var result = _pceDatabaseContext.SavedExceptions.SingleOrDefault(column => column.Date == date && column.Message == message && column.Source == source && column.StackTrace == stackTrace);
 
-                    if (result == null)
-                    {
-                        var savedExceptions = new SavedExceptions()
-                        {
-                            Message = message,
-                            Source = source,
-                            StackTrace = stackTrace,
-                            Date = date
-                        };
-                        context.SavedExceptions.Add(savedExceptions);
-                        context.SaveChanges();
-                    }
-                }
+            if (result == null)
+            {
+                var savedExceptions = new SavedExceptions()
+                {
+                    Message = message,
+                    Source = source,
+                    StackTrace = stackTrace,
+                    Date = date
+                };
+                _pceDatabaseContext.SavedExceptions.Add(savedExceptions);
+                _pceDatabaseContext.SaveChanges();
             }
+        }
 
         public List<Exceptions> ReadLoggedExceptions()
         {
-            List<Exceptions> exceptions; 
-            using (var context = new PCEDatabaseContext())
-            {
-                exceptions = context.SavedExceptions.Where(row => row.SavedExceptionId > 0)
-                .Select(column => new Exceptions { Id = column.SavedExceptionId, Date = column.Date, Message = column.Message, StackTrace = column.StackTrace, Source = column.Source })
-                .ToList();
-            }
-
+            var exceptions = _pceDatabaseContext.SavedExceptions.Where(row => row.SavedExceptionId > 0)
+                .Select(column => new Exceptions { Id = column.SavedExceptionId, Date = column.Date, Message = column.Message, StackTrace = column.StackTrace, Source = column.Source }).ToList();
             return exceptions;
         }
 
         public void DeleteLoggedExceptions(int id)
         {
-            using (var context = new PCEDatabaseContext())
+            var result = _pceDatabaseContext.SavedExceptions.SingleOrDefault(column => column.SavedExceptionId == id );
+            if (result != null)
             {
-                var result = context.SavedExceptions.SingleOrDefault(column => column.SavedExceptionId == id );
-
-                if (result != null)
-                {
-                    context.SavedExceptions.Remove(result);
-                    context.SaveChanges();
-                }
+                _pceDatabaseContext.SavedExceptions.Remove(result);
+                _pceDatabaseContext.SaveChanges();
             }
+            
         }
 
 
         public List<CommentsTable> ReadComments(int index)
         {
-            List<CommentsTable> comments;
-            using (var context = new PCEDatabaseContext())
-            {
-                comments = context.CommentsTable.Where(column => column.ShopId == index)
-                .Select(column => new CommentsTable {CommentId = column.CommentId, Email = column.Email, ShopId = column.ShopId, Date = column.Date, Rating = column.Rating, Comment = column.Comment})
-                .ToList();
-            }
-
+            var comments = _pceDatabaseContext.CommentsTable.Where(column => column.ShopId == index).Select(column => new CommentsTable {CommentId = column.CommentId, Email = column.Email, ShopId = column.ShopId, Date = column.Date, Rating = column.Rating, Comment = column.Comment}).ToList();
             return comments;
         }
 
         public bool IsAlreadyCommented(string email, int shopId)
         {
-            List<CommentsTable> item;
-
-            using (var context = new PCEDatabaseContext())
-            {
-                item = context.CommentsTable.Where(column => column.Email == email && column.ShopId == shopId).Select(column => new CommentsTable
-                { CommentId = column.CommentId, Email = column.Email, ShopId = column.ShopId, Date = column.Date, Rating = column.Rating, Comment = column.Comment })
-                    .ToList();
-            }
-
+            var item = _pceDatabaseContext.CommentsTable.Where(column => column.Email == email && column.ShopId == shopId).Select(column => new CommentsTable { CommentId = column.CommentId, Email = column.Email, ShopId = column.ShopId, Date = column.Date, Rating = column.Rating, Comment = column.Comment }).ToList();
             if (item.Count > 0)
             {
                 return true;
@@ -424,56 +322,43 @@ namespace PCE_Web.Classes
 
         public void WriteComments(string email, int shopId, int rating, string comment)
         {
-            using (var context = new PCEDatabaseContext())
+            var result = _pceDatabaseContext.CommentsTable.SingleOrDefault(column => column.Email == email && column.ShopId == shopId);
+            if (result == null)
             {
-                var result = context.CommentsTable.SingleOrDefault(column => column.Email == email && column.ShopId == shopId);
-
-                if (result == null)
+                var commentsTable = new CommentsTable()
                 {
-                    var commentsTable = new CommentsTable()
-                    {
-                        Email = email,
-                        ShopId = shopId,
-                        Date = DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
-                        Rating = rating,
-                        Comment = comment
-                    };
-                    context.CommentsTable.Add(commentsTable);
-                    context.SaveChanges();
-                }
+                    Email = email,
+                    ShopId = shopId,
+                    Date = DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
+                    Rating = rating,
+                    Comment = comment
+                };
+                _pceDatabaseContext.CommentsTable.Add(commentsTable);
+                _pceDatabaseContext.SaveChanges();
             }
         }
 
         public ShopRating ReadRatings(string shopName)
         {
             var shopRating = new ShopRating();
-
-            using (var context = new PCEDatabaseContext())
+            var result = _pceDatabaseContext.ShopRatingTable.SingleOrDefault(column => column.ShopName == shopName);
+            
+            if (result != null)
             {
-                var result = context.ShopRatingTable.SingleOrDefault(column => column.ShopName == shopName);
-
-                if (result != null)
-                {
-                    shopRating.VotesNumber = result.VotesNumber;
-                    shopRating.VotersNumber = result.VotersNumber;
-                }
+                shopRating.VotesNumber = result.VotesNumber;
+                shopRating.VotersNumber = result.VotersNumber;
             }
-
             return shopRating;
         }
 
         public void WriteRatings(string shopName, int votesNumber, int votersNumber)
         {
-            using (var context = new PCEDatabaseContext())
+            var result = _pceDatabaseContext.ShopRatingTable.SingleOrDefault(column => column.ShopName == shopName);
+            if (result != null)
             {
-                var result = context.ShopRatingTable.SingleOrDefault(column => column.ShopName == shopName);
-
-                if (result != null)
-                {
-                    result.VotersNumber = votersNumber;
-                    result.VotesNumber = votesNumber;
-                    context.SaveChanges();
-                }
+                result.VotersNumber = votersNumber;
+                result.VotesNumber = votesNumber;
+                _pceDatabaseContext.SaveChanges();
             }
         }
 
@@ -487,75 +372,49 @@ namespace PCE_Web.Classes
 
         public void WriteSearchedItem(string pageUrl, string imgUrl, string shopName, string itemName, string price, string keyword)
         {
-            using (var context = new PCEDatabaseContext())
+            var result = _pceDatabaseContext.ItemsTable.SingleOrDefault(column => column.PageUrl == pageUrl && column.ImgUrl == imgUrl && column.ShopName == shopName && column.ItemName == itemName && column.Price == price && column.Keyword == keyword);
+            if (result == null)
             {
-                var result = context.ItemsTable.SingleOrDefault(column => column.PageUrl == pageUrl && column.ImgUrl == imgUrl && column.ShopName == shopName && column.ItemName == itemName && column.Price == price && column.Keyword == keyword);
-
-                if (result == null)
+                var itemsTable = new ItemsTable
                 {
-                    var itemsTable = new ItemsTable
-                    {
-                        PageUrl = pageUrl,
-                        ImgUrl = imgUrl,
-                        ShopName = shopName,
-                        ItemName = itemName,
-                        Price = price,
-                        Keyword = keyword
-                    };
-                    context.ItemsTable.Add(itemsTable);
-                    context.SaveChanges();
-                }
+                    PageUrl = pageUrl,
+                    ImgUrl = imgUrl,
+                    ShopName = shopName,
+                    ItemName = itemName,
+                    Price = price,
+                    Keyword = keyword
+                };
+                _pceDatabaseContext.ItemsTable.Add(itemsTable);
+                _pceDatabaseContext.SaveChanges();
             }
         }
 
         public List<Item> ReadSearchedItems(string keyword)
         {
-            List<Item> item;
-
-            using (var context = new PCEDatabaseContext())
-            {
-                item = context.ItemsTable.Where(column => column.Keyword == keyword).Select(column => new Item { Link = column.PageUrl, Picture = column.ImgUrl, Seller = column.ShopName, Name = column.ItemName, Price = column.Price }).ToList();
-            }
-
+            var item = _pceDatabaseContext.ItemsTable.Where(column => column.Keyword == keyword).Select(column => new Item { Link = column.PageUrl, Picture = column.ImgUrl, Seller = column.ShopName, Name = column.ItemName, Price = column.Price }).ToList();
             return item;
         }
 
         public void WriteReports(string email, string report)
         {
-            using (var context = new PCEDatabaseContext())
+            var newReport = new ReportsTable()
             {
-                var newReport = new ReportsTable()
-                {
-                    Email = email,
-                    Comment = report
-                };
-                    context.ReportsTable.Add(newReport);
-                    context.SaveChanges();
-            }
+                Email = email,
+                Comment = report
+            };
+            _pceDatabaseContext.ReportsTable.Add(newReport);
+            _pceDatabaseContext.SaveChanges();
         }
 
         public List<string> ReadReports(string email)
         {
-            List<string> comments;
-            using (var context = new PCEDatabaseContext())
-            {
-                comments = context.ReportsTable.Where(column => column.Email == email).Select(column => column.Comment).ToList();
-            }
-
+            var comments = _pceDatabaseContext.ReportsTable.Where(column => column.Email == email).Select(column => column.Comment).ToList();
             return comments;
-
         }
 
         public bool IsReported(string email)
         {
-            List<ReportsTable> item;
-            using (var context = new PCEDatabaseContext())
-            {
-                item = context.ReportsTable.Where(column => column.Email == email).Select(column => new ReportsTable
-                { Email = column.Email, Comment = column.Comment })
-                    .ToList();
-            }
-
+            var item = _pceDatabaseContext.ReportsTable.Where(column => column.Email == email).Select(column => new ReportsTable { Email = column.Email, Comment = column.Comment }).ToList();
             if (item.Count > 0)
             {
                 return true;
