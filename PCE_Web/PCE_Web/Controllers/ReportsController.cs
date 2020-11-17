@@ -20,9 +20,9 @@ namespace PCE_Web.Controllers
         }
         public IActionResult Report(string email = "")
         {
-            List<string> comments = _databaseManager.ReadReport(email);
+            var comments = _databaseManager.ReadReports(email);
             var role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
-            var reportView = new ReportView() { comments = comments, Role = role };
+            var reportView = new ReportView() { Comments = comments, Role = role };
             return View(reportView);
         }
     }

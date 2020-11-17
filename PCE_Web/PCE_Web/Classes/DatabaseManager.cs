@@ -77,7 +77,6 @@ namespace PCE_Web.Classes
                 {
                     context.UserData.Remove(result);
                     //UpdateStatistics();
-                    //MessageBox.Show("Vartotojas " + email + " buvo ištrintas iš duomenų bazės!");
                 }
                 else
                 {
@@ -93,16 +92,6 @@ namespace PCE_Web.Classes
 
                 context.SaveChanges();
             }
-
-            //if (email == LoginWindow.Email)
-            //{
-            //    LoginWindow.Email = "";
-            //    LoginWindow.UserRole = Classes.Role.User;
-            //    var mainWindow = new MainWindow();
-            //    mainWindow.Show();
-            //    _mainWindowLoggedIn.Close();
-            //    this.Close();
-            //}
         }
 
         public void CreateAccount(string email, string password)
@@ -531,7 +520,7 @@ namespace PCE_Web.Classes
             return item;
         }
 
-        public void WriteReport(string email, string report)
+        public void WriteReports(string email, string report)
         {
             using (var context = new PCEDatabaseContext())
             {
@@ -545,7 +534,7 @@ namespace PCE_Web.Classes
             }
         }
 
-        public List<string> ReadReport(string email)
+        public List<string> ReadReports(string email)
         {
             List<string> comments;
             using (var context = new PCEDatabaseContext())
@@ -557,7 +546,7 @@ namespace PCE_Web.Classes
 
         }
 
-        public bool isReported(string email)
+        public bool IsReported(string email)
         {
             List<ReportsTable> item;
             using (var context = new PCEDatabaseContext())

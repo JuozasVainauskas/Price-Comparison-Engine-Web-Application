@@ -14,27 +14,29 @@ namespace PCE_Web.Controllers
     public class AdministrationController : Controller
     {
         private readonly IDatabaseManager _databaseManager;
+
         public AdministrationController(IDatabaseManager databaseManager)
         {
             _databaseManager = databaseManager;
         }
+
         public IActionResult Admin(string messageString = "")
         {
             
             var exceptions = _databaseManager.ReadLoggedExceptions();
             ViewBag.MyMessage = messageString;
             var allUsers = _databaseManager.ReadUsersList();
-            List<User> reportedUsers = new List<User>();
+            var reportedUsers = new List<User>();
 
             foreach( var user in allUsers)
             {
-                if(_databaseManager.isReported(user.Email))
+                if(_databaseManager.IsReported(user.Email))
                 {
                     reportedUsers.Add(user);
                 }
             }
 
-            List<User> users = allUsers.Except(reportedUsers).ToList();
+            var users = allUsers.Except(reportedUsers).ToList();
             var role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
             var adminView = new AdminView() { Users = users, ReportedUsers = reportedUsers, Role = role, Exceptions = exceptions };
             

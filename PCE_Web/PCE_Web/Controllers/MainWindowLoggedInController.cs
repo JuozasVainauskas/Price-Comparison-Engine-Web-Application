@@ -88,7 +88,7 @@ namespace PCE_Web.Controllers
 
         public IActionResult Report(string report)
         {
-            _databaseManager.WriteReport(User.Identity.Name,report);
+            _databaseManager.WriteReports(User.Identity.Name,report);
             return RedirectToAction("Items", "MainWindowLoggedIn");
         }
     }
