@@ -20,6 +20,7 @@
 <br>
 <table id="items">
     <tr>
+        <th>Pardavėjas</th>
         <th>Nuotrauka</th>
         <th>Prekė</th>
         <th>Kaina</th>
@@ -27,16 +28,17 @@
     </tr>
     @foreach (var product in @Model.Products)
     {
-        <tr>
-            <td><a href="@product.Link"><img class="image" alt="product.jpg" src="@product.Picture"></a></td>
-            <td>
-                <button id="mvc-action-button" class="link" name="particularItem" onclick="location.href = '@Url.Action("ParticularItemLoggedIn", "ParticularItemLoggedIn", new { particularItem = @product.Name })'">
-                    @product.Name
-                </button>
-            </td>
-            <td>@product.Price</td>
-            <td><button id="mvc-action-button" class="myButton" onclick="location.href = '@Url.Action("Suggestions", "SearchLoggedIn", new { link = product.Link, pictureUrl = product.Picture, seller = product.Seller, name = product.Name, price = product.Price} )'">Išsaugoti</button></td>
-        </tr>
+<tr>
+    <td>@product.Seller</td>
+    <td><a href="@product.Link"><img class="image" alt="product.jpg" src="@product.Picture"></a></td>
+    <td>
+        <button id="mvc-action-button" class="link" name="particularItem" onclick="location.href = '@Url.Action("ParticularItemLoggedIn", "ParticularItemLoggedIn", new { particularItem = @product.Name })'">
+            @product.Name
+        </button>
+    </td>
+    <td>@product.Price</td>
+    <td><button id="mvc-action-button" class="myButton" onclick="location.href = '@Url.Action("Suggestions", "SearchLoggedIn", new { link = product.Link, pictureUrl = product.Picture, seller = product.Seller, name = product.Name, price = product.Price} )'">Išsaugoti</button></td>
+</tr>
 
     }
 </table>

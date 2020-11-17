@@ -46,6 +46,7 @@
     <br>
     <table id="items">
         <tr>
+            <th>Pardavėjas</th>
             <th>Nuotrauka</th>
             <th>Prekė</th>
             <th>Kaina</th>
@@ -53,18 +54,19 @@
         </tr>
         @foreach (var productSaved in @Model.ProductsSaved)
         {
-            <tr>
-                <td><a href="@productSaved.Link"><img class="image" alt="product.jpg" src="@productSaved.Picture"></a></td>
-                <td>
-                    <button id="mvc-action-button" class="link" name="particularItem" onclick="location.href = '@Url.Action("ParticularItemLoggedIn", "ParticularItemLoggedIn", new { particularItem = productSaved.Name })'">
-                        @productSaved.Name
-                    </button>
-                </td>
-                <td>@productSaved.Price</td>
-                <td>
-                    <button id="mvc-action-button" class="myButton" onclick="location.href = '@Url.Action("Items", "MainWindowLoggedIn", new {link = productSaved.Link, pictureUrl = productSaved.Picture, seller = productSaved.Seller, name = productSaved.Name, price = productSaved.Price})'">Ištrinti</button>
-                </td>
-            </tr>
+    <tr>
+        <td>@productSaved.Seller</td>
+        <td><a href="@productSaved.Link"><img class="image" alt="product.jpg" src="@productSaved.Picture"></a></td>
+        <td>
+            <button id="mvc-action-button" class="link" name="particularItem" onclick="location.href = '@Url.Action("ParticularItemLoggedIn", "ParticularItemLoggedIn", new { particularItem = productSaved.Name })'">
+                @productSaved.Name
+            </button>
+        </td>
+        <td>@productSaved.Price</td>
+        <td>
+            <button id="mvc-action-button" class="myButton" onclick="location.href = '@Url.Action("Items", "MainWindowLoggedIn", new {link = productSaved.Link, pictureUrl = productSaved.Picture, seller = productSaved.Seller, name = productSaved.Name, price = productSaved.Price})'">Ištrinti</button>
+        </td>
+    </tr>
         }
     </table>
     <br />
