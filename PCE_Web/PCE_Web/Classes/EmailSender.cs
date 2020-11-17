@@ -26,13 +26,13 @@ namespace PCE_Web.Classes
                     UseDefaultCredentials = false,
                     
                     Credentials = new NetworkCredential()
-                        {
+                    {
                             UserName = ShopSecrets.Email,
                             Password = ShopSecrets.Password
                     }
             };
 
-            var fromEmail = new MailAddress("smartshopautobot@gmail.com", "Smart Shop");
+            var fromEmail = new MailAddress(ShopSecrets.Email, "Smart Shop");
             var toEmail = new MailAddress(email, "Naudotojas");
             var message = new MailMessage()
             {
