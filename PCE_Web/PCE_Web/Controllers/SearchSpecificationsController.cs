@@ -81,12 +81,7 @@ namespace PCE_Web.Controllers
 
         private async Task ReadingItemsAsync(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice)
         {
-            if (_shopFlags[3].Flag == "on")
-            {
-                var gettingRde = await Task.Factory.StartNew(() =>
-                    gettingItemsFromRde(productName, products, httpClient, minPrice, maxPrice));
-            }
-
+            var gettingRde = await Task.Factory.StartNew(() => gettingItemsFromRde(productName, products, httpClient, minPrice, maxPrice));
             var gettingBarbora = await Task.Factory.StartNew(() => gettingItemsFromBarbora(productName, products, httpClient, minPrice, maxPrice));
             var gettingAvitela = await Task.Factory.StartNew(() => gettingItemsFromAvitela(productName, products, httpClient, minPrice, maxPrice));
             var gettingPigu = await Task.Factory.StartNew(() => gettingItemsFromPigu(productName, products, httpClient, minPrice, maxPrice));
