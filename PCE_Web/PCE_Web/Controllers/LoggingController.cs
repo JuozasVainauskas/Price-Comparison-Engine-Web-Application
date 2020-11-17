@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Claims;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -89,14 +90,21 @@ namespace PCE_Web.Controllers
         [AllowAnonymous]
         public IActionResult SendCode(string email)
         {
+            if (EmailVerification(email))
+            {
+                var code = GenerateHash.CreateSalt(16);
+                code = code.Remove(code.Length - 2);
+                EmailSender.SendEmail(code, email);
 
-            var code = GenerateHash.CreateSalt(16);
-            code = code.Remove(code.Length - 2);
-            EmailSender.SendEmail(code, email);
-
-            TempData["tempEmail"] = email;
-            TempData["tempCode"] = code;
-            return RedirectToAction("Login", "Logging");
+                TempData["tempEmail"] = email;
+                TempData["tempCode"] = code;
+                return View("Login");
+            }
+            else
+            {
+                ViewBag.BadEmail = true;
+                return View("Login");
+            }
         }
 
         [AllowAnonymous]
@@ -107,13 +115,41 @@ namespace PCE_Web.Controllers
             TempData["tempEmail"] = email;
             TempData["tempCode"] = code;
 
-            return RedirectToAction("Login", "Logging");
+            return View("Login");
         }
 
         [AllowAnonymous]
         public IActionResult ChangePassword(string password, string confirmPassword)
         {
-            return RedirectToAction("Login", "Logging");
+            return View("Login");
+        }
+
+        private static bool EmailVerification(string email)
+        {
+            var pattern = new Regex(@"([a-zA-Z0-9._-]*[a-zA-Z0-9][a-zA-Z0-9._-]*)(@gmail.com)$", RegexOptions.Compiled);
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                return false;
+            }
+            else if (!pattern.IsMatch(email))
+            {
+                return false;
+            }
+            else return true;
+        }
+
+        private static bool PasswordVerification(string password)
+        {
+            var pattern = new Regex(@"(?=(?:.*[a-zA-Z]){3})(?:.*\d)", RegexOptions.Compiled);
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                return false;
+            }
+            else if (!pattern.IsMatch(password))
+            {
+                return false;
+            }
+            else return true;
         }
     }
 }
