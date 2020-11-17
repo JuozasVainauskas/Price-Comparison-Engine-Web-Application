@@ -31,7 +31,7 @@
         </tr>
         @foreach (var user in @Model.ReportedUsers)
         {
-    <tr data-toggle="modal" data-id="0" data-target="#emailModal">
+    <tr>
         <td style="font-weight:bold;color:red;">@user.Email</td>
         <td style="font-weight:bold;color:red;">@user.Role</td>
         <td style="width:50px;">
@@ -42,7 +42,7 @@
 
         @foreach (var user in @Model.Users)
         {
-            <tr data-toggle="modal" data-id="0" data-target="#emailModal">
+            <tr>
                 <td>@user.Email</td>
                 <td>@user.Role</td>
                 <td></td>
