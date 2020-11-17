@@ -77,7 +77,6 @@ namespace PCE_Web.Classes
                 {
                     context.UserData.Remove(result);
                     //UpdateStatistics();
-                    //MessageBox.Show("Vartotojas " + email + " buvo ištrintas iš duomenų bazės!");
                 }
                 else
                 {
@@ -93,16 +92,6 @@ namespace PCE_Web.Classes
 
                 context.SaveChanges();
             }
-
-            //if (email == LoginWindow.Email)
-            //{
-            //    LoginWindow.Email = "";
-            //    LoginWindow.UserRole = Classes.Role.User;
-            //    var mainWindow = new MainWindow();
-            //    mainWindow.Show();
-            //    _mainWindowLoggedIn.Close();
-            //    this.Close();
-            //}
         }
 
         public void CreateAccount(string email, string password)
@@ -529,6 +518,49 @@ namespace PCE_Web.Classes
             }
 
             return item;
+        }
+
+        public void WriteReports(string email, string report)
+        {
+            using (var context = new PCEDatabaseContext())
+            {
+                var newReport = new ReportsTable()
+                {
+                    Email = email,
+                    Comment = report
+                };
+                    context.ReportsTable.Add(newReport);
+                    context.SaveChanges();
+            }
+        }
+
+        public List<string> ReadReports(string email)
+        {
+            List<string> comments;
+            using (var context = new PCEDatabaseContext())
+            {
+                comments = context.ReportsTable.Where(column => column.Email == email).Select(column => column.Comment).ToList();
+            }
+
+            return comments;
+
+        }
+
+        public bool IsReported(string email)
+        {
+            List<ReportsTable> item;
+            using (var context = new PCEDatabaseContext())
+            {
+                item = context.ReportsTable.Where(column => column.Email == email).Select(column => new ReportsTable
+                { Email = column.Email, Comment = column.Comment })
+                    .ToList();
+            }
+
+            if (item.Count > 0)
+            {
+                return true;
+            }
+            else return false;
         }
     }
 }
