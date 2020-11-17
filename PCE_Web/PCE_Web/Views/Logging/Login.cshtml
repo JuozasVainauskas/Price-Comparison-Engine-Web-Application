@@ -63,7 +63,7 @@
                 <h5 style="text-align:center">Įveskite savo email, kad galėtume išsiųsti patvirtinimo kodą.</h5>
                 <br />
                 
-                <form method="get" action="">
+                <form method="POST" id="emailForm" asp-action="SendCode">
                     <div class="textarea">
                         <textarea name="email" rows="1" cols="60" placeholder="Įveskite savo email.." style="overflow: auto; resize: none"></textarea>
                         @if (ViewBag.BadEmail == true)
@@ -79,7 +79,7 @@
                     <br/>
 
                     <div class="myButton">
-                        <button type="submit" asp-controller="Logging" asp-action="SendCode">Siųsti</button>
+                        <button type="submit" onclick="$('#emailForm').submit()">Siųsti</button>
                     </div>
                 </form>
                 <br />

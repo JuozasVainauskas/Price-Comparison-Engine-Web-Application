@@ -88,8 +88,10 @@ namespace PCE_Web.Controllers
         }
 
         [AllowAnonymous]
+        [HttpPost]
         public IActionResult SendCode(string email)
         {
+            Console.WriteLine(email);
             if (EmailVerification(email))
             {
                 var code = GenerateHash.CreateSalt(16);
