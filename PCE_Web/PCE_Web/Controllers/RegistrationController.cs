@@ -52,17 +52,5 @@ namespace PCE_Web.Controllers
 
             return View();
         }
-
-        [AllowAnonymous]
-        public IActionResult ConfirmEmail()
-        {
-            return RedirectToAction("Register", "Registration");
-        }
-
-        [AllowAnonymous]
-        public IActionResult ChangePassword()
-        {
-            return RedirectToAction("Register", "Registration");
-        }
     }
 }

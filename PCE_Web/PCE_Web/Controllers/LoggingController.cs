@@ -84,5 +84,17 @@ namespace PCE_Web.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Home");
         }
+
+        [AllowAnonymous]
+        public IActionResult ConfirmEmail()
+        {
+            return RedirectToAction("Register", "Registration");
+        }
+
+        [AllowAnonymous]
+        public IActionResult ChangePassword()
+        {
+            return RedirectToAction("Register", "Registration");
+        }
     }
 }
