@@ -45,7 +45,7 @@
         </div>
 
         <div class="container signin">
-            <p>Pamiršote slaptažodį? <a asp-controller="Logging" asp-action="SendCode">Spauskite čia</a>.</p>
+            <p>Pamiršote slaptažodį? <a data-toggle="modal" data-target="#inputEmailModal" asp-controller="">Spauskite čia</a>.</p>
         </div>
         <div class="container signin">
             <p>Dar neturite vartotojo? <a asp-controller="Registration" asp-action="Register">Registruokitės</a>.</p>
@@ -62,15 +62,26 @@
 
                 <h5 style="text-align:center">Įveskite savo email, kad galėtume išsiųsti patvirtinimo kodą.</h5>
                 <br />
+                
+                <form method="get" action="">
+                    <div class="textarea">
+                        <textarea name="email" rows="1" cols="60" placeholder="Įveskite savo email.." style="overflow: auto; resize: none"></textarea>
+                        @if (ViewBag.BadEmail == true)
+                        {
+                            <script type="text/javascript">
+                                $(document).ready(function () {
+                                    $(".message-box").show();
+                                });
+                            </script>
+                            <div class="text-danger">Klaida, blogai įvestas kodas.</div>
+                        }
+                    </div>
+                    <br/>
 
-                <div class="textarea">
-                    <textarea rows="1" cols="60" placeholder="Įveskite savo email.." style="overflow:auto;resize:none"></textarea>
-                </div>
-                <br />
-
-                <div class="myButton">
-                    <button type="submit">Siųsti</button>
-                </div>
+                    <div class="myButton">
+                        <button type="submit" asp-controller="Logging" asp-action="SendCode">Siųsti</button>
+                    </div>
+                </form>
                 <br />
 
             </div>
@@ -81,6 +92,7 @@
     </div>
 </div>
 
+@if (ViewBag.Yes == true){<div data-toggle = "modal" data-target = "#inputCodeModal"></div>}
 <div class="modal fade" id="inputCodelModal" tabindex="-1" role="dialog" aria-labelledby="inputCodeModalLabel" aria-hidden="true">
     <div class="modal-dialog" style="width:600px;height:700px;" role="document">
         <div class="modal-content">
@@ -92,14 +104,16 @@
                 <h5 style="text-align:center">Patikrinkite savo email ar gavote patvirtinimo kodą ir įveskite jį į laukelį.</h5>
                 <br />
 
-                <div class="textarea">
-                    <textarea rows="1" cols="60" placeholder="Įveskite savo patvirtinimo kodą.." style="overflow:auto;resize:none"></textarea>
-                </div>
-                <br />
+                <form method="get" action="">
+                    <div class="textarea">
+                        <textarea name="confirmCode" rows="1" cols="60" placeholder="Įveskite savo patvirtinimo kodą.." style="overflow:auto;resize:none"></textarea>
+                    </div>
+                    <br />
 
                 <div class="myButton">
-                    <button type="submit">Patvirtinti</button>
+                    <button type="submit" asp-controller="Logging" asp-action="ConfirmEmail">Patvirtinti</button>
                 </div>
+                </form>
                 <br />
 
             </div>
@@ -122,17 +136,17 @@
                 <br />
 
                 <div class="textarea">
-                    <textarea rows="1" cols="60" placeholder="Įveskite naują slaptažodį.." style="overflow:auto;resize:none"></textarea>
+                    <textarea name="password" rows="1" cols="60" placeholder="Įveskite naują slaptažodį.." style="overflow:auto;resize:none"></textarea>
                 </div>
                 <br />
 
                 <div class="textarea">
-                    <textarea rows="1" cols="60" placeholder="Patvirtinkite savo slaptažodį.." style="overflow:auto;resize:none"></textarea>
+                    <textarea name="confirmPassword" rows="1" cols="60" placeholder="Patvirtinkite savo slaptažodį.." style="overflow:auto;resize:none"></textarea>
                 </div>
                 <br />
 
                 <div class="myButton">
-                    <button type="submit">Patvirtinti</button>
+                    <button type="submit" asp-controller="Logging" asp-action="ChangePassword">Patvirtinti</button>
                 </div>
                 <br />
 

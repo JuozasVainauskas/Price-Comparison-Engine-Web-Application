@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -86,19 +87,31 @@ namespace PCE_Web.Controllers
         }
 
         [AllowAnonymous]
-        public IActionResult SendCode()
+        public IActionResult SendCode(string email)
         {
+
+            var code = GenerateHash.CreateSalt(16);
+            code = code.Remove(code.Length - 2);
+            EmailSender.SendEmail(code, email);
+
+            TempData["tempEmail"] = email;
+            TempData["tempCode"] = code;
             return RedirectToAction("Login", "Logging");
         }
 
         [AllowAnonymous]
-        public IActionResult ConfirmEmail()
+        public IActionResult ConfirmEmail(string confirmCode)
         {
+            var email = TempData["tempEmail"].ToString();
+            var code = TempData["tempCode"].ToString();
+            TempData["tempEmail"] = email;
+            TempData["tempCode"] = code;
+
             return RedirectToAction("Login", "Logging");
         }
 
         [AllowAnonymous]
-        public IActionResult ChangePassword()
+        public IActionResult ChangePassword(string password, string confirmPassword)
         {
             return RedirectToAction("Login", "Logging");
         }
