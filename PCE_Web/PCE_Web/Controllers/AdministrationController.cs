@@ -30,14 +30,14 @@ namespace PCE_Web.Controllers
             return View(adminView);
         }
 
-        public IActionResult Delete()
+        public IActionResult Delete(int id)
         {
-                var exception = new Exceptions { Date = TempData["date"].ToString(), Message = TempData["message"].ToString(), Source = TempData["source"].ToString(), StackTrace = TempData["stacktrace"].ToString() };
-                _databaseManager.DeleteLoggedExceptions(exception);
+            _databaseManager.DeleteLoggedExceptions(id);
 
             return RedirectToAction("Admin", "Administration");
         }
-            public IActionResult Add(string email, string password)
+
+        public IActionResult Add(string email, string password)
         {
 
             var role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
@@ -92,12 +92,12 @@ namespace PCE_Web.Controllers
             return RedirectToAction("Admin", "Administration");
         }
 
-        public IActionResult Set(string email, int roleID)
+        public IActionResult Set(string email, int roleId)
         {
             var role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
             if (role == "Admin")
             {
-                _databaseManager.SetRole(email, roleID.ToString());
+                _databaseManager.SetRole(email, roleId.ToString());
                 return RedirectToAction("Admin", "Administration", new { messageString = "Rolė suteikta sėkmingai" });
             }
             else

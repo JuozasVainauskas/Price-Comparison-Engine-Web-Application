@@ -7,21 +7,23 @@
 <br>
 <table id="items">
     <tr>
+        <th>Pardavėjas</th>
         <th>Nuotrauka</th>
         <th>Prekė</th>
         <th>Kaina</th>
     </tr>
     @foreach (var product in @Model.Products)
     {
-        <tr>
-            <td><a href="@product.Link"><img class="image" alt="product.jpg" src="@product.Picture"></a></td>
-            <td>
-                <button class="link" name="particularItem" onclick="location.href = '@Url.Action("ParticularItem", "ParticularItem", new { particularItem = @product.Name })'">
-                    @product.Name
-                </button>
-            </td>
-            <td>@product.Price</td>
-        </tr>
+<tr>
+    <td>@product.Seller</td>
+    <td><a href="@product.Link"><img class="image" alt="product.jpg" src="@product.Picture"></a></td>
+    <td>
+        <button class="link" name="particularItem" onclick="location.href = '@Url.Action("ParticularItem", "ParticularItem", new { particularItem = @product.Name })'">
+            @product.Name
+        </button>
+    </td>
+    <td>@product.Price</td>
+</tr>
     }
 </table>
 
