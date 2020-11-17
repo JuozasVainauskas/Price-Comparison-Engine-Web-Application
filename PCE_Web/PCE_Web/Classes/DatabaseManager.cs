@@ -380,19 +380,18 @@ namespace PCE_Web.Classes
             using (var context = new PCEDatabaseContext())
             {
                 exceptions = context.SavedExceptions.Where(row => row.SavedExceptionId > 0)
-                .Select(column => new Exceptions { Date = column.Date, Message = column.Message, StackTrace = column.StackTrace, Source = column.Source })
+                .Select(column => new Exceptions { Id = column.SavedExceptionId, Date = column.Date, Message = column.Message, StackTrace = column.StackTrace, Source = column.Source })
                 .ToList();
             }
 
             return exceptions;
         }
 
-        public void DeleteLoggedExceptions(Exceptions exceptions)
+        public void DeleteLoggedExceptions(int id)
         {
             using (var context = new PCEDatabaseContext())
             {
-                var result = context.SavedExceptions.SingleOrDefault(column => column.Date == exceptions.Date && column.Source == exceptions.Source &&
-                    column.Message == exceptions.Message && column.StackTrace == exceptions.StackTrace);
+                var result = context.SavedExceptions.SingleOrDefault(column => column.SavedExceptionId == id );
 
                 if (result != null)
                 {

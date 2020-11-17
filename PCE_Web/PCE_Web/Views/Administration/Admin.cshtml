@@ -83,14 +83,14 @@
             <th>Klaida sutvarkyta, ištrinti</th>
         </tr>
         @foreach (var exception in @Model.Exceptions)
-        { 
+        {
     <tr>
         <td>@exception.Date</td>
         <td>@exception.Message</td>
         <td>@exception.Source</td>
         <td>@exception.StackTrace</td>
         <td>
-            <button id="mvc-action-button" class="myButton" onclick="location.href = '@Url.Action("Delete", "Administration", (TempData["date"] = exception.Date, TempData["source"] = exception.Source,TempData["message"] = exception.Message,TempData["stacktrace"] = exception.StackTrace))'">Ištrinti</button>
+            <button id="mvc-action-button" class="myButton" onclick="location.href = '@Url.Action("Delete", "Administration", new { id = exception.Id})'">Ištrinti</button>
         </td>
     </tr>
         }

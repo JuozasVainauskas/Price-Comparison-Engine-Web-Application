@@ -13,20 +13,22 @@
 <br>
 <table id="items">
     <tr>
+        <th>Pardavėjas</th>
         <th>Nuotrauka</th>
         <th>Prekė</th>
         <th>Kaina</th>
     </tr>
     @foreach (var product in @Model.Products)
     {
-        <tr>
-            <td>
-                <a href="@product.Link">
-                    <img class="image" alt="product.jpg" src="@product.Picture">
-                </a>
-            </td>
-            <td>@product.Name</td>
-            <td>@product.Price</td>
-        </tr>
+<tr>
+    <td>@product.Seller</td>
+    <td>
+        <a href="@product.Link">
+            <img class="image" alt="product.jpg" src="@product.Picture">
+        </a>
+    </td>
+    <td>@product.Name</td>
+    <td>@product.Price</td>
+</tr>
     }
 </table>
