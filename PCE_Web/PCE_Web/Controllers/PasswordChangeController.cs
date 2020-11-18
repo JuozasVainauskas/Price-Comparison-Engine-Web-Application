@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.IdentityModel.Tokens;
 using PCE_Web.Classes;
@@ -57,9 +58,18 @@ namespace PCE_Web.Controllers
         //    public string ConfirmPassword { get; set; }
         //}
 
+        //[AllowAnonymous]
+        //public IActionResult ChangePassword()
+        //{
+        //    ViewBag.Text = "Siųsti";
+        //    return View();
+        //}
+
         [AllowAnonymous]
         public IActionResult ChangePassword()
         {
+            ViewBag.Text = "Siųsti";
+            Console.WriteLine("kvietimas");
             return View();
         }
 
@@ -68,6 +78,7 @@ namespace PCE_Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult ChangePassword(InputModel input)
         {
+            ViewBag.Text = "Siųsti";
             if (input.EmailModel != null)
             {
                 Console.WriteLine("1");
@@ -82,8 +93,12 @@ namespace PCE_Web.Controllers
 
                     TempData["tempEmail"] = email;
                     TempData["tempCode"] = confirmCode;
+                    ViewBag.Text = "Patvirtinti";
+                    //ViewBag.DisabledValue = 1;
                     //disable email
                     //enable code
+                    //ViewBag.EmailDisabled = true;
+                    //ViewBag.CodeEnabled = true;
                 }
             }
             else if (input.CodeModel != null)
@@ -100,9 +115,12 @@ namespace PCE_Web.Controllers
                     if (input.CodeModel.Code.Equals(confirmCode))
                     {
                         Console.WriteLine("2 maybe");
+                        //ViewBag.DisabledValue = 2;
                         //disable code
                         //enable password
-                        return View();
+                        //ViewBag.CodeEnabled = false;
+                        //ViewBag.PasswordEnabled = true;
+                        ViewBag.Text = "Pakeisti";
                     }
                     else
                     {
@@ -124,6 +142,7 @@ namespace PCE_Web.Controllers
                     return RedirectToAction("Login", "Logging");
                 }
             }
+            Console.WriteLine("fail");
             return View();
         }
     }
