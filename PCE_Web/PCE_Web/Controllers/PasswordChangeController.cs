@@ -62,7 +62,9 @@ namespace PCE_Web.Controllers
         public IActionResult ChangePassword()
         {
             ViewBag.Text = "Siųsti";
-            Console.WriteLine("kvietimas");
+            ViewBag.EmailEnabled = true;
+            ViewBag.CodeEnabled = false;
+            ViewBag.Password = false;
             return View();
         }
 
@@ -72,12 +74,14 @@ namespace PCE_Web.Controllers
         public IActionResult ChangePassword(InputModel input)
         {
             ViewBag.Text = "Siųsti";
+            ViewBag.EmailEnabled = true;
+            ViewBag.CodeEnabled = false;
+            ViewBag.Password = false;
+
             if (input.EmailModel != null)
             {
-                Console.WriteLine("1");
                 if (ModelState.IsValid)
                 {
-                    Console.WriteLine("1 pavyko");
                     var confirmCode = GenerateHash.CreateSalt(16);
                     confirmCode = confirmCode.Remove(confirmCode.Length - 2);
                     var email = input.EmailModel.Email;
@@ -87,55 +91,51 @@ namespace PCE_Web.Controllers
                     TempData["tempEmail"] = email;
                     TempData["tempCode"] = confirmCode;
                     ViewBag.Text = "Patvirtinti";
-                    //ViewBag.DisabledValue = 1;
-                    //disable email
-                    //enable code
-                    //ViewBag.EmailDisabled = true;
-                    //ViewBag.CodeEnabled = true;
+                    ViewBag.EmailEnabled = false;
+                    ViewBag.CodeEnabled = true;
                 }
+                return View(input);
             }
             else if (input.CodeModel != null)
             {
-                Console.WriteLine("2");
+                ViewBag.Text = "Patvirtinti";
+                ViewBag.EmailEnabled = false;
+                ViewBag.CodeEnabled = true;
+
                 var confirmCode = TempData["tempCode"].ToString();
                 TempData["tempCode"] = confirmCode;
-                Console.WriteLine(confirmCode);
-                Console.WriteLine(input.CodeModel.Code);
 
                 if (ModelState.IsValid)
                 {
-                    Console.WriteLine("2 pavyko");
                     if (input.CodeModel.Code.Equals(confirmCode))
                     {
-                        Console.WriteLine("2 maybe");
-                        //ViewBag.DisabledValue = 2;
-                        //disable code
-                        //enable password
-                        //ViewBag.CodeEnabled = false;
-                        //ViewBag.PasswordEnabled = true;
                         ViewBag.Text = "Pakeisti";
+                        ViewBag.EmailEnabled = false;
+                        ViewBag.CodeEnabled = false;
+                        ViewBag.PasswordEnabled = true;
                     }
                     else
                     {
-                        Console.WriteLine("2 nlb");
                         ViewBag.ShowMessage = true;
                     }
                 }
+                return View(input);
             }
-            else
+            else if (input.PasswordModel != null)
             {
-                Console.WriteLine("3");
+                ViewBag.Text = "Pakeisti";
+                ViewBag.EmailEnabled = false;
+                ViewBag.CodeEnabled = false;
+                ViewBag.PasswordEnabled = true;
+
                 if (ModelState.IsValid)
                 {
                     var email = TempData["tempEmail"].ToString();
                     //TempData["tempEmail"] = email;
                     //_databaseManager.ChangePassword(email, input.PasswordModel.Password, input.PasswordModel.ConfirmPassword);
-                    Console.WriteLine(email);
-                    Console.WriteLine("3 pavyko");
                     return RedirectToAction("Login", "Logging");
                 }
             }
-            Console.WriteLine("fail");
             return View();
         }
     }
