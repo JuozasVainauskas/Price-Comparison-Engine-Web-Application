@@ -60,6 +60,7 @@ namespace PCE_Web.Controllers
         [AllowAnonymous]
         public IActionResult ChangePassword()
         {
+            //var tuple = new Tuple<LoginViewModel, RegisterViewModel>(new LoginViewModel(), new RegisterViewModel());
             return View();
         }
 
