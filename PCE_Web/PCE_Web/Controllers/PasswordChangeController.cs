@@ -58,13 +58,6 @@ namespace PCE_Web.Controllers
         //    public string ConfirmPassword { get; set; }
         //}
 
-        //[AllowAnonymous]
-        //public IActionResult ChangePassword()
-        //{
-        //    ViewBag.Text = "Siųsti";
-        //    return View();
-        //}
-
         [AllowAnonymous]
         public IActionResult ChangePassword()
         {
