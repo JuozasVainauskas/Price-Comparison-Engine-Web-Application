@@ -29,38 +29,37 @@ namespace PCE_Web.Controllers
             _databaseManager = databaseManager;
         }
 
-        public class InputModel
-        {
-            [Display(Name = "Email")]
-            [DataType(DataType.EmailAddress)]
-            [Required(ErrorMessage = "Turite įrašyti email.")]
-            [EmailSpelling]
-            [EmailExistence]
-            public string Email { get; set; }
+        //public class InputModel
+        //{
+        //    [Display(Name = "Email")]
+        //    [DataType(DataType.EmailAddress)]
+        //    [Required(ErrorMessage = "Turite įrašyti email.")]
+        //    [EmailSpelling]
+        //    [EmailExistence]
+        //    public string Email { get; set; }
 
-            [Display(Name = "Code")]
-            [DataType(DataType.Text)]
-            [Required(ErrorMessage = "Turite įvesti kodą, nusiųsta į jūsų email paštą.")]
-            public string Code { get; set; }
+        //    [Display(Name = "Code")]
+        //    [DataType(DataType.Text)]
+        //    [Required(ErrorMessage = "Turite įvesti kodą, nusiųsta į jūsų email paštą.")]
+        //    public string Code { get; set; }
 
-            [Display(Name = "Password")]
-            [DataType(DataType.Password)]
-            [Required(ErrorMessage = "Turite įrašyti slaptažodį.")]
-            [StringLength(100, MinimumLength = 4, ErrorMessage = "Slaptažodis turi būti bet 4 simbolių ilgio.")]
-            [PasswordSpelling]
-            public string Password { get; set; }
+        //    [Display(Name = "Password")]
+        //    [DataType(DataType.Password)]
+        //    [Required(ErrorMessage = "Turite įrašyti slaptažodį.")]
+        //    [StringLength(100, MinimumLength = 4, ErrorMessage = "Slaptažodis turi būti bet 4 simbolių ilgio.")]
+        //    [PasswordSpelling]
+        //    public string Password { get; set; }
 
-            [Display(Name = "Confirm password")]
-            [DataType(DataType.Password)]
-            [Required(ErrorMessage = "Turite patvirtinti slaptažodį.")]
-            [Compare("Password", ErrorMessage = "Slaptažodis turi sutapti su patvirtinimo slaptažodžiu.")]
-            public string ConfirmPassword { get; set; }
-        }
+        //    [Display(Name = "Confirm password")]
+        //    [DataType(DataType.Password)]
+        //    [Required(ErrorMessage = "Turite patvirtinti slaptažodį.")]
+        //    [Compare("Password", ErrorMessage = "Slaptažodis turi sutapti su patvirtinimo slaptažodžiu.")]
+        //    public string ConfirmPassword { get; set; }
+        //}
 
         [AllowAnonymous]
         public IActionResult ChangePassword()
         {
-            //var tuple = new Tuple<LoginViewModel, RegisterViewModel>(new LoginViewModel(), new RegisterViewModel());
             return View();
         }
 
@@ -69,16 +68,43 @@ namespace PCE_Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult ChangePassword(InputModel input)
         {
-            if (ModelState.IsValid)
+            if (input.EmailModel != null)
             {
-                //if (input.Code.Equals(confirmCode))
-                //{
+                if (ModelState.IsValid)
+                {
+                    var confirmCode = GenerateHash.CreateSalt(16);
+                    confirmCode = confirmCode.Remove(confirmCode.Length - 2);
+                    var email = input.EmailModel.Email;
 
-                //}
-                //else
-                //{
-                //    ViewBag.ShowMessage = true;
-                //}
+                    EmailSender.SendEmail(confirmCode, "ernestas20111@gmail.com");
+
+                    TempData["tempEmail"] = email;
+                    TempData["tempCode"] = confirmCode;
+                }
+            }
+            else if (input.CodeModel != null)
+            {
+                var confirmCode = TempData["tempCode"].ToString();
+                TempData["tempCode"] = confirmCode;
+
+                if (ModelState.IsValid)
+                {
+                    if (input.CodeModel.Code.Equals(confirmCode))
+                    {
+                        return View();
+                    }
+                    else
+                    {
+                        ViewBag.ShowMessage = true;
+                    }
+                }
+            }
+            else
+            {
+                if (ModelState.IsValid)
+                {
+
+                }
             }
             return View();
         }
