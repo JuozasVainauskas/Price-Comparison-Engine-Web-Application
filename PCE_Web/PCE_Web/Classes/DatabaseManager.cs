@@ -204,15 +204,12 @@ namespace PCE_Web.Classes
                 var passwordSalt = GenerateHash.CreateSalt(10);
                 var passwordHash = GenerateHash.GenerateSha256Hash(password, passwordSalt);
 
-                using (var context = new PCEDatabaseContext())
+                var result = _pceDatabaseContext.UserData.SingleOrDefault(column => column.Email == email);
+                if (result != null)
                 {
-                    var result = context.UserData.SingleOrDefault(column => column.Email == email);
-                    if (result != null)
-                    {
-                        result.PasswordHash = passwordHash;
-                        result.PasswordSalt = passwordSalt;
-                        context.SaveChanges();
-                    }
+                    result.PasswordHash = passwordHash;
+                    result.PasswordSalt = passwordSalt;
+                    _pceDatabaseContext.SaveChanges();
                 }
             }
         }

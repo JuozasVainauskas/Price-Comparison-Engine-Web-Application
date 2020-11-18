@@ -20,11 +20,11 @@ using PCE_Web.Models;
 
 namespace PCE_Web.Controllers
 {
-    public class LoggingController : Controller
+    public class PasswordChangeController : Controller
     {
         private readonly IDatabaseManager _databaseManager;
 
-        public LoggingController(IDatabaseManager databaseManager)
+        public PasswordChangeController(IDatabaseManager databaseManager)
         {
             _databaseManager = databaseManager;
         }
@@ -34,16 +34,31 @@ namespace PCE_Web.Controllers
             [Display(Name = "Email")]
             [DataType(DataType.EmailAddress)]
             [Required(ErrorMessage = "Turite įrašyti email.")]
-            [UserExistence]
+            [EmailSpelling]
+            [EmailExistence]
             public string Email { get; set; }
+
+            [Display(Name = "Code")]
+            [DataType(DataType.Text)]
+            [Required(ErrorMessage = "Turite įvesti kodą, nusiųsta į jūsų email paštą.")]
+            public string Code { get; set; }
+
             [Display(Name = "Password")]
             [DataType(DataType.Password)]
             [Required(ErrorMessage = "Turite įrašyti slaptažodį.")]
+            [StringLength(100, MinimumLength = 4, ErrorMessage = "Slaptažodis turi būti bet 4 simbolių ilgio.")]
+            [PasswordSpelling]
             public string Password { get; set; }
+
+            [Display(Name = "Confirm password")]
+            [DataType(DataType.Password)]
+            [Required(ErrorMessage = "Turite patvirtinti slaptažodį.")]
+            [Compare("Password", ErrorMessage = "Slaptažodis turi sutapti su patvirtinimo slaptažodžiu.")]
+            public string ConfirmPassword { get; set; }
         }
 
         [AllowAnonymous]
-        public IActionResult Login()
+        public IActionResult ChangePassword()
         {
             return View();
         }
@@ -51,40 +66,20 @@ namespace PCE_Web.Controllers
         [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(InputModel input)
+        public IActionResult ChangePassword(InputModel input)
         {
             if (ModelState.IsValid)
             {
-                var user = _databaseManager.LoginUser(input.Email, input.Password);
-                if (user != null)
-                {
-                    var claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name, input.Email),
-                        new Claim(ClaimTypes.Role, user.Role.ToString())
-                    };
-                    var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                    var principal = new ClaimsPrincipal(identity);
-                    var properties = new AuthenticationProperties();
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, properties);
+                //if (input.Code.Equals(confirmCode))
+                //{
 
-                    MainWindowLoggedInController.IsDeletedOrSaved = 1;
-                    return RedirectToAction("Items", "MainWindowLoggedIn");
-                }
-                else
-                {
-                    ViewBag.ShowMessage = true;
-                }
+                //}
+                //else
+                //{
+                //    ViewBag.ShowMessage = true;
+                //}
             }
-
             return View();
-        }
-
-        [AllowAnonymous]
-        public async Task<IActionResult> Logout()
-        {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Index", "Home");
         }
     }
 }

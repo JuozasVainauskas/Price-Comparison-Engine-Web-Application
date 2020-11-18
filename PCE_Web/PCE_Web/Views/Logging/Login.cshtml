@@ -45,116 +45,12 @@
         </div>
 
         <div class="container signin">
-            <p>Pamiršote slaptažodį? <a data-toggle="modal" data-target="#inputEmailModal" asp-controller="">Spauskite čia</a>.</p>
+            <p>Pamiršote slaptažodį? <a asp-controller="PasswordChange" asp-action="ChangePassword">Spauskite čia</a>.</p>
         </div>
         <div class="container signin">
             <p>Dar neturite vartotojo? <a asp-controller="Registration" asp-action="Register">Registruokitės</a>.</p>
         </div>
     </form>
 
-<div class="modal fade" id="inputEmailModal" tabindex="-1" role="dialog" aria-labelledby="inputEmailModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="width:600px;height:700px;" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title" id="inputEmailModalLabel" style="color: green" bold>Susisiekite</h2>
-            </div>
-            <div class="modal-body">
-
-                <h5 style="text-align:center">Įveskite savo email, kad galėtume išsiųsti patvirtinimo kodą.</h5>
-                <br />
-                
-                <form method="POST" id="emailForm" asp-action="SendCode">
-                    <div class="textarea">
-                        <textarea name="email" rows="1" cols="60" placeholder="Įveskite savo email.." style="overflow: auto; resize: none"></textarea>
-                        @if (ViewBag.BadEmail == true)
-                        {
-                            <script type="text/javascript">
-                                $(document).ready(function () {
-                                    $(".message-box").show();
-                                });
-                            </script>
-                            <div class="text-danger">Klaida, blogai įvestas kodas.</div>
-                        }
-                    </div>
-                    <br/>
-
-                    <div class="myButton">
-                        <button type="submit" onclick="$('#emailForm').submit()">Siųsti</button>
-                    </div>
-                </form>
-                <br />
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn first" data-dismiss="modal" style="color: green" bold>Uždaryti</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="inputCodelModal" tabindex="-1" role="dialog" aria-labelledby="inputCodeModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="width:600px;height:700px;" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title" id="inputCodeModalLabel" style="color: green" bold>Susisiekite</h2>
-            </div>
-            <div class="modal-body">
-
-                <h5 style="text-align:center">Patikrinkite savo email ar gavote patvirtinimo kodą ir įveskite jį į laukelį.</h5>
-                <br />
-
-                <form method="get" action="">
-                    <div class="textarea">
-                        <textarea name="confirmCode" rows="1" cols="60" placeholder="Įveskite savo patvirtinimo kodą.." style="overflow:auto;resize:none"></textarea>
-                    </div>
-                    <br />
-
-                <div class="myButton">
-                    <button type="submit" asp-controller="Logging" asp-action="ConfirmEmail">Patvirtinti</button>
-                </div>
-                </form>
-                <br />
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn first" data-dismiss="modal" style="color: green" bold>Uždaryti</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="width:600px;height:700px;" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title" id="changePasswordModalLabel" style="color: green" bold>Susisiekite</h2>
-            </div>
-            <div class="modal-body">
-
-                <h5 style="text-align:center">Patikrinkite savo email ar gavote patvirtinimo kodą ir įveskite jį į laukelį.</h5>
-                <br />
-
-                <div class="textarea">
-                    <textarea name="password" rows="1" cols="60" placeholder="Įveskite naują slaptažodį.." style="overflow:auto;resize:none"></textarea>
-                </div>
-                <br />
-
-                <div class="textarea">
-                    <textarea name="confirmPassword" rows="1" cols="60" placeholder="Patvirtinkite savo slaptažodį.." style="overflow:auto;resize:none"></textarea>
-                </div>
-                <br />
-
-                <div class="myButton">
-                    <button type="submit" asp-controller="Logging" asp-action="ChangePassword">Patvirtinti</button>
-                </div>
-                <br />
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn first" data-dismiss="modal" style="color: green" bold>Uždaryti</button>
-            </div>
-        </div>
-    </div>
-</div>
 </body>
 </html>
