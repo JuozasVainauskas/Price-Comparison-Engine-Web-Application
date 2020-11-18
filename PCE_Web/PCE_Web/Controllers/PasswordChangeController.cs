@@ -70,8 +70,10 @@ namespace PCE_Web.Controllers
         {
             if (input.EmailModel != null)
             {
+                Console.WriteLine("1");
                 if (ModelState.IsValid)
                 {
+                    Console.WriteLine("1 pavyko");
                     var confirmCode = GenerateHash.CreateSalt(16);
                     confirmCode = confirmCode.Remove(confirmCode.Length - 2);
                     var email = input.EmailModel.Email;
@@ -80,30 +82,46 @@ namespace PCE_Web.Controllers
 
                     TempData["tempEmail"] = email;
                     TempData["tempCode"] = confirmCode;
+                    //disable email
+                    //enable code
                 }
             }
             else if (input.CodeModel != null)
             {
+                Console.WriteLine("2");
                 var confirmCode = TempData["tempCode"].ToString();
                 TempData["tempCode"] = confirmCode;
+                Console.WriteLine(confirmCode);
+                Console.WriteLine(input.CodeModel.Code);
 
                 if (ModelState.IsValid)
                 {
+                    Console.WriteLine("2 pavyko");
                     if (input.CodeModel.Code.Equals(confirmCode))
                     {
+                        Console.WriteLine("2 maybe");
+                        //disable code
+                        //enable password
                         return View();
                     }
                     else
                     {
+                        Console.WriteLine("2 nlb");
                         ViewBag.ShowMessage = true;
                     }
                 }
             }
             else
             {
+                Console.WriteLine("3");
                 if (ModelState.IsValid)
                 {
-
+                    var email = TempData["tempEmail"].ToString();
+                    //TempData["tempEmail"] = email;
+                    //_databaseManager.ChangePassword(email, input.PasswordModel.Password, input.PasswordModel.ConfirmPassword);
+                    Console.WriteLine(email);
+                    Console.WriteLine("3 pavyko");
+                    return RedirectToAction("Login", "Logging");
                 }
             }
             return View();
