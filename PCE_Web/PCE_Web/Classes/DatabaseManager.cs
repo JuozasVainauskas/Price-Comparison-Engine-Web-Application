@@ -23,29 +23,27 @@ namespace PCE_Web.Classes
         private static bool EmailVerification(string email)
         {
             var pattern = new Regex(@"([a-zA-Z0-9._-]*[a-zA-Z0-9][a-zA-Z0-9._-]*)(@gmail.com)$", RegexOptions.Compiled);
-            if (string.IsNullOrWhiteSpace(email))
+            if (string.IsNullOrWhiteSpace(email) || !pattern.IsMatch(email))
             {
                 return false;
             }
-            else if (!pattern.IsMatch(email))
+            else
             {
-                return false;
+                return true;
             }
-            else return true;
         }
 
         private static bool PasswordVerification(string password)
         {
             var pattern = new Regex(@"(?=(?:.*[a-zA-Z]){3})(?:.*\d)", RegexOptions.Compiled);
-            if (string.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrWhiteSpace(password) || !pattern.IsMatch(password))
             {
                 return false;
             }
-            else if (!pattern.IsMatch(password))
+            else
             {
-                return false;
+                return true;
             }
-            else return true;
         }
 
         /* Admin klasei */
