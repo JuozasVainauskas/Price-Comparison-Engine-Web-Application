@@ -36,7 +36,6 @@ namespace PCE_Web.Controllers
             _databaseManager = databaseManager;
         }
 
-        //[AllowAnonymous]
         public async Task<IActionResult> SuggestionsSpecifications(string productName, int lowestPrice, int biggestPrice, string avitela, string gintarine, string barbora, string rde, string bigbox, string elektromarkt, string pigu)
         {
             _shopFlags[0].ShopName = "Avitela";
