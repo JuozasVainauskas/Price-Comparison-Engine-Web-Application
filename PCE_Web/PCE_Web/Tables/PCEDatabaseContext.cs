@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
 
@@ -26,15 +27,15 @@ namespace PCE_Web.Tables
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                IConfigurationRoot configuration = new ConfigurationBuilder()
-                    .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-                    .AddJsonFile("appsettings.json")
-                    .Build();
+            //if (!optionsBuilder.IsConfigured)
+            //{
+                //IConfigurationRoot configuration = new ConfigurationBuilder()
+                //    .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                //    .AddJsonFile("appsettings.json")
+                //    .Build();
 
-                optionsBuilder.UseSqlServer(configuration.GetConnectionString("PCEConnectionString"));
-            }
+                //optionsBuilder.UseSqlServer(configuration.GetConnectionString("PCEConnectionString"));
+            //}
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

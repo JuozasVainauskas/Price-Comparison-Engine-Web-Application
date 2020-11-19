@@ -61,8 +61,10 @@ namespace PCE_Web
             services.AddMvc(options => options.Filters.Add(new AuthorizeFilter()))
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
-            services.AddDbContext<PCEDatabaseContext>();
+            services.AddDbContext<PCEDatabaseContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("PCEConnectionString")));
             services.AddScoped<IDatabaseManager, DatabaseManager>();
+            services.AddTransient<IDatabaseManager, DatabaseManager>();
             services.AddHttpClient();
         }
 

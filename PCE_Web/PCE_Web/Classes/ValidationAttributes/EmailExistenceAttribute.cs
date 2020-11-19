@@ -9,8 +9,9 @@ namespace PCE_Web.Classes.ValidationAttributes
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             var email = value as string;
+            var databaseManager = (IDatabaseManager)validationContext.GetService(typeof(IDatabaseManager));
 
-            if (DatabaseManager.CheckIfUserExists(email))
+            if (databaseManager != null && databaseManager.CheckIfUserExists(email))
             {
                 return new ValidationResult("Toks email jau panaudotas. Pabandykite kitą.");
             }

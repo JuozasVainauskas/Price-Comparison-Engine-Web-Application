@@ -140,15 +140,12 @@ namespace PCE_Web.Classes
         }
         /* ------------------------------------------- */
 
-        public static bool CheckIfUserExists(string email)
+        public bool CheckIfUserExists(string email)
         {
-            using (var context = new PCEDatabaseContext())
+            var result = _pceDatabaseContext.UserData.SingleOrDefault(column => column.Email == email);
+            if (result == null)
             {
-                var result = context.UserData.SingleOrDefault(column => column.Email == email);
-                if (result == null)
-                {
-                    return false;
-                }
+                return false;
             }
             return true;
         }

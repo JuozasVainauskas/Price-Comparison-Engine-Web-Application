@@ -17,6 +17,8 @@ namespace PCE_Web.Models
 
         List<User> ReadUsersList();
 
+        public bool CheckIfUserExists(string email);
+
         void RegisterUser(string email, string password);
 
         User LoginUser(string email, string password);
