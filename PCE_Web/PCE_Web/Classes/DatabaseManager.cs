@@ -78,6 +78,12 @@ namespace PCE_Web.Classes
             {
                 _pceDatabaseContext.CommentsTable.Remove(comment);
             }
+
+            var reports = _pceDatabaseContext.ReportsTable.Where(column => column.Email == email).ToList();
+            foreach (var report in reports)
+            {
+                _pceDatabaseContext.ReportsTable.Remove(report);
+            }
             _pceDatabaseContext.SaveChanges();
         }
 
