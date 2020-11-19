@@ -1,8 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.Extensions.Configuration;
 
 namespace PCE_Web.Tables
 {
@@ -22,20 +20,10 @@ namespace PCE_Web.Tables
         public virtual DbSet<ReportsTable> ReportsTable { get; set; }
         public virtual DbSet<SavedExceptions> SavedExceptions { get; set; }
         public virtual DbSet<SavedItems> SavedItems { get; set; }
-        public virtual DbSet<ShopRatingTable> ShopRatingTable { get; set; }
         public virtual DbSet<UserData> UserData { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //if (!optionsBuilder.IsConfigured)
-            //{
-                //IConfigurationRoot configuration = new ConfigurationBuilder()
-                //    .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-                //    .AddJsonFile("appsettings.json")
-                //    .Build();
-
-                //optionsBuilder.UseSqlServer(configuration.GetConnectionString("PCEConnectionString"));
-            //}
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -43,7 +31,7 @@ namespace PCE_Web.Tables
             modelBuilder.Entity<CommentsTable>(entity =>
             {
                 entity.HasKey(e => e.CommentId)
-                    .HasName("PK__tmp_ms_x__C3B4DFCAC10B5339");
+                    .HasName("PK__tmp_ms_x__C3B4DFCA01486395");
 
                 entity.Property(e => e.Date).IsRequired();
 
@@ -53,13 +41,13 @@ namespace PCE_Web.Tables
             modelBuilder.Entity<ItemsTable>(entity =>
             {
                 entity.HasKey(e => e.ItemId)
-                    .HasName("PK__ItemsTab__727E838B40E775AA");
+                    .HasName("PK__ItemsTab__727E838B9BA0A08C");
             });
 
             modelBuilder.Entity<ReportsTable>(entity =>
             {
                 entity.HasKey(e => e.ReportsId)
-                    .HasName("PK__tmp_ms_x__37856ECB40CD5A24");
+                    .HasName("PK__tmp_ms_x__37856ECB6CD7432D");
 
                 entity.Property(e => e.Comment).IsRequired();
 
@@ -69,7 +57,9 @@ namespace PCE_Web.Tables
             modelBuilder.Entity<SavedExceptions>(entity =>
             {
                 entity.HasKey(e => e.SavedExceptionId)
-                    .HasName("PK__SavedExc__1365928E5D4ABF5E");
+                    .HasName("PK__SavedExc__1365928E961A2AFE");
+
+                entity.Property(e => e.Date).IsRequired();
 
                 entity.Property(e => e.Message).IsRequired();
 
@@ -81,23 +71,15 @@ namespace PCE_Web.Tables
             modelBuilder.Entity<SavedItems>(entity =>
             {
                 entity.HasKey(e => e.SavedItemId)
-                    .HasName("PK__SavedIte__1CBC88C89260BAFE");
+                    .HasName("PK__SavedIte__1CBC88C858E6ACD1");
 
                 entity.Property(e => e.Email).IsRequired();
-            });
-
-            modelBuilder.Entity<ShopRatingTable>(entity =>
-            {
-                entity.HasKey(e => e.ShopId)
-                    .HasName("PK__ShopRati__67C557C9DA68B75D");
-
-                entity.Property(e => e.ShopName).IsRequired();
             });
 
             modelBuilder.Entity<UserData>(entity =>
             {
                 entity.HasKey(e => e.UserId)
-                    .HasName("PK__UserData__1788CC4C58702D6E");
+                    .HasName("PK__UserData__1788CC4C5812A428");
 
                 entity.Property(e => e.Email).IsRequired();
 

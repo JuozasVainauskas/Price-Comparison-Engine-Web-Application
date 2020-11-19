@@ -14,11 +14,11 @@
     @if (@TempData["AlertBox"] != null)
     {
         <div class="text-center">
-        <div id="alertBox" class="alert warning">
-            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-            @TempData["AlertBox"]
+            <div id="alertBox" class="alert warning">
+                <span class="closebtn" onclick="this.parentElement.style.display = 'none';">&times;</span>
+                @TempData["AlertBox"]
+            </div>
         </div>
-    </div>
     }
     @Html.AntiForgeryToken()
     <form asp-action="Login" novalidate>
@@ -68,10 +68,10 @@
         var duration = 3000;
         setTimeout(function () { $('#alertBox').hide(); }, duration);
     };
-
+</script>
+<script>
     var close = document.getElementsByClassName("closebtn");
     var i;
-
     for (i = 0; i < close.length; i++) {
         close[i].onclick = function () {
             var div = this.parentElement;

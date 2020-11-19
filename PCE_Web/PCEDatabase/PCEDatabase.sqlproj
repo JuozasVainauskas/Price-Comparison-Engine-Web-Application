@@ -65,7 +65,6 @@
     <Build Include="dbo\Tables\SavedItems.sql" />
     <Build Include="dbo\Tables\CommentsTable.sql" />
     <Build Include="dbo\Tables\ItemsTable.sql" />
-    <Build Include="dbo\Tables\ShopRatingTable.sql" />
     <Build Include="dbo\Tables\ReportsTable.sql" />
     <Build Include="dbo\Tables\SavedExceptions.sql" />
   </ItemGroup>

@@ -338,30 +338,6 @@ namespace PCE_Web.Classes
             }
         }
 
-        public ShopRating ReadRatings(string shopName)
-        {
-            var shopRating = new ShopRating();
-            var result = _pceDatabaseContext.ShopRatingTable.SingleOrDefault(column => column.ShopName == shopName);
-            
-            if (result != null)
-            {
-                shopRating.VotesNumber = result.VotesNumber;
-                shopRating.VotersNumber = result.VotersNumber;
-            }
-            return shopRating;
-        }
-
-        public void WriteRatings(string shopName, int votesNumber, int votersNumber)
-        {
-            var result = _pceDatabaseContext.ShopRatingTable.SingleOrDefault(column => column.ShopName == shopName);
-            if (result != null)
-            {
-                result.VotersNumber = votersNumber;
-                result.VotesNumber = votesNumber;
-                _pceDatabaseContext.SaveChanges();
-            }
-        }
-
         public void WriteSearchedItems(List<Item> items, string productName)
         {
             foreach (var item in items)

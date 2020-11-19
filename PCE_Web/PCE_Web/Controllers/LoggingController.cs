@@ -30,12 +30,13 @@ namespace PCE_Web.Controllers
         }
 
         public class InputModel
-        {  
+        {
             [Display(Name = "Email")]
             [DataType(DataType.EmailAddress)]
             [Required(ErrorMessage = "Turite įrašyti email.")]
             [UserExistence]
             public string Email { get; set; }
+
             [Display(Name = "Password")]
             [DataType(DataType.Password)]
             [Required(ErrorMessage = "Turite įrašyti slaptažodį.")]

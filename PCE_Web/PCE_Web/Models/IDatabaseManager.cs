@@ -40,10 +40,6 @@ namespace PCE_Web.Models
 
         void WriteComments(string email, int shopId, int rating, string comment);
 
-        ShopRating ReadRatings(string shopName);
-
-        void WriteRatings(string shopName, int votesNumber, int votersNumber);
-
         void WriteLoggedExceptions(string message, string source, string stackTrace, string date);
 
         void DeleteLoggedExceptions(int Id);
