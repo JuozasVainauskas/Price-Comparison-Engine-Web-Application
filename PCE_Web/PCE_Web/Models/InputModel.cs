@@ -9,6 +9,7 @@ namespace PCE_Web.Models
         [DataType(DataType.EmailAddress)]
         [Required(ErrorMessage = "Turite įrašyti email.")]
         [EmailSpelling]
+        [UserExistence]
         public string Email { get; set; }
     }
 

@@ -91,25 +91,29 @@ namespace PCE_Web.Controllers
                     TempData["tempEmail"] = email;
                     TempData["tempCode"] = confirmCode;
                     ViewBag.Text = "Patvirtinti";
+                    ViewBag.Email = email;
                     ViewBag.EmailEnabled = false;
                     ViewBag.CodeEnabled = true;
                 }
-                return View(input);
             }
             else if (input.CodeModel != null)
             {
+                var confirmCode = TempData["tempCode"].ToString();
+                var email = TempData["tempEmail"].ToString();
+                TempData["tempCode"] = confirmCode;
+                TempData["tempEmail"] = email;
+
                 ViewBag.Text = "Patvirtinti";
+                ViewBag.Email = email;
                 ViewBag.EmailEnabled = false;
                 ViewBag.CodeEnabled = true;
-
-                var confirmCode = TempData["tempCode"].ToString();
-                TempData["tempCode"] = confirmCode;
 
                 if (ModelState.IsValid)
                 {
                     if (input.CodeModel.Code.Equals(confirmCode))
                     {
                         ViewBag.Text = "Pakeisti";
+                        ViewBag.Code = input.CodeModel.Code;
                         ViewBag.EmailEnabled = false;
                         ViewBag.CodeEnabled = false;
                         ViewBag.PasswordEnabled = true;
@@ -119,20 +123,24 @@ namespace PCE_Web.Controllers
                         ViewBag.ShowMessage = true;
                     }
                 }
-                return View(input);
             }
             else if (input.PasswordModel != null)
             {
+                var confirmCode = TempData["tempCode"].ToString();
+                var email = TempData["tempEmail"].ToString();
+                TempData["tempCode"] = confirmCode;
+                TempData["tempEmail"] = email;
+
                 ViewBag.Text = "Pakeisti";
+                ViewBag.Email = email;
+                ViewBag.Code = confirmCode;
                 ViewBag.EmailEnabled = false;
                 ViewBag.CodeEnabled = false;
                 ViewBag.PasswordEnabled = true;
 
                 if (ModelState.IsValid)
                 {
-                    var email = TempData["tempEmail"].ToString();
-                    //TempData["tempEmail"] = email;
-                    //_databaseManager.ChangePassword(email, input.PasswordModel.Password, input.PasswordModel.ConfirmPassword);
+                    _databaseManager.ChangePassword(email, input.PasswordModel.Password, input.PasswordModel.ConfirmPassword);
                     return RedirectToAction("Login", "Logging");
                 }
             }
