@@ -30,7 +30,7 @@ namespace PCE_Web.Controllers
         }
 
         public class InputModel
-        {
+        {  
             [Display(Name = "Email")]
             [DataType(DataType.EmailAddress)]
             [Required(ErrorMessage = "Turite įrašyti email.")]

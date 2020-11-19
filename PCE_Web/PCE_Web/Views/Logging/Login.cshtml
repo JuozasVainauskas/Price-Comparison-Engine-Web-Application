@@ -11,7 +11,16 @@
 
 </head>
 <body>
-@Html.AntiForgeryToken()
+    @if (@TempData["AlertBox"] != null)
+    {
+        <div class="text-center">
+        <div id="alertBox" class="alert warning">
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+            @TempData["AlertBox"]
+        </div>
+    </div>
+    }
+    @Html.AntiForgeryToken()
     <form asp-action="Login" novalidate>
         <div class="container">
             <h1>Prisijungimas</h1>
@@ -54,3 +63,20 @@
 
 </body>
 </html>
+<script>
+    window.onload = function () {
+        var duration = 3000;
+        setTimeout(function () { $('#alertBox').hide(); }, duration);
+    };
+
+    var close = document.getElementsByClassName("closebtn");
+    var i;
+
+    for (i = 0; i < close.length; i++) {
+        close[i].onclick = function () {
+            var div = this.parentElement;
+            div.style.opacity = "0";
+            setTimeout(function () { div.style.display = "none"; }, 600);
+        }
+    }
+</script>

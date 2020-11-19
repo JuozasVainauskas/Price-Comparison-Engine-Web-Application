@@ -113,10 +113,13 @@ namespace PCE_Web.Controllers
                 if (ModelState.IsValid)
                 {
                     _databaseManager.ChangePassword(email, input.PasswordModel.Password, input.PasswordModel.ConfirmPassword);
+                    TempData["AlertBox"] = "Sėkmingai pakeitėte slaptažodį";
+
                     return RedirectToAction("Login", "Logging");
                 }
             }
             return View();
+
         }
     }
 }
