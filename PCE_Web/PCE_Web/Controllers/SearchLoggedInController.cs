@@ -23,8 +23,8 @@ namespace PCE_Web.Controllers
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
         private readonly IHttpClientFactory _httpClient;
         private readonly IDatabaseManager _databaseManager;
+        private delegate void SavingAnItemD(string link, string pictureUrl, string seller, string name, string price);
 
-       
         public SearchLoggedInController(IHttpClientFactory httpClient, IDatabaseManager databaseManager)
         {
             _httpClient = httpClient;
@@ -33,6 +33,8 @@ namespace PCE_Web.Controllers
 
         public async Task<IActionResult> Suggestions(string productName, string link, string pictureUrl, string seller, string name, string price)
         {
+            SavingAnItemD savingAnItem = null;
+            savingAnItem += SavingAnItem;
             if (productName != null)
             {
                 SearchWord = productName;
@@ -41,7 +43,7 @@ namespace PCE_Web.Controllers
             {
                 if (link != null)
                 {
-                    _databaseManager.WriteSavedItem(link, pictureUrl, seller, name, price,User.Identity.Name);
+                    savingAnItem(link, pictureUrl, seller, name, price);
                     IsSaved = 1;
                     SuggestionsView.AlertBoxText = "Prekė sėkmingai išsaugota!";
                 }
@@ -63,7 +65,7 @@ namespace PCE_Web.Controllers
                 SuggestionsView.AlertBoxText = "Pasirinkite prekę, kurią norite išsaugoti arba naršykite toliau!";
                 if (link != null)
                 {
-                    _databaseManager.WriteSavedItem(link, pictureUrl, seller, name, price, User.Identity.Name);
+                    savingAnItem(link, pictureUrl, seller, name, price);
                 }
                 var httpClient = _httpClient.CreateClient();
                 var products = new List<Item>();
@@ -74,6 +76,12 @@ namespace PCE_Web.Controllers
                 return View(suggestionsView);
             }
         }
+
+        public void SavingAnItem(string link, string pictureUrl, string seller, string name, string price)
+        {
+            _databaseManager.WriteSavedItem(link, pictureUrl, seller, name, price, User.Identity.Name);
+        }
+
         private async Task ReadingItemsAsync(string productName, List<Item> products, HttpClient httpClient)
         {
             var gettingRde = await Task.Factory.StartNew(() => gettingItemsFromRde(productName, products, httpClient));
