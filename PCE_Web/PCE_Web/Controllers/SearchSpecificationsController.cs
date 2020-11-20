@@ -12,12 +12,7 @@ using PCE_Web.Classes;
 using PCE_Web.Models;
 
 namespace PCE_Web.Controllers
-{ 
-    struct ShopFlag
-    {
-        public string ShopName { get; set; }
-        public string Flag { get; set; }
-    }
+{
     public class SearchSpecificationsController : Controller
     {
         public static int SoldOutBarbora;
@@ -26,7 +21,6 @@ namespace PCE_Web.Controllers
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
         private readonly IHttpClientFactory _httpClient;
         private readonly IDatabaseManager _databaseManager;
-        readonly ShopFlag[] _shopFlags = new ShopFlag[7];
 
         public SearchSpecificationsController(IHttpClientFactory httpClient, IDatabaseManager databaseManager)
         {
@@ -35,24 +29,12 @@ namespace PCE_Web.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> SuggestionsSpecifications(string productName, int lowestPrice, int biggestPrice, string avitela, string gintarine, string barbora, string rde, string bigbox, string elektromarkt, string pigu)
+        public async Task<IActionResult> SuggestionsSpecifications(string productName, int lowestPrice, int biggestPrice, string[] tags)
         {
-            _shopFlags[0].ShopName = "Avitela";
-            _shopFlags[0].Flag = avitela;
-            _shopFlags[1].ShopName = "Gintarine";
-            _shopFlags[1].Flag = gintarine;
-            _shopFlags[2].ShopName = "Barbora";
-            _shopFlags[2].Flag = barbora;
-            _shopFlags[3].ShopName = "Rde";
-            _shopFlags[3].Flag = rde;
-            _shopFlags[4].ShopName = "Bigbox";
-            _shopFlags[4].Flag = bigbox;
-            _shopFlags[5].ShopName = "Elektromarkt";
-            _shopFlags[5].Flag = elektromarkt;
-            _shopFlags[6].ShopName = "Pigu";
-            _shopFlags[6].Flag = pigu;
-
-            
+            foreach (var Va in tags)
+            {
+                Console.WriteLine(Va);
+            }
             if (_databaseManager.ReadSearchedItems(productName).Any())
             {
                 var products = new List<Item>();
@@ -61,7 +43,10 @@ namespace PCE_Web.Controllers
                     var price = ConvertingToDouble(item.Price);
                     if ((price >= lowestPrice) && (price <= biggestPrice))
                     {
-                        products.Add(item);
+                        if (tags.Contains(productName))
+                        {
+                            products.Add(item);
+                        }
                     }
                 }
                 products = SortAndInsert(products);
@@ -70,26 +55,25 @@ namespace PCE_Web.Controllers
             }
             else
             {
-            
                 var httpClient = _httpClient.CreateClient();
                 var products = new List<Item>();
-                await ReadingItemsAsync(productName, products, httpClient, lowestPrice, biggestPrice);
+                await ReadingItemsAsync(productName, products, httpClient, lowestPrice, biggestPrice, tags);
                 products = SortAndInsert(products);
-                //_databaseManager.WriteSearchedItems(products, productName);
+                _databaseManager.WriteSearchedItems(products, productName);
                 var suggestionsSpecificationsView = new SuggestionsSpecificationsView { Products = products };
                 return View(suggestionsSpecificationsView);
             }
         }
 
-        private async Task ReadingItemsAsync(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice)
+        private async Task ReadingItemsAsync(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice, string[] tags)
         {
-            var gettingRde = await Task.Factory.StartNew(() => gettingItemsFromRde(productName, products, httpClient, minPrice, maxPrice));
-            var gettingBarbora = await Task.Factory.StartNew(() => gettingItemsFromBarbora(productName, products, httpClient, minPrice, maxPrice));
-            var gettingAvitela = await Task.Factory.StartNew(() => gettingItemsFromAvitela(productName, products, httpClient, minPrice, maxPrice));
-            var gettingPigu = await Task.Factory.StartNew(() => gettingItemsFromPigu(productName, products, httpClient, minPrice, maxPrice));
-            var gettingGintarine = await Task.Factory.StartNew(() => gettingItemsFromGintarineVaistine(productName, products, httpClient, minPrice, maxPrice));
-            var gettingElektromarkt = await Task.Factory.StartNew(() => gettingItemsFromElektromarkt(productName, products, httpClient, minPrice, maxPrice));
-            var gettingBigBox = await Task.Factory.StartNew(() => gettingItemsFromBigBox(productName, products, httpClient, minPrice, maxPrice));
+            var gettingRde = await Task.Factory.StartNew(() => gettingItemsFromRde(productName, products, httpClient, minPrice, maxPrice, tags));
+            var gettingBarbora = await Task.Factory.StartNew(() => gettingItemsFromBarbora(productName, products, httpClient, minPrice, maxPrice, tags));
+            var gettingAvitela = await Task.Factory.StartNew(() => gettingItemsFromAvitela(productName, products, httpClient, minPrice, maxPrice, tags));
+            var gettingPigu = await Task.Factory.StartNew(() => gettingItemsFromPigu(productName, products, httpClient, minPrice, maxPrice, tags));
+            var gettingGintarine = await Task.Factory.StartNew(() => gettingItemsFromGintarineVaistine(productName, products, httpClient, minPrice, maxPrice, tags));
+            var gettingElektromarkt = await Task.Factory.StartNew(() => gettingItemsFromElektromarkt(productName, products, httpClient, minPrice, maxPrice, tags));
+            var gettingBigBox = await Task.Factory.StartNew(() => gettingItemsFromBigBox(productName, products, httpClient, minPrice, maxPrice, tags));
             var taskList = new List<Task>
             {
                 gettingRde, gettingBarbora, gettingAvitela, gettingPigu, gettingGintarine, gettingElektromarkt,
@@ -98,9 +82,9 @@ namespace PCE_Web.Controllers
             Task.WaitAll(taskList.ToArray());
         }
 
-        private async Task gettingItemsFromRde(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice)
+        private async Task gettingItemsFromRde(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice, string[] tags)
         {
-            if (_shopFlags[3].Flag == "on")
+            if (tags.Contains("Rde"))
             {
                 var urlRde = "https://www.rde.lt/search_result/lt/word/" + productName + "/page/1";
                 Search<HtmlDocument> rdeSearch = RdeSearch;
@@ -110,9 +94,9 @@ namespace PCE_Web.Controllers
             }
         }
 
-        private async Task gettingItemsFromBarbora(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice)
+        private async Task gettingItemsFromBarbora(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice, string[] tags)
         {
-            if (_shopFlags[2].Flag == "on")
+            if (tags.Contains("Barbora"))
             {
                 var urlBarbora = "https://pagrindinis.barbora.lt/paieska?q=" + productName;
                 Search<HtmlDocument> barboraSearch = BarboraSearch;
@@ -122,9 +106,9 @@ namespace PCE_Web.Controllers
             }
         }
 
-        private async Task gettingItemsFromAvitela(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice)
+        private async Task gettingItemsFromAvitela(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice, string[] tags)
         {
-            if (_shopFlags[0].Flag == "on")
+            if (tags.Contains("Avitela"))
             {
                 var urlAvitela = "https://avitela.lt/paieska/" + productName;
                 Search<HtmlDocument> avitelaSearch = AvitelaSearch;
@@ -134,9 +118,9 @@ namespace PCE_Web.Controllers
             }
         }
 
-        private async Task gettingItemsFromPigu(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice)
+        private async Task gettingItemsFromPigu(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice, string[] tags)
         {
-            if (_shopFlags[6].Flag == "on")
+            if (tags.Contains("Pigu"))
             {
                 var urlPigu = "https://pigu.lt/lt/search?q=" + productName;
                 Search<HtmlDocument> piguSearch = PiguSearch;
@@ -146,9 +130,9 @@ namespace PCE_Web.Controllers
             }
         }
 
-        private async Task gettingItemsFromBigBox(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice)
+        private async Task gettingItemsFromBigBox(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice, string[] tags)
         {
-            if (_shopFlags[4].Flag == "on")
+            if (tags.Contains("BigBox"))
             {
                 var urlBigBox =
                     "https://bigbox.lt/paieska?controller=search&orderby=position&orderway=desc&ssa_submit=&search_query=" +
@@ -160,9 +144,9 @@ namespace PCE_Web.Controllers
             }
         }
 
-        private async Task gettingItemsFromGintarineVaistine(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice)
+        private async Task gettingItemsFromGintarineVaistine(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice, string[] tags)
         {
-            if (_shopFlags[1].Flag == "on")
+            if (tags.Contains("Gintarinė"))
             {
                 var urlGintarineVaistine = "https://www.gintarine.lt/search?adv=false&cid=0&mid=0&vid=0&q=" +
                                            productName + "%5D&sid=false&isc=true&orderBy=0";
@@ -173,9 +157,9 @@ namespace PCE_Web.Controllers
             }
         }
 
-        private async Task gettingItemsFromElektromarkt(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice)
+        private async Task gettingItemsFromElektromarkt(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice, string[] tags)
         {
-            if (_shopFlags[5].Flag == "on")
+            if (tags.Contains("Elektromarkt"))
             {
                 var urlElektromarkt = "https://elektromarkt.lt/paieska/" + productName;
                 Search<HtmlDocument> elektromarktSearch = ElektromarktSearch;
