@@ -11,42 +11,72 @@
 
 </head>
 <body>
-@Html.AntiForgeryToken()
-<form asp-action="Login" novalidate>
-    <div class="container">
-        <h1>Prisijungimas</h1>
-        <p>Užpildykite šią formą, norėdami prisijungti</p>
-        <hr>
-
-        <div class="form-group">
-            <label asp-for="Email"><b>El. paštas</b></label>
-            <input asp-for="Email" class="form-control" type="email" placeholder="Įveskite el. paštą"/>
-            <span asp-validation-for="Email" class="text-danger"></span>
+    @if (@TempData["AlertBox"] != null)
+    {
+        <div class="text-center">
+            <div id="alertBox" class="alert warning">
+                <span class="closebtn" onclick="this.parentElement.style.display = 'none';">&times;</span>
+                @TempData["AlertBox"]
+            </div>
         </div>
-        <div class="form-group">
-            <label asp-for="Password"><b>Slaptažodis</b></label>
-            <input asp-for="Password" class="form-control" type="password" placeholder="Įveskite slaptažodį"/>
-            <span asp-validation-for="Password" class="text-danger"></span>
-            @if (ViewBag.ShowMessage == true)
-            {
-                <script type="text/javascript">
-                    $(document).ready(function() {
-                        $(".message-box").show();
-                    });
-                </script>
-                <div class="text-danger">Klaida slaptažodis, netinkamas.</div>
-            }
+    }
+    @Html.AntiForgeryToken()
+    <form asp-action="Login" novalidate>
+        <div class="container">
+            <h1>Prisijungimas</h1>
+            <p>Užpildykite šią formą, norėdami prisijungti</p>
+            <hr>
+
+            <div class="form-group">
+                <label asp-for="Email"><b>El. paštas</b></label>
+                <input asp-for="Email" class="form-control" type="email" placeholder="Įveskite el. paštą" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password"><b>Slaptažodis</b></label>
+                <input asp-for="Password" class="form-control" type="password" placeholder="Įveskite slaptažodį" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+                @if (ViewBag.ShowMessage == true)
+                {
+                    <script type="text/javascript">
+                        $(document).ready(function () {
+                            $(".message-box").show();
+                        });
+                    </script>
+                    <div class="text-danger">Klaida slaptažodis, netinkamas.</div>
+                }
+            </div>
+
+            <hr>
+            <p>Prisijungdami Jūs sutinkate su mūsų <a asp-controller="Home" asp-action="Privacy">privatumo politika</a>.</p>
+
+            <button type="submit" class="registerbtn">Prisijungti</button>
         </div>
 
-        <hr>
-        <p>Prisijungdami Jūs sutinkate su mūsų <a asp-controller="Home" asp-action="Privacy">privatumo politika</a>.</p>
+        <div class="container signin">
+            <p>Pamiršote slaptažodį? <a asp-controller="PasswordChange" asp-action="ChangePassword">Spauskite čia</a>.</p>
+        </div>
+        <div class="container signin">
+            <p>Dar neturite vartotojo? <a asp-controller="Registration" asp-action="Register">Registruokitės</a>.</p>
+        </div>
+    </form>
 
-        <button type="submit" class="registerbtn">Prisijungti</button>
-    </div>
-
-    <div class="container signin">
-        <p>Dar neturite vartotojo? <a asp-controller="Registration" asp-action="Register">Registruokitės</a>.</p>
-    </div>
-</form>
 </body>
 </html>
+<script>
+    window.onload = function () {
+        var duration = 3000;
+        setTimeout(function () { $('#alertBox').hide(); }, duration);
+    };
+</script>
+<script>
+    var close = document.getElementsByClassName("closebtn");
+    var i;
+    for (i = 0; i < close.length; i++) {
+        close[i].onclick = function () {
+            var div = this.parentElement;
+            div.style.opacity = "0";
+            setTimeout(function () { div.style.display = "none"; }, 600);
+        }
+    }
+</script>

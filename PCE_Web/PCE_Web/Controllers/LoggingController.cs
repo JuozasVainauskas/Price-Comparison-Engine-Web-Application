@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security.Claims;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -34,6 +36,7 @@ namespace PCE_Web.Controllers
             [Required(ErrorMessage = "Turite įrašyti email.")]
             [UserExistence]
             public string Email { get; set; }
+
             [Display(Name = "Password")]
             [DataType(DataType.Password)]
             [Required(ErrorMessage = "Turite įrašyti slaptažodį.")]

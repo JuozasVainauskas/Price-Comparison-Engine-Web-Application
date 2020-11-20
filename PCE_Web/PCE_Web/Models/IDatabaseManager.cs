@@ -17,6 +17,8 @@ namespace PCE_Web.Models
 
         List<User> ReadUsersList();
 
+        public bool CheckIfUserExists(string email);
+
         void RegisterUser(string email, string password);
 
         User LoginUser(string email, string password);
@@ -37,10 +39,6 @@ namespace PCE_Web.Models
         bool IsAlreadyCommented(string email, int shopId);
 
         void WriteComments(string email, int shopId, int rating, string comment);
-
-        ShopRating ReadRatings(string shopName);
-
-        void WriteRatings(string shopName, int votesNumber, int votersNumber);
 
         void WriteLoggedExceptions(string message, string source, string stackTrace, string date);
 

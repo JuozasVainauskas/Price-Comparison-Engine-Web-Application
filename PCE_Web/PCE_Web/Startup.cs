@@ -19,6 +19,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using PCE_Web.Classes;
 using PCE_Web.Models;
+using PCE_Web.Tables;
 
 namespace PCE_Web
 {
@@ -60,7 +61,10 @@ namespace PCE_Web
             services.AddMvc(options => options.Filters.Add(new AuthorizeFilter()))
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
-            services.AddSingleton<IDatabaseManager, DatabaseManager>();
+            services.AddDbContext<PCEDatabaseContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("PCEConnectionString")));
+            services.AddScoped<IDatabaseManager, DatabaseManager>();
+            services.AddTransient<IDatabaseManager, DatabaseManager>();
             services.AddHttpClient();
         }
 
