@@ -31,10 +31,6 @@ namespace PCE_Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> SuggestionsSpecifications(string productName, int lowestPrice, int biggestPrice, string[] tags)
         {
-            foreach (var Va in tags)
-            {
-                Console.WriteLine(Va);
-            }
             if (_databaseManager.ReadSearchedItems(productName).Any())
             {
                 var products = new List<Item>();
