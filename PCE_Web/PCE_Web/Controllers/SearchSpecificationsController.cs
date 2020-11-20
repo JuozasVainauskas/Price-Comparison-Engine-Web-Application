@@ -12,12 +12,14 @@ using PCE_Web.Classes;
 using PCE_Web.Models;
 
 namespace PCE_Web.Controllers
-{ 
-    struct ShopFlag
+{
+    internal struct ShopFlag
     {
         public string ShopName { get; set; }
         public string Flag { get; set; }
     }
+
+    [Authorize]
     public class SearchSpecificationsController : Controller
     {
         public static int SoldOutBarbora;
@@ -26,7 +28,7 @@ namespace PCE_Web.Controllers
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
         private readonly IHttpClientFactory _httpClient;
         private readonly IDatabaseManager _databaseManager;
-        readonly ShopFlag[] _shopFlags = new ShopFlag[7];
+        private readonly ShopFlag[] _shopFlags = new ShopFlag[7];
 
         public SearchSpecificationsController(IHttpClientFactory httpClient, IDatabaseManager databaseManager)
         {
@@ -34,7 +36,6 @@ namespace PCE_Web.Controllers
             _databaseManager = databaseManager;
         }
 
-        [AllowAnonymous]
         public async Task<IActionResult> SuggestionsSpecifications(string productName, int lowestPrice, int biggestPrice, string avitela, string gintarine, string barbora, string rde, string bigbox, string elektromarkt, string pigu)
         {
             _shopFlags[0].ShopName = "Avitela";

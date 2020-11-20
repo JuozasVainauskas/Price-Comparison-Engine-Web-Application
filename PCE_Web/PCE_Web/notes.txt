@@ -1,5 +1,0 @@
-PCE_Web dešinis klavišas -> Manage User Secrets
-{
-  "SecretMail": "smartshopautobot@gmail.com",
-  "SecretPassword": "adminNull0"
-}

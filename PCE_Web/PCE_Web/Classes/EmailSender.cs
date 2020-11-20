@@ -16,20 +16,19 @@ namespace PCE_Web.Classes
     {
         public static async void SendEmail(string code, string email) 
         {
-
             var client = new SmtpClient()
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                
+                Credentials = new NetworkCredential()
                 {
-                    Host = "smtp.gmail.com",
-                    Port = 587,
-                    EnableSsl = true,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    UseDefaultCredentials = false,
-                    
-                    Credentials = new NetworkCredential()
-                        {
-                            UserName = ShopSecrets.Email,
-                            Password = ShopSecrets.Password
-                    }
+                    UserName = "smartshopautobot@gmail.com",
+                    Password = "adminNull0"
+                }
             };
 
             var fromEmail = new MailAddress("smartshopautobot@gmail.com", "Smart Shop");
