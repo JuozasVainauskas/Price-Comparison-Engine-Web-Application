@@ -13,6 +13,7 @@ using PCE_Web.Models;
 
 namespace PCE_Web.Controllers
 {
+    [Authorize]
     public class SearchSpecificationsController : Controller
     {
         public static int SoldOutBarbora;
@@ -28,7 +29,6 @@ namespace PCE_Web.Controllers
             _databaseManager = databaseManager;
         }
 
-        [AllowAnonymous]
         public async Task<IActionResult> SuggestionsSpecifications(string productName, int lowestPrice, int biggestPrice, string[] tags)
         {
             if (_databaseManager.ReadSearchedItems(productName).Any())
