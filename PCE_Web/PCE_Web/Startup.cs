@@ -28,8 +28,6 @@ namespace PCE_Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            // ShopSecrets.Email = Configuration["SecretMail"];
-            //ShopSecrets.Password = Configuration["SecretPassword"];
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
             {
                 options.Cookie.HttpOnly = true;
