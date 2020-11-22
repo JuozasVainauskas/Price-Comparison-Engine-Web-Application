@@ -11,6 +11,7 @@
     <br>
     <table id="items">
         <tr>
+            <th>ID</th>
             <th>Data</th>
             <th>Pranešimas</th>
             <th>Pažymėti</th>
@@ -19,8 +20,9 @@
         @foreach (var comment in @Model.Comments)
         {
     <tr>
+        <td style="font-weight:bold;color:red;">@comment.ID</td>
         <td style="font-weight:bold;color:red;">2020-11-17</td>
-        <td style="font-weight:bold;color:red;max-width:500px; word-wrap:break-word;">@comment</td>
+        <td style="font-weight:bold;color:red;max-width:500px; word-wrap:break-word;">@comment.Comment</td>
         <td style="width:50px"><button type="button" class="btn btn-warning">Pažymėti</button></td>
         <td style="width:50px"><button type="button" class="btn btn-danger">Ištrinti</button></td>
     </tr>

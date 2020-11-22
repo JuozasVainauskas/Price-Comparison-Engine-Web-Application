@@ -380,9 +380,9 @@ namespace PCE_Web.Classes
             _pceDatabaseContext.SaveChanges();
         }
 
-        public List<string> ReadReports(string email)
+        public List<Report> ReadReports(string email)
         {
-            var comments = _pceDatabaseContext.ReportsTable.Where(column => column.Email == email).Select(column => column.Comment).ToList();
+            var comments = _pceDatabaseContext.ReportsTable.Where(column => column.Email == email).Select(column => new Report { Comment = column.Comment, ID = column.ReportsId }).ToList();
             return comments;
         }
 

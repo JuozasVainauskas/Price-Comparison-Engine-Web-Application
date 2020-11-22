@@ -7,7 +7,7 @@ namespace PCE_Web.Models
 {
     public class ReportView : IEnumerable
     {
-        public List<string> Comments { get; set; }
+        public List<Report> Comments { get; set; }
 
         public string Role;
         public IEnumerator GetEnumerator()
