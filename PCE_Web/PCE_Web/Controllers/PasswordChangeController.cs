@@ -45,7 +45,7 @@ namespace PCE_Web.Controllers
                     confirmCode = confirmCode.Remove(confirmCode.Length - 2);
                     var email = input.EmailModel.Email;
 
-                    _emailsender.SendEmail(confirmCode, "aivarasr123@gmail.com");
+                    _emailsender.SendEmail(confirmCode, "ernestas20111@gmail.com");
 
                     TempData["tempEmail"] = email;
                     TempData["tempCode"] = confirmCode;

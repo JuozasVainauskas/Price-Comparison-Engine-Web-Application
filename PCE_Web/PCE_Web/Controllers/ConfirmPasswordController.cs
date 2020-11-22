@@ -35,7 +35,7 @@ namespace PCE_Web.Controllers
             var sendingInformation=new SendingInformation();
             sendingInformation.ButtonPushed += (sender, e)=>
             {
-                _emailsender.SendEmail(e.Code, "aivarasr123@gmail.com");
+                _emailsender.SendEmail(e.Code, "ernestas20111@gmail.com");
             };
             sendingInformation.Pushed(code, email);
 
