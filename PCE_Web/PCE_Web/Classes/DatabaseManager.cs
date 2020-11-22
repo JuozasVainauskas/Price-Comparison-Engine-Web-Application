@@ -388,7 +388,7 @@ namespace PCE_Web.Classes
 
         public bool IsReported(string email)
         {
-            var item = _pceDatabaseContext.ReportsTable.Where(column => column.Email == email).Select(column => new ReportsTable { Email = column.Email, Comment = column.Comment }).ToList();
+            var item = _pceDatabaseContext.ReportsTable.Where(column => column.Email == email).Select(column => new ReportsTable { Email = column.Email, Comment = column.Comment, Solved = column.Solved, Date = column.Date}).ToList();
             if (item.Count > 0)
             {
                 return true;
