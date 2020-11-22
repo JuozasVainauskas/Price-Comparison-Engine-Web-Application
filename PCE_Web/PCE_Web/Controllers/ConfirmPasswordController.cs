@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.Eventing.Reader;
+﻿using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using HtmlAgilityPack;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.V3.Pages.Account.Manage.Internal;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.EntityFrameworkCore;
 using PCE_Web.Classes;
 using PCE_Web.Models;
 
@@ -22,9 +14,12 @@ namespace PCE_Web.Controllers
     {
         private static string _confirmCode;
         private readonly IDatabaseManager _databaseManager;
-        public ConfirmPasswordController(IDatabaseManager databaseManager)
+        private readonly EmailSenderInterface _emailsender;
+
+        public ConfirmPasswordController(IDatabaseManager databaseManager, EmailSenderInterface emailsender)
         {
             _databaseManager = databaseManager;
+            _emailsender = emailsender;
         }
 
         [AllowAnonymous]
@@ -40,7 +35,7 @@ namespace PCE_Web.Controllers
             var sendingInformation=new SendingInformation();
             sendingInformation.ButtonPushed += (sender, e)=>
             {
-                EmailSender.SendEmail(e.Code, "ernestas20111@gmail.com");
+                _emailsender.SendEmail(e.Code, "ernestas20111@gmail.com");
             };
             sendingInformation.Pushed(code, email);
 
