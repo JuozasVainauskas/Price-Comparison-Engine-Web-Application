@@ -384,7 +384,7 @@ namespace PCE_Web.Classes
 
         public List<Report> ReadReports(string email)
         {
-            var comments = _pceDatabaseContext.ReportsTable.Where(column => column.Email == email).Select(column => new Report { Comment = column.Comment, ID = column.ReportsId, Date = column.Date }).ToList();
+            var comments = _pceDatabaseContext.ReportsTable.Where(column => column.Email == email).Select(column => new Report { Comment = column.Comment, ID = column.ReportsId, Date = column.Date, Email = column.Email }).ToList();
             return comments;
         }
 

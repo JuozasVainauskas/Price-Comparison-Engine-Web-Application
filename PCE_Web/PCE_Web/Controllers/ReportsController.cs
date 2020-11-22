@@ -25,5 +25,11 @@ namespace PCE_Web.Controllers
             var reportView = new ReportView() { Comments = comments, Role = role };
             return View(reportView);
         }
+
+        public IActionResult Answer(string email, string answer)
+        {
+            EmailSender.answerReportMessage(email, 1, answer);
+            return RedirectToAction("Report", "Reports", new { Email = email });
+        }
     }
 }
