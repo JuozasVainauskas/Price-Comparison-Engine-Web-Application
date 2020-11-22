@@ -12,10 +12,9 @@ namespace PCE_Web.Classes
     internal class EmailSender : IEmailSenderInterface
     {
         private readonly UserOptions _userOptions;
-        public readonly IConfiguration Configuration;
-        public EmailSender(IConfiguration configuration, IOptions<UserOptions> userOptions)
+
+        public EmailSender(IOptions<UserOptions> userOptions)
         {
-            Configuration = configuration;
             _userOptions = userOptions.Value;
         }
 
