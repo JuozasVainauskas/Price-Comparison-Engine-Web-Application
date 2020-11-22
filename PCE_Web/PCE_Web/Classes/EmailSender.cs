@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.ComponentModel;
-using System.Linq.Expressions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -26,8 +20,6 @@ namespace PCE_Web.Classes
         [HttpGet]
         public async void SendEmail(string code, string email) 
         { 
-            Console.WriteLine(_userOptions.SecretMail);
-            Console.WriteLine(_userOptions.SecretPassword);
             var client = new SmtpClient()
             {
                 Host = "smtp.gmail.com",
@@ -38,13 +30,12 @@ namespace PCE_Web.Classes
                 
                 Credentials = new NetworkCredential()
                 {
-                   // UserName = 
-                     UserName = "smartshopautobot@gmail.com",
-                     Password = "adminNull0"
+                     UserName = _userOptions.SecretMail,
+                     Password = _userOptions.SecretPassword
                 }
             };
 
-            var fromEmail = new MailAddress("smartshopautobot@gmail.com", "Smart Shop");
+            var fromEmail = new MailAddress(_userOptions.SecretMail, "Smart Shop");
             var toEmail = new MailAddress(email, "Naudotojas");
             var message = new MailMessage()
             {
