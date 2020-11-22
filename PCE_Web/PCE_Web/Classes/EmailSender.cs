@@ -9,13 +9,25 @@ using System.Windows;
 using System.ComponentModel;
 using System.Linq.Expressions;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace PCE_Web.Classes
 {
-    internal class EmailSender
+    internal class EmailSender : EmailSenderInterface
     {
-        public static async void SendEmail(string code, string email) 
+        private readonly UserOptions _userOptions;
+        public readonly IConfiguration _configuration;
+        public EmailSender(IConfiguration configuration, IOptions<UserOptions> userOptions)
         {
+            _configuration = configuration;
+            _userOptions = userOptions.Value;
+        }
+        [HttpGet]
+        public async void SendEmail(string code, string email) 
+        { 
+            Console.WriteLine(_userOptions.SecretMail);
+            Console.WriteLine(_userOptions.SecretPassword);
             var client = new SmtpClient()
             {
                 Host = "smtp.gmail.com",
@@ -26,8 +38,9 @@ namespace PCE_Web.Classes
                 
                 Credentials = new NetworkCredential()
                 {
-                    UserName = "smartshopautobot@gmail.com",
-                    Password = "adminNull0"
+                   // UserName = 
+                     UserName = "smartshopautobot@gmail.com",
+                     Password = "adminNull0"
                 }
             };
 

@@ -36,8 +36,8 @@ namespace PCE_Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            ShopSecrets.Email = Configuration["SecretMail"];
-            ShopSecrets.Password = Configuration["SecretPassword"];
+            // ShopSecrets.Email = Configuration["SecretMail"];
+            //ShopSecrets.Password = Configuration["SecretPassword"];
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
             {
                 options.Cookie.HttpOnly = true;
@@ -60,7 +60,7 @@ namespace PCE_Web
 
             services.AddMvc(options => options.Filters.Add(new AuthorizeFilter()))
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
-
+            services.Configure<UserOptions>(Configuration.GetSection(UserOptions.EmailSend));
             services.AddDbContext<PCEDatabaseContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("PCEConnectionString")));
             services.AddScoped<IDatabaseManager, DatabaseManager>();
