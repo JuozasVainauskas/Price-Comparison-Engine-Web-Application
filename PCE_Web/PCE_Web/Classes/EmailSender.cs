@@ -63,7 +63,7 @@ namespace PCE_Web.Classes
 
             var fromEmail = new MailAddress("smartshopautobot@gmail.com", "Smart Shop");
             var toEmail = new MailAddress(email, "Naudotojas");
-            if (identifier == 0)
+            if (identifier == 1)
             {
                 var message = new MailMessage()
                 {
