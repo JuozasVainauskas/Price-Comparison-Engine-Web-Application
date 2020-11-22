@@ -115,7 +115,6 @@
                         <h3>Didžiausia kaina:<span id="demo2"></span></h3>
                         <input type="range" min="1" max="5000" value="5000" class="slider" id="biggestPrice" name="biggestPrice">
                         <br />
-                        @{Dictionary<string, string> flags = new Dictionary<string, string>(); }
                         @foreach (var shops in @Model.Shops)
                         {
                             <label class="checkcontainer">
@@ -127,10 +126,9 @@
 
                     </form>
                 </div>
-
                 <div class="td" id="s-cover">
                     <div class="form-actions">
-                        <button id="mvc-action-buttonn" type="submit" asp-controller="SearchSpecifications" asp-action="SuggestionsSpecifications" class="myButton" style="position: relative; left: 175px;">Išsaugoti pasirinkimus</button>
+                        <button id="mvc-action-buttonn" type="submit" asp-controller="SearchSpecifications" asp-action="SuggestionsSpecifications" class="myButton" style="position: relative; left: 175px;">Ieškoti</button>
                     </div>
                 </div>
             </div>
