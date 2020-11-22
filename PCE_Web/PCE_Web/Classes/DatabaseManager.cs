@@ -388,6 +388,16 @@ namespace PCE_Web.Classes
             return comments;
         }
 
+        public void DeleteReports(int id)
+        {
+            var result = _pceDatabaseContext.ReportsTable.SingleOrDefault(column => column.ReportsId == id);
+            if (result != null)
+            {
+                _pceDatabaseContext.ReportsTable.Remove(result);
+                _pceDatabaseContext.SaveChanges();
+            }
+        }
+
         public bool IsReported(string email)
         {
             var item = _pceDatabaseContext.ReportsTable.Where(column => column.Email == email).Select(column => new ReportsTable { Email = column.Email, Comment = column.Comment, Solved = column.Solved, Date = column.Date}).ToList();
