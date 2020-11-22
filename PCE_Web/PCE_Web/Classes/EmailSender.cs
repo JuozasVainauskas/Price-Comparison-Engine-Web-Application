@@ -5,18 +5,20 @@ using System.ComponentModel;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using PCE_Web.Models;
 
 namespace PCE_Web.Classes
 {
-    internal class EmailSender : EmailSenderInterface
+    internal class EmailSender : IEmailSenderInterface
     {
         private readonly UserOptions _userOptions;
-        public readonly IConfiguration _configuration;
+        public readonly IConfiguration Configuration;
         public EmailSender(IConfiguration configuration, IOptions<UserOptions> userOptions)
         {
-            _configuration = configuration;
+            Configuration = configuration;
             _userOptions = userOptions.Value;
         }
+
         [HttpGet]
         public async void SendEmail(string code, string email) 
         { 
@@ -48,7 +50,9 @@ namespace PCE_Web.Classes
             client.SendCompleted += ClientSendCompleted;
             await client.SendMailAsync(message);
         }
-        public static async void answerReportMessage(string email, int identifier, string messageText = "")
+
+        [HttpGet]
+        public async void AnswerReportMessage(string email, int identifier, string messageText = "")
         {
             var client = new SmtpClient()
             {
@@ -60,12 +64,12 @@ namespace PCE_Web.Classes
 
                 Credentials = new NetworkCredential()
                 {
-                    UserName = "smartshopautobot@gmail.com",
-                    Password = "adminNull0"
+                    UserName = _userOptions.SecretMail,
+                    Password = _userOptions.SecretPassword
                 }
             };
 
-            var fromEmail = new MailAddress("smartshopautobot@gmail.com", "Smart Shop");
+            var fromEmail = new MailAddress(_userOptions.SecretMail, "Smart Shop");
             var toEmail = new MailAddress(email, "Naudotojas");
             if (identifier == 1)
             {
