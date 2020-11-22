@@ -374,7 +374,9 @@ namespace PCE_Web.Classes
             var newReport = new ReportsTable()
             {
                 Email = email,
-                Comment = report
+                Comment = report,
+                Date = DateTime.UtcNow.ToString(),
+                Solved = 0
             };
             _pceDatabaseContext.ReportsTable.Add(newReport);
             _pceDatabaseContext.SaveChanges();
