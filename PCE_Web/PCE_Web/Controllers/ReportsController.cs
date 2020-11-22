@@ -53,10 +53,10 @@ namespace PCE_Web.Controllers
             }
         }
 
-        public IActionResult Mark (int id, int email)
+        public IActionResult Mark (int id)
         {
             _databaseManager.MarkAsSolved(id);
-            return RedirectToAction("Report", "Reports", new { Email = email });
+            return RedirectToAction("Admin", "Administration");
         }
     }
 }
