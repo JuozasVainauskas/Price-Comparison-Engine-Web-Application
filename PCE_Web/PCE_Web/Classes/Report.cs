@@ -17,5 +17,10 @@ namespace PCE_Web.Classes
             get;
             set;
         }
+        public string Date
+        {
+            get;
+            set;
+        }
     }
 }
