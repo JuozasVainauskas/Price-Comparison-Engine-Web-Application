@@ -20,15 +20,38 @@ namespace PCE_Web.Controllers
         }
         public IActionResult Report(string email = "")
         {
-            var comments = _databaseManager.ReadReports(email);
+            var solvedComments = _databaseManager.ReadReports(email, 1);
+            var unsolvedComments = _databaseManager.ReadReports(email, 0);
+            var allComments = solvedComments.Concat(unsolvedComments).ToList();
+
             var role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
-            var reportView = new ReportView() { Comments = comments, Role = role };
+            var reportView = new ReportView() { AllComments = allComments, UnsolvedComments = unsolvedComments, SolvedComments = solvedComments, Role = role };
             return View(reportView);
         }
 
         public IActionResult Answer(string email, string answer)
         {
             EmailSender.answerReportMessage(email, 1, answer);
+            return RedirectToAction("Report", "Reports", new { Email = email });
+        }
+
+        public IActionResult Delete (int id, string email)
+        {
+            _databaseManager.DeleteReports(id);
+
+            if(_databaseManager.ReadReports(email, 0).Any() || _databaseManager.ReadReports(email, 1).Any())
+            {
+                return RedirectToAction("Report", "Reports", new { Email = email });
+            }
+            else
+            {
+                return RedirectToAction("Admin", "Administration");
+            }
+        }
+
+        public IActionResult Mark (int id, int email)
+        {
+            _databaseManager.MarkAsSolved(id);
             return RedirectToAction("Report", "Reports", new { Email = email });
         }
     }

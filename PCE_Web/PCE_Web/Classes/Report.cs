@@ -28,5 +28,11 @@ namespace PCE_Web.Classes
             get;
             set;
         }
+
+        public int Solved
+        {
+            get;
+            set;
+        }
     }
 }
