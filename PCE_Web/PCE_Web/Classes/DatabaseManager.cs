@@ -378,9 +378,9 @@ namespace PCE_Web.Classes
             _pceDatabaseContext.SaveChanges();
         }
 
-        public List<Report> ReadReports(string email)
+        public List<Report> ReadReports(string email, int solvedID)
         {
-            var comments = _pceDatabaseContext.ReportsTable.Where(column => column.Email == email).Select(column => new Report { Comment = column.Comment, ID = column.ReportsId, Date = column.Date, Email = column.Email }).ToList();
+            var comments = _pceDatabaseContext.ReportsTable.Where(column => column.Email == email && column.Solved == solvedID).Select(column => new Report { Comment = column.Comment, ID = column.ReportsId, Date = column.Date, Email = column.Email }).ToList();
             return comments;
         }
 
@@ -405,6 +405,12 @@ namespace PCE_Web.Classes
             {
                 return false; 
             }
+        }
+
+        public void MarkAsSolved(int id)
+        {
+            _pceDatabaseContext.ReportsTable.Where(column => column.ReportsId == id && column.Solved == 0).ToList().ForEach(column => column.Solved = 1);
+            _pceDatabaseContext.SaveChanges();
         }
     }
 }

@@ -17,14 +17,25 @@
             <th>Pažymėti</th>
             <th>Ištrinti</th>
         </tr>
-        @foreach (var comment in @Model.Comments)
+        @foreach (var comment in @Model.UnsolvedComments)
         {
             <tr>
                 <td style="font-weight:bold;color:red;">@comment.ID</td>
                 <td style="font-weight:bold;color:red;">@comment.Date</td>
                 <td style="font-weight:bold;color:red;max-width:500px; word-wrap:break-word;">@comment.Comment</td>
-                <td style="width:50px"><button type="button" class="btn btn-warning">Pažymėti</button></td>
-                <td style="width:50px"><button type="button" class="btn btn-danger">Ištrinti</button></td>
+                <td style="width:50px"><button type="button" class="btn btn-warning" onclick="location.href = '@Url.Action("Mark", "Reports", new {id = comment.ID ,email = comment.Email })'">Pažymėti</button></td>
+                <td style="width:50px"><button type="button" class="btn btn-danger" onclick="location.href = '@Url.Action("Delete", "Reports", new {id = comment.ID ,email = comment.Email })'">Ištrinti</button></td>
+            </tr>
+        }
+
+        @foreach (var comment in @Model.SolvedComments)
+        {
+            <tr>
+                <td>@comment.ID</td>
+                <td>@comment.Date</td>
+                <td style="max-width:500px; word-wrap:break-word;">@comment.Comment</td>
+                <td></td>
+                <td style="width:50px"><button type="button" class="btn btn-danger" onclick="location.href = '@Url.Action("Delete", "Reports", new {id = comment.ID ,email = comment.Email })'">Ištrinti</button></td>
             </tr>
         }
 
@@ -40,13 +51,13 @@
                 </div>
                 <div class="modal-body">
 
-                    <h5 style="text-align:center">Susisiekite su vartotoju <b> @Model.Comments[0].Email </b> </h5>
+                    <h5 style="text-align:center">Susisiekite su vartotoju <b> @Model.AllComments[0].Email </b> </h5>
                     <br />
 
                     <form method="get" action="">
                         <div class="textarea">
                             <textarea name="answer" rows="5" cols="60" placeholder="Parašykite komentarą.." style="overflow:auto;resize:none"></textarea>
-                            <input type="hidden" name="email" value="@Model.Comments[0].Email" />
+                            <input type="hidden" name="email" value="@Model.AllComments[0].Email" />
                         </div>
                         <br />
 
