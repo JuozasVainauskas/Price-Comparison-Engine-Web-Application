@@ -15,15 +15,15 @@ namespace PCE_Web.Controllers
     {
         public static int IsDeletedOrSaved = 1;
         private readonly IDatabaseManager _databaseManager;
-
-        public MainWindowLoggedInController(IDatabaseManager databaseManager)
+        private readonly string[] _shops={"Avitela", "Gintarinė", "Barbora", "Rde", "BigBox", "Elektromarkt", "Pigu"};
+    public MainWindowLoggedInController(IDatabaseManager databaseManager)
         {
             _databaseManager = databaseManager;
         }
 
         public IActionResult Items(string link, string pictureUrl, string seller, string name, string price)
         {
-            if (link != null)
+        if (link != null)
             {
                 var productToDelete = new Item
                 {
@@ -58,7 +58,8 @@ namespace PCE_Web.Controllers
                 var slideshowView = new SlideshowView
                 {
                     ProductsSaved = productsSaved,
-                    Products = products
+                    Products = products,
+                    Shops = _shops
                 };
 
                 IsDeletedOrSaved = 2;
@@ -78,7 +79,8 @@ namespace PCE_Web.Controllers
                 var slideshowView = new SlideshowView
                 {
                     Products = products,
-                    ProductsSaved = productsSaved
+                    ProductsSaved = productsSaved,
+                    Shops = _shops
                 };
                 IsDeletedOrSaved = 2;
                 return View(slideshowView);
