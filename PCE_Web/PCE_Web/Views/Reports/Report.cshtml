@@ -19,16 +19,49 @@
         </tr>
         @foreach (var comment in @Model.Comments)
         {
-    <tr>
-        <td style="font-weight:bold;color:red;">@comment.ID</td>
-        <td style="font-weight:bold;color:red;">@comment.Date</td>
-        <td style="font-weight:bold;color:red;max-width:500px; word-wrap:break-word;">@comment.Comment</td>
-        <td style="width:50px"><button type="button" class="btn btn-warning">Pažymėti</button></td>
-        <td style="width:50px"><button type="button" class="btn btn-danger">Ištrinti</button></td>
-    </tr>
+            <tr>
+                <td style="font-weight:bold;color:red;">@comment.ID</td>
+                <td style="font-weight:bold;color:red;">@comment.Date</td>
+                <td style="font-weight:bold;color:red;max-width:500px; word-wrap:break-word;">@comment.Comment</td>
+                <td style="width:50px"><button type="button" class="btn btn-warning">Pažymėti</button></td>
+                <td style="width:50px"><button type="button" class="btn btn-danger">Ištrinti</button></td>
+            </tr>
         }
 
     </table>
+    <br />
+    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#answerModal">Rašyti pranešimą</button>
+
+    <div class="modal fade" id="answerModal" tabindex="-1" role="dialog" aria-labelledby="answerModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width:600px;height:700px;" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="answerrModalLabel" style="color: green" bold>Susisiekite</h2>
+                </div>
+                <div class="modal-body">
+
+                    <h5 style="text-align:center">Susisiekite su vartotoju </h5>
+                    <br />
+
+                    <form method="get" action="">
+                        <div class="textarea">
+                            <textarea name="report" rows="5" cols="60" placeholder="Parašykite komentarą.." style="overflow:auto;resize:none"></textarea>
+                        </div>
+                        <br />
+
+                        <div class="myButton">
+                            <button type="submit" asp-controller="" asp-action="">Siųsti</button>
+                        </div>
+                    </form>
+                    <br />
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn first" data-dismiss="modal" style="color: green" bold>Uždaryti</button>
+                </div>
+            </div>
+        </div>
+    </div>
 }
 else
 {
