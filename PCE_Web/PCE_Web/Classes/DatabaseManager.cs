@@ -367,15 +367,18 @@ namespace PCE_Web.Classes
 
         public void WriteReports(string email, string report)
         {
-            var newReport = new ReportsTable()
+            if (report != null)
             {
-                Email = email,
-                Comment = report,
-                Date = DateTime.UtcNow.ToString(),
-                Solved = 0
-            };
-            _pceDatabaseContext.ReportsTable.Add(newReport);
-            _pceDatabaseContext.SaveChanges();
+                var newReport = new ReportsTable()
+                {
+                    Email = email,
+                    Comment = report,
+                    Date = DateTime.UtcNow.ToString(),
+                    Solved = 0
+                };
+                _pceDatabaseContext.ReportsTable.Add(newReport);
+                _pceDatabaseContext.SaveChanges();
+            }
         }
 
         public List<Report> ReadReports(string email, int solvedID)
