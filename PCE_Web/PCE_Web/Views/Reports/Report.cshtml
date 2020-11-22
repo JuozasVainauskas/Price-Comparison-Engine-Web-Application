@@ -23,7 +23,7 @@
                 <td style="font-weight:bold;color:red;">@comment.ID</td>
                 <td style="font-weight:bold;color:red;">@comment.Date</td>
                 <td style="font-weight:bold;color:red;max-width:500px; word-wrap:break-word;">@comment.Comment</td>
-                <td style="width:50px"><button type="button" class="btn btn-warning" onclick="location.href = '@Url.Action("Mark", "Reports", new {id = comment.ID})'">Pažymėti</button></td>
+                <td style="width:50px"><button type="button" class="btn btn-warning" onclick="location.href = '@Url.Action("Mark", "Reports", new {id = comment.ID, email = comment.Email})'">Pažymėti</button></td>
                 <td style="width:50px"><button type="button" class="btn btn-danger" onclick="location.href = '@Url.Action("Delete", "Reports", new {id = comment.ID ,email = comment.Email })'">Ištrinti</button></td>
             </tr>
         }
