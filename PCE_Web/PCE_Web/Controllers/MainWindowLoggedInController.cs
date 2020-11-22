@@ -15,10 +15,13 @@ namespace PCE_Web.Controllers
     {
         public static int IsDeletedOrSaved = 1;
         private readonly IDatabaseManager _databaseManager;
+        private readonly IEmailSenderInterface _emailSender;
+        private readonly string[] _shops={"Avitela", "Gintarinė", "Barbora", "Rde", "BigBox", "Elektromarkt", "Pigu"};
 
-        public MainWindowLoggedInController(IDatabaseManager databaseManager)
+        public MainWindowLoggedInController(IDatabaseManager databaseManager, IEmailSenderInterface emailSender)
         {
             _databaseManager = databaseManager;
+            _emailSender = emailSender;
         }
 
         public IActionResult Items(string link, string pictureUrl, string seller, string name, string price)
@@ -58,7 +61,8 @@ namespace PCE_Web.Controllers
                 var slideshowView = new SlideshowView
                 {
                     ProductsSaved = productsSaved,
-                    Products = products
+                    Products = products,
+                    Shops = _shops
                 };
 
                 IsDeletedOrSaved = 2;
@@ -78,7 +82,8 @@ namespace PCE_Web.Controllers
                 var slideshowView = new SlideshowView
                 {
                     Products = products,
-                    ProductsSaved = productsSaved
+                    ProductsSaved = productsSaved,
+                    Shops = _shops
                 };
                 IsDeletedOrSaved = 2;
                 return View(slideshowView);
@@ -89,7 +94,7 @@ namespace PCE_Web.Controllers
         public IActionResult Report(string report)
         {
             _databaseManager.WriteReports(User.Identity.Name,report);
-            EmailSender.answerReportMessage(User.Identity.Name, 0);
+            _emailSender.AnswerReportMessage(User.Identity.Name, 0);
             return RedirectToAction("Items", "MainWindowLoggedIn");
         }
     }

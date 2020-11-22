@@ -14,10 +14,14 @@ namespace PCE_Web.Controllers
     public class ReportsController : Controller
     {
         private readonly IDatabaseManager _databaseManager;
-        public ReportsController(IDatabaseManager databaseManager)
+        private readonly IEmailSenderInterface _emailSender;
+
+        public ReportsController(IDatabaseManager databaseManager, IEmailSenderInterface emailSender)
         {
             _databaseManager = databaseManager;
+            _emailSender = emailSender;
         }
+
         public IActionResult Report(string email = "")
         {
             var solvedComments = _databaseManager.ReadReports(email, 1);
@@ -31,7 +35,7 @@ namespace PCE_Web.Controllers
 
         public IActionResult Answer(string email, string answer)
         {
-            EmailSender.answerReportMessage(email, 1, answer);
+            _emailSender.AnswerReportMessage(email, 1, answer);
             return RedirectToAction("Report", "Reports", new { Email = email });
         }
 

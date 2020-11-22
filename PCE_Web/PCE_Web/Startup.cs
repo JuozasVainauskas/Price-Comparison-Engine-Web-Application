@@ -1,22 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using PCE_Web.Classes;
 using PCE_Web.Models;
 using PCE_Web.Tables;
@@ -36,8 +28,6 @@ namespace PCE_Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            ShopSecrets.Email = Configuration["SecretMail"];
-            ShopSecrets.Password = Configuration["SecretPassword"];
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
             {
                 options.Cookie.HttpOnly = true;
@@ -60,24 +50,19 @@ namespace PCE_Web
 
             services.AddMvc(options => options.Filters.Add(new AuthorizeFilter()))
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
-
+            services.Configure<UserOptions>(Configuration.GetSection(UserOptions.EmailSend));
             services.AddDbContext<PCEDatabaseContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("PCEConnectionString")));
             services.AddScoped<IDatabaseManager, DatabaseManager>();
             services.AddTransient<IDatabaseManager, DatabaseManager>();
+            services.AddScoped<IEmailSenderInterface, EmailSender>();
+            services.AddTransient<IEmailSenderInterface, EmailSender>();
             services.AddHttpClient();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
+            app.UseExceptionHandler("/Home/Error");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

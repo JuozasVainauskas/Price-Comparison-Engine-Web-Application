@@ -2,6 +2,7 @@
     Layout = "~/Views/Shared/_LayoutLoggedIn.cshtml";
 }
 
+@using Microsoft.AspNetCore.Razor.Language.Intermediate
 @model SlideshowView
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -114,48 +115,16 @@
                         <h3>Didžiausia kaina:<span id="demo2"></span></h3>
                         <input type="range" min="1" max="5000" value="5000" class="slider" id="biggestPrice" name="biggestPrice">
                         <br />
+                        @{Dictionary<string, string> flags = new Dictionary<string, string>(); }
+                        @foreach (var shops in @Model.Shops)
+                        {
+                            <label class="checkcontainer">
+                                @shops
+                                <input type="checkbox" name="tags" id="categorieOne" value=@shops checked="checked">
+                                <span class="checkmark"></span>
+                            </label>
+                        }
 
-                        <label class="checkcontainer">
-                            Avitela
-                            <input type="checkbox" name="avitela" checked="checked">
-                            <span class="checkmark"></span>
-                        </label>
-
-                        <label class="checkcontainer">
-                            Gintarinė
-                            <input type="checkbox" name="gintarine" checked="checked">
-                            <span class="checkmark"></span>
-                        </label>
-
-                        <label class="checkcontainer">
-                            Barbora
-                            <input type="checkbox" name="barbora" checked="checked">
-                            <span class="checkmark"></span>
-                        </label>
-
-                        <label class="checkcontainer">
-                            RDE
-                            <input type="checkbox" name="rde" checked="checked">
-                            <span class="checkmark"></span>
-                        </label>
-
-                        <label class="checkcontainer">
-                            BigBox
-                            <input type="checkbox" name="bigbox" checked="checked">
-                            <span class="checkmark"></span>
-                        </label>
-
-                        <label class="checkcontainer">
-                            Elektromarkt
-                            <input type="checkbox" name="elektromarkt" checked="checked">
-                            <span class="checkmark"></span>
-                        </label>
-
-                        <label class="checkcontainer">
-                            Pigu
-                            <input type="checkbox" name="pigu" checked="checked">
-                            <span class="checkmark"></span>
-                        </label>
                     </form>
                 </div>
 

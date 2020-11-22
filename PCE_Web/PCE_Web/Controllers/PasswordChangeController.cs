@@ -1,22 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security.Claims;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Formatters;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.IdentityModel.Tokens;
 using PCE_Web.Classes;
-using PCE_Web.Classes.ValidationAttributes;
 using PCE_Web.Models;
 
 namespace PCE_Web.Controllers
@@ -25,9 +9,12 @@ namespace PCE_Web.Controllers
     {
         private readonly IDatabaseManager _databaseManager;
 
-        public PasswordChangeController(IDatabaseManager databaseManager)
+        private readonly IEmailSenderInterface _emailSender;
+
+        public PasswordChangeController(IDatabaseManager databaseManager, IEmailSenderInterface emailSender)
         {
             _databaseManager = databaseManager;
+            _emailSender = emailSender;
         }
 
         [AllowAnonymous]
@@ -58,7 +45,7 @@ namespace PCE_Web.Controllers
                     confirmCode = confirmCode.Remove(confirmCode.Length - 2);
                     var email = input.EmailModel.Email;
 
-                    EmailSender.SendEmail(confirmCode, "ernestas20111@gmail.com");
+                    _emailSender.SendEmail(confirmCode, email);
 
                     TempData["tempEmail"] = email;
                     TempData["tempCode"] = confirmCode;
