@@ -2,7 +2,6 @@
 using System.Net;
 using System.Net.Mail;
 using System.ComponentModel;
-using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
@@ -11,10 +10,8 @@ namespace PCE_Web.Classes
     internal class EmailSender : EmailSenderInterface
     {
         private readonly UserOptions _userOptions;
-        public readonly IConfiguration _configuration;
-        public EmailSender(IConfiguration configuration, IOptions<UserOptions> userOptions)
+        public EmailSender(IOptions<UserOptions> userOptions)
         {
-            _configuration = configuration;
             _userOptions = userOptions.Value;
         }
         [HttpGet]
