@@ -90,7 +90,7 @@ namespace PCE_Web.Classes
                     IsBodyHtml = true,
                     From = fromEmail,
                     Subject = "Atsakymas į pranešimą",
-                    Body = "Sveiki,<br>dėkojame už pranešimą, paliktą mūsų svetainėje. Jei jūs nesinaudojote mūsų paslaugomis ir nieko nepranešėte, prašome ignoruoti šį laišką. <br><img src=\"https://i.pinimg.com/originals/d4/2a/8c/d42a8c4e83f0fb3750af810be2abbb23.png\" alt =\"SmartShop\" width=\"50\" height=\"50\"><br><i>Pasirašo,<br>Smart Shop komanda.</i>"
+                    Body = "Sveiki,<br>dėkojame už pranešimą, paliktą mūsų svetainėje. Jei jūs nesinaudojote mūsų paslaugomis ir nieko nepranešėte, prašome ignoruoti šį laišką.<br><img src=\"https://i.pinimg.com/originals/d4/2a/8c/d42a8c4e83f0fb3750af810be2abbb23.png\" alt =\"SmartShop\" width=\"50\" height=\"50\"><br><i>Pasirašo,<br>Smart Shop komanda.</i>"
                 };
                 message.To.Add(toEmail);
                 client.SendCompleted += ClientSendCompleted;
