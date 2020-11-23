@@ -55,8 +55,12 @@ namespace PCE_Web.Models
 
         void WriteReports(string email, string report);
 
-        List<string> ReadReports(string email);
+        List<Report> ReadReports(string email, int solvedID);
+
+        void DeleteReports(int id);
 
         bool IsReported(string email);
+
+        void MarkAsSolved(int id);
     }
 }

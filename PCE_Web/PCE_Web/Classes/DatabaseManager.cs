@@ -367,29 +367,53 @@ namespace PCE_Web.Classes
 
         public void WriteReports(string email, string report)
         {
-            var newReport = new ReportsTable()
+            if (report != null)
             {
-                Email = email,
-                Comment = report
-            };
-            _pceDatabaseContext.ReportsTable.Add(newReport);
-            _pceDatabaseContext.SaveChanges();
+                var newReport = new ReportsTable()
+                {
+                    Email = email,
+                    Comment = report,
+                    Date = DateTime.UtcNow.ToString(),
+                    Solved = 0
+                };
+                _pceDatabaseContext.ReportsTable.Add(newReport);
+                _pceDatabaseContext.SaveChanges();
+            }
         }
 
-        public List<string> ReadReports(string email)
+        public List<Report> ReadReports(string email, int solvedID)
         {
-            var comments = _pceDatabaseContext.ReportsTable.Where(column => column.Email == email).Select(column => column.Comment).ToList();
+            var comments = _pceDatabaseContext.ReportsTable.Where(column => column.Email == email && column.Solved == solvedID).Select(column => new Report { Comment = column.Comment, ID = column.ReportsId, Date = column.Date, Email = column.Email }).ToList();
             return comments;
+        }
+
+        public void DeleteReports(int id)
+        {
+            var result = _pceDatabaseContext.ReportsTable.SingleOrDefault(column => column.ReportsId == id);
+            if (result != null)
+            {
+                _pceDatabaseContext.ReportsTable.Remove(result);
+                _pceDatabaseContext.SaveChanges();
+            }
         }
 
         public bool IsReported(string email)
         {
-            var item = _pceDatabaseContext.ReportsTable.Where(column => column.Email == email).Select(column => new ReportsTable { Email = column.Email, Comment = column.Comment }).ToList();
+            var item = _pceDatabaseContext.ReportsTable.Where(column => column.Email == email).Select(column => new ReportsTable { Email = column.Email, Comment = column.Comment, Solved = column.Solved, Date = column.Date}).ToList();
             if (item.Count > 0)
             {
                 return true;
             }
-            else return false;
+            else
+            {
+                return false; 
+            }
+        }
+
+        public void MarkAsSolved(int id)
+        {
+            _pceDatabaseContext.ReportsTable.Where(column => column.ReportsId == id && column.Solved == 0).ToList().ForEach(column => column.Solved = 1);
+            _pceDatabaseContext.SaveChanges();
         }
     }
 }

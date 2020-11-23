@@ -9,12 +9,12 @@ namespace PCE_Web.Controllers
     {
         private readonly IDatabaseManager _databaseManager;
 
-        private readonly EmailSenderInterface _emailsender;
+        private readonly IEmailSenderInterface _emailSender;
 
-        public PasswordChangeController(IDatabaseManager databaseManager, EmailSenderInterface emailSender)
+        public PasswordChangeController(IDatabaseManager databaseManager, IEmailSenderInterface emailSender)
         {
             _databaseManager = databaseManager;
-            _emailsender = emailSender;
+            _emailSender = emailSender;
         }
 
         [AllowAnonymous]
@@ -45,7 +45,7 @@ namespace PCE_Web.Controllers
                     confirmCode = confirmCode.Remove(confirmCode.Length - 2);
                     var email = input.EmailModel.Email;
 
-                    _emailsender.SendEmail(confirmCode, "ernestas20111@gmail.com");
+                    _emailSender.SendEmail(confirmCode, email);
 
                     TempData["tempEmail"] = email;
                     TempData["tempCode"] = confirmCode;

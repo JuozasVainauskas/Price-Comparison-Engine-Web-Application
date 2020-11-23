@@ -55,8 +55,8 @@ namespace PCE_Web
                 options.UseSqlServer(Configuration.GetConnectionString("PCEConnectionString")));
             services.AddScoped<IDatabaseManager, DatabaseManager>();
             services.AddTransient<IDatabaseManager, DatabaseManager>();
-            services.AddScoped<EmailSenderInterface, EmailSender>();
-            services.AddTransient<EmailSenderInterface, EmailSender>();
+            services.AddScoped<IEmailSenderInterface, EmailSender>();
+            services.AddTransient<IEmailSenderInterface, EmailSender>();
             services.AddHttpClient();
         }
 

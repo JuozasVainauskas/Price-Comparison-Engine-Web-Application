@@ -14,12 +14,12 @@ namespace PCE_Web.Controllers
     {
         private static string _confirmCode;
         private readonly IDatabaseManager _databaseManager;
-        private readonly EmailSenderInterface _emailsender;
+        private readonly IEmailSenderInterface _emailSender;
 
-        public ConfirmPasswordController(IDatabaseManager databaseManager, EmailSenderInterface emailsender)
+        public ConfirmPasswordController(IDatabaseManager databaseManager, IEmailSenderInterface emailSender)
         {
             _databaseManager = databaseManager;
-            _emailsender = emailsender;
+            _emailSender = emailSender;
         }
 
         [AllowAnonymous]
@@ -35,7 +35,7 @@ namespace PCE_Web.Controllers
             var sendingInformation=new SendingInformation();
             sendingInformation.ButtonPushed += (sender, e)=>
             {
-                _emailsender.SendEmail(e.Code, "ernestas20111@gmail.com");
+                _emailSender.SendEmail(e.Code, e.Email);
             };
             sendingInformation.Pushed(code, email);
 
