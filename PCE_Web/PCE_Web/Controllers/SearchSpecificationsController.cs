@@ -31,34 +31,12 @@ namespace PCE_Web.Controllers
 
         public async Task<IActionResult> SuggestionsSpecifications(string productName, int lowestPrice, int biggestPrice, string[] tags)
         {
-            //if (_databaseManager.ReadSearchedItems(productName).Any())
-            //{
-            //    var products = new List<Item>();
-            //    foreach (var item in _databaseManager.ReadSearchedItems(productName))
-            //    {
-            //        var price = ConvertingToDouble(item.Price);
-            //        if ((price >= lowestPrice) && (price <= biggestPrice))
-            //        {
-            //            if (tags.Contains(item.Seller))
-            //            {
-            //                products.Add(item);
-            //            }
-            //        }
-            //    }
-            //    products = SortAndInsert(products);
-            //    var suggestionsSpecificationsView = new SuggestionsSpecificationsView { Products = products };
-            //    return View(suggestionsSpecificationsView);
-            //}
-            //else
-            //{
-                var httpClient = _httpClient.CreateClient();
-                var products = new List<Item>();
-                await ReadingItemsAsync(productName, products, httpClient, lowestPrice, biggestPrice, tags);
-                products = SortAndInsert(products);
-                //_databaseManager.WriteSearchedItems(products, productName);
-                var suggestionsSpecificationsView = new SuggestionsSpecificationsView { Products = products };
-                return View(suggestionsSpecificationsView);
-            //}
+            var httpClient = _httpClient.CreateClient();
+            var products = new List<Item>();
+            await ReadingItemsAsync(productName, products, httpClient, lowestPrice, biggestPrice, tags);
+            products = SortAndInsert(products);
+            var suggestionsSpecificationsView = new SuggestionsSpecificationsView { Products = products };
+            return View(suggestionsSpecificationsView);
         }
 
         private async Task ReadingItemsAsync(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice, string[] tags)
