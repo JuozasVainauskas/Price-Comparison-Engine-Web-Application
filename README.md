@@ -6,7 +6,7 @@
 - Justas Vitkauskas
 ## About the project (key tasks)
 **Front-End**
-- [ ] Switch platform to a website
+- [x] Switch platform to a website
 - [x] Register/login forms
 - [x] Search field
 - [x] FAQ
@@ -15,11 +15,11 @@
 - [x] Slideshow
 - [x] Stars/comments under the shops
 - [x] Saving products
-- [ ] Admin panel
-- [ ] Report
+- [x] Admin panel
+- [x] Report
 
 **Back-End**
-- [ ] Switch platform to a website
+- [x] Switch platform to a website
 - [x] Gather data from online shop websites
 - [x] Compare the gathered data
 - [x] Password hashing/encryption
@@ -30,8 +30,8 @@
 - [x] Products' list cashing
 - [x] Stars/comments under the shops
 - [x] Saving products
-- [ ] Admin panel
-- [ ] Report
+- [x] Admin panel
+- [x] Report
 
 ## Initial goal
 Create a program/website/app which takes the data of the prices from different shopping websites and provides a comparison in a visual manner
