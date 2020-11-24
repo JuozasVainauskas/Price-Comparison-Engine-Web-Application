@@ -60,11 +60,18 @@ namespace PCE_Web.Controllers
         {
             if (tags.Contains("Rde"))
             {
-                var urlRde = "https://www.rde.lt/search_result/lt/word/" + productName + "/page/1";
-                Search<HtmlDocument> rdeSearch = RdeSearch;
-                WriteData<HtmlNode, Item, int> writeDataFromRde = WriteDataFromRde;
-                var rdeItems = rdeSearch(await Html(httpClient, urlRde));
-                writeDataFromRde(rdeItems, products, minPrice, maxPrice);
+                try
+                {
+                    var urlRde = "https://www.rde.lt/search_result/lt/word/" + productName + "/page/1";
+                    Search<HtmlDocument> rdeSearch = RdeSearch;
+                    WriteData<HtmlNode, Item, int> writeDataFromRde = WriteDataFromRde;
+                    var rdeItems = rdeSearch(await Html(httpClient, urlRde));
+                    writeDataFromRde(rdeItems, products, minPrice, maxPrice);
+                }
+                catch (Exception e)
+                {
+                    _databaseManager.WriteLoggedExceptions("Exception Rde: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
+                }
             }
         }
 
@@ -72,11 +79,18 @@ namespace PCE_Web.Controllers
         {
             if (tags.Contains("Barbora"))
             {
-                var urlBarbora = "https://pagrindinis.barbora.lt/paieska?q=" + productName;
-                Search<HtmlDocument> barboraSearch = BarboraSearch;
-                WriteData<HtmlNode, Item, int> writeDataFromBarbora = WriteDataFromBarbora;
-                var barboraItems = barboraSearch(await Html(httpClient, urlBarbora));
-                writeDataFromBarbora(barboraItems, products, minPrice, maxPrice);
+                try
+                {
+                    var urlBarbora = "https://pagrindinis.barbora.lt/paieska?q=" + productName;
+                    Search<HtmlDocument> barboraSearch = BarboraSearch;
+                    WriteData<HtmlNode, Item, int> writeDataFromBarbora = WriteDataFromBarbora;
+                    var barboraItems = barboraSearch(await Html(httpClient, urlBarbora));
+                    writeDataFromBarbora(barboraItems, products, minPrice, maxPrice);
+                }
+                catch (Exception e)
+                {
+                    _databaseManager.WriteLoggedExceptions("Exception Barbora: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
+                }
             }
         }
 
@@ -84,11 +98,18 @@ namespace PCE_Web.Controllers
         {
             if (tags.Contains("Avitela"))
             {
-                var urlAvitela = "https://avitela.lt/paieska/" + productName;
-                Search<HtmlDocument> avitelaSearch = AvitelaSearch;
-                WriteData<HtmlNode, Item, int> writeDataFromAvitela = WriteDataFromAvitela;
-                var avitelaItems = avitelaSearch(await Html(httpClient, urlAvitela));
-                writeDataFromAvitela(avitelaItems, products, minPrice, maxPrice);
+                try
+                {
+                    var urlAvitela = "https://avitela.lt/paieska/" + productName;
+                    Search<HtmlDocument> avitelaSearch = AvitelaSearch;
+                    WriteData<HtmlNode, Item, int> writeDataFromAvitela = WriteDataFromAvitela;
+                    var avitelaItems = avitelaSearch(await Html(httpClient, urlAvitela));
+                    writeDataFromAvitela(avitelaItems, products, minPrice, maxPrice);
+                }
+                catch (Exception e)
+                {
+                    _databaseManager.WriteLoggedExceptions("Exception Avitela: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
+                }
             }
         }
 
@@ -96,11 +117,18 @@ namespace PCE_Web.Controllers
         {
             if (tags.Contains("Pigu"))
             {
-                var urlPigu = "https://pigu.lt/lt/search?q=" + productName;
-                Search<HtmlDocument> piguSearch = PiguSearch;
-                WriteData<HtmlNode, Item, int> writeDataFromPigu = WriteDataFromPigu;
-                var piguItems = piguSearch(await Html(httpClient, urlPigu));
-                writeDataFromPigu(piguItems, products, minPrice, maxPrice);
+                try
+                {
+                    var urlPigu = "https://pigu.lt/lt/search?q=" + productName;
+                    Search<HtmlDocument> piguSearch = PiguSearch;
+                    WriteData<HtmlNode, Item, int> writeDataFromPigu = WriteDataFromPigu;
+                    var piguItems = piguSearch(await Html(httpClient, urlPigu));
+                    writeDataFromPigu(piguItems, products, minPrice, maxPrice);
+                }
+                catch (Exception e)
+                {
+                    _databaseManager.WriteLoggedExceptions("Exception Pigu: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
+                }
             }
         }
 
@@ -108,13 +136,20 @@ namespace PCE_Web.Controllers
         {
             if (tags.Contains("BigBox"))
             {
-                var urlBigBox =
-                    "https://bigbox.lt/paieska?controller=search&orderby=position&orderway=desc&ssa_submit=&search_query=" +
-                    productName;
-                Search<HtmlDocument> bigBoxSearch = BigBoxSearch;
-                WriteData<HtmlNode, Item, int> writeDataFromBigBox = WriteDataFromBigBox;
-                var bigBoxItems = bigBoxSearch(await Html(httpClient, urlBigBox));
-                writeDataFromBigBox(bigBoxItems, products, minPrice, maxPrice);
+                try
+                {
+                    var urlBigBox =
+                        "https://bigbox.lt/paieska?controller=search&orderby=position&orderway=desc&ssa_submit=&search_query=" +
+                        productName;
+                    Search<HtmlDocument> bigBoxSearch = BigBoxSearch;
+                    WriteData<HtmlNode, Item, int> writeDataFromBigBox = WriteDataFromBigBox;
+                    var bigBoxItems = bigBoxSearch(await Html(httpClient, urlBigBox));
+                    writeDataFromBigBox(bigBoxItems, products, minPrice, maxPrice);
+                }
+                catch (Exception e)
+                {
+                    _databaseManager.WriteLoggedExceptions("Exception Bigbox: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
+                }
             }
         }
 
@@ -122,12 +157,19 @@ namespace PCE_Web.Controllers
         {
             if (tags.Contains("Gintarinė"))
             {
-                var urlGintarineVaistine = "https://www.gintarine.lt/search?adv=false&cid=0&mid=0&vid=0&q=" +
-                                           productName + "%5D&sid=false&isc=true&orderBy=0";
-                Search<HtmlDocument> gintarineVaistineSearch = GintarineVaistineSearch;
-                WriteData<HtmlNode, Item, int> writeDataFromGintarineVaistine = WriteDataFromGintarineVaistine;
-                var gintarineVaistineItems = gintarineVaistineSearch(await Html(httpClient, urlGintarineVaistine));
-                writeDataFromGintarineVaistine(gintarineVaistineItems, products, minPrice, maxPrice);
+                try
+                {
+                    var urlGintarineVaistine = "https://www.gintarine.lt/search?adv=false&cid=0&mid=0&vid=0&q=" +
+                                               productName + "%5D&sid=false&isc=true&orderBy=0";
+                    Search<HtmlDocument> gintarineVaistineSearch = GintarineVaistineSearch;
+                    WriteData<HtmlNode, Item, int> writeDataFromGintarineVaistine = WriteDataFromGintarineVaistine;
+                    var gintarineVaistineItems = gintarineVaistineSearch(await Html(httpClient, urlGintarineVaistine));
+                    writeDataFromGintarineVaistine(gintarineVaistineItems, products, minPrice, maxPrice);
+                }
+                catch (Exception e)
+                {
+                    _databaseManager.WriteLoggedExceptions("Exception Gitarine Vaistine: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
+                }
             }
         }
 
@@ -135,41 +177,48 @@ namespace PCE_Web.Controllers
         {
             if (tags.Contains("Elektromarkt"))
             {
-                var urlElektromarkt = "https://elektromarkt.lt/paieska/" + productName;
-                Search<HtmlDocument> elektromarktSearch = ElektromarktSearch;
-                WriteData<HtmlNode, Item, int> writeDataFromElektromarkt = WriteDataFromElektromarkt;
-                var elektromarktItems = elektromarktSearch(await Html(httpClient, urlElektromarkt));
-                writeDataFromElektromarkt(elektromarktItems, products, minPrice, maxPrice);
+                try
+                {
+                    var urlElektromarkt = "https://elektromarkt.lt/paieska/" + productName;
+                    Search<HtmlDocument> elektromarktSearch = ElektromarktSearch;
+                    WriteData<HtmlNode, Item, int> writeDataFromElektromarkt = WriteDataFromElektromarkt;
+                    var elektromarktItems = elektromarktSearch(await Html(httpClient, urlElektromarkt));
+                    writeDataFromElektromarkt(elektromarktItems, products, minPrice, maxPrice);
+                }
+                catch (Exception e)
+                {
+                    _databaseManager.WriteLoggedExceptions("Exception Elektromarkt: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
+                }
             }
         }
 
         private static async Task<HtmlDocument> Html(HttpClient httpClient, string urlget)
         {
-            try
-            {
                 var url = urlget;
                 var html = await httpClient.GetStringAsync(url);
                 var htmlDocument = new HtmlDocument();
                 htmlDocument.LoadHtml(html);
                 return htmlDocument;
-            }
-            catch
-            {
-                return null;
-            }
         }
         private static List<HtmlNode> RdeSearch(HtmlDocument htmlDocument)
         {
             if (htmlDocument != null)
             {
-                var productsHtml = htmlDocument.DocumentNode.Descendants("div")
-                    .Where(node => node.GetAttributeValue("id", "")
-                        .Equals("body_div")).ToList();
+                try
+                {
+                    var productsHtml = htmlDocument.DocumentNode.Descendants("div")
+                        .Where(node => node.GetAttributeValue("id", "")
+                            .Equals("body_div")).ToList();
 
-                var productListItems = productsHtml[0].Descendants("div")
-                    .Where(node => node.GetAttributeValue("class", "")
-                        .Contains("product_box_div")).ToList();
-                return productListItems;
+                    var productListItems = productsHtml[0].Descendants("div")
+                        .Where(node => node.GetAttributeValue("class", "")
+                            .Contains("product_box_div")).ToList();
+                    return productListItems;
+                }
+                catch
+                {
+                    return null;
+                }
             }
 
             return null;
