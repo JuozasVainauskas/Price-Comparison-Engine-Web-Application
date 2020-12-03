@@ -20,6 +20,7 @@ namespace PCE_Web.Controllers
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
         private readonly IHttpClientFactory _httpClient;
         private readonly IDatabaseManager _databaseManager;
+        HttpClient hc=new HttpClient();
         public SearchController(IHttpClientFactory httpClient, IDatabaseManager databaseManager)
         {
             _httpClient = httpClient;
@@ -27,8 +28,9 @@ namespace PCE_Web.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> Suggestions(string productName)
+        public ActionResult Suggestions(string productName)
         {
+            /*
             if (_databaseManager.ReadSearchedItems(productName).Any())
             {
                 var products = new List<Item>();
@@ -49,8 +51,53 @@ namespace PCE_Web.Controllers
                 var suggestionsView = new SuggestionsView {Products = products};
                 return View(suggestionsView);
             }
-        }
+            */
 
+            /*
+            List<Item> list=new List<Item>();
+            hc.BaseAddress=new Uri("https://localhost:5001/Api/SearchWebService/GetData");
+            var consume = hc.GetAsync("GetData");
+            consume.Wait();
+            var test = consume.Result;
+            if (test.IsSuccessStatusCode)
+            {
+                var display = test.Content.ReadAsAsync<List<Item>>();
+                list = display.Result;
+            }
+            */
+
+            var products = GetProductsFromAPI();
+            var suggestionsView = new SuggestionsView { Products = products };
+
+            return View(suggestionsView);
+        }
+        
+        private List<Item> GetProductsFromAPI()
+        {
+            try
+            {
+                var resultList=new List<Item>();
+                var client=new HttpClient();
+                var getDataTask = client.GetAsync("https://localhost:44319/api/Products").
+                    ContinueWith(response =>
+                    {
+                        var result = response.Result;
+                        if (result.StatusCode == System.Net.HttpStatusCode.OK)
+                        {
+                            var readResult = result.Content.ReadAsAsync<List<Item>>();
+                            readResult.Wait();
+                            resultList = readResult.Result;
+                        }
+                    });
+                getDataTask.Wait();
+                return resultList;
+            }
+            catch (Exception )
+            {
+                Console.WriteLine();
+                throw;
+            }
+        }
         private async Task ReadingItemsAsync(string productName,List<Item> products,HttpClient httpClient)
         {
             var gettingRde = await Task.Factory.StartNew(() => gettingItemsFromRde(productName, products, httpClient));

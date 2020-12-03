@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PCE_Web", "PCE_Web\PCE_Web.
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "PCEDatabase", "PCEDatabase\PCEDatabase.sqlproj", "{5CAAF66B-E4A4-4A2E-BACF-5C1F570D0CCD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WEBSearchAPI", "WEBSearchAPI\WEBSearchAPI.csproj", "{540D25B5-7D04-4798-8D4D-9A3944352C9D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,18 @@ Global
 		{5CAAF66B-E4A4-4A2E-BACF-5C1F570D0CCD}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{5CAAF66B-E4A4-4A2E-BACF-5C1F570D0CCD}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{5CAAF66B-E4A4-4A2E-BACF-5C1F570D0CCD}.Release|iPhoneSimulator.Deploy.0 = Release|Any CPU
+		{540D25B5-7D04-4798-8D4D-9A3944352C9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{540D25B5-7D04-4798-8D4D-9A3944352C9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{540D25B5-7D04-4798-8D4D-9A3944352C9D}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{540D25B5-7D04-4798-8D4D-9A3944352C9D}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{540D25B5-7D04-4798-8D4D-9A3944352C9D}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{540D25B5-7D04-4798-8D4D-9A3944352C9D}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{540D25B5-7D04-4798-8D4D-9A3944352C9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{540D25B5-7D04-4798-8D4D-9A3944352C9D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{540D25B5-7D04-4798-8D4D-9A3944352C9D}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{540D25B5-7D04-4798-8D4D-9A3944352C9D}.Release|iPhone.Build.0 = Release|Any CPU
+		{540D25B5-7D04-4798-8D4D-9A3944352C9D}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{540D25B5-7D04-4798-8D4D-9A3944352C9D}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
