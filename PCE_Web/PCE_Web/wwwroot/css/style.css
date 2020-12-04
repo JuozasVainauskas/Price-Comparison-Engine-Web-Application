@@ -88,7 +88,7 @@ ul.navbar-nav { font-size: 16px; color: #fff; }
 
 .navbar-brand {
 	background: url(../img/logo.png) left center no-repeat;
-    background-size: 31px 31px;
+	width: 100px;
 	text-indent: -99999px;
 }
 .navbar>.container .navbar-brand { margin-left: 0; }
