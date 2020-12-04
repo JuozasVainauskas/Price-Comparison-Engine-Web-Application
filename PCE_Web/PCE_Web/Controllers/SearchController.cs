@@ -52,19 +52,6 @@ namespace PCE_Web.Controllers
             }
             */
 
-            /*
-            List<Item> list=new List<Item>();
-            hc.BaseAddress=new Uri("https://localhost:5001/Api/SearchWebService/GetData");
-            var consume = hc.GetAsync("GetData");
-            consume.Wait();
-            var test = consume.Result;
-            if (test.IsSuccessStatusCode)
-            {
-                var display = test.Content.ReadAsAsync<List<Item>>();
-                list = display.Result;
-            }
-            */
-
             var products = GetProductsFromAPI();
             var suggestionsView = new SuggestionsView { Products = products };
 
