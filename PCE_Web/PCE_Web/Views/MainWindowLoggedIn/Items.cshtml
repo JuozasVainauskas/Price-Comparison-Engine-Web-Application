@@ -64,7 +64,7 @@
             </td>
             <td>@productSaved.Price</td>
             <td>
-                <button id="mvc-action-button" class="myButton" onclick="location.href = '@Url.Action("Items", "MainWindowLoggedIn", new {link = productSaved.Link, pictureUrl = productSaved.Picture, seller = productSaved.Seller, name = productSaved.Name, price = productSaved.Price})'">Ištrinti</button>
+               <div style="max-width:100%; height:auto; width:auto;"><button id="mvc-action-button" class="myButton" onclick="location.href = '@Url.Action("Items", "MainWindowLoggedIn", new {link = productSaved.Link, pictureUrl = productSaved.Picture, seller = productSaved.Seller, name = productSaved.Name, price = productSaved.Price})'"><i class="fa fa-eraser"></i></button></div>
             </td>
         </tr>
     }

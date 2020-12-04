@@ -5,6 +5,7 @@
 @model AdminView
 
 <link rel="stylesheet" href="~/css/styleForAdminView.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 @if (Model.Role == "Admin")
 {
@@ -21,21 +22,21 @@
         </div>
     }
     <br>
-    <h1>Visi registruoti svetainės nariai</h1>
+    <h1>Svetainės nariai</h1>
     <br>
-    <table id="items">
+    <table id="items" style="width:50%;">
         <tr>
             <th>Email</th>
             <th>Rolė</th>
-            <th>Pranešimai</th>
+            <th></th>
         </tr>
         @foreach (var user in @Model.ReportedUsers)
         {
     <tr>
         <td style="font-weight:bold;color:red;">@user.Email</td>
         <td style="font-weight:bold;color:red;">@user.Role</td>
-        <td style="width:50px;">
-            <button id="mvc-action-button" class="myButton" onclick="location.href = '@Url.Action("Report", "Reports", new { Email = user.Email })'">Peržiūrėti</button>
+        <td align="center">
+            <button type="button" class="btn btn-success" id="mvc-action-button" onclick="location.href = '@Url.Action("Report", "Reports", new { Email = user.Email })'"><i class="fa fa-envelope"></i></button>
         </td>
     </tr>
         }
@@ -74,7 +75,7 @@
     </form>
 
     <h2>Įvykusios klaidos:</h2>
-    <table id="items">
+    <table id="items" style="width:50%;">
         <tr>
             <th>Data</th>
             <th>Žinutė</th>
