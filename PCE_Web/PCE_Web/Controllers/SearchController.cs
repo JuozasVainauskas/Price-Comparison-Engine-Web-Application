@@ -20,7 +20,6 @@ namespace PCE_Web.Controllers
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
         private readonly IHttpClientFactory _httpClient;
         private readonly IDatabaseManager _databaseManager;
-        HttpClient hc=new HttpClient();
         public SearchController(IHttpClientFactory httpClient, IDatabaseManager databaseManager)
         {
             _httpClient = httpClient;
@@ -74,10 +73,15 @@ namespace PCE_Web.Controllers
         
         private List<Item> GetProductsFromAPI()
         {
+            var clientHandler = new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true
+            };
+            var client = new HttpClient(clientHandler);
             try
             {
                 var resultList=new List<Item>();
-                var client=new HttpClient();
+                //var client=new HttpClient();
                 var getDataTask = client.GetAsync("https://localhost:44319/api/Products").
                     ContinueWith(response =>
                     {
@@ -98,6 +102,7 @@ namespace PCE_Web.Controllers
                 throw;
             }
         }
+
         private async Task ReadingItemsAsync(string productName,List<Item> products,HttpClient httpClient)
         {
             var gettingRde = await Task.Factory.StartNew(() => gettingItemsFromRde(productName, products, httpClient));
