@@ -45,7 +45,8 @@
 <br>
 <h1>Iš viso išsaugotų prekių: @Model.ProductsSaved.Count</h1>
 <br>
-<table id="items">
+<div class="table-responsive">
+<table id="items" overflow="Scroll">
     <tr>
         <th>Nuotrauka</th>
         <th>Prekė</th>
@@ -55,7 +56,7 @@
     @foreach (var productSaved in @Model.ProductsSaved)
     {
         <tr>
-            <td><a href="@productSaved.Link"><img class="image" alt="product.jpg" src="@productSaved.Picture"></a></td>
+            <td><a href="@productSaved.Link"><img class="image" alt="product.jpg" src="@productSaved.Picture" style="max-width:100%; height:auto; width:auto;"></a></td>
             <td>
                 <button id="mvc-action-button" class="link" name="particularItem" onclick="location.href = '@Url.Action("ParticularItemLoggedIn", "ParticularItemLoggedIn", new { particularItem = productSaved.Name })'">
                     @productSaved.Name
@@ -68,6 +69,7 @@
         </tr>
     }
 </table>
+</div>
 <br />
 <br />
 <!-- Footer -->
