@@ -42,23 +42,15 @@ namespace PCE_Web.Controllers
             }
             else
             {
-                var httpClient = _httpClient.CreateClient();
-                var products = new List<Item>();
-                await ReadingItemsAsync(productName, products, httpClient);
-                products = SortAndInsert(products);
-                _databaseManager.WriteSearchedItems(products, productName);
-                var suggestionsView = new SuggestionsView {Products = products};
-                return View(suggestionsView);
-            }
             */
-
-            var products = GetProductsFromAPI();
-            var suggestionsView = new SuggestionsView { Products = products };
-
-            return View(suggestionsView);
+                var products = GetProductsFromAPI(productName);
+                _databaseManager.WriteSearchedItems(products, productName);
+                var suggestionsView = new SuggestionsView { Products = products };
+                return View(suggestionsView);
+            //}
         }
         
-        private List<Item> GetProductsFromAPI()
+        private List<Item> GetProductsFromAPI(string productName)
         {
             var clientHandler = new HttpClientHandler
             {
@@ -69,8 +61,8 @@ namespace PCE_Web.Controllers
             {
                 var resultList=new List<Item>();
                 //var client=new HttpClient();
-                var getDataTask = client.GetAsync("https://localhost:44319/api/Products").
-                    ContinueWith(response =>
+                var getDataTask = client.GetAsync("https://localhost:44320/api/Products/"+productName).
+                      ContinueWith(response =>
                     {
                         var result = response.Result;
                         if (result.StatusCode == System.Net.HttpStatusCode.OK)

@@ -10,7 +10,7 @@ using WEBSearchAPI.DTO;
 
 namespace WEBSearchAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/{productName}")]
     [ApiController]
     public class ProductsController : ControllerBase
     {
@@ -18,35 +18,32 @@ namespace WEBSearchAPI.Controllers
         public static int SoldOut;
         public delegate void WriteData<THtmlNode, TItem>(List<THtmlNode> productListItems, List<TItem> products);
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
-        private readonly IHttpClientFactory _httpClient;
-        //private readonly IDatabaseManager _databaseManager;
-        List<Item> products = new List<Item>();
-
-        public ProductsController()
+        public async Task<IEnumerable<Item>> Get(string productName)
         {
-            GetSampleProducts();
-        }
-
-        public IEnumerable<Item> Get()
-        {
+            
+            var httpClient=new HttpClient();
+            var products = new List<Item>();
+            await ReadingItemsAsync(productName, products, httpClient);
+            products = SortAndInsert(products);
             return products;
-        }
 
-        private void GetSampleProducts()
-        {
-            for (int i = 0; i < 10; i++)
+            //Testavimo duomenys
+            /*
+            var products = new List<Item>();
+            Console.WriteLine("test");
+            Console.WriteLine(productName);
+            Console.WriteLine("----------------");
+            var band = new Item
             {
-                var band = new Item
-                {
-                    Picture = "a",
-                    Seller = "a",
-                    PriceDouble = 2,
-                    Price = "a",
-                    Name = "a",
-                    Link = "aaa"
-                };
-                products.Add(band);
-            }
+                Picture = "aEWQEWQ",
+                Seller = "aQWE",
+                PriceDouble = 2,
+                Price = "aEWQEQWEQ",
+                Name = productName,
+                Link = "QWEQWEQEWQEQWEQ"
+            };
+            products.Add(band);
+            */
         }
 
         private async Task ReadingItemsAsync(string productName, List<Item> products, HttpClient httpClient)
