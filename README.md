@@ -6,6 +6,7 @@
 - Justas Vitkauskas
 ## About the project (key tasks)
 **Front-End**
+- [ ] Switch platform to an app
 - [x] Switch platform to a website
 - [x] Register/login forms
 - [x] Search field
@@ -19,6 +20,7 @@
 - [x] Report
 
 **Back-End**
+- [ ] Switch platform to an app
 - [x] Switch platform to a website
 - [x] Gather data from online shop websites
 - [x] Compare the gathered data
