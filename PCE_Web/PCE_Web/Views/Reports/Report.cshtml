@@ -9,13 +9,13 @@
     <br>
     <h1>Pranešimai</h1>
     <br>
-    <table id="items">
+    <table id="items" style="width:50%;padding-top:10px;">
         <tr>
             <th>ID</th>
             <th>Data</th>
             <th>Pranešimas</th>
-            <th>Pažymėti</th>
-            <th>Ištrinti</th>
+            <th></th>
+            <th><button type="button" class="btn btn-warning" data-toggle="modal" data-target="#answerModal"><i class="fa fa-pencil"></i></button></th>
         </tr>
         @foreach (var comment in @Model.UnsolvedComments)
         {
@@ -23,8 +23,8 @@
                 <td style="font-weight:bold;color:red;">@comment.ID</td>
                 <td style="font-weight:bold;color:red;">@comment.Date</td>
                 <td style="font-weight:bold;color:red;max-width:500px; word-wrap:break-word;">@comment.Comment</td>
-                <td style="width:50px"><button type="button" class="btn btn-warning" onclick="location.href = '@Url.Action("Mark", "Reports", new {id = comment.ID, email = comment.Email})'">Pažymėti</button></td>
-                <td style="width:50px"><button type="button" class="btn btn-danger" onclick="location.href = '@Url.Action("Delete", "Reports", new {id = comment.ID ,email = comment.Email })'">Ištrinti</button></td>
+                <td align="center" style="width:50px;"><button type="button" class="btn btn-warning" onclick="location.href = '@Url.Action("Mark", "Reports", new {id = comment.ID, email = comment.Email})'"><i class="fa fa-search"></i></button></td>
+                <td align="center" style="width:50px;"><button type="button" class="btn btn-danger" onclick="location.href = '@Url.Action("Delete", "Reports", new {id = comment.ID ,email = comment.Email })'"><i class="fa fa-eraser"></i></button></td>
             </tr>
         }
 
@@ -35,14 +35,11 @@
                 <td>@comment.Date</td>
                 <td style="max-width:500px; word-wrap:break-word;">@comment.Comment</td>
                 <td></td>
-                <td style="width:50px"><button type="button" class="btn btn-danger" onclick="location.href = '@Url.Action("Delete", "Reports", new {id = comment.ID ,email = comment.Email })'">Ištrinti</button></td>
+                <td align="center" style="width:50px"><button type="button" class="btn btn-danger" onclick="location.href = '@Url.Action("Delete", "Reports", new {id = comment.ID ,email = comment.Email })'"><i class="fa fa-eraser"></i></button></td>
             </tr>
         }
 
     </table>
-    <br />
-    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#answerModal">Rašyti pranešimą</button>
-
     <div class="modal fade" id="answerModal" tabindex="-1" role="dialog" aria-labelledby="answerModalLabel" aria-hidden="true">
         <div class="modal-dialog" style="width:600px;height:700px;" role="document">
             <div class="modal-content">
