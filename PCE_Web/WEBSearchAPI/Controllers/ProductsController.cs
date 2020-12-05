@@ -26,24 +26,6 @@ namespace WEBSearchAPI.Controllers
             await ReadingItemsAsync(productName, products, httpClient);
             products = SortAndInsert(products);
             return products;
-
-            //Testavimo duomenys
-            /*
-            var products = new List<Item>();
-            Console.WriteLine("test");
-            Console.WriteLine(productName);
-            Console.WriteLine("----------------");
-            var band = new Item
-            {
-                Picture = "aEWQEWQ",
-                Seller = "aQWE",
-                PriceDouble = 2,
-                Price = "aEWQEQWEQ",
-                Name = productName,
-                Link = "QWEQWEQEWQEQWEQ"
-            };
-            products.Add(band);
-            */
         }
 
         private async Task ReadingItemsAsync(string productName, List<Item> products, HttpClient httpClient)
