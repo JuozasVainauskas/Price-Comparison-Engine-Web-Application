@@ -9,93 +9,107 @@
 
 @if (Model.Role == "Admin")
 {
-    @if (!ViewBag.MyMessage.Equals(""))
-    {
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $(".message-box").show();
-            });
-        </script>
-        <div id="alertBox" class="alert warning">
-            <span class="closebtn" onclick="this.parentElement.style.display = 'none';">&times;</span>
-            @ViewBag.MyMessage
-        </div>
-    }
-    <br>
-    <h1>Svetainės nariai</h1>
-    <br>
-    <table id="items" style="width:50%;">
-        <tr>
-            <th>Email</th>
-            <th>Rolė</th>
-            <th></th>
-        </tr>
-        @foreach (var user in @Model.ReportedUsers)
+<body style="background: #d2f3d9;">
+    <div style="background:white; width:95%; margin-left:auto;margin-right:auto;">
+        @if (!ViewBag.MyMessage.Equals(""))
         {
-    <tr>
-        <td style="font-weight:bold;color:red;">@user.Email</td>
-        <td style="font-weight:bold;color:red;">@user.Role</td>
-        <td align="center">
-            <button type="button" class="btn btn-success" id="mvc-action-button" onclick="location.href = '@Url.Action("Report", "Reports", new { Email = user.Email })'"><i class="fa fa-envelope"></i></button>
-        </td>
-    </tr>
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $(".message-box").show();
+                });
+            </script>
+            <div id="alertBox" class="alert warning">
+                <span class="closebtn" onclick="this.parentElement.style.display = 'none';">&times;</span>
+                @ViewBag.MyMessage
+            </div>
         }
-
-        @foreach (var user in @Model.Users)
-        {
+        <br>
+        <h1>Svetainės nariai</h1>
+        <br>
+        <table id="items" style="width:50%;">
             <tr>
-                <td>@user.Email</td>
-                <td>@user.Role</td>
-                <td></td>
+                <th>Email</th>
+                <th>Rolė</th>
+                <th></th>
             </tr>
-        }
-    </table>
+            @foreach (var user in @Model.ReportedUsers)
+            {
+                <tr>
+                    <td style="font-weight:bold;color:red;">@user.Email</td>
+                    <td style="font-weight:bold;color:red;">@user.Role</td>
+                    <td align="center">
+                        <button type="button" class="btn btn-success" id="mvc-action-button" onclick="location.href = '@Url.Action("Report", "Reports", new { Email = user.Email })'"><i class="fa fa-envelope"></i></button>
+                    </td>
+                </tr>
+            }
 
-    <h3>Sukurti vartotoją:</h3>
-    <form class="styledInput" method="get" action="@Url.Action("Add", "Administration")" style="margin:auto;max-width:300px">
-        <input class="styledInput" type="text" placeholder="El.Paštas..." name="email" style="margin-bottom:5px;">
-        <input class="styledInput" type="text" placeholder="Slaptažodis..." name="password">
-        <button type="submit" onclick="alertUser()"><i class="fa fa-check"></i></button>
-    </form>
-    <br />
-    <h3>Ištrinti vartotoją:</h3>
-    <form class="styledInput" method="get" action="@Url.Action("Remove", "Administration")" style="margin:auto;max-width:300px">
-        <input class="styledInput" type="text" placeholder="El.Paštas..." name="email">
-        <button type="submit" onclick="alertUser()"><i class="fa fa-check"></i></button>
-    </form>
+            @foreach (var user in @Model.Users)
+            {
+                <tr>
+                    <td>@user.Email</td>
+                    <td>@user.Role</td>
+                    <td></td>
+                </tr>
+            }
+        </table>
 
-    <h3>Suteikti vartotojui rolę:</h3>
-    <form class="styledInput" method="get" action="@Url.Action("Set", "Administration")" style="margin:auto;max-width:300px">
-        <select id="shopIdSelect" name="roleID" style="margin-bottom:5px;">
-            <option value="0">Vartotojas</option>
-            <option value="1">Administratorius</option>
-        </select>
-        <input class="styledInput" type="text" placeholder="El.Paštas..." name="email">
-        <button type="submit" onclick="alertUser()"><i class="fa fa-check"></i></button>
-    </form>
+        <h3>Sukurti vartotoją:</h3>
+        <form class="styledInput" method="get" action="@Url.Action("Add", "Administration")" style="margin:auto;max-width:300px">
+            <input class="styledInput" type="text" placeholder="El.Paštas..." name="email" style="margin-bottom:5px;">
+            <input class="styledInput" type="text" placeholder="Slaptažodis..." name="password">
+            <button type="submit" onclick="alertUser()"><i class="fa fa-check"></i></button>
+        </form>
+        <br />
+        <h3>Ištrinti vartotoją:</h3>
+        <form class="styledInput" method="get" action="@Url.Action("Remove", "Administration")" style="margin:auto;max-width:300px">
+            <input class="styledInput" type="text" placeholder="El.Paštas..." name="email">
+            <button type="submit" onclick="alertUser()"><i class="fa fa-check"></i></button>
+        </form>
 
-    <h2>Įvykusios klaidos:</h2>
-    <table id="items" style="width:50%;">
-        <tr>
-            <th>Data</th>
-            <th>Žinutė</th>
-            <th>Šaltinis</th>
-            <th>Steko šaltinis</th>
-            <th>Klaida sutvarkyta, ištrinti</th>
-        </tr>
-        @foreach (var exception in @Model.Exceptions)
-        {
-    <tr>
-        <td>@exception.Date</td>
-        <td>@exception.Message</td>
-        <td>@exception.Source</td>
-        <td>@exception.StackTrace</td>
-        <td>
-            <button id="mvc-action-button" class="myButton" onclick="location.href = '@Url.Action("Delete", "Administration", new { id = exception.Id})'">Ištrinti</button>
-        </td>
-    </tr>
-        }
-    </table>
+        <h3>Suteikti vartotojui rolę:</h3>
+        <form class="styledInput" method="get" action="@Url.Action("Set", "Administration")" style="margin:auto;max-width:300px">
+            <select id="shopIdSelect" name="roleID" style="margin-bottom:5px;">
+                <option value="0">Vartotojas</option>
+                <option value="1">Administratorius</option>
+            </select>
+            <input class="styledInput" type="text" placeholder="El.Paštas..." name="email">
+            <button type="submit" onclick="alertUser()"><i class="fa fa-check"></i></button>
+        </form>
+
+        <h2>Įvykusios klaidos:</h2>
+        <table id="items" style="width:50%;">
+            <tr>
+                <th>Data</th>
+                <th>Žinutė</th>
+                <th>Šaltinis</th>
+                <th>Steko šaltinis</th>
+                <th>Ištrinti</th>
+            </tr>
+            @foreach (var exception in @Model.Exceptions)
+            {
+                <tr>
+                    <td>@exception.Date</td>
+                    <td>@exception.Message</td>
+                    <td>@exception.Source</td>
+                    <td>@exception.StackTrace</td>
+                    <td>
+                        <button id="mvc-action-button" class="myButton" onclick="location.href = '@Url.Action("Delete", "Administration", new { id = exception.Id})'">Ištrinti</button>
+                    </td>
+                </tr>
+            }
+        </table>
+        <br />
+    </div>
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 footer-copyright">
+                    &copy; SmartShop.LT, 2020.
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
 }
 else
 {

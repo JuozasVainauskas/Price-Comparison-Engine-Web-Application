@@ -9,6 +9,7 @@
 
 <link rel="stylesheet" href="~/css/Loading.css">
 
+<body>
     <!-- Top content -->
     <div class="top-content">
         <div class="container">
@@ -29,18 +30,18 @@
     </div>
 
     <!-- Paieškos mygtukas -->
-<div class="search-button">
-    <form method="get" action="">
-        <div class="tb">
-            <input type="text" name="ProductName" placeholder="Ieškokite..">
-            <div class="td" id="s-cover">
-                <input id="mvc-action-button" type="submit" asp-area="" asp-controller="Search" asp-action="Suggestions" style="position: absolute; left: -9999px" />
+    <div class="search-button">
+        <form method="get" action="">
+            <div class="tb">
+                <input type="text" name="ProductName" placeholder="Ieškokite..">
+                <div class="td" id="s-cover">
+                    <input id="mvc-action-button" type="submit" asp-area="" asp-controller="Search" asp-action="Suggestions" style="position: absolute; left: -9999px" />
+                </div>
             </div>
-        </div>
-    </form>
-</div>
+        </form>
+    </div>
 
-<!-- Features -->
+    <!-- Features -->
     <div class="features-container section-container">
         <div class="container">
             <div class="row">
@@ -125,22 +126,23 @@
         </div>
 
     </div>
+</body>
 
-    <!-- Javascript -->
-    
-    <script src="~/js/jquery-1.11.1.min.js"></script>
-    <script src="~/bootstrap/js/bootstrap.min.js"></script>
-    <script src="~/js/jquery.backstretch.min.js"></script>
-    <script src="~/js/wow.min.js"></script>
-    <script src="~/js/scripts.js"></script>
+<!-- Javascript -->
 
-    <script>
-        document.getElementById('mvc-action-button')
-            .addEventListener('click', function (e) {
-                document.getElementById('overlay').style.display = 'flex';
-            });
-    </script>
+<script src="~/js/jquery-1.11.1.min.js"></script>
+<script src="~/bootstrap/js/bootstrap.min.js"></script>
+<script src="~/js/jquery.backstretch.min.js"></script>
+<script src="~/js/wow.min.js"></script>
+<script src="~/js/scripts.js"></script>
 
-    <!--[if lt IE 10]>
-        <script src="assets/js/placeholder.js"></script>
-    <![endif]-->
+<script>
+    document.getElementById('mvc-action-button')
+        .addEventListener('click', function (e) {
+            document.getElementById('overlay').style.display = 'flex';
+        });
+</script>
+
+<!--[if lt IE 10]>
+    <script src="assets/js/placeholder.js"></script>
+<![endif]-->
