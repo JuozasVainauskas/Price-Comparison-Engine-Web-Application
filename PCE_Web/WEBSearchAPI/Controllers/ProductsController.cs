@@ -20,7 +20,6 @@ namespace WEBSearchAPI.Controllers
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
         public async Task<IEnumerable<Item>> Get(string productName)
         {
-            
             var httpClient=new HttpClient();
             var products = new List<Item>();
             await ReadingItemsAsync(productName, products, httpClient);
@@ -30,19 +29,19 @@ namespace WEBSearchAPI.Controllers
 
         private async Task ReadingItemsAsync(string productName, List<Item> products, HttpClient httpClient)
         {
-            var gettingRde = await Task.Factory.StartNew(() => gettingItemsFromRde(productName, products, httpClient));
+            var gettingRde = await Task.Factory.StartNew(() => GettingItemsFromRde(productName, products, httpClient));
             var gettingBarbora =
-                await Task.Factory.StartNew(() => gettingItemsFromBarbora(productName, products, httpClient));
+                await Task.Factory.StartNew(() => GettingItemsFromBarbora(productName, products, httpClient));
             var gettingAvitela =
-                await Task.Factory.StartNew(() => gettingItemsFromAvitela(productName, products, httpClient));
+                await Task.Factory.StartNew(() => GettingItemsFromAvitela(productName, products, httpClient));
             var gettingPigu =
-                await Task.Factory.StartNew(() => gettingItemsFromPigu(productName, products, httpClient));
+                await Task.Factory.StartNew(() => GettingItemsFromPigu(productName, products, httpClient));
             var gettingGintarine = await Task.Factory.StartNew(() =>
-                gettingItemsFromGintarineVaistine(productName, products, httpClient));
+                GettingItemsFromGintarineVaistine(productName, products, httpClient));
             var gettingElektromarkt =
-                await Task.Factory.StartNew(() => gettingItemsFromElektromarkt(productName, products, httpClient));
+                await Task.Factory.StartNew(() => GettingItemsFromElektromarkt(productName, products, httpClient));
             var gettingBigBox =
-                await Task.Factory.StartNew(() => gettingItemsFromBigBox(productName, products, httpClient));
+                await Task.Factory.StartNew(() => GettingItemsFromBigBox(productName, products, httpClient));
             var taskList = new List<Task>
             {
                 gettingRde, gettingBarbora, gettingAvitela, gettingPigu, gettingGintarine, gettingElektromarkt,
@@ -51,141 +50,67 @@ namespace WEBSearchAPI.Controllers
             Task.WaitAll(taskList.ToArray());
         }
 
-        private async Task gettingItemsFromRde(string productName, List<Item> products, HttpClient httpClient)
+        private async Task GettingItemsFromRde(string productName, List<Item> products, HttpClient httpClient)
         {
-            //try
-            //{
-                var urlRde = "https://www.rde.lt/search_result/lt/word/" + productName + "/page/1";
+            var urlRde = "https://www.rde.lt/search_result/lt/word/" + productName + "/page/1";
                 Search<HtmlDocument> rdeSearch = RdeSearch;
                 WriteData<HtmlNode, Item> writeDataFromRde = WriteDataFromRde;
                 var rdeItems = rdeSearch(await Html(httpClient, urlRde));
                 writeDataFromRde(rdeItems, products);
-           // }
-            /*
-            catch (Exception e)
-            {
-                _databaseManager.WriteLoggedExceptions("Exception rde: " + e.Message, e.Source, e.StackTrace,
-                    DateTime.UtcNow.ToString());
-            }
-            */
         }
 
-        private async Task gettingItemsFromBarbora(string productName, List<Item> products, HttpClient httpClient)
+        private async Task GettingItemsFromBarbora(string productName, List<Item> products, HttpClient httpClient)
         {
-            //try
-            //{
                 var urlBarbora = "https://pagrindinis.barbora.lt/paieska?q=" + productName;
                 Search<HtmlDocument> barboraSearch = BarboraSearch;
                 WriteData<HtmlNode, Item> writeDataFromBarbora = WriteDataFromBarbora;
                 var barboraItems = barboraSearch(await Html(httpClient, urlBarbora));
                 writeDataFromBarbora(barboraItems, products);
-            //}
-            /*
-            catch (Exception e)
-            {
-                _databaseManager.WriteLoggedExceptions("Exception Barbora: " + e.Message, e.Source, e.StackTrace,
-                    DateTime.UtcNow.ToString());
-            }
-            */
         }
 
-        private async Task gettingItemsFromAvitela(string productName, List<Item> products, HttpClient httpClient)
+        private async Task GettingItemsFromAvitela(string productName, List<Item> products, HttpClient httpClient)
         {
-           // try
-            //{
-                var urlAvitela = "https://avitela.lt/paieska/" + productName;
+            var urlAvitela = "https://avitela.lt/paieska/" + productName;
                 Search<HtmlDocument> avitelaSearch = AvitelaSearch;
                 WriteData<HtmlNode, Item> writeDataFromAvitela = WriteDataFromAvitela;
                 var avitelaItems = avitelaSearch(await Html(httpClient, urlAvitela));
                 writeDataFromAvitela(avitelaItems, products);
-            //}
-            /*
-            catch (Exception e)
-            {
-                _databaseManager.WriteLoggedExceptions("Exception Avitela: " + e.Message, e.Source, e.StackTrace,
-                    DateTime.UtcNow.ToString());
-            }
-            */
         }
 
-        private async Task gettingItemsFromPigu(string productName, List<Item> products, HttpClient httpClient)
+        private async Task GettingItemsFromPigu(string productName, List<Item> products, HttpClient httpClient)
         {
-            //try
-            //{
                 var urlPigu = "https://pigu.lt/lt/search?q=" + productName;
                 Search<HtmlDocument> piguSearch = PiguSearch;
                 WriteData<HtmlNode, Item> writeDataFromPigu = WriteDataFromPigu;
                 var piguItems = piguSearch(await Html(httpClient, urlPigu));
                 writeDataFromPigu(piguItems, products);
-            //}
-            /*
-            catch (Exception e)
-            {
-                _databaseManager.WriteLoggedExceptions("Exception Pigu: " + e.Message, e.Source, e.StackTrace,
-                    DateTime.UtcNow.ToString());
-            }
-            */
         }
 
-        private async Task gettingItemsFromBigBox(string productName, List<Item> products, HttpClient httpClient)
+        private async Task GettingItemsFromBigBox(string productName, List<Item> products, HttpClient httpClient)
         {
-           // try
-            //{
-                var urlBigBox =
-                    "https://bigbox.lt/paieska?controller=search&orderby=position&orderway=desc&ssa_submit=&search_query=" +
-                    productName;
+                var urlBigBox = "https://bigbox.lt/paieska?controller=search&orderby=position&orderway=desc&ssa_submit=&search_query=" + productName;
                 Search<HtmlDocument> bigBoxSearch = BigBoxSearch;
                 WriteData<HtmlNode, Item> writeDataFromBigBox = WriteDataFromBigBox;
                 var bigBoxItems = bigBoxSearch(await Html(httpClient, urlBigBox));
                 writeDataFromBigBox(bigBoxItems, products);
-            //}
-            /*
-            catch (Exception e)
-            {
-                _databaseManager.WriteLoggedExceptions("Exception BigBox: " + e.Message, e.Source, e.StackTrace,
-                    DateTime.UtcNow.ToString());
-            }
-            */
         }
 
-        private async Task gettingItemsFromGintarineVaistine(string productName, List<Item> products,
-            HttpClient httpClient)
+        private async Task GettingItemsFromGintarineVaistine(string productName, List<Item> products, HttpClient httpClient)
         {
-           // try
-            //{
-                var urlGintarineVaistine = "https://www.gintarine.lt/search?adv=false&cid=0&mid=0&vid=0&q=" +
-                                           productName + "%5D&sid=false&isc=true&orderBy=0";
+                var urlGintarineVaistine = "https://www.gintarine.lt/search?adv=false&cid=0&mid=0&vid=0&q=" + productName + "%5D&sid=false&isc=true&orderBy=0";
                 Search<HtmlDocument> gintarineVaistineSearch = GintarineVaistineSearch;
                 WriteData<HtmlNode, Item> writeDataFromGintarineVaistine = WriteDataFromGintarineVaistine;
                 var gintarineVaistineItems = gintarineVaistineSearch(await Html(httpClient, urlGintarineVaistine));
                 writeDataFromGintarineVaistine(gintarineVaistineItems, products);
-            //}
-            /*
-            catch (Exception e)
-            {
-                _databaseManager.WriteLoggedExceptions("Exception Gitarine Vaistine: " + e.Message, e.Source,
-                    e.StackTrace, DateTime.UtcNow.ToString());
-            }
-            */
         }
 
-        private async Task gettingItemsFromElektromarkt(string productName, List<Item> products, HttpClient httpClient)
+        private async Task GettingItemsFromElektromarkt(string productName, List<Item> products, HttpClient httpClient)
         {
-            //try
-            //{
                 var urlElektromarkt = "https://elektromarkt.lt/paieska/" + productName;
                 Search<HtmlDocument> elektromarktSearch = ElektromarktSearch;
                 WriteData<HtmlNode, Item> writeDataFromElektromarkt = WriteDataFromElektromarkt;
                 var elektromarktItems = elektromarktSearch(await Html(httpClient, urlElektromarkt));
                 writeDataFromElektromarkt(elektromarktItems, products);
-            //}
-            /*
-            catch (Exception e)
-            {
-                _databaseManager.WriteLoggedExceptions("Exception Elektromarkt: " + e.Message, e.Source, e.StackTrace,
-                    DateTime.UtcNow.ToString());
-            }
-            */
         }
 
         private async Task<HtmlDocument> Html(HttpClient httpClient, string urlget)

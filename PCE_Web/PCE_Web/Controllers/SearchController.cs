@@ -36,6 +36,7 @@ namespace PCE_Web.Controllers
             }
             else
             {
+            
                 var products = GetProductsFromAPI(productName);
                 _databaseManager.WriteSearchedItems(products, productName);
                 var suggestionsView = new SuggestionsView {Products = products};
