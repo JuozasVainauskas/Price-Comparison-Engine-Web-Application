@@ -41,5 +41,6 @@
 ## Initial goal
 Create a program/website/app which takes the data of the prices from different shopping websites and provides a comparison in a visual manner
 
- ![Relational diagram](schemaOriginali.PNG)
- ![ER diagram](erDiagrama.PNG)
+## Database diagrams
+![Relational diagram](schemaOriginali.PNG)
+![ER diagram](erDiagrama.PNG)
