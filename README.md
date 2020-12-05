@@ -42,4 +42,4 @@
 Create a program/website/app which takes the data of the prices from different shopping websites and provides a comparison in a visual manner
 
  ![Relational diagram]()
- ![ER diagram]()
+ ![ER diagram](erDiagrama.PNG)
