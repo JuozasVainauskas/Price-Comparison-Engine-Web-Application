@@ -71,7 +71,7 @@ button.link {
 
     #items td, #items th {
         border: 1px solid #ddd;
-        padding: 8px;
+        padding: 0px;
     }
 
 
@@ -86,7 +86,9 @@ button.link {
     #items th {
         padding-top: 5px;
         padding-bottom: 5px;
-        text-align: left;
+        text-align: center;
         background-color: #4CAF50;
         color: white;
+        white-space: nowrap;
+        word-wrap: break-word;
     }

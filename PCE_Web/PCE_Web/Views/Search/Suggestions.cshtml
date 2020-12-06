@@ -5,41 +5,39 @@
 <br>
 <h1>Iš viso surasta prekių: @Model.Products.Count</h1>
 <br>
-<table id="items">
+<div class="table-responsive">
+    <table id="items">
+        <tr>
+            <th></th>
+            <th>Nuotrauka</th>
+            <th>Prekė</th>
+            <th>Kaina</th>
+        </tr>
+        @foreach (var product in @Model.Products)
+        {
     <tr>
-        <th>Pardavėjas</th>
-        <th>Nuotrauka</th>
-        <th>Prekė</th>
-        <th>Kaina</th>
+        <td align="center">@product.Seller</td>
+        <td align="center"><a href="@product.Link"><img class="image" alt="product.jpg" src="@product.Picture" style="max-width:100%; height:auto; width:auto;"></a></td>
+        <td align="center" ><a href="@Url.Action("ParticularItemLoggedIn", "ParticularItemLoggedIn", new { particularItem = @product.Name })" class="link">@product.Name</a> </td>
+        <td align="center">@product.Price</td>
     </tr>
-    @foreach (var product in @Model.Products)
-    {
-<tr>
-    <td>@product.Seller</td>
-    <td><a href="@product.Link"><img class="image" alt="product.jpg" src="@product.Picture"></a></td>
-    <td>
-        <button class="link" name="particularItem" onclick="location.href = '@Url.Action("ParticularItem", "ParticularItem", new { particularItem = @product.Name })'">
-            @product.Name
-        </button>
-    </td>
-    <td>@product.Price</td>
-</tr>
-    }
-</table>
-
-<div id="overlay" class="overlay">
-
-    <div class="loader">
-        <img src="~/img/loader.gif" width="400" height="400" />
-    </div>
-
+        }
+    </table>
 </div>
 
-<script>
-    var buttons = document.getElementsByClassName('link');
-    for (var i = 0; i < buttons.length; i++) {
-        buttons[i].addEventListener('click', function (e) {
-            document.getElementById('overlay').style.display = 'flex';
-        })
-    }
-</script>
+    <div id="overlay" class="overlay">
+
+        <div class="loader">
+            <img src="~/img/loader.gif" width="400" height="400" />
+        </div>
+
+    </div>
+
+    <script>
+        var buttons = document.getElementsByClassName('link');
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].addEventListener('click', function (e) {
+                document.getElementById('overlay').style.display = 'flex';
+            })
+        }
+    </script>
