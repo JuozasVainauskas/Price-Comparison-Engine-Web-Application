@@ -68,9 +68,6 @@ namespace PCE_Web.Controllers
                     savingAnItem(link, pictureUrl, seller, name, price);
                 }
                 var httpClient = _httpClient.CreateClient();
-                // var products = new List<Item>();
-                // await ReadingItemsAsync(SearchWord, products, httpClient);
-                // products = SortAndInsert(products);
                 var products = await FetchAlgorithm.FetchAlgorithmaAsync(SearchWord, httpClient, _databaseManager);
                 _databaseManager.WriteSearchedItems(products, SearchWord);
                 var suggestionsView = new SuggestionsView { Products = products };

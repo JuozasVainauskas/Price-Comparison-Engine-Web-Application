@@ -20,10 +20,7 @@ namespace PCE_Web.Classes
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
         public static async Task<List<Item>> FetchAlgorithmaAsync(string SearchWord, HttpClient httpClient, IDatabaseManager _databaseManager)
         {
-            //var httpClient = _httpClient.CreateClient();
             var products = new List<Item>();
-            // await ReadingItemsAsync(SearchWord, products, httpClient);
-            
             await ReadingItemsAsync(SearchWord, products, httpClient,_databaseManager);
             products = SortAndInsert(products);
             return products;
