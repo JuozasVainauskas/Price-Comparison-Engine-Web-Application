@@ -428,6 +428,30 @@ namespace PCE_Web.Classes
         }
         public void WriteReportsWithSql(string email, string report)
         {
+            var sqlConnection = new SqlConnection(_pceDatabaseContext.Database.GetDbConnection().ConnectionString);
+            try
+            {
+                if (sqlConnection.State == ConnectionState.Closed)
+                {
+                    sqlConnection.Open();
+                }
+
+                var sqlCommand = new SqlCommand("INSERT INTO ReportsTable(Email, Comment, Date, Solved) VALUES (@Email, @Comment, @Date, @Solved)", sqlConnection);
+                sqlCommand.CommandType = CommandType.Text;
+                sqlCommand.Parameters.AddWithValue("@Email", email);
+                sqlCommand.Parameters.AddWithValue("@Comment", report);
+                sqlCommand.Parameters.AddWithValue("@Date", DateTime.UtcNow.ToString());
+                sqlCommand.Parameters.AddWithValue("@Solved", 0);
+                sqlCommand.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                WriteLoggedExceptions(ex.Message, ex.Source, ex.StackTrace, DateTime.UtcNow.ToString());
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
         }
 
         public List<Report> ReadReports(string email, int solvedID)
@@ -447,6 +471,27 @@ namespace PCE_Web.Classes
         }
         public void DeleteReportsWithSql(int id)
         {
+            var sqlConnection = new SqlConnection(_pceDatabaseContext.Database.GetDbConnection().ConnectionString);
+            try
+            {
+                if (sqlConnection.State == ConnectionState.Closed)
+                {
+                    sqlConnection.Open();
+                }
+
+                var sqlCommand = new SqlCommand("DELETE FROM ReportsTable WHERE ReportsId = @Id;", sqlConnection);
+                sqlCommand.CommandType = CommandType.Text;
+                sqlCommand.Parameters.AddWithValue("@Id", id);
+                sqlCommand.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                WriteLoggedExceptions(ex.Message, ex.Source, ex.StackTrace, DateTime.UtcNow.ToString());
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
         }
 
         public bool IsReported(string email)
