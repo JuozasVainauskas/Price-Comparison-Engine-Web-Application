@@ -4,21 +4,20 @@
 <br>
 <h1>Iš viso surasta prekių: @Model.Products.Count</h1>
 <br>
-<table id="items">
-    <tr>
-        <th>Nuotrauka</th>
-        <th>Prekė</th>
-        <th>Kaina</th>
-    </tr>
-    @foreach (var product in @Model.Products)
-    {
+<div class="table-responsive">
+    <table id="items">
         <tr>
-                <td>
-                    <a href="@product.Link"><img class="image" alt="product.jpg" src="@product.Picture">
-                    </a>
-                </td>
-                <td>@product.Name</td>
-                <td>@product.Price</td>
+            <th>Nuotrauka</th>
+            <th>Prekė</th>
+            <th>Kaina</th>
+        </tr>
+        @foreach (var product in @Model.Products)
+        {
+            <tr>
+                <td align="center"><a href="@product.Link"><img class="image" src="@product.Picture" style="max-width:100%; height:auto; width:auto;"></a></td>
+                <td align="center">@product.Name</td>
+                <td align="center">@product.Price</td>
             </tr>
-    }
-</table>
+        }
+    </table>
+</div>

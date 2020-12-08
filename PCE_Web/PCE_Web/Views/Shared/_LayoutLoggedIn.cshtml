@@ -67,7 +67,7 @@
     </div>
 
     <div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="reportModalLabel" aria-hidden="true">
-        <div class="modal-dialog" style="width:600px;height:700px;" role="document">
+        <div class="modal-dialog" style="height:700px;" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h2 class="modal-title" id="reportModalLabel" style="color: green" bold>Susisiekite</h2>
@@ -79,15 +79,15 @@
 
                     <form method="get" action="">
                         <div class="textarea">
-                            <textarea name="report" rows="5" cols="60" placeholder="Parašykite komentarą.." style="overflow:auto;resize:none"></textarea>
+                            <textarea name="report" rows="5" cols="35" placeholder="Parašykite komentarą.." style="overflow:auto;resize:none"></textarea>
                         </div>
                         <br />
 
                         <div class="myButton">
                             <button type="submit" asp-controller="MainWindowLoggedIn" asp-action="Report">Siųsti</button>
                         </div>
-                     </form>
-                        <br />
+                    </form>
+                    <br />
 
                 </div>
                 <div class="modal-footer">
@@ -98,38 +98,26 @@
     </div>
 
     <!-- Top menu -->
-    <nav class="navbar navbar-inverse" role="navigation">
-        <div class="container">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#top-navbar-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-
-                </button>
-                <button class="navbar-brand" onclick="location.href ='@Url.Action("Items", "MainWindowLoggedIn")'"></button>
+                <a class="navbar-brand" href="@Url.Action("Items", "MainWindowLoggedIn")">SmartShop.lt</a>
             </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="top-navbar-1">
-                <ul class="nav navbar-nav navbar-left navbar-menu-items wow fadeIn">
-                    @if (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Admin")
-                    {
-                        <li><a asp-area="" asp-controller="Administration" asp-action="Admin">Administruoti</a></li>
-                    }
-                    <li><a asp-area="" asp-controller="Logging" asp-action="Logout">Atsijungti</a></li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right navbar-menu-items wow fadeIn">
-                    <li><a asp-area="" asp-controller="Evaluation" asp-action="Evaluate">Parduotuvių įvertinimai</a></li>
-                    <li><a href="#" data-toggle="modal" data-target="#dukModal">DUK</a></li>
-                    <li><a href="#" data-toggle="modal" data-target="#reportModal">Susisiekite</a></li>
-
-                </ul>
-            </div>
-
+            <ul class="nav navbar-nav">
+                @if (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Admin")
+                {
+                    <li><a asp-area="" asp-controller="Administration" asp-action="Admin">Administruoti</a></li>
+                }
+                <li><a asp-area="" asp-controller="Logging" asp-action="Logout">Atsijungti</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a asp-area="" asp-controller="Evaluation" asp-action="Evaluate">Parduotuvių įvertinimai</a></li>
+                <li><a href="#" data-toggle="modal" data-target="#dukModal">DUK</a></li>
+                <li><a href="#" data-toggle="modal" data-target="#reportModal">Susisiekite</a></li>
+            </ul>
         </div>
     </nav>
-    <!-- Footer -->
+    <div class="seperator"></div>
     @RenderBody()
 
 </body>

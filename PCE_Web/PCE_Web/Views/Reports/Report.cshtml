@@ -6,78 +6,88 @@
 @if (Model.Role == "Admin")
 {
     <link rel="stylesheet" href="~/css/styleForAdminView.css">
-    <br>
-    <h1>Pranešimai</h1>
-    <br>
-    <table id="items">
-        <tr>
-            <th>ID</th>
-            <th>Data</th>
-            <th>Pranešimas</th>
-            <th>Pažymėti</th>
-            <th>Ištrinti</th>
-        </tr>
-        @foreach (var comment in @Model.UnsolvedComments)
-        {
-            <tr>
-                <td style="font-weight:bold;color:red;">@comment.ID</td>
-                <td style="font-weight:bold;color:red;">@comment.Date</td>
-                <td style="font-weight:bold;color:red;max-width:500px; word-wrap:break-word;">@comment.Comment</td>
-                <td style="width:50px"><button type="button" class="btn btn-warning" onclick="location.href = '@Url.Action("Mark", "Reports", new {id = comment.ID, email = comment.Email})'">Pažymėti</button></td>
-                <td style="width:50px"><button type="button" class="btn btn-danger" onclick="location.href = '@Url.Action("Delete", "Reports", new {id = comment.ID ,email = comment.Email })'">Ištrinti</button></td>
-            </tr>
-        }
+    <body style="background: #d2f3d9;">
+        <div style="background:white; width:95%;height:100%; margin-left:auto;margin-right:auto;">
+            <br>
+            <h1>Pranešimai</h1>
+            <br>
+            <table id="items" style="width:50%;padding-top:10px;">
+                <tr>
+                    <th>ID</th>
+                    <th>Data</th>
+                    <th>Pranešimas</th>
+                    <th></th>
+                    <th><button type="button" class="btn btn-warning" data-toggle="modal" data-target="#answerModal"><i class="fa fa-pencil"></i></button></th>
+                </tr>
+                @foreach (var comment in @Model.UnsolvedComments)
+                {
+                    <tr>
+                        <td style="font-weight:bold;color:red;">@comment.ID</td>
+                        <td style="font-weight:bold;color:red;">@comment.Date</td>
+                        <td style="font-weight:bold;color:red;max-width:70px; word-wrap:break-word;">@comment.Comment</td>
+                        <td align="center" style="width:50px;"><button type="button" class="btn btn-warning" onclick="location.href = '@Url.Action("Mark", "Reports", new {id = comment.ID, email = comment.Email})'"><i class="fa fa-search"></i></button></td>
+                        <td align="center" style="width:50px;"><button type="button" class="btn btn-danger" onclick="location.href = '@Url.Action("Delete", "Reports", new {id = comment.ID ,email = comment.Email })'"><i class="fa fa-eraser"></i></button></td>
+                    </tr>
+                }
 
-        @foreach (var comment in @Model.SolvedComments)
-        {
-            <tr>
-                <td>@comment.ID</td>
-                <td>@comment.Date</td>
-                <td style="max-width:500px; word-wrap:break-word;">@comment.Comment</td>
-                <td></td>
-                <td style="width:50px"><button type="button" class="btn btn-danger" onclick="location.href = '@Url.Action("Delete", "Reports", new {id = comment.ID ,email = comment.Email })'">Ištrinti</button></td>
-            </tr>
-        }
+                @foreach (var comment in @Model.SolvedComments)
+                {
+                    <tr>
+                        <td>@comment.ID</td>
+                        <td>@comment.Date</td>
+                        <td style="max-width:500px; word-wrap:break-word;">@comment.Comment</td>
+                        <td></td>
+                        <td align="center" style="width:50px"><button type="button" class="btn btn-danger" onclick="location.href = '@Url.Action("Delete", "Reports", new {id = comment.ID ,email = comment.Email })'"><i class="fa fa-eraser"></i></button></td>
+                    </tr>
+                }
 
-    </table>
-    <br />
-    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#answerModal">Rašyti pranešimą</button>
-
-    <div class="modal fade" id="answerModal" tabindex="-1" role="dialog" aria-labelledby="answerModalLabel" aria-hidden="true">
-        <div class="modal-dialog" style="width:600px;height:700px;" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 class="modal-title" id="answerrModalLabel" style="color: green" bold>Susisiekite</h2>
-                </div>
-                <div class="modal-body">
-
-                    <h5 style="text-align:center">Susisiekite su vartotoju <b> @Model.AllComments[0].Email </b> </h5>
-                    <br />
-
-                    <form method="get" action="">
-                        <div class="textarea">
-                            <textarea name="answer" rows="5" cols="60" placeholder="Parašykite komentarą.." style="overflow:auto;resize:none"></textarea>
-                            <input type="hidden" name="email" value="@Model.AllComments[0].Email" />
+            </table>
+            <div class="modal fade" id="answerModal" tabindex="-1" role="dialog" aria-labelledby="answerModalLabel" aria-hidden="true">
+                <div class="modal-dialog" style="height:700px;" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="modal-title" id="answerrModalLabel" style="color: green" bold>Susisiekite</h2>
                         </div>
-                        <br />
+                        <div class="modal-body">
 
-                        <div class="myButton">
-                            <button type="submit" asp-controller="Reports" asp-action="Answer">Siųsti</button>
+                            <h5 style="text-align:center">Susisiekite su vartotoju <b> @Model.AllComments[0].Email </b> </h5>
+                            <br />
+
+                            <form method="get" action="">
+                                <div class="textarea">
+                                    <textarea name="answer" rows="5" cols="40" placeholder="Parašykite komentarą.." style="overflow:auto;resize:none"></textarea>
+                                    <input type="hidden" name="email" value="@Model.AllComments[0].Email" />
+                                </div>
+                                <br />
+
+                                <div class="myButton">
+                                    <button type="submit" asp-controller="Reports" asp-action="Answer">Siųsti</button>
+                                </div>
+                            </form>
+                            <br />
+
                         </div>
-                    </form>
-                    <br />
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn first" data-dismiss="modal" style="color: green" bold>Uždaryti</button>
+                        <div class="modal-footer">
+                            <button type="button" class="btn first" data-dismiss="modal" style="color: green" bold>Uždaryti</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-}
-else
-{
-    <h1>Klaida!</h1>
-    <h3><strong>Neturite prieigos </strong> prie šios svetainės dalies!</h3>
-    <button id="mvc-action-button" class="myButton" onclick="location.href = '@Url.Action("Items", "MainWindowLoggedIn")'">Grįžti</button>
-}
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12 footer-copyright">
+                        &copy; SmartShop.LT, 2020.
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </body>
+        }
+        else
+        {
+        <h1>Klaida!</h1>
+        <h3><strong>Neturite prieigos </strong> prie šios svetainės dalies!</h3>
+        <button id="mvc-action-button" class="myButton" onclick="location.href = '@Url.Action("Items", "MainWindowLoggedIn")'">Grįžti</button>
+        }

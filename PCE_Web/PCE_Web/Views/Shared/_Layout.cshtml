@@ -31,72 +31,55 @@
 </head>
 
 <body>
+    <div class="modal fade" id="dukModal" tabindex="-1" role="dialog" aria-labelledby="dukModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="dukModalLabel" style="color: green" bold>DUK</h5>
 
-<div class="modal fade" id="dukModal" tabindex="-1" role="dialog" aria-labelledby="dukModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="dukModalLabel" style="color: green" bold>DUK</h5>
+                </div>
+                <div class="modal-body">
 
-            </div>
-            <div class="modal-body">
+                    <h1 style="color: green" bold>Kodėl nematau prekių?</h1>
+                    <p>Programa yra kūrimo stadijoje, todėl gali kilti tokie trukdžiai.</p>
+                    <hr>
 
-                <h1 style="color: green" bold>Kodėl nematau prekių?</h1>
-                <p>Programa yra kūrimo stadijoje, todėl gali kilti tokie trukdžiai.</p>
-                <hr>
+                    <h2 style="color: green" bold>Kaip surasti geriausią prekę?</h2>
+                    <p>Į paieškos lauką įveskite ieškomos prekės pavadinimą, tada pasirinkite kategoriją ir kainą.</p>
+                    <hr>
 
-                <h2 style="color: green" bold>Kaip surasti geriausią prekę?</h2>
-                <p>Į paieškos lauką įveskite ieškomos prekės pavadinimą, tada pasirinkite kategoriją ir kainą.</p>
-                <hr>
+                    <h2 style="color: green" bold>Ar visi pasiūlymai tikri? Ar tai ne apgaulė?</h2>
+                    <p>Taip, visos prekės yra tikros.</p>
+                    <hr>
 
-                <h2 style="color: green" bold>Ar visi pasiūlymai tikri? Ar tai ne apgaulė?</h2>
-                <p>Taip, visos prekės yra tikros.</p>
-                <hr>
+                    <h2 style="color: green" bold>Ką daryti, jeigu radau klaidą?</h2>
+                    <p>Praneškite klaidą administracijai paštu.</p>
 
-                <h2 style="color: green" bold>Ką daryti, jeigu radau klaidą?</h2>
-                <p>Praneškite klaidą administracijai paštu.</p>
-                
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn first" data-dismiss="modal" style="color: green" bold>Uždaryti</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn first" data-dismiss="modal" style="color: green" bold>Uždaryti</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
     <!-- Top menu -->
-    <nav class="navbar navbar-inverse" role="navigation">
-        <div class="container">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#top-navbar-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">WebApplication1</a>
+                <a class="navbar-brand" href="/">SmartShop.lt</a>
             </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="top-navbar-1">
-                <form class="navbar-form navbar-right navbar-search-form disabled wow fadeInLeft" role="form" action="" method="post">
-                    <div class="form-group">
-                        <input type="text" name="search" placeholder="Search..." class="search form-control">
-                    </div>
-                </form>
-                <ul class="nav navbar-nav navbar-left navbar-menu-items wow fadeIn">
-                    <li><a asp-area="" asp-controller="Logging" asp-action="Login"><strong>Prisijungti</strong></a></li>
-                    <li><a asp-area="" asp-controller="Registration" asp-action="Register"><strong>Registruotis</strong></a></li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right navbar-menu-items wow fadeIn">
-                    <li><a href="#" data-toggle="modal" data-target="#dukModal"><strong>DUK</strong></a></li>
-                </ul>
-
-            </div>
+            <ul class="nav navbar-nav">
+                <li><a asp-area="" asp-controller="Logging" asp-action="Login"><strong>Prisijungti</strong></a></li>
+                <li><a asp-area="" asp-controller="Registration" asp-action="Register"><strong>Registruotis</strong></a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#" data-toggle="modal" data-target="#dukModal"><strong>DUK</strong></a></li>
+            </ul>
         </div>
-        
     </nav>
+    <div class="seperator"></div>
     @RenderBody()
-
 </body>
 @RenderSection("Scripts", required: false)
 </html>

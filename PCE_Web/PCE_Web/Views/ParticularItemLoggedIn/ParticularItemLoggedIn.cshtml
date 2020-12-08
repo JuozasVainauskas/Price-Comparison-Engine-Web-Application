@@ -11,24 +11,22 @@
 <br>
 <h1>Iš viso surasta prekių: @Model.Products.Count</h1>
 <br>
-<table id="items">
-    <tr>
-        <th>Pardavėjas</th>
-        <th>Nuotrauka</th>
-        <th>Prekė</th>
-        <th>Kaina</th>
-    </tr>
-    @foreach (var product in @Model.Products)
-    {
-<tr>
-    <td>@product.Seller</td>
-    <td>
-        <a href="@product.Link">
-            <img class="image" alt="product.jpg" src="@product.Picture">
-        </a>
-    </td>
-    <td>@product.Name</td>
-    <td>@product.Price</td>
-</tr>
-    }
-</table>
+<div class="table-responsive">
+    <table id="items">
+        <tr>
+            <th>Pardavėjas</th>
+            <th>Nuotrauka</th>
+            <th>Prekė</th>
+            <th>Kaina</th>
+        </tr>
+        @foreach (var product in @Model.Products)
+        {
+            <tr>
+                <td align="center">@product.Seller</td>
+                <td align="center"><a href="@product.Link"><img class="image" alt="product.jpg" src="@product.Picture" style="max-width:100%; height:auto; width:auto;"></a></td>
+                <td align="center">@product.Name</td>
+                <td align="center">@product.Price</td>
+            </tr>
+        }
+    </table>
+</div>
