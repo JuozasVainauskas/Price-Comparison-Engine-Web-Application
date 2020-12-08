@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Caching;
 using System.Threading.Tasks;
+using PCE_Web.Models;
 
 namespace PCE_Web.Classes
 {
-    public class ProductsCache
+    public class ProductsCache : IProductsCache
     {
-        private static ObjectCache _cache = System.Runtime.Caching.MemoryCache.Default;
+        private ObjectCache _cache = MemoryCache.Default;
 
-        public static void SetCachedItems(string key, List<Item> products)
+        public void SetCachedItems(string key, List<Item> products)
         {
             _cache.Set(key, products, DateTimeOffset.Now.AddMinutes(5));
         }
-        public static IEnumerable<Item> GetCachedItems(string key)
+        public IEnumerable<Item> GetCachedItems(string key)
         {
             var productsList = _cache[key] as IEnumerable<Item>;
             return productsList;

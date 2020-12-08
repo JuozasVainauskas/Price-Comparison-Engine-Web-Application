@@ -41,7 +41,7 @@ namespace PCE_Web.Controllers
             {
                 SearchWord = productName;
             }
-            var cachedItems = ProductsCache.GetCachedItems(SearchWord);
+            var cachedItems = IProductsCache.GetCachedItems(SearchWord);
             if (cachedItems != null)
             {
                 if (link != null)
@@ -72,7 +72,7 @@ namespace PCE_Web.Controllers
                 }
                 var httpClient = _httpClient.CreateClient();
                 var products = await FetchAlgorithm.FetchAlgorithmaAsync(SearchWord, httpClient, _databaseManager);
-                ProductsCache.SetCachedItems(SearchWord, products);
+                IProductsCache.SetCachedItems(SearchWord, products);
                 var suggestionsView = new SuggestionsView { Products = products };
                 return View(suggestionsView);
             }
