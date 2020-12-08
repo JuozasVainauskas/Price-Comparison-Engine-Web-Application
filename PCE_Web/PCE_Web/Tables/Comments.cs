@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PCE_Web.Tables
 {
-    public partial class CommentsTable
+    public partial class Comments
     {
         public int CommentId { get; set; }
         public string Email { get; set; }

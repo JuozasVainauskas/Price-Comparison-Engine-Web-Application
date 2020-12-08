@@ -15,9 +15,9 @@ namespace PCE_Web.Tables
         {
         }
 
-        public virtual DbSet<CommentsTable> CommentsTable { get; set; }
-        public virtual DbSet<ItemsTable> ItemsTable { get; set; }
-        public virtual DbSet<ReportsTable> ReportsTable { get; set; }
+        public virtual DbSet<Comments> Comments { get; set; }
+        public virtual DbSet<Items> Items { get; set; }
+        public virtual DbSet<Reports> Reports { get; set; }
         public virtual DbSet<SavedExceptions> SavedExceptions { get; set; }
         public virtual DbSet<SavedItems> SavedItems { get; set; }
         public virtual DbSet<UserData> UserData { get; set; }
@@ -28,7 +28,7 @@ namespace PCE_Web.Tables
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<CommentsTable>(entity =>
+            modelBuilder.Entity<Comments>(entity =>
             {
                 entity.HasKey(e => e.CommentId)
                     .HasName("PK__tmp_ms_x__C3B4DFCA01486395");
@@ -38,13 +38,13 @@ namespace PCE_Web.Tables
                 entity.Property(e => e.Email).IsRequired();
             });
 
-            modelBuilder.Entity<ItemsTable>(entity =>
+            modelBuilder.Entity<Items>(entity =>
             {
                 entity.HasKey(e => e.ItemId)
                     .HasName("PK__ItemsTab__727E838B9BA0A08C");
             });
 
-            modelBuilder.Entity<ReportsTable>(entity =>
+            modelBuilder.Entity<Reports>(entity =>
             {
                 entity.HasKey(e => e.ReportsId)
                     .HasName("PK__tmp_ms_x__37856ECB6CD7432D");

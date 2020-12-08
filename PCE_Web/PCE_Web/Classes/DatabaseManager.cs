@@ -10,6 +10,15 @@ using Microsoft.EntityFrameworkCore.Internal;
 using PCE_Web.Models;
 using PCE_Web.Tables;
 
+//memory cash
+//nutrinti table
+//nutrinti max
+//string i int
+//startup su interface, multiple interface, interface grupės, inicijuoti tik reikalingus
+//group atvaizduoti prekių skaičių pagal kategoriją, pagal shop
+//aggregate = count
+//-join
+
 namespace PCE_Web.Classes
 {
     public class DatabaseManager : IDatabaseManager
@@ -115,16 +124,16 @@ namespace PCE_Web.Classes
                 _pceDatabaseContext.UserData.Remove(result);
             }
 
-            var comments = _pceDatabaseContext.CommentsTable.Where(column => column.Email == email).ToList();
+            var comments = _pceDatabaseContext.Comments.Where(column => column.Email == email).ToList();
             foreach (var comment in comments)
             {
-                _pceDatabaseContext.CommentsTable.Remove(comment);
+                _pceDatabaseContext.Comments.Remove(comment);
             }
 
-            var reports = _pceDatabaseContext.ReportsTable.Where(column => column.Email == email).ToList();
+            var reports = _pceDatabaseContext.Reports.Where(column => column.Email == email).ToList();
             foreach (var report in reports)
             {
-                _pceDatabaseContext.ReportsTable.Remove(report);
+                _pceDatabaseContext.Reports.Remove(report);
             }
             _pceDatabaseContext.SaveChanges();
         }
@@ -261,7 +270,7 @@ namespace PCE_Web.Classes
 
         public List<Slide> ReadSlidesList()
         {
-            var slidesList = _pceDatabaseContext.ItemsTable.Where(column => column.Price.Length >= 6).Select(column => new Slide() { PageUrl = column.PageUrl, ImgUrl = column.ImgUrl }).ToList();
+            var slidesList = _pceDatabaseContext.Items.Where(column => column.Price.Length >= 6).Select(column => new Slide() { PageUrl = column.PageUrl, ImgUrl = column.ImgUrl }).ToList();
             return slidesList;
         }
 
@@ -344,15 +353,15 @@ namespace PCE_Web.Classes
             }
         }
 
-        public List<CommentsTable> ReadComments(int index)
+        public List<Comments> ReadComments(int index)
         {
-            var comments = _pceDatabaseContext.CommentsTable.Where(column => column.ShopId == index).Select(column => new CommentsTable {CommentId = column.CommentId, Email = column.Email, ShopId = column.ShopId, Date = column.Date, Rating = column.Rating, Comment = column.Comment}).ToList();
+            var comments = _pceDatabaseContext.Comments.Where(column => column.ShopId == index).Select(column => new Comments {CommentId = column.CommentId, Email = column.Email, ShopId = column.ShopId, Date = column.Date, Rating = column.Rating, Comment = column.Comment}).ToList();
             return comments;
         }
 
         public bool IsAlreadyCommented(string email, int shopId)
         {
-            var item = _pceDatabaseContext.CommentsTable.Where(column => column.Email == email && column.ShopId == shopId).Select(column => new CommentsTable { CommentId = column.CommentId, Email = column.Email, ShopId = column.ShopId, Date = column.Date, Rating = column.Rating, Comment = column.Comment }).ToList();
+            var item = _pceDatabaseContext.Comments.Where(column => column.Email == email && column.ShopId == shopId).Select(column => new Comments { CommentId = column.CommentId, Email = column.Email, ShopId = column.ShopId, Date = column.Date, Rating = column.Rating, Comment = column.Comment }).ToList();
             if (item.Count > 0)
             {
                 return true;
@@ -362,10 +371,10 @@ namespace PCE_Web.Classes
 
         public void WriteComments(string email, int shopId, int rating, string comment)
         {
-            var result = _pceDatabaseContext.CommentsTable.SingleOrDefault(column => column.Email == email && column.ShopId == shopId);
+            var result = _pceDatabaseContext.Comments.SingleOrDefault(column => column.Email == email && column.ShopId == shopId);
             if (result == null)
             {
-                var commentsTable = new CommentsTable()
+                var commentsTable = new Comments()
                 {
                     Email = email,
                     ShopId = shopId,
@@ -373,7 +382,7 @@ namespace PCE_Web.Classes
                     Rating = rating,
                     Comment = comment
                 };
-                _pceDatabaseContext.CommentsTable.Add(commentsTable);
+                _pceDatabaseContext.Comments.Add(commentsTable);
                 _pceDatabaseContext.SaveChanges();
             }
         }
@@ -388,10 +397,10 @@ namespace PCE_Web.Classes
 
         public void WriteSearchedItem(string pageUrl, string imgUrl, string shopName, string itemName, string price, string keyword)
         {
-            var result = _pceDatabaseContext.ItemsTable.SingleOrDefault(column => column.PageUrl == pageUrl && column.ImgUrl == imgUrl && column.ShopName == shopName && column.ItemName == itemName && column.Price == price && column.Keyword == keyword);
+            var result = _pceDatabaseContext.Items.SingleOrDefault(column => column.PageUrl == pageUrl && column.ImgUrl == imgUrl && column.ShopName == shopName && column.ItemName == itemName && column.Price == price && column.Keyword == keyword);
             if (result == null)
             {
-                var itemsTable = new ItemsTable
+                var itemsTable = new Items
                 {
                     PageUrl = pageUrl,
                     ImgUrl = imgUrl,
@@ -400,14 +409,14 @@ namespace PCE_Web.Classes
                     Price = price,
                     Keyword = keyword
                 };
-                _pceDatabaseContext.ItemsTable.Add(itemsTable);
+                _pceDatabaseContext.Items.Add(itemsTable);
                 _pceDatabaseContext.SaveChanges();
             }
         }
 
         public List<Item> ReadSearchedItems(string keyword)
         {
-            var item = _pceDatabaseContext.ItemsTable.Where(column => column.Keyword == keyword).Select(column => new Item { Link = column.PageUrl, Picture = column.ImgUrl, Seller = column.ShopName, Name = column.ItemName, Price = column.Price }).ToList();
+            var item = _pceDatabaseContext.Items.Where(column => column.Keyword == keyword).Select(column => new Item { Link = column.PageUrl, Picture = column.ImgUrl, Seller = column.ShopName, Name = column.ItemName, Price = column.Price }).ToList();
             return item;
         }
 
@@ -415,14 +424,14 @@ namespace PCE_Web.Classes
         {
             if (report != null)
             {
-                var newReport = new ReportsTable()
+                var newReport = new Reports()
                 {
                     Email = email,
                     Comment = report,
                     Date = DateTime.UtcNow.ToString(),
                     Solved = 0
                 };
-                _pceDatabaseContext.ReportsTable.Add(newReport);
+                _pceDatabaseContext.Reports.Add(newReport);
                 _pceDatabaseContext.SaveChanges();
             }
         }
@@ -436,7 +445,7 @@ namespace PCE_Web.Classes
                     sqlConnection.Open();
                 }
 
-                var sqlCommand = new SqlCommand("INSERT INTO ReportsTable(Email, Comment, Date, Solved) VALUES (@Email, @Comment, @Date, @Solved)", sqlConnection);
+                var sqlCommand = new SqlCommand("INSERT INTO Reports(Email, Comment, Date, Solved) VALUES (@Email, @Comment, @Date, @Solved)", sqlConnection);
                 sqlCommand.CommandType = CommandType.Text;
                 sqlCommand.Parameters.AddWithValue("@Email", email);
                 sqlCommand.Parameters.AddWithValue("@Comment", report);
@@ -456,16 +465,16 @@ namespace PCE_Web.Classes
 
         public List<Report> ReadReports(string email, int solvedID)
         {
-            var comments = _pceDatabaseContext.ReportsTable.Where(column => column.Email == email && column.Solved == solvedID).Select(column => new Report { Comment = column.Comment, ID = column.ReportsId, Date = column.Date, Email = column.Email }).ToList();
+            var comments = _pceDatabaseContext.Reports.Where(column => column.Email == email && column.Solved == solvedID).Select(column => new Report { Comment = column.Comment, ID = column.ReportsId, Date = column.Date, Email = column.Email }).ToList();
             return comments;
         }
 
         public void DeleteReports(int id)
         {
-            var result = _pceDatabaseContext.ReportsTable.SingleOrDefault(column => column.ReportsId == id);
+            var result = _pceDatabaseContext.Reports.SingleOrDefault(column => column.ReportsId == id);
             if (result != null)
             {
-                _pceDatabaseContext.ReportsTable.Remove(result);
+                _pceDatabaseContext.Reports.Remove(result);
                 _pceDatabaseContext.SaveChanges();
             }
         }
@@ -479,7 +488,7 @@ namespace PCE_Web.Classes
                     sqlConnection.Open();
                 }
 
-                var sqlCommand = new SqlCommand("DELETE FROM ReportsTable WHERE ReportsId = @Id;", sqlConnection);
+                var sqlCommand = new SqlCommand("DELETE FROM Reports WHERE ReportsId = @Id;", sqlConnection);
                 sqlCommand.CommandType = CommandType.Text;
                 sqlCommand.Parameters.AddWithValue("@Id", id);
                 sqlCommand.ExecuteNonQuery();
@@ -496,7 +505,7 @@ namespace PCE_Web.Classes
 
         public bool IsReported(string email)
         {
-            var item = _pceDatabaseContext.ReportsTable.Where(column => column.Email == email).Select(column => new ReportsTable { Email = column.Email, Comment = column.Comment, Solved = column.Solved, Date = column.Date}).ToList();
+            var item = _pceDatabaseContext.Reports.Where(column => column.Email == email).Select(column => new Reports { Email = column.Email, Comment = column.Comment, Solved = column.Solved, Date = column.Date}).ToList();
             if (item.Count > 0)
             {
                 return true;
@@ -509,7 +518,7 @@ namespace PCE_Web.Classes
 
         public void MarkAsSolved(int id)
         {
-            _pceDatabaseContext.ReportsTable.Where(column => column.ReportsId == id && column.Solved == 0).ToList().ForEach(column => column.Solved = 1);
+            _pceDatabaseContext.Reports.Where(column => column.ReportsId == id && column.Solved == 0).ToList().ForEach(column => column.Solved = 1);
             _pceDatabaseContext.SaveChanges();
         }
     }

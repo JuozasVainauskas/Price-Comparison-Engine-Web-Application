@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[CommentsTable]
+﻿CREATE TABLE [dbo].[Comments]
 (
 	[CommentId] INT NOT NULL PRIMARY KEY IDENTITY(1,1),
 	[Email] NVARCHAR (MAX) NOT NULL,

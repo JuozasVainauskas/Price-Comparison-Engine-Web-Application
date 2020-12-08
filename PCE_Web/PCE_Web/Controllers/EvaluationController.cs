@@ -32,8 +32,8 @@ namespace PCE_Web.Controllers
             }
             else
             {
-                var comments = new List<CommentsTable>();
-                var notExistingComment = new CommentsTable
+                var comments = new List<Comments>();
+                var notExistingComment = new Comments
                 {
                     Email = "info@smartshop.lt",
                     ShopId = 0,

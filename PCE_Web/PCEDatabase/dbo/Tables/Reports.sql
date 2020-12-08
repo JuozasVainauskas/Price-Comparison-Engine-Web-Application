@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[ReportsTable]
+﻿CREATE TABLE [dbo].[Reports]
 (
 	[ReportsId] INT NOT NULL PRIMARY KEY IDENTITY(1,1),
     [Email] NVARCHAR (MAX) NOT NULL,

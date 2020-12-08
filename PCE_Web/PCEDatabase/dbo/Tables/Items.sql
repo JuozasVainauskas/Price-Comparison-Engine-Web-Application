@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[ItemsTable]
+﻿CREATE TABLE [dbo].[Items]
 (
 	[ItemId] INT NOT NULL PRIMARY KEY IDENTITY (1, 1),
     [PageUrl]  NVARCHAR (MAX) NULL,

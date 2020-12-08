@@ -37,7 +37,7 @@ namespace PCE_Web.Models
         void WriteSavedItem(string pageUrl, string imgUrl, string shopName, string itemName, string price,
             string email);
 
-        List<CommentsTable> ReadComments(int index);
+        List<Comments> ReadComments(int index);
 
         bool IsAlreadyCommented(string email, int shopId);
 
