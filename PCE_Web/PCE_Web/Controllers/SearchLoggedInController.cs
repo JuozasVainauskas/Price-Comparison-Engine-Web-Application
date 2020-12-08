@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Runtime.Caching;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using PCE_Web.Classes;
 using PCE_Web.Models;
 
@@ -30,7 +32,7 @@ namespace PCE_Web.Controllers
             _httpClient = httpClient;
             _databaseManager = databaseManager;
         }
-
+        
         public async Task<IActionResult> Suggestions(string productName, string link, string pictureUrl, string seller, string name, string price)
         {
             SavingAnItemD savingAnItem = null;
@@ -39,7 +41,8 @@ namespace PCE_Web.Controllers
             {
                 SearchWord = productName;
             }
-            if (_databaseManager.ReadSearchedItems(SearchWord).Any())
+            var cachedItems = ProductsCache.GetCachedItems(SearchWord);
+            if (cachedItems != null)
             {
                 if (link != null)
                 {
@@ -52,9 +55,9 @@ namespace PCE_Web.Controllers
                     SuggestionsView.AlertBoxText = "Pasirinkite prekę, kurią norite išsaugoti arba naršykite toliau!";
                 }
                 var products = new List<Item>();
-                foreach (var item in _databaseManager.ReadSearchedItems(SearchWord))
+                foreach(var cachedItem in cachedItems)
                 {
-                    products.Add(item);
+                    products.Add(cachedItem);
                 }
                 var suggestionsView = new SuggestionsView { Products = products };
                 IsSaved = 0;
@@ -69,7 +72,7 @@ namespace PCE_Web.Controllers
                 }
                 var httpClient = _httpClient.CreateClient();
                 var products = await FetchAlgorithm.FetchAlgorithmaAsync(SearchWord, httpClient, _databaseManager);
-                _databaseManager.WriteSearchedItems(products, SearchWord);
+                ProductsCache.SetCachedItems(SearchWord, products);
                 var suggestionsView = new SuggestionsView { Products = products };
                 return View(suggestionsView);
             }
