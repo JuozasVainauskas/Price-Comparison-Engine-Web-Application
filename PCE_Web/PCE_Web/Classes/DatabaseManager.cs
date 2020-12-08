@@ -342,9 +342,7 @@ namespace PCE_Web.Classes
                 _pceDatabaseContext.SavedExceptions.Remove(result);
                 _pceDatabaseContext.SaveChanges();
             }
-            
         }
-
 
         public List<CommentsTable> ReadComments(int index)
         {
@@ -428,6 +426,9 @@ namespace PCE_Web.Classes
                 _pceDatabaseContext.SaveChanges();
             }
         }
+        public void WriteReportsWithSql(string email, string report)
+        {
+        }
 
         public List<Report> ReadReports(string email, int solvedID)
         {
@@ -443,6 +444,9 @@ namespace PCE_Web.Classes
                 _pceDatabaseContext.ReportsTable.Remove(result);
                 _pceDatabaseContext.SaveChanges();
             }
+        }
+        public void DeleteReportsWithSql(int id)
+        {
         }
 
         public bool IsReported(string email)

@@ -41,7 +41,7 @@ namespace PCE_Web.Controllers
 
         public IActionResult Delete (int id, string email)
         {
-            _databaseManager.DeleteReports(id);
+            _databaseManager.DeleteReportsWithSql(id);
 
             if(_databaseManager.ReadReports(email, 0).Any() || _databaseManager.ReadReports(email, 1).Any())
             {

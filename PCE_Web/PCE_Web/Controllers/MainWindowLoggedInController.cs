@@ -93,7 +93,7 @@ namespace PCE_Web.Controllers
 
         public IActionResult Report(string report)
         {
-            _databaseManager.WriteReports(User.Identity.Name,report);
+            _databaseManager.WriteReportsWithSql(User.Identity.Name,report);
             _emailSender.AnswerReportMessage(User.Identity.Name, 0);
             return RedirectToAction("Items", "MainWindowLoggedIn");
         }
