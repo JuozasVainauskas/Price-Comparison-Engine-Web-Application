@@ -11,8 +11,6 @@
 <link rel="stylesheet" href="~/css/styleForLoggedInWindow.css">
 <link rel="stylesheet" href="~/css/Loading.css">
 
-<div class="seperator"></div>
-
 <div class="text-center">
     <div id="alertBox" class="alert warning">
         <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
@@ -45,29 +43,31 @@
 <br>
 <h1>Iš viso išsaugotų prekių: @Model.ProductsSaved.Count</h1>
 <br>
-<table id="items">
+<div class="table-responsive">
+<table id="items" overflow="Scroll">
     <tr>
         <th>Nuotrauka</th>
         <th>Prekė</th>
         <th>Kaina</th>
-        <th>Ištrinti prekę</th>
+        <th></th>
     </tr>
     @foreach (var productSaved in @Model.ProductsSaved)
     {
         <tr>
-            <td><a href="@productSaved.Link"><img class="image" alt="product.jpg" src="@productSaved.Picture"></a></td>
-            <td>
+            <td align="center"><a href="@productSaved.Link"><img class="image" alt="product.jpg" src="@productSaved.Picture" style="max-width:100%; height:auto; width:auto;"></a></td>
+            <td align="center">
                 <button id="mvc-action-button" class="link" name="particularItem" onclick="location.href = '@Url.Action("ParticularItemLoggedIn", "ParticularItemLoggedIn", new { particularItem = productSaved.Name })'">
                     @productSaved.Name
                 </button>
             </td>
-            <td>@productSaved.Price</td>
-            <td>
-                <button id="mvc-action-button" class="myButton" onclick="location.href = '@Url.Action("Items", "MainWindowLoggedIn", new {link = productSaved.Link, pictureUrl = productSaved.Picture, seller = productSaved.Seller, name = productSaved.Name, price = productSaved.Price})'">Ištrinti</button>
+            <td align="center">@productSaved.Price</td>
+            <td align="center">
+               <div style="max-width:100%; height:auto; width:auto;"><button id="mvc-action-button" class="myButton" onclick="location.href = '@Url.Action("Items", "MainWindowLoggedIn", new {link = productSaved.Link, pictureUrl = productSaved.Picture, seller = productSaved.Seller, name = productSaved.Name, price = productSaved.Price})'"><i class="fa fa-eraser"></i></button></div>
             </td>
         </tr>
     }
 </table>
+</div>
 <br />
 <br />
 <!-- Footer -->
@@ -93,7 +93,7 @@
 <!--Modal window for advanced options-->
 
 <div class="modal fade" id="advancedModal" tabindex="-1" role="dialog" aria-labelledby="advancedModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="width:600px;height:700px;" role="document">
+    <div class="modal-dialog" style="height:700px;" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h2 class="modal-title" id="advancedModalLabel" style="color: green" bold>Papildomos parinktys</h2>
@@ -125,11 +125,6 @@
                         }
 
                     </form>
-                </div>
-                <div class="td" id="s-cover">
-                    <div class="form-actions">
-                        <button id="mvc-action-buttonn" type="submit" asp-controller="SearchSpecifications" asp-action="SuggestionsSpecifications" class="myButton" style="position: relative; left: 175px;">Ieškoti</button>
-                    </div>
                 </div>
             </div>
 

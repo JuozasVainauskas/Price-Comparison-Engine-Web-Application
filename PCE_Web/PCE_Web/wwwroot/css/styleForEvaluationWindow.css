@@ -1,11 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
 
-.seperator {
-    width: 100%;
-    height: 3px;
-    background-color: #64ca87;
-}
-
 .selection {
     display: flex;
     padding-left: 250px;
@@ -25,11 +19,13 @@
     height: 510px;
     overflow-y: scroll;
     direction: rtl;
+    margin-left:auto;
+    margin-right:auto;
 }
 
 .evaluation-container {
     position: relative;
-    width: 400px;
+    width: 330px;
     background: #64ca87;
     padding: 20px 30px;
     border: 1px solid #444;
@@ -132,7 +128,9 @@ form header {
 
 form .textarea {
     height: 100px;
-    width: 100%;
+    width: 80%;
+    margin-left:auto;
+    margin-right:auto;
     overflow: hidden;
 }
 
@@ -183,7 +181,7 @@ form .btn {
     border-radius: 5px;
     padding: 10px;
     margin: 10px 0;
-    width: 500px;
+    width: 60%;
     margin-left: auto;
     margin-right: auto;
 }
@@ -223,27 +221,11 @@ form .btn {
     color: #999;
 }
 
-/* Splitted screen*/
-
-* {
-    box-sizing: border-box;
-}
-
-.column {
-    float: left;
-    width: 50%;
-    padding: 10px;
-}
-
-.row:after {
-    content: "";
-    display: table;
-    clear: both;
-}
-
 /*Alignment*/
 
 .form-actions {
     padding-left:75px;
     padding-right:100px;
 }
+
+
