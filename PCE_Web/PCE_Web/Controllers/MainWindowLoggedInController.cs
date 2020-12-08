@@ -16,12 +16,14 @@ namespace PCE_Web.Controllers
         public static int IsDeletedOrSaved = 1;
         private readonly IDatabaseManager _databaseManager;
         private readonly IEmailSenderInterface _emailSender;
+        private readonly IProductsCache _productsCache;
         private readonly string[] _shops={"Avitela", "Gintarinė", "Barbora", "Rde", "BigBox", "Elektromarkt", "Pigu"};
 
-        public MainWindowLoggedInController(IDatabaseManager databaseManager, IEmailSenderInterface emailSender)
+        public MainWindowLoggedInController(IDatabaseManager databaseManager, IEmailSenderInterface emailSender, IProductsCache productsCache)
         {
             _databaseManager = databaseManager;
             _emailSender = emailSender;
+            _productsCache = productsCache;
         }
 
         public IActionResult Items(string link, string pictureUrl, string seller, string name, string price)
@@ -52,10 +54,15 @@ namespace PCE_Web.Controllers
             {
                 SlideshowView.AlertBoxText = "Sveiki sugrįžę!";
             }
-
-            if (_databaseManager.ReadSlidesList().Any())
+            var cachedItems = _productsCache.GetCachedItems();
+            if (cachedItems!=null)
             {
-                var products = _databaseManager.ReadSlidesList();
+                var products = new List<Slide>();
+                foreach (var cachedItem in cachedItems)
+                {
+                    products.Add(new Slide() { ImgUrl = cachedItem.Picture, PageUrl = cachedItem.Link});
+                }
+
                 var productsSaved = _databaseManager.ReadSavedItems(User.Identity.Name);
                
                 var slideshowView = new SlideshowView

@@ -8,6 +8,8 @@ namespace PCE_Web.Models
         void SetCachedItems(string key, List<Item> products);
 
         IEnumerable<Item> GetCachedItems(string key);
+
+        IEnumerable<Item> GetCachedItems();
     }
 
 }

@@ -15,6 +15,11 @@ namespace PCE_Web.Classes
         {
             _cache.Set(key, products, DateTimeOffset.Now.AddMinutes(5));
         }
+        public IEnumerable<Item> GetCachedItems()
+        {
+            var productsList = _cache as IEnumerable<Item>;
+            return productsList;
+        }
         public IEnumerable<Item> GetCachedItems(string key)
         {
             var productsList = _cache[key] as IEnumerable<Item>;
