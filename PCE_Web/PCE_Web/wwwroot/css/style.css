@@ -180,7 +180,6 @@ input[type="text"] {
 }
 
 button span {
-	position: absolute;
 	top: 68px;
 	left: 43px;
 	display: block;
@@ -188,12 +187,10 @@ button span {
 	height: 15px;
 	background-color: transparent;
 	border-radius: 10px;
-	transform: rotateZ(52deg);
 	transition: 0.5s ease all;
 }
 
 	button span:before, button span:after {
-		content: '';
 		position: absolute;
 		bottom: 0;
 		right: 0;

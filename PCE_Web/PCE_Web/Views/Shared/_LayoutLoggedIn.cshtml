@@ -98,25 +98,39 @@
     </div>
 
     <!-- Top menu -->
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="@Url.Action("Items", "MainWindowLoggedIn")">SmartShop.lt</a>
-            </div>
-            <ul class="nav navbar-nav">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="@Url.Action("Items", "MainWindowLoggedIn")">Navbar</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
                 @if (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Admin")
                 {
-                    <li><a asp-area="" asp-controller="Administration" asp-action="Admin">Administruoti</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Administration" asp-action="Admin" style="color:red;">Administruoti</a>
+                    </li>
                 }
-                <li><a asp-area="" asp-controller="Logging" asp-action="Logout">Atsijungti</a></li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="" asp-controller="Logging" asp-action="Logout">Atsijungti</a>
+                </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a asp-area="" asp-controller="Evaluation" asp-action="Evaluate">Parduotuvių įvertinimai</a></li>
-                <li><a href="#" data-toggle="modal" data-target="#dukModal">DUK</a></li>
-                <li><a href="#" data-toggle="modal" data-target="#reportModal">Susisiekite</a></li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="" asp-controller="Evaluation" asp-action="Evaluate">Parduotuvių įvertinimai</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-toggle="modal" data-target="#dukModal">Dažniausiai užduodami klausimai</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-toggle="modal" data-target="#reportModal">Susisiekite</a>
+                </li>
             </ul>
         </div>
     </nav>
+
     <div class="seperator"></div>
     @RenderBody()
 
