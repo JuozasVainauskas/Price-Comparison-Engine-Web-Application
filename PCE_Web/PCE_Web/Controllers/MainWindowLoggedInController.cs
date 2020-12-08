@@ -99,7 +99,6 @@ namespace PCE_Web.Controllers
                 IsDeletedOrSaved = 2;
                 return View(slideshowView);
             }
-  
         }
 
         public IActionResult Report(string report)
