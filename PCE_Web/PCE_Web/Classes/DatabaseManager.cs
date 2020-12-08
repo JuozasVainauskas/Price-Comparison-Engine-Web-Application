@@ -384,39 +384,6 @@ namespace PCE_Web.Classes
             }
         }
 
-        public void WriteSearchedItems(List<Item> items, string productName)
-        {
-            foreach (var item in items)
-            {
-                WriteSearchedItem(item.Link, item.Picture, item.Seller, item.Name, item.Price, productName);
-            }
-        }
-
-        public void WriteSearchedItem(string pageUrl, string imgUrl, string shopName, string itemName, string price, string keyword)
-        {
-            var result = _pceDatabaseContext.Items.SingleOrDefault(column => column.PageUrl == pageUrl && column.ImgUrl == imgUrl && column.ShopName == shopName && column.ItemName == itemName && column.PriceWithSymbol == price && column.Keyword == keyword);
-            if (result == null)
-            {
-                var itemsTable = new Items
-                {
-                    PageUrl = pageUrl,
-                    ImgUrl = imgUrl,
-                    ShopName = shopName,
-                    ItemName = itemName,
-                    PriceWithSymbol = price,
-                    Keyword = keyword
-                };
-                _pceDatabaseContext.Items.Add(itemsTable);
-                _pceDatabaseContext.SaveChanges();
-            }
-        }
-
-        public List<Item> ReadSearchedItems(string keyword)
-        {
-            var item = _pceDatabaseContext.Items.Where(column => column.Keyword == keyword).Select(column => new Item { Link = column.PageUrl, Picture = column.ImgUrl, Seller = column.ShopName, Name = column.ItemName, Price = column.PriceWithSymbol }).ToList();
-            return item;
-        }
-
         public void WriteReports(string email, string report)
         {
             if (report != null)

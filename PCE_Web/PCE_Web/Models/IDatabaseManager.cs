@@ -49,13 +49,6 @@ namespace PCE_Web.Models
 
         List<Exceptions> ReadLoggedExceptions();
 
-        void WriteSearchedItems(List<Item> items, string productName);
-
-        void WriteSearchedItem(string pageUrl, string imgUrl, string shopName, string itemName, string price,
-            string keyword);
-
-        List<Item> ReadSearchedItems(string keyword);
-
         void WriteReports(string email, string report);
 
         void WriteReportsWithSql(string email, string report);
