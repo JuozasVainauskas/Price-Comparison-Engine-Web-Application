@@ -25,12 +25,14 @@ namespace PCE_Web.Controllers
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
         private readonly IHttpClientFactory _httpClient;
         private readonly IDatabaseManager _databaseManager;
+        private readonly IProductsCache _productsCache;
         private delegate void SavingAnItemD(string link, string pictureUrl, string seller, string name, string price);
 
-        public SearchLoggedInController(IHttpClientFactory httpClient, IDatabaseManager databaseManager)
+        public SearchLoggedInController(IHttpClientFactory httpClient, IDatabaseManager databaseManager, IProductsCache productsCache)
         {
             _httpClient = httpClient;
             _databaseManager = databaseManager;
+            _productsCache = productsCache;
         }
         
         public async Task<IActionResult> Suggestions(string productName, string link, string pictureUrl, string seller, string name, string price)
@@ -41,7 +43,7 @@ namespace PCE_Web.Controllers
             {
                 SearchWord = productName;
             }
-            var cachedItems = IProductsCache.GetCachedItems(SearchWord);
+            var cachedItems = _productsCache.GetCachedItems(SearchWord);
             if (cachedItems != null)
             {
                 if (link != null)
@@ -72,7 +74,7 @@ namespace PCE_Web.Controllers
                 }
                 var httpClient = _httpClient.CreateClient();
                 var products = await FetchAlgorithm.FetchAlgorithmaAsync(SearchWord, httpClient, _databaseManager);
-                IProductsCache.SetCachedItems(SearchWord, products);
+                _productsCache.SetCachedItems(SearchWord, products);
                 var suggestionsView = new SuggestionsView { Products = products };
                 return View(suggestionsView);
             }
