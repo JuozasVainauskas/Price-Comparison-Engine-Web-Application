@@ -28,8 +28,6 @@ namespace PCE_Web.Models
 
         void ChangePassword(string email, string password, string passwordConfirm);
 
-        List<Slide> ReadSlidesList();
-
         void DeleteSavedItem(string email, Item item);
 
         List<Item> ReadSavedItems(string email);

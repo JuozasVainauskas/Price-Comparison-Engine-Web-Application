@@ -10,7 +10,6 @@ using Microsoft.EntityFrameworkCore.Internal;
 using PCE_Web.Models;
 using PCE_Web.Tables;
 
-//memory cash
 //startup su interface, multiple interface, interface grupės, inicijuoti tik reikalingus
 //group atvaizduoti prekių skaičių pagal kategoriją, pagal shop
 //aggregate-count
@@ -263,12 +262,6 @@ namespace PCE_Web.Classes
                     _pceDatabaseContext.SaveChanges();
                 }
             }
-        }
-
-        public List<Slide> ReadSlidesList()
-        {
-            var slidesList = _pceDatabaseContext.Items.Where(column => column.PriceWithSymbol.Length >= 6).Select(column => new Slide() { PageUrl = column.PageUrl, ImgUrl = column.ImgUrl }).ToList();
-            return slidesList;
         }
 
         public void DeleteSavedItem(string email, Item item)
