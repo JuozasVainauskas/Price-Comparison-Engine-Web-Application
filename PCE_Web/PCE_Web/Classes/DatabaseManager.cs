@@ -1,7 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Internal;
 using PCE_Web.Models;
 using PCE_Web.Tables;
 
@@ -51,6 +56,35 @@ namespace PCE_Web.Classes
                 result.Role = role;
                 _pceDatabaseContext.SaveChanges();
             }
+        }
+
+        public void SetRoleWithDataAdapter(string email, string role)
+        {
+            var sqlConnection = new SqlConnection(_pceDatabaseContext.Database.GetDbConnection().ConnectionString);
+            sqlConnection.Open();
+
+            var update = new SqlCommand
+            {
+                Connection = sqlConnection,
+                CommandType = CommandType.Text,
+                CommandText = "UPDATE UserData SET Role = @Role WHERE Email = @Email;"
+            };
+
+            update.Parameters.Add(new SqlParameter("@Role", SqlDbType.NVarChar, int.MaxValue, "Role"));
+            update.Parameters.Add(new SqlParameter("@Email", SqlDbType.NVarChar, int.MaxValue, "Email"));
+
+            var sqlDataAdapter = new SqlDataAdapter("SELECT Role, Email FROM UserData;", sqlConnection);
+            sqlDataAdapter.UpdateCommand = update;
+
+            var dataSet = new DataSet();
+            sqlDataAdapter.Fill(dataSet, "UserData");
+
+            dataSet.Tables[0].Rows[0]["Role"] = role;
+            dataSet.Tables[0].Rows[0]["Email"] = email;
+
+            sqlDataAdapter.Update(dataSet.Tables[0]);
+            sqlConnection.Close();
+            sqlDataAdapter.Dispose();
         }
 
         public void DeleteAccount(string email) 

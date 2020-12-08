@@ -108,7 +108,7 @@ namespace PCE_Web.Controllers
             var role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
             if (role == "Admin")
             {
-                _databaseManager.SetRole(email, roleId.ToString());
+                _databaseManager.SetRoleWithDataAdapter(email, roleId.ToString());
                 return RedirectToAction("Admin", "Administration", new { messageString = "Rolė suteikta sėkmingai" });
             }
             else

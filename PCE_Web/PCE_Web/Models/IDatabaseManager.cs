@@ -12,6 +12,8 @@ namespace PCE_Web.Models
     {
         void SetRole(string email, string role);
 
+        void SetRoleWithDataAdapter(string email, string role);
+
         void DeleteAccount(string email);
 
         void CreateAccount(string email, string password);
