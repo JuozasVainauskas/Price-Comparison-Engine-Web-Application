@@ -79,10 +79,11 @@ namespace PCE_Web.Classes
             var dataSet = new DataSet();
             sqlDataAdapter.Fill(dataSet, "UserData");
 
-            dataSet.Tables[0].Rows[0]["Role"] = role;
-            dataSet.Tables[0].Rows[0]["Email"] = email;
+            DataTable dataTable = dataSet.Tables["UserData"];
+            dataTable.Rows[0]["Role"] = role;
+            dataTable.Rows[0]["Email"] = email;
 
-            sqlDataAdapter.Update(dataSet.Tables[0]);
+            sqlDataAdapter.Update(dataSet, "UserData");
             sqlConnection.Close();
             sqlDataAdapter.Dispose();
         }
