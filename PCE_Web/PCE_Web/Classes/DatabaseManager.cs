@@ -61,31 +61,44 @@ namespace PCE_Web.Classes
         public void SetRoleWithDataAdapter(string email, string role)
         {
             var sqlConnection = new SqlConnection(_pceDatabaseContext.Database.GetDbConnection().ConnectionString);
-            sqlConnection.Open();
-
-            var update = new SqlCommand
-            {
-                Connection = sqlConnection,
-                CommandType = CommandType.Text,
-                CommandText = "UPDATE UserData SET Role = @Role WHERE Email = @Email;"
-            };
-
-            update.Parameters.Add(new SqlParameter("@Role", SqlDbType.NVarChar, int.MaxValue, "Role"));
-            update.Parameters.Add(new SqlParameter("@Email", SqlDbType.NVarChar, int.MaxValue, "Email"));
-
             var sqlDataAdapter = new SqlDataAdapter("SELECT Role, Email FROM UserData;", sqlConnection);
-            sqlDataAdapter.UpdateCommand = update;
+            try
+            {
+                if (sqlConnection.State == ConnectionState.Closed)
+                {
+                    sqlConnection.Open();
+                }
 
-            var dataSet = new DataSet();
-            sqlDataAdapter.Fill(dataSet, "UserData");
+                var update = new SqlCommand
+                {
+                    Connection = sqlConnection,
+                    CommandType = CommandType.Text,
+                    CommandText = "UPDATE UserData SET Role = @Role WHERE Email = @Email;"
+                };
 
-            DataTable dataTable = dataSet.Tables["UserData"];
-            dataTable.Rows[0]["Role"] = role;
-            dataTable.Rows[0]["Email"] = email;
+                update.Parameters.Add(new SqlParameter("@Role", SqlDbType.NVarChar, int.MaxValue, "Role"));
+                update.Parameters.Add(new SqlParameter("@Email", SqlDbType.NVarChar, int.MaxValue, "Email"));
 
-            sqlDataAdapter.Update(dataSet, "UserData");
-            sqlConnection.Close();
-            sqlDataAdapter.Dispose();
+                sqlDataAdapter.UpdateCommand = update;
+
+                var dataSet = new DataSet();
+                sqlDataAdapter.Fill(dataSet, "UserData");
+
+                DataTable dataTable = dataSet.Tables["UserData"];
+                dataTable.Rows[0]["Role"] = role;
+                dataTable.Rows[0]["Email"] = email;
+
+                sqlDataAdapter.Update(dataSet, "UserData");
+            }
+            catch (Exception ex)
+            {
+                WriteLoggedExceptions(ex.Message, ex.Source, ex.StackTrace, DateTime.UtcNow.ToString());
+            }
+            finally
+            {
+                sqlConnection.Close();
+                sqlDataAdapter.Dispose();
+            }
         }
 
         public void DeleteAccount(string email) 

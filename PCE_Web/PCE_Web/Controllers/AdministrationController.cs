@@ -108,8 +108,16 @@ namespace PCE_Web.Controllers
             var role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
             if (role == "Admin")
             {
-                _databaseManager.SetRoleWithDataAdapter(email, roleId.ToString());
-                return RedirectToAction("Admin", "Administration", new { messageString = "Rolė suteikta sėkmingai" });
+                var temp = _databaseManager.ReadUsersList().FindAll(x => x.Email == email);
+                if (temp.Count > 0)
+                {
+                    _databaseManager.SetRoleWithDataAdapter(email, roleId.ToString());
+                    return RedirectToAction("Admin", "Administration", new { messageString = "Rolė suteikta sėkmingai" });
+                }
+                else
+                {
+                    return RedirectToAction("Admin", "Administration", new { messageString = "Toks vartotojas neegzistuoja!" });
+                }
             }
             else
             {
