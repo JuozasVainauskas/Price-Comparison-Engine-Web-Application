@@ -11,8 +11,6 @@ using PCE_Web.Models;
 using PCE_Web.Tables;
 
 //memory cash
-//nutrinti table
-//nutrinti max
 //string i int
 //startup su interface, multiple interface, interface grupės, inicijuoti tik reikalingus
 //group atvaizduoti prekių skaičių pagal kategoriją, pagal shop

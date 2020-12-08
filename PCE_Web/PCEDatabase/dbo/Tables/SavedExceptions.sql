@@ -4,5 +4,5 @@
     [Message] NVARCHAR (MAX) NOT NULL, 
     [StackTrace] NVARCHAR(MAX) NOT NULL, 
     [Source] NVARCHAR(MAX) NOT NULL, 
-    [Date] NVARCHAR(MAX) NOT NULL
+    [Date] NVARCHAR(255) NOT NULL
 )
