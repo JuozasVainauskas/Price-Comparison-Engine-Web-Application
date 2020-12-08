@@ -15,9 +15,16 @@ namespace PCE_Web.Classes
         {
             _cache.Set(key, products, DateTimeOffset.Now.AddMinutes(5));
         }
-        public IEnumerable<Item> GetCachedItems()
+
+        public List<IEnumerable<Item>> GetCachedItems()
         {
-            var productsList = _cache as IEnumerable<Item>;
+            var productsList = new List<IEnumerable<Item>>();
+            var cacheKeys = MemoryCache.Default.Select(kvp => kvp.Key).ToList();
+            foreach(var cacheKey in cacheKeys)
+            {
+                productsList.Add(_cache[cacheKey] as IEnumerable<Item>);
+            }
+            
             return productsList;
         }
         public IEnumerable<Item> GetCachedItems(string key)

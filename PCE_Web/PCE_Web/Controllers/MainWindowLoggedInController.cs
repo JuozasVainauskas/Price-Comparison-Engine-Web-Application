@@ -60,7 +60,11 @@ namespace PCE_Web.Controllers
                 var products = new List<Slide>();
                 foreach (var cachedItem in cachedItems)
                 {
-                    products.Add(new Slide() { ImgUrl = cachedItem.Picture, PageUrl = cachedItem.Link});
+                    foreach(var cachedItema in cachedItem)
+                    {
+                        products.Add(new Slide() { ImgUrl = cachedItema.Picture, PageUrl = cachedItema.Link });
+                    }
+                    
                 }
 
                 var productsSaved = _databaseManager.ReadSavedItems(User.Identity.Name);

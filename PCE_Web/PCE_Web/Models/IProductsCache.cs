@@ -9,7 +9,7 @@ namespace PCE_Web.Models
 
         IEnumerable<Item> GetCachedItems(string key);
 
-        IEnumerable<Item> GetCachedItems();
+        List<IEnumerable<Item>> GetCachedItems();
     }
 
 }
