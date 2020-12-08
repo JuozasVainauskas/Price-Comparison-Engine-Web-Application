@@ -6,5 +6,5 @@
     [ImgUrl] NVARCHAR(MAX) NULL, 
     [ShopName] NVARCHAR(255) NULL, 
     [ItemName] NVARCHAR(MAX) NULL, 
-    [Price] NVARCHAR(MAX) NULL
+    [PriceWithSymbol] NVARCHAR(MAX) NULL
 )

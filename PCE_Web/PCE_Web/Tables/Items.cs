@@ -10,7 +10,7 @@ namespace PCE_Web.Tables
         public string ImgUrl { get; set; }
         public string ShopName { get; set; }
         public string ItemName { get; set; }
-        public string Price { get; set; }
+        public string PriceWithSymbol { get; set; }
         public string Keyword { get; set; }
     }
 }

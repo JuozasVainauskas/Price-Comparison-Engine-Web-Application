@@ -268,7 +268,7 @@ namespace PCE_Web.Classes
 
         public List<Slide> ReadSlidesList()
         {
-            var slidesList = _pceDatabaseContext.Items.Where(column => column.Price.Length >= 6).Select(column => new Slide() { PageUrl = column.PageUrl, ImgUrl = column.ImgUrl }).ToList();
+            var slidesList = _pceDatabaseContext.Items.Where(column => column.PriceWithSymbol.Length >= 6).Select(column => new Slide() { PageUrl = column.PageUrl, ImgUrl = column.ImgUrl }).ToList();
             return slidesList;
         }
 
@@ -276,7 +276,7 @@ namespace PCE_Web.Classes
         {
             var result = _pceDatabaseContext.SavedItems.SingleOrDefault(column =>
                 column.Email == email && column.PageUrl == item.Link && column.ImgUrl == item.Picture &&
-                column.ShopName == item.Seller && column.ItemName == item.Name && column.Price == item.Price);
+                column.ShopName == item.Seller && column.ItemName == item.Name && column.PriceWithSymbol == item.Price);
 
             if (result != null)
             {
@@ -288,7 +288,7 @@ namespace PCE_Web.Classes
         public List<Item> ReadSavedItems(string email)
         {
             var items = _pceDatabaseContext.SavedItems.Where(column => column.Email == email).Select(column => new Item
-                    {Link = column.PageUrl, Picture = column.ImgUrl, Seller = column.ShopName, Name = column.ItemName, Price = column.Price}).ToList();
+                    {Link = column.PageUrl, Picture = column.ImgUrl, Seller = column.ShopName, Name = column.ItemName, Price = column.PriceWithSymbol }).ToList();
 
             return items;
         }
@@ -298,7 +298,7 @@ namespace PCE_Web.Classes
             
             var result = _pceDatabaseContext.SavedItems.SingleOrDefault(column =>
                 column.PageUrl == pageUrl && column.ImgUrl == imgUrl && column.ShopName == shopName && column.ItemName == itemName &&
-                column.Price == price && column.Email == email);
+                column.PriceWithSymbol == price && column.Email == email);
 
             if (result == null)
             {
@@ -308,7 +308,7 @@ namespace PCE_Web.Classes
                     ImgUrl = imgUrl,
                     ShopName = shopName,
                     ItemName = itemName,
-                    Price = price,
+                    PriceWithSymbol = price,
                     Email = email
                 };
                 _pceDatabaseContext.SavedItems.Add(savedItems);
@@ -395,7 +395,7 @@ namespace PCE_Web.Classes
 
         public void WriteSearchedItem(string pageUrl, string imgUrl, string shopName, string itemName, string price, string keyword)
         {
-            var result = _pceDatabaseContext.Items.SingleOrDefault(column => column.PageUrl == pageUrl && column.ImgUrl == imgUrl && column.ShopName == shopName && column.ItemName == itemName && column.Price == price && column.Keyword == keyword);
+            var result = _pceDatabaseContext.Items.SingleOrDefault(column => column.PageUrl == pageUrl && column.ImgUrl == imgUrl && column.ShopName == shopName && column.ItemName == itemName && column.PriceWithSymbol == price && column.Keyword == keyword);
             if (result == null)
             {
                 var itemsTable = new Items
@@ -404,7 +404,7 @@ namespace PCE_Web.Classes
                     ImgUrl = imgUrl,
                     ShopName = shopName,
                     ItemName = itemName,
-                    Price = price,
+                    PriceWithSymbol = price,
                     Keyword = keyword
                 };
                 _pceDatabaseContext.Items.Add(itemsTable);
@@ -414,7 +414,7 @@ namespace PCE_Web.Classes
 
         public List<Item> ReadSearchedItems(string keyword)
         {
-            var item = _pceDatabaseContext.Items.Where(column => column.Keyword == keyword).Select(column => new Item { Link = column.PageUrl, Picture = column.ImgUrl, Seller = column.ShopName, Name = column.ItemName, Price = column.Price }).ToList();
+            var item = _pceDatabaseContext.Items.Where(column => column.Keyword == keyword).Select(column => new Item { Link = column.PageUrl, Picture = column.ImgUrl, Seller = column.ShopName, Name = column.ItemName, Price = column.PriceWithSymbol }).ToList();
             return item;
         }
 
