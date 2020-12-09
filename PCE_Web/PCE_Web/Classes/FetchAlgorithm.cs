@@ -19,23 +19,23 @@ namespace PCE_Web.Classes
         public static int SoldOut;
         public delegate void WriteData<THtmlNode, TItem>(List<THtmlNode> productListItems, List<TItem> products);
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
-        public static async Task<List<Item>> FetchAlgorithmaAsync(string SearchWord, HttpClient httpClient, IDatabaseManager databaseManager)
+        public static async Task<List<Item>> FetchAlgorithmaAsync(string SearchWord, HttpClient httpClient, IExceptionsManager exceptionsManager)
         {
             var products = new List<Item>();
-            await ReadingItemsAsync(SearchWord, products, httpClient,databaseManager);
+            await ReadingItemsAsync(SearchWord, products, httpClient, exceptionsManager);
             products = SortAndInsert(products);
             return products;
         }
   
-        private static async Task ReadingItemsAsync(string productName, List<Item> products, HttpClient httpClient, IDatabaseManager databaseManager)
+        private static async Task ReadingItemsAsync(string productName, List<Item> products, HttpClient httpClient, IExceptionsManager exceptionsManager)
         {
-            var gettingRde = await Task.Factory.StartNew(() => GettingItemsFromRde(productName, products, httpClient, databaseManager));
-            var gettingBarbora = await Task.Factory.StartNew(() => GettingItemsFromBarbora(productName, products, httpClient, databaseManager));
-            var gettingAvitela = await Task.Factory.StartNew(() => GettingItemsFromAvitela(productName, products, httpClient, databaseManager));
-            var gettingPigu = await Task.Factory.StartNew(() => GettingItemsFromPigu(productName, products, httpClient, databaseManager));
-            var gettingGintarine = await Task.Factory.StartNew(() => GettingItemsFromGintarineVaistine(productName, products, httpClient, databaseManager));
-            var gettingElektromarkt = await Task.Factory.StartNew(() => GettingItemsFromElektromarkt(productName, products, httpClient, databaseManager));
-            var gettingBigBox = await Task.Factory.StartNew(() => GettingItemsFromBigBox(productName, products, httpClient, databaseManager));
+            var gettingRde = await Task.Factory.StartNew(() => GettingItemsFromRde(productName, products, httpClient, exceptionsManager));
+            var gettingBarbora = await Task.Factory.StartNew(() => GettingItemsFromBarbora(productName, products, httpClient, exceptionsManager));
+            var gettingAvitela = await Task.Factory.StartNew(() => GettingItemsFromAvitela(productName, products, httpClient, exceptionsManager));
+            var gettingPigu = await Task.Factory.StartNew(() => GettingItemsFromPigu(productName, products, httpClient, exceptionsManager));
+            var gettingGintarine = await Task.Factory.StartNew(() => GettingItemsFromGintarineVaistine(productName, products, httpClient, exceptionsManager));
+            var gettingElektromarkt = await Task.Factory.StartNew(() => GettingItemsFromElektromarkt(productName, products, httpClient, exceptionsManager));
+            var gettingBigBox = await Task.Factory.StartNew(() => GettingItemsFromBigBox(productName, products, httpClient, exceptionsManager));
             var taskList = new List<Task>
             {
                 gettingRde, gettingBarbora, gettingAvitela, gettingPigu, gettingGintarine, gettingElektromarkt,
@@ -44,7 +44,7 @@ namespace PCE_Web.Classes
             Task.WaitAll(taskList.ToArray());
         }
 
-        private static async Task GettingItemsFromRde(string productName, List<Item> products, HttpClient httpClient, IDatabaseManager databaseManager)
+        private static async Task GettingItemsFromRde(string productName, List<Item> products, HttpClient httpClient, IExceptionsManager exceptionsManager)
         {
             try
             {
@@ -56,10 +56,10 @@ namespace PCE_Web.Classes
             }
             catch (Exception e)
             {
-                databaseManager.WriteLoggedExceptions("Exception Rde: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
+                exceptionsManager.WriteLoggedExceptions("Exception Rde: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
             }
         }
-        private static async Task GettingItemsFromBarbora(string productName, List<Item> products, HttpClient httpClient, IDatabaseManager databaseManager)
+        private static async Task GettingItemsFromBarbora(string productName, List<Item> products, HttpClient httpClient, IExceptionsManager exceptionsManager)
         {
             try
             {
@@ -71,11 +71,11 @@ namespace PCE_Web.Classes
             }
             catch (Exception e)
             {
-                databaseManager.WriteLoggedExceptions("Exception Barbora: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
+                exceptionsManager.WriteLoggedExceptions("Exception Barbora: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
             }
         }
 
-        private static async Task GettingItemsFromAvitela(string productName, List<Item> products, HttpClient httpClient, IDatabaseManager databaseManager)
+        private static async Task GettingItemsFromAvitela(string productName, List<Item> products, HttpClient httpClient, IExceptionsManager exceptionsManager)
         {
             try
             {
@@ -87,11 +87,11 @@ namespace PCE_Web.Classes
             }
             catch (Exception e)
             {
-                databaseManager.WriteLoggedExceptions("Exception Avitela: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
+                exceptionsManager.WriteLoggedExceptions("Exception Avitela: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
             }
         }
 
-        private static async Task GettingItemsFromPigu(string productName, List<Item> products, HttpClient httpClient, IDatabaseManager databaseManager)
+        private static async Task GettingItemsFromPigu(string productName, List<Item> products, HttpClient httpClient, IExceptionsManager exceptionsManager)
         {
             try
             {
@@ -103,11 +103,11 @@ namespace PCE_Web.Classes
             }
             catch (Exception e)
             {
-                databaseManager.WriteLoggedExceptions("Exception Pigu: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
+                exceptionsManager.WriteLoggedExceptions("Exception Pigu: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
             }
         }
 
-        private static async Task GettingItemsFromBigBox(string productName, List<Item> products, HttpClient httpClient, IDatabaseManager databaseManager)
+        private static async Task GettingItemsFromBigBox(string productName, List<Item> products, HttpClient httpClient, IExceptionsManager exceptionsManager)
         {
             try
             {
@@ -119,11 +119,11 @@ namespace PCE_Web.Classes
             }
             catch (Exception e)
             {
-                databaseManager.WriteLoggedExceptions("Exception BigBox: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
+                exceptionsManager.WriteLoggedExceptions("Exception BigBox: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
             }
         }
 
-        private static async Task GettingItemsFromGintarineVaistine(string productName, List<Item> products, HttpClient httpClient, IDatabaseManager databaseManager)
+        private static async Task GettingItemsFromGintarineVaistine(string productName, List<Item> products, HttpClient httpClient, IExceptionsManager exceptionsManager)
         {
             try
             {
@@ -135,11 +135,11 @@ namespace PCE_Web.Classes
             }
             catch (Exception e)
             {
-                databaseManager.WriteLoggedExceptions("Exception Gitarine Vaistine: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
+                exceptionsManager.WriteLoggedExceptions("Exception Gitarine Vaistine: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
             }
         }
 
-        private static async Task GettingItemsFromElektromarkt(string productName, List<Item> products, HttpClient httpClient, IDatabaseManager databaseManager)
+        private static async Task GettingItemsFromElektromarkt(string productName, List<Item> products, HttpClient httpClient, IExceptionsManager exceptionsManager)
         {
             try
             {
@@ -151,7 +151,7 @@ namespace PCE_Web.Classes
             }
             catch (Exception e)
             {
-                databaseManager.WriteLoggedExceptions("Exception Elektromarkt: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
+                exceptionsManager.WriteLoggedExceptions("Exception Elektromarkt: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
             }
         }
 

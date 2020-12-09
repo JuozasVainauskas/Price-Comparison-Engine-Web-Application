@@ -10,7 +10,7 @@ namespace PCE_Web.Models
 {
     public interface IDatabaseManager
     {
-        void SetRole(string email, string role);
+       /* void SetRole(string email, string role);
 
         void DeleteAccount(string email);
 
@@ -53,6 +53,6 @@ namespace PCE_Web.Models
 
         bool IsReported(string email);
 
-        void MarkAsSolved(int id);
+        void MarkAsSolved(int id);*/
     }
 }

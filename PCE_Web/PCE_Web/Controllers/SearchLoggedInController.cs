@@ -24,15 +24,17 @@ namespace PCE_Web.Controllers
         public delegate void WriteData<THtmlNode, TItem>(List<THtmlNode> productListItems, List<TItem> products);
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
         private readonly IHttpClientFactory _httpClient;
-        private readonly IDatabaseManager _databaseManager;
+        private readonly ISavedItemsManager _savedItemsManager;
         private readonly IProductsCache _productsCache;
+        private readonly IExceptionsManager _exceptionsManager;
         private delegate void SavingAnItemD(string link, string pictureUrl, string seller, string name, string price);
 
-        public SearchLoggedInController(IHttpClientFactory httpClient, IDatabaseManager databaseManager, IProductsCache productsCache)
+        public SearchLoggedInController(IHttpClientFactory httpClient, ISavedItemsManager savedItemsManager, IProductsCache productsCache, IExceptionsManager exceptionsManager)
         {
             _httpClient = httpClient;
-            _databaseManager = databaseManager;
+            _savedItemsManager = savedItemsManager;
             _productsCache = productsCache;
+            _exceptionsManager = exceptionsManager;
         }
         
         public async Task<IActionResult> Suggestions(string productName, string link, string pictureUrl, string seller, string name, string price)
@@ -73,7 +75,7 @@ namespace PCE_Web.Controllers
                     savingAnItem(link, pictureUrl, seller, name, price);
                 }
                 var httpClient = _httpClient.CreateClient();
-                var products = await FetchAlgorithm.FetchAlgorithmaAsync(SearchWord, httpClient, _databaseManager);
+                var products = await FetchAlgorithm.FetchAlgorithmaAsync(SearchWord, httpClient, _exceptionsManager);
                 _productsCache.SetCachedItems(SearchWord, products);
                 var suggestionsView = new SuggestionsView { Products = products };
                 return View(suggestionsView);
@@ -82,7 +84,7 @@ namespace PCE_Web.Controllers
 
         public void SavingAnItem(string link, string pictureUrl, string seller, string name, string price)
         {
-            _databaseManager.WriteSavedItem(link, pictureUrl, seller, name, price, User.Identity.Name);
+            _savedItemsManager.WriteSavedItem(link, pictureUrl, seller, name, price, User.Identity.Name);
         }
     }
 }
