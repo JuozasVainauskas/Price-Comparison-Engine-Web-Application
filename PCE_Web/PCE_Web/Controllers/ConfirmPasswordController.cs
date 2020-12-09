@@ -13,12 +13,12 @@ namespace PCE_Web.Controllers
     public class ConfirmPasswordController : Controller
     {
         private static string _confirmCode;
-        private readonly IDatabaseManager _databaseManager;
+        private readonly IAccountManager _accountManager;
         private readonly IEmailSenderInterface _emailSender;
 
-        public ConfirmPasswordController(IDatabaseManager databaseManager, IEmailSenderInterface emailSender)
+        public ConfirmPasswordController(IAccountManager accountManager, IEmailSenderInterface emailSender)
         {
-            _databaseManager = databaseManager;
+            _accountManager = accountManager;
             _emailSender = emailSender;
         }
 
@@ -51,7 +51,7 @@ namespace PCE_Web.Controllers
                 var email = TempData["userEmail"].ToString();
                 var password = TempData["userPassword"].ToString();
 
-                _databaseManager.RegisterUser(email, password);
+                _accountManager.RegisterUser(email, password);
                 MainWindowLoggedInController.IsDeletedOrSaved = 1;
 
                 var claims = new List<Claim>
