@@ -9,7 +9,7 @@ using PCE_Web.Models;
 
 namespace PCE_Web.Classes
 {
-    internal class EmailSender : IEmailSenderInterface
+    internal class EmailSender : IEmailSender
     {
         private readonly UserOptions _userOptions;
 

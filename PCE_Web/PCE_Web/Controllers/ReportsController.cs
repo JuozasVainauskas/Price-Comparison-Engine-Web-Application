@@ -14,9 +14,9 @@ namespace PCE_Web.Controllers
     public class ReportsController : Controller
     {
         private readonly IReportsManager _reportsManager;
-        private readonly IEmailSenderInterface _emailSender;
+        private readonly IEmailSender _emailSender;
 
-        public ReportsController(IReportsManager reportsManager, IEmailSenderInterface emailSender)
+        public ReportsController(IReportsManager reportsManager, IEmailSender emailSender)
         {
             _reportsManager = reportsManager;
             _emailSender = emailSender;

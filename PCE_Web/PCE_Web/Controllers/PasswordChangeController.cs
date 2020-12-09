@@ -9,9 +9,9 @@ namespace PCE_Web.Controllers
     {
         private readonly IAccountManager _accountManager;
 
-        private readonly IEmailSenderInterface _emailSender;
+        private readonly IEmailSender _emailSender;
 
-        public PasswordChangeController(IAccountManager accountManager, IEmailSenderInterface emailSender)
+        public PasswordChangeController(IAccountManager accountManager, IEmailSender emailSender)
         {
             _accountManager = accountManager;
             _emailSender = emailSender;

@@ -58,7 +58,7 @@ namespace PCE_Web
             services.AddScoped<IReportsManager, ReportsManager>();
             services.AddScoped<ISavedItemsManager, SavedItemsManager>();
             services.AddScoped<IExceptionsManager, ExceptionsManager>();
-            services.AddScoped<IEmailSenderInterface, EmailSender>();
+            services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<IProductsCache, ProductsCache>();
             services.AddHttpClient();
         }

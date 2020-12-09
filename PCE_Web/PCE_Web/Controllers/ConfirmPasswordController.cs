@@ -14,9 +14,9 @@ namespace PCE_Web.Controllers
     {
         private static string _confirmCode;
         private readonly IAccountManager _accountManager;
-        private readonly IEmailSenderInterface _emailSender;
+        private readonly IEmailSender _emailSender;
 
-        public ConfirmPasswordController(IAccountManager accountManager, IEmailSenderInterface emailSender)
+        public ConfirmPasswordController(IAccountManager accountManager, IEmailSender emailSender)
         {
             _accountManager = accountManager;
             _emailSender = emailSender;

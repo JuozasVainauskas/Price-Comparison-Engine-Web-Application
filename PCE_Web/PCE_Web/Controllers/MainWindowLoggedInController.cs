@@ -16,11 +16,11 @@ namespace PCE_Web.Controllers
         public static int IsDeletedOrSaved = 1;
         private readonly IReportsManager _reportsManager;
         private readonly ISavedItemsManager _savedItemsManager;
-        private readonly IEmailSenderInterface _emailSender;
+        private readonly IEmailSender _emailSender;
         private readonly IProductsCache _productsCache;
         private readonly string[] _shops={"Avitela", "Gintarinė", "Barbora", "Rde", "BigBox", "Elektromarkt", "Pigu"};
 
-        public MainWindowLoggedInController(IEmailSenderInterface emailSender, IProductsCache productsCache, IReportsManager reportsManager, ISavedItemsManager savedItemsManager)
+        public MainWindowLoggedInController(IEmailSender emailSender, IProductsCache productsCache, IReportsManager reportsManager, ISavedItemsManager savedItemsManager)
         {
             _emailSender = emailSender;
             _productsCache = productsCache;
