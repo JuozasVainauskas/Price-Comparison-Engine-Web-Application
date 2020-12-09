@@ -12,8 +12,6 @@ namespace PCE_Web.Models
     {
         void SetRole(string email, string role);
 
-        void SetRoleWithDataAdapter(string email, string role);
-
         void DeleteAccount(string email);
 
         void CreateAccount(string email, string password);
@@ -49,13 +47,9 @@ namespace PCE_Web.Models
 
         void WriteReports(string email, string report);
 
-        void WriteReportsWithSql(string email, string report);
-
-        List<Report> ReadReports(string email, int solvedID);
+        List<Report> ReadReports(string email, int solvedId);
 
         void DeleteReports(int id);
-
-        void DeleteReportsWithSql(int id);
 
         bool IsReported(string email);
 

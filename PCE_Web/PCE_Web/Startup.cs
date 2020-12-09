@@ -54,7 +54,11 @@ namespace PCE_Web
             services.AddDbContext<PCEDatabaseContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("PCEConnectionString")));
             services.AddScoped<IDatabaseManager, DatabaseManager>();
-            services.AddScoped<IEmailSenderInterface, EmailSender>();
+            services.AddScoped<IAccountManager, AccountManager>();
+            services.AddScoped<ICommentsManager, CommentsManager>();
+            services.AddScoped<IReportsManager, ReportsManager>();
+            services.AddScoped<ISavedItemsManager, SavedItemsManager>();
+            services.AddScoped<IExceptionsManager, ExceptionsManager>();
             services.AddScoped<IProductsCache, ProductsCache>();
             services.AddHttpClient();
         }

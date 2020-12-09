@@ -420,9 +420,9 @@ namespace PCE_Web.Classes
             }
         }
 
-        public List<Report> ReadReports(string email, int solvedID)
+        public List<Report> ReadReports(string email, int solvedId)
         {
-            var comments = _pceDatabaseContext.Reports.Where(column => column.Email == email && column.Solved == solvedID).Select(column => new Report { Comment = column.Comment, ID = column.ReportsId, Date = column.Date, Email = column.Email }).ToList();
+            var comments = _pceDatabaseContext.Reports.Where(column => column.Email == email && column.Solved == solvedId).Select(column => new Report { Comment = column.Comment, ID = column.ReportsId, Date = column.Date, Email = column.Email }).ToList();
             return comments;
         }
 

@@ -111,7 +111,7 @@ namespace PCE_Web.Controllers
                 var temp = _databaseManager.ReadUsersList().FindAll(x => x.Email == email);
                 if (temp.Count > 0)
                 {
-                    _databaseManager.SetRoleWithDataAdapter(email, roleId.ToString());
+                    _databaseManager.SetRole(email, roleId.ToString());
                     return RedirectToAction("Admin", "Administration", new { messageString = "Rolė suteikta sėkmingai" });
                 }
                 else
