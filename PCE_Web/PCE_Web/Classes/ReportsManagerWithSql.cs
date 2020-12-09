@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 using PCE_Web.Models;
 using PCE_Web.Tables;
 
@@ -12,9 +13,11 @@ namespace PCE_Web.Classes
     public class ReportsManagerWithSql : IReportsManager
     {
         private readonly PCEDatabaseContext _pceDatabaseContext;
+        private readonly IExceptionsManager _exceptionsManager;
 
-        public ReportsManagerWithSql(PCEDatabaseContext pceDatabaseContext)
+        public ReportsManagerWithSql(IExceptionsManager exceptionsManager, PCEDatabaseContext pceDatabaseContext)
         {
+            _exceptionsManager = exceptionsManager;
             _pceDatabaseContext = pceDatabaseContext;
         }
 
@@ -38,7 +41,7 @@ namespace PCE_Web.Classes
             }
             catch (Exception ex)
             {
-                //WriteLoggedExceptions(ex.Message, ex.Source, ex.StackTrace, DateTime.UtcNow.ToString());
+                _exceptionsManager.WriteLoggedExceptions(ex.Message, ex.Source, ex.StackTrace, DateTime.UtcNow.ToString());
             }
             finally
             {
@@ -69,7 +72,7 @@ namespace PCE_Web.Classes
             }
             catch (Exception ex)
             {
-                //WriteLoggedExceptions(ex.Message, ex.Source, ex.StackTrace, DateTime.UtcNow.ToString());
+                _exceptionsManager.WriteLoggedExceptions(ex.Message, ex.Source, ex.StackTrace, DateTime.UtcNow.ToString());
             }
             finally
             {
@@ -90,24 +93,8 @@ namespace PCE_Web.Classes
             }
         }
 
-        //public void MarkAsSolved(int id)
-        //{
-        //    _pceDatabaseContext.Reports.Where(column => column.ReportsId == id && column.Solved == 0).ToList().ForEach(column => column.Solved = 1);
-        //    _pceDatabaseContext.SaveChanges();
-        //}
-
         public void MarkAsSolved(int id)
         {
-            List<Reports> list = _pceDatabaseContext.Reports.Where(column => column.ReportsId == id && column.Solved == 0).ToList();
-            foreach (var report in list)
-            {
-                Console.WriteLine(report.ReportsId);
-                Console.WriteLine(report.Comment);
-                Console.WriteLine(report.Email);
-                Console.WriteLine(report.Solved);
-            }
-            Console.WriteLine("Id " + id);
-
             var sqlConnection = new SqlConnection(_pceDatabaseContext.Database.GetDbConnection().ConnectionString);
             var sqlDataAdapter = new SqlDataAdapter("SELECT ReportsId, Solved FROM Reports;", sqlConnection);
             try
@@ -121,10 +108,10 @@ namespace PCE_Web.Classes
                 {
                     Connection = sqlConnection,
                     CommandType = CommandType.Text,
-                    CommandText = "UPDATE Reports SET Solved = 1 WHERE ReportsId = @Id AND Solved = 0;"
+                    CommandText = "UPDATE Reports SET Solved = 1 WHERE ReportsId = @ReportsId AND Solved = 0;"
                 };
 
-                update.Parameters.Add(new SqlParameter("@Id", SqlDbType.NVarChar, int.MaxValue, "Id"));
+                update.Parameters.Add(new SqlParameter("@ReportsId", SqlDbType.NVarChar, int.MaxValue, "ReportsId"));
 
                 sqlDataAdapter.UpdateCommand = update;
 
@@ -132,13 +119,13 @@ namespace PCE_Web.Classes
                 sqlDataAdapter.Fill(dataSet, "Reports");
 
                 DataTable dataTable = dataSet.Tables["Reports"];
-                dataTable.Rows[0]["Id"] = id;
+                dataTable.Rows[0]["ReportsId"] = id;
 
                 sqlDataAdapter.Update(dataSet, "Reports");
             }
             catch (Exception ex)
             {
-                //WriteLoggedExceptions(ex.Message, ex.Source, ex.StackTrace, DateTime.UtcNow.ToString());
+                _exceptionsManager.WriteLoggedExceptions(ex.Message, ex.Source, ex.StackTrace, DateTime.UtcNow.ToString());
             }
             finally
             {
