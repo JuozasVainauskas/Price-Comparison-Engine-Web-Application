@@ -55,7 +55,8 @@ namespace PCE_Web
                 options.UseSqlServer(Configuration.GetConnectionString("PCEConnectionString")));
             services.AddScoped<IAccountManager, AccountManager>();
             services.AddScoped<ICommentsManager, CommentsManager>();
-            services.AddScoped<IReportsManager, ReportsManager>();
+            //services.AddScoped<IReportsManager, ReportsManager>();
+            services.AddScoped<IReportsManager, ReportsManagerWithSql>();
             services.AddScoped<ISavedItemsManager, SavedItemsManager>();
             services.AddScoped<IExceptionsManager, ExceptionsManager>();
             services.AddScoped<IEmailSender, EmailSender>();

@@ -92,51 +92,61 @@ namespace PCE_Web.Classes
 
         public void MarkAsSolved(int id)
         {
+            List<Reports> list = _pceDatabaseContext.Reports.Where(column => column.ReportsId == id && column.Solved == 0).ToList();
+            foreach (var report in list)
+            {
+                Console.WriteLine(report);
+            }
+            Console.WriteLine("stuff");
+            List<Reports> list2 = _pceDatabaseContext.Reports.Where(column => column.ReportsId == id).ToList();
+            foreach (var report in list2)
+            {
+                Console.WriteLine(report);
+            }
+
             _pceDatabaseContext.Reports.Where(column => column.ReportsId == id && column.Solved == 0).ToList().ForEach(column => column.Solved = 1);
             _pceDatabaseContext.SaveChanges();
         }
 
-        public void SetRoleWithDataAdapter(string email, string role)
-        {
-            var sqlConnection = new SqlConnection(_pceDatabaseContext.Database.GetDbConnection().ConnectionString);
-            var sqlDataAdapter = new SqlDataAdapter("SELECT Role, Email FROM UserData;", sqlConnection);
-            try
-            {
-                if (sqlConnection.State == ConnectionState.Closed)
-                {
-                    sqlConnection.Open();
-                }
+        //public void MarkAsSolved(int id)
+        //{
+        //    var sqlConnection = new SqlConnection(_pceDatabaseContext.Database.GetDbConnection().ConnectionString);
+        //    var sqlDataAdapter = new SqlDataAdapter("SELECT ReportsId FROM Reports;", sqlConnection);
+        //    try
+        //    {
+        //        if (sqlConnection.State == ConnectionState.Closed)
+        //        {
+        //            sqlConnection.Open();
+        //        }
 
-                var update = new SqlCommand
-                {
-                    Connection = sqlConnection,
-                    CommandType = CommandType.Text,
-                    CommandText = "UPDATE UserData SET Role = @Role WHERE Email = @Email;"
-                };
+        //        var update = new SqlCommand
+        //        {
+        //            Connection = sqlConnection,
+        //            CommandType = CommandType.Text,
+        //            CommandText = "UPDATE Reports SET Solved = 1 WHERE ReportsId = @Id AND Solved = 0;"
+        //        };
 
-                update.Parameters.Add(new SqlParameter("@Role", SqlDbType.NVarChar, int.MaxValue, "Role"));
-                update.Parameters.Add(new SqlParameter("@Email", SqlDbType.NVarChar, int.MaxValue, "Email"));
+        //        update.Parameters.Add(new SqlParameter("@Id", SqlDbType.NVarChar, int.MaxValue, "Id"));
 
-                sqlDataAdapter.UpdateCommand = update;
+        //        sqlDataAdapter.UpdateCommand = update;
 
-                var dataSet = new DataSet();
-                sqlDataAdapter.Fill(dataSet, "UserData");
+        //        var dataSet = new DataSet();
+        //        sqlDataAdapter.Fill(dataSet, "Reports");
 
-                DataTable dataTable = dataSet.Tables["UserData"];
-                dataTable.Rows[0]["Role"] = role;
-                dataTable.Rows[0]["Email"] = email;
+        //        DataTable dataTable = dataSet.Tables["Reports"];
+        //        dataTable.Rows[0]["Id"] = id;
 
-                sqlDataAdapter.Update(dataSet, "UserData");
-            }
-            catch (Exception ex)
-            {
-                //WriteLoggedExceptions(ex.Message, ex.Source, ex.StackTrace, DateTime.UtcNow.ToString());
-            }
-            finally
-            {
-                sqlConnection.Close();
-                sqlDataAdapter.Dispose();
-            }
-        }
+        //        sqlDataAdapter.Update(dataSet, "Reports");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        //WriteLoggedExceptions(ex.Message, ex.Source, ex.StackTrace, DateTime.UtcNow.ToString());
+        //    }
+        //    finally
+        //    {
+        //        sqlConnection.Close();
+        //        sqlDataAdapter.Dispose();
+        //    }
+        //}
     }
 }
