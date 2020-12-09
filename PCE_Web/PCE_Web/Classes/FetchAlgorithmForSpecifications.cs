@@ -15,23 +15,23 @@ namespace PCE_Web.Classes
         public static int SoldOut;
         public delegate void WriteData<THtmlNode, TItem, in TInt>(List<THtmlNode> productListItems, List<TItem> products, TInt minPrice, TInt maxPrice);
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
-        public static async Task<List<Item>> FetchAlgorithmaSpecfications(string productName, HttpClient httpClient, int minPrice, int maxPrice, string[] tags, IDatabaseManager _databaseManager)
+        public static async Task<List<Item>> FetchAlgorithmaSpecfications(string productName, HttpClient httpClient, int minPrice, int maxPrice, string[] tags, IExceptionsManager exceptionsManager)
         {
             var products = new List<Item>();
-            await ReadingItemsAsync(productName, products, httpClient, minPrice, maxPrice, tags, _databaseManager);
+            await ReadingItemsAsync(productName, products, httpClient, minPrice, maxPrice, tags, exceptionsManager);
             products = SortAndInsert(products);
             return products;
         }
 
-        private static async Task ReadingItemsAsync(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice, string[] tags, IDatabaseManager _databaseManager)
+        private static async Task ReadingItemsAsync(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice, string[] tags, IExceptionsManager exceptionsManager)
         {
-            var gettingRde = await Task.Factory.StartNew(() => gettingItemsFromRde(productName, products, httpClient, minPrice, maxPrice, tags, _databaseManager));
-            var gettingBarbora = await Task.Factory.StartNew(() => gettingItemsFromBarbora(productName, products, httpClient, minPrice, maxPrice, tags, _databaseManager));
-            var gettingAvitela = await Task.Factory.StartNew(() => gettingItemsFromAvitela(productName, products, httpClient, minPrice, maxPrice, tags, _databaseManager));
-            var gettingPigu = await Task.Factory.StartNew(() => gettingItemsFromPigu(productName, products, httpClient, minPrice, maxPrice, tags, _databaseManager));
-            var gettingGintarine = await Task.Factory.StartNew(() => gettingItemsFromGintarineVaistine(productName, products, httpClient, minPrice, maxPrice, tags, _databaseManager));
-            var gettingElektromarkt = await Task.Factory.StartNew(() => gettingItemsFromElektromarkt(productName, products, httpClient, minPrice, maxPrice, tags, _databaseManager));
-            var gettingBigBox = await Task.Factory.StartNew(() => gettingItemsFromBigBox(productName, products, httpClient, minPrice, maxPrice, tags, _databaseManager));
+            var gettingRde = await Task.Factory.StartNew(() => GettingItemsFromRde(productName, products, httpClient, minPrice, maxPrice, tags, exceptionsManager));
+            var gettingBarbora = await Task.Factory.StartNew(() => GettingItemsFromBarbora(productName, products, httpClient, minPrice, maxPrice, tags, exceptionsManager));
+            var gettingAvitela = await Task.Factory.StartNew(() => GettingItemsFromAvitela(productName, products, httpClient, minPrice, maxPrice, tags, exceptionsManager));
+            var gettingPigu = await Task.Factory.StartNew(() => GettingItemsFromPigu(productName, products, httpClient, minPrice, maxPrice, tags, exceptionsManager));
+            var gettingGintarine = await Task.Factory.StartNew(() => GettingItemsFromGintarineVaistine(productName, products, httpClient, minPrice, maxPrice, tags, exceptionsManager));
+            var gettingElektromarkt = await Task.Factory.StartNew(() => GettingItemsFromElektromarkt(productName, products, httpClient, minPrice, maxPrice, tags, exceptionsManager));
+            var gettingBigBox = await Task.Factory.StartNew(() => GettingItemsFromBigBox(productName, products, httpClient, minPrice, maxPrice, tags, exceptionsManager));
             var taskList = new List<Task>
             {
                 gettingRde, gettingBarbora, gettingAvitela, gettingPigu, gettingGintarine, gettingElektromarkt,
@@ -40,7 +40,7 @@ namespace PCE_Web.Classes
             Task.WaitAll(taskList.ToArray()); 
         }
 
-        private static async Task gettingItemsFromRde(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice, string[] tags, IDatabaseManager _databaseManager)
+        private static async Task GettingItemsFromRde(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice, string[] tags, IExceptionsManager exceptionsManager)
         {
             if (tags.Contains("Rde"))
             {
@@ -54,12 +54,12 @@ namespace PCE_Web.Classes
                 }
                 catch (Exception e)
                 {
-                    _databaseManager.WriteLoggedExceptions("Exception Rde: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
+                    exceptionsManager.WriteLoggedExceptions("Exception Rde: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
                 }
             }
         }
 
-        private static async Task gettingItemsFromBarbora(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice, string[] tags, IDatabaseManager _databaseManager)
+        private static async Task GettingItemsFromBarbora(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice, string[] tags, IExceptionsManager exceptionsManager)
         {
             if (tags.Contains("Barbora"))
             {
@@ -73,12 +73,12 @@ namespace PCE_Web.Classes
                 }
                 catch (Exception e)
                 {
-                    _databaseManager.WriteLoggedExceptions("Exception Barbora: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
+                    exceptionsManager.WriteLoggedExceptions("Exception Barbora: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
                 }
             }
         }
 
-        private static async Task gettingItemsFromAvitela(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice, string[] tags, IDatabaseManager _databaseManager)
+        private static async Task GettingItemsFromAvitela(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice, string[] tags, IExceptionsManager exceptionsManager)
         {
             if (tags.Contains("Avitela"))
             {
@@ -92,12 +92,12 @@ namespace PCE_Web.Classes
                 }
                 catch (Exception e)
                 {
-                    _databaseManager.WriteLoggedExceptions("Exception Avitela: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
+                    exceptionsManager.WriteLoggedExceptions("Exception Avitela: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
                 }
             }
         }
 
-        private static async Task gettingItemsFromPigu(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice, string[] tags, IDatabaseManager _databaseManager)
+        private static async Task GettingItemsFromPigu(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice, string[] tags, IExceptionsManager exceptionsManager)
         {
             if (tags.Contains("Pigu"))
             {
@@ -111,12 +111,12 @@ namespace PCE_Web.Classes
                 }
                 catch (Exception e)
                 {
-                    _databaseManager.WriteLoggedExceptions("Exception Pigu: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
+                    exceptionsManager.WriteLoggedExceptions("Exception Pigu: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
                 }
             }
         }
 
-        private static async Task gettingItemsFromBigBox(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice, string[] tags, IDatabaseManager _databaseManager)
+        private static async Task GettingItemsFromBigBox(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice, string[] tags, IExceptionsManager exceptionsManager)
         {
             if (tags.Contains("BigBox"))
             {
@@ -132,12 +132,12 @@ namespace PCE_Web.Classes
                 }
                 catch (Exception e)
                 {
-                    _databaseManager.WriteLoggedExceptions("Exception Bigbox: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
+                    exceptionsManager.WriteLoggedExceptions("Exception Bigbox: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
                 }
             }
         }
 
-        private static async Task gettingItemsFromGintarineVaistine(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice, string[] tags, IDatabaseManager _databaseManager)
+        private static async Task GettingItemsFromGintarineVaistine(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice, string[] tags, IExceptionsManager exceptionsManager)
         {
             if (tags.Contains("Gintarinė"))
             {
@@ -152,12 +152,12 @@ namespace PCE_Web.Classes
                 }
                 catch (Exception e)
                 {
-                    _databaseManager.WriteLoggedExceptions("Exception Gitarine Vaistine: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
+                    exceptionsManager.WriteLoggedExceptions("Exception Gitarine Vaistine: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
                 }
             }
         }
 
-        private static async Task gettingItemsFromElektromarkt(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice, string[] tags, IDatabaseManager _databaseManager)
+        private static async Task GettingItemsFromElektromarkt(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice, string[] tags, IExceptionsManager exceptionsManager)
         {
             if (tags.Contains("Elektromarkt"))
             {
@@ -171,7 +171,7 @@ namespace PCE_Web.Classes
                 }
                 catch (Exception e)
                 {
-                    _databaseManager.WriteLoggedExceptions("Exception Elektromarkt: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
+                    exceptionsManager.WriteLoggedExceptions("Exception Elektromarkt: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
                 }
             }
         }

@@ -63,4 +63,18 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="SavedExceptionId" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="4d3f5dae-c3b4-4bc3-bf0f-8282f7537ae4" ChangeDateTime="12/08/2020 17:51:09">
+    <Property Name="ElementName" Value="[dbo].[Items].[Price]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Items]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="PriceWithSymbol" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="a8c706e4-5361-4147-88d4-f4a82d3a34e5" ChangeDateTime="12/08/2020 17:51:14">
+    <Property Name="ElementName" Value="[dbo].[SavedItems].[Price]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[SavedItems]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="PriceWithSymbol" />
+  </Operation>
 </Operations>

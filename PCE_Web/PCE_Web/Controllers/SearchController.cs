@@ -14,22 +14,22 @@ namespace PCE_Web.Controllers
 {
     public class SearchController : Controller
     {
-        private readonly IDatabaseManager _databaseManager;
-
-        public SearchController(IDatabaseManager databaseManager)
+        private readonly IProductsCache _productsCache;
+        public SearchController( IProductsCache productsCache)
         {
-            _databaseManager = databaseManager;
+            _productsCache = productsCache;
         }
 
         [AllowAnonymous]
         public ActionResult Suggestions(string productName)
         {
-            if (_databaseManager.ReadSearchedItems(productName).Any())
+            var cachedItems = _productsCache.GetCachedItems(productName);
+            if (cachedItems!=null)
             {
                 var products = new List<Item>();
-                foreach (var item in _databaseManager.ReadSearchedItems(productName))
+                foreach (var cachedItem in cachedItems)
                 {
-                    products.Add(item);
+                    products.Add(cachedItem);
                 }
                 var suggestionsView = new SuggestionsView {Products = products};
                 return View(suggestionsView);
@@ -37,12 +37,12 @@ namespace PCE_Web.Controllers
             else
             {
                 var products = GetProductsFromAPI(productName);
-                _databaseManager.WriteSearchedItems(products, productName);
+                _productsCache.SetCachedItems(productName,products);
                 var suggestionsView = new SuggestionsView {Products = products};
                 return View(suggestionsView);
             }
         }
-
+        //iskelti api
         private List<Item> GetProductsFromAPI(string productName)
         {
             var clientHandler = new HttpClientHandler

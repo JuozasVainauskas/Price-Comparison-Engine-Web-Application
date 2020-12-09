@@ -26,13 +26,13 @@ namespace PCE_Web.Classes
         }
         private static async Task ReadingItemsAsync(string productName, List<Item> products, HttpClient httpClient)
         {
-            var gettingRde = await Task.Factory.StartNew(() => gettingItemsFromRde(productName, products, httpClient));
-            var gettingBarbora = await Task.Factory.StartNew(() => gettingItemsFromBarbora(productName, products, httpClient));
-            var gettingAvitela = await Task.Factory.StartNew(() => gettingItemsFromAvitela(productName, products, httpClient));
-            var gettingPigu = await Task.Factory.StartNew(() => gettingItemsFromPigu(productName, products, httpClient));
-            var gettingGintarine = await Task.Factory.StartNew(() => gettingItemsFromGintarineVaistine(productName, products, httpClient));
-            var gettingElektromarkt = await Task.Factory.StartNew(() => gettingItemsFromElektromarkt(productName, products, httpClient));
-            var gettingBigBox = await Task.Factory.StartNew(() => gettingItemsFromBigBox(productName, products, httpClient));
+            var gettingRde = await Task.Factory.StartNew(() => GettingItemsFromRde(productName, products, httpClient));
+            var gettingBarbora = await Task.Factory.StartNew(() => GettingItemsFromBarbora(productName, products, httpClient));
+            var gettingAvitela = await Task.Factory.StartNew(() => GettingItemsFromAvitela(productName, products, httpClient));
+            var gettingPigu = await Task.Factory.StartNew(() => GettingItemsFromPigu(productName, products, httpClient));
+            var gettingGintarine = await Task.Factory.StartNew(() => GettingItemsFromGintarineVaistine(productName, products, httpClient));
+            var gettingElektromarkt = await Task.Factory.StartNew(() => GettingItemsFromElektromarkt(productName, products, httpClient));
+            var gettingBigBox = await Task.Factory.StartNew(() => GettingItemsFromBigBox(productName, products, httpClient));
             var taskList = new List<Task>
             {
                 gettingRde, gettingBarbora, gettingAvitela, gettingPigu, gettingGintarine, gettingElektromarkt,
@@ -41,7 +41,7 @@ namespace PCE_Web.Classes
             Task.WaitAll(taskList.ToArray());
         }
 
-        private static async Task gettingItemsFromRde(string productName, List<Item> products, HttpClient httpClient)
+        private static async Task GettingItemsFromRde(string productName, List<Item> products, HttpClient httpClient)
         {
             var urlRde = "https://www.rde.lt/search_result/lt/word/" + productName + "/page/1";
             Search<HtmlDocument> rdeSearch = RdeSearch;
@@ -50,7 +50,7 @@ namespace PCE_Web.Classes
             writeDataFromRde(rdeItems, products);
         }
 
-        private static async Task gettingItemsFromBarbora(string productName, List<Item> products, HttpClient httpClient)
+        private static async Task GettingItemsFromBarbora(string productName, List<Item> products, HttpClient httpClient)
         {
             var urlBarbora = "https://pagrindinis.barbora.lt/paieska?q=" + productName;
             Search<HtmlDocument> barboraSearch = BarboraSearch;
@@ -59,7 +59,7 @@ namespace PCE_Web.Classes
             writeDataFromBarbora(barboraItems, products);
         }
 
-        private static async Task gettingItemsFromAvitela(string productName, List<Item> products, HttpClient httpClient)
+        private static async Task GettingItemsFromAvitela(string productName, List<Item> products, HttpClient httpClient)
         {
             var urlAvitela = "https://avitela.lt/paieska/" + productName;
             Search<HtmlDocument> avitelaSearch = AvitelaSearch;
@@ -68,7 +68,7 @@ namespace PCE_Web.Classes
             writeDataFromAvitela(avitelaItems, products);
         }
 
-        private static async Task gettingItemsFromPigu(string productName, List<Item> products, HttpClient httpClient)
+        private static async Task GettingItemsFromPigu(string productName, List<Item> products, HttpClient httpClient)
         {
             var urlPigu = "https://pigu.lt/lt/search?q=" + productName;
             Search<HtmlDocument> piguSearch = PiguSearch;
@@ -77,7 +77,7 @@ namespace PCE_Web.Classes
             writeDataFromPigu(piguItems, products);
         }
 
-        private static async Task gettingItemsFromBigBox(string productName, List<Item> products, HttpClient httpClient)
+        private static async Task GettingItemsFromBigBox(string productName, List<Item> products, HttpClient httpClient)
         {
             var urlBigBox = "https://bigbox.lt/paieska?controller=search&orderby=position&orderway=desc&ssa_submit=&search_query=" + productName;
             Search<HtmlDocument> bigBoxSearch = BigBoxSearch;
@@ -86,7 +86,7 @@ namespace PCE_Web.Classes
             writeDataFromBigBox(bigBoxItems, products);
         }
 
-        private static async Task gettingItemsFromGintarineVaistine(string productName, List<Item> products, HttpClient httpClient)
+        private static async Task GettingItemsFromGintarineVaistine(string productName, List<Item> products, HttpClient httpClient)
         {
             var urlGintarineVaistine = "https://www.gintarine.lt/search?adv=false&cid=0&mid=0&vid=0&q=" + productName + "%5D&sid=false&isc=true&orderBy=0";
             Search<HtmlDocument> gintarineVaistineSearch = GintarineVaistineSearch;
@@ -95,7 +95,7 @@ namespace PCE_Web.Classes
             writeDataFromGintarineVaistine(gintarineVaistineItems, products);
         }
 
-        private static async Task gettingItemsFromElektromarkt(string productName, List<Item> products, HttpClient httpClient)
+        private static async Task GettingItemsFromElektromarkt(string productName, List<Item> products, HttpClient httpClient)
         {
             var urlElektromarkt = "https://elektromarkt.lt/paieska/" + productName;
             Search<HtmlDocument> elektromarktSearch = ElektromarktSearch;

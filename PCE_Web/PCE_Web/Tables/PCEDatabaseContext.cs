@@ -15,9 +15,8 @@ namespace PCE_Web.Tables
         {
         }
 
-        public virtual DbSet<CommentsTable> CommentsTable { get; set; }
-        public virtual DbSet<ItemsTable> ItemsTable { get; set; }
-        public virtual DbSet<ReportsTable> ReportsTable { get; set; }
+        public virtual DbSet<Comments> Comments { get; set; }
+        public virtual DbSet<Reports> Reports { get; set; }
         public virtual DbSet<SavedExceptions> SavedExceptions { get; set; }
         public virtual DbSet<SavedItems> SavedItems { get; set; }
         public virtual DbSet<UserData> UserData { get; set; }
@@ -28,38 +27,41 @@ namespace PCE_Web.Tables
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<CommentsTable>(entity =>
+            modelBuilder.Entity<Comments>(entity =>
             {
                 entity.HasKey(e => e.CommentId)
-                    .HasName("PK__tmp_ms_x__C3B4DFCA01486395");
+                    .HasName("PK__tmp_ms_x__C3B4DFCAA5996E3B");
 
-                entity.Property(e => e.Date).IsRequired();
+                entity.Property(e => e.Date)
+                    .IsRequired()
+                    .HasMaxLength(255);
 
-                entity.Property(e => e.Email).IsRequired();
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasMaxLength(255);
             });
 
-            modelBuilder.Entity<ItemsTable>(entity =>
+            modelBuilder.Entity<Reports>(entity =>
             {
-                entity.HasKey(e => e.ItemId)
-                    .HasName("PK__ItemsTab__727E838B9BA0A08C");
-            });
-
-            modelBuilder.Entity<ReportsTable>(entity =>
-            {
-                entity.HasKey(e => e.ReportsId)
-                    .HasName("PK__tmp_ms_x__37856ECB6CD7432D");
-
                 entity.Property(e => e.Comment).IsRequired();
 
-                entity.Property(e => e.Email).IsRequired();
+                entity.Property(e => e.Date)
+                    .IsRequired()
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasMaxLength(255);
             });
 
             modelBuilder.Entity<SavedExceptions>(entity =>
             {
                 entity.HasKey(e => e.SavedExceptionId)
-                    .HasName("PK__SavedExc__1365928E961A2AFE");
+                    .HasName("PK__tmp_ms_x__1365928E15B63AAB");
 
-                entity.Property(e => e.Date).IsRequired();
+                entity.Property(e => e.Date)
+                    .IsRequired()
+                    .HasMaxLength(255);
 
                 entity.Property(e => e.Message).IsRequired();
 
@@ -71,23 +73,35 @@ namespace PCE_Web.Tables
             modelBuilder.Entity<SavedItems>(entity =>
             {
                 entity.HasKey(e => e.SavedItemId)
-                    .HasName("PK__SavedIte__1CBC88C858E6ACD1");
+                    .HasName("PK__tmp_ms_x__1CBC88C8018F2B66");
 
-                entity.Property(e => e.Email).IsRequired();
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.ShopName).HasMaxLength(255);
             });
 
             modelBuilder.Entity<UserData>(entity =>
             {
                 entity.HasKey(e => e.UserId)
-                    .HasName("PK__UserData__1788CC4C5812A428");
+                    .HasName("PK__tmp_ms_x__1788CC4C60E97E98");
 
-                entity.Property(e => e.Email).IsRequired();
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasMaxLength(255);
 
-                entity.Property(e => e.PasswordHash).IsRequired();
+                entity.Property(e => e.PasswordHash)
+                    .IsRequired()
+                    .HasMaxLength(255);
 
-                entity.Property(e => e.PasswordSalt).IsRequired();
+                entity.Property(e => e.PasswordSalt)
+                    .IsRequired()
+                    .HasMaxLength(255);
 
-                entity.Property(e => e.Role).IsRequired();
+                entity.Property(e => e.Role)
+                    .IsRequired()
+                    .HasMaxLength(1);
             });
 
             OnModelCreatingPartial(modelBuilder);

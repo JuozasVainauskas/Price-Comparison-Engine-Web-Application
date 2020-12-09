@@ -22,11 +22,11 @@ namespace PCE_Web.Controllers
 {
     public class LoggingController : Controller
     {
-        private readonly IDatabaseManager _databaseManager;
+        private readonly IAccountManager _accountManager;
 
-        public LoggingController(IDatabaseManager databaseManager)
+        public LoggingController(IAccountManager accountManager)
         {
-            _databaseManager = databaseManager;
+            _accountManager = accountManager;
         }
 
         public class InputModel
@@ -56,7 +56,7 @@ namespace PCE_Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = _databaseManager.LoginUser(input.Email, input.Password);
+                var user = _accountManager.LoginUser(input.Email, input.Password);
                 if (user != null)
                 {
                     var claims = new List<Claim>

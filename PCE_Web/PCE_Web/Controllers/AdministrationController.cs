@@ -11,24 +11,28 @@ namespace PCE_Web.Controllers
     [Authorize]
     public class AdministrationController : Controller
     {
-        private readonly IDatabaseManager _databaseManager;
+        private readonly IAccountManager _accountManager;
+        private readonly IReportsManager _reportsManager;
+        private readonly IExceptionsManager _exceptionsManager;
 
-        public AdministrationController(IDatabaseManager databaseManager)
+        public AdministrationController(IAccountManager accountManager, IReportsManager reportsManager, IExceptionsManager exceptionsManager)
         {
-            _databaseManager = databaseManager;
+            _accountManager = accountManager;
+            _reportsManager = reportsManager;
+            _exceptionsManager = exceptionsManager;
         }
 
         public IActionResult Admin(string messageString = "")
         {
             
-            var exceptions = _databaseManager.ReadLoggedExceptions();
+            var exceptions = _exceptionsManager.ReadLoggedExceptions();
             ViewBag.MyMessage = messageString;
-            var allUsers = _databaseManager.ReadUsersList();
+            var allUsers = _accountManager.ReadUsersList();
             var reportedUsers = new List<User>();
 
             foreach( var user in allUsers)
             {
-                if(_databaseManager.IsReported(user.Email))
+                if(_reportsManager.IsReported(user.Email))
                 {
                     reportedUsers.Add(user);
                 }
@@ -43,7 +47,7 @@ namespace PCE_Web.Controllers
 
         public IActionResult Delete(int id)
         {
-            _databaseManager.DeleteLoggedExceptions(id);
+            _exceptionsManager.DeleteLoggedExceptions(id);
 
             return RedirectToAction("Admin", "Administration");
         }
@@ -54,7 +58,7 @@ namespace PCE_Web.Controllers
             var role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
             if (role == "Admin")
             {
-                var users = _databaseManager.ReadUsersList();
+                var users = _accountManager.ReadUsersList();
                 foreach (var user in users)
                 {
                     if (user.Email == email)
@@ -63,7 +67,7 @@ namespace PCE_Web.Controllers
                     }
                 }
                 var newUser = new User() { Email = email, Role = Role.User };
-                _databaseManager.CreateAccount(email, password);
+                _accountManager.CreateAccount(email, password);
                 return RedirectToAction("Admin", "Administration");
             }
             else
@@ -79,14 +83,14 @@ namespace PCE_Web.Controllers
             var currentEmail = User.Identity.Name;
             if (role == "Admin")
             {
-                var users = _databaseManager.ReadUsersList();
+                var users = _accountManager.ReadUsersList();
                 var temp = users.FindAll(x => x.Email == email);
 
                 if (email != currentEmail)
                 {
                     if (temp.Count > 0)
                     {
-                        _databaseManager.DeleteAccount(email);
+                        _accountManager.DeleteAccount(email);
                         var adminView = new AdminView() { Users = users.Except(temp).ToList() };
                         return RedirectToAction("Admin", "Administration");
                     }
@@ -108,8 +112,16 @@ namespace PCE_Web.Controllers
             var role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
             if (role == "Admin")
             {
-                _databaseManager.SetRole(email, roleId.ToString());
-                return RedirectToAction("Admin", "Administration", new { messageString = "Rolė suteikta sėkmingai" });
+                var temp = _accountManager.ReadUsersList().FindAll(x => x.Email == email);
+                if (temp.Count > 0)
+                {
+                    _accountManager.SetRole(email, roleId.ToString());
+                    return RedirectToAction("Admin", "Administration", new { messageString = "Rolė suteikta sėkmingai" });
+                }
+                else
+                {
+                    return RedirectToAction("Admin", "Administration", new { messageString = "Toks vartotojas neegzistuoja!" });
+                }
             }
             else
             {

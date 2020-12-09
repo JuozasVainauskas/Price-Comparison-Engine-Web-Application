@@ -1,6 +1,6 @@
 ﻿namespace PCE_Web.Models
 {
-    public interface IEmailSenderInterface
+    public interface IEmailSender
     {
         void SendEmail(string code, string email);
 

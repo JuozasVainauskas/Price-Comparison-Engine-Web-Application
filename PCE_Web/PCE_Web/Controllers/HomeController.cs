@@ -13,12 +13,12 @@ namespace PCE_Web.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        private readonly IDatabaseManager _databaseManager;
+        private readonly IExceptionsManager _exceptionsManager;
 
-        public HomeController(ILogger<HomeController> logger, IDatabaseManager databaseManager)
+        public HomeController(ILogger<HomeController> logger, IExceptionsManager exceptionsManager)
         {
             _logger = logger;
-            _databaseManager = databaseManager;
+            _exceptionsManager = exceptionsManager;
         }
 
         [AllowAnonymous]
@@ -39,7 +39,7 @@ namespace PCE_Web.Controllers
         {
             var feature = HttpContext.Features.Get<IExceptionHandlerFeature>();
 
-            _databaseManager.WriteLoggedExceptions(feature.Error.Message, feature.Error.Source, feature.Error.StackTrace, DateTime.UtcNow.ToString());
+            _exceptionsManager.WriteLoggedExceptions(feature.Error.Message, feature.Error.Source, feature.Error.StackTrace, DateTime.UtcNow.ToString());
 
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
