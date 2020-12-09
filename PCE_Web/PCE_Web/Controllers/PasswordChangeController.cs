@@ -7,13 +7,13 @@ namespace PCE_Web.Controllers
 {
     public class PasswordChangeController : Controller
     {
-        private readonly IDatabaseManager _databaseManager;
+        private readonly IAccountManager _accountManager;
 
         private readonly IEmailSenderInterface _emailSender;
 
-        public PasswordChangeController(IDatabaseManager databaseManager, IEmailSenderInterface emailSender)
+        public PasswordChangeController(IAccountManager accountManager, IEmailSenderInterface emailSender)
         {
-            _databaseManager = databaseManager;
+            _accountManager = accountManager;
             _emailSender = emailSender;
         }
 
@@ -99,7 +99,7 @@ namespace PCE_Web.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    _databaseManager.ChangePassword(email, input.PasswordModel.Password, input.PasswordModel.ConfirmPassword);
+                    _accountManager.ChangePassword(email, input.PasswordModel.Password, input.PasswordModel.ConfirmPassword);
                     TempData["AlertBox"] = "Sėkmingai pakeitėte slaptažodį";
 
                     return RedirectToAction("Login", "Logging");

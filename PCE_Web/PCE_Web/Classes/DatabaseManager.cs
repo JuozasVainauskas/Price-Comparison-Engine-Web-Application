@@ -17,7 +17,7 @@ using PCE_Web.Tables;
 
 namespace PCE_Web.Classes
 {
-    public class DatabaseManager : IDatabaseManager
+    public class DatabaseManager
     {
         private readonly PCEDatabaseContext _pceDatabaseContext;
 

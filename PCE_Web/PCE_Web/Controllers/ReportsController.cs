@@ -13,19 +13,19 @@ namespace PCE_Web.Controllers
     [Authorize]
     public class ReportsController : Controller
     {
-        private readonly IDatabaseManager _databaseManager;
+        private readonly IReportsManager _reportsManager;
         private readonly IEmailSenderInterface _emailSender;
 
-        public ReportsController(IDatabaseManager databaseManager, IEmailSenderInterface emailSender)
+        public ReportsController(IReportsManager reportsManager, IEmailSenderInterface emailSender)
         {
-            _databaseManager = databaseManager;
+            _reportsManager = reportsManager;
             _emailSender = emailSender;
         }
 
         public IActionResult Report(string email = "")
         {
-            var solvedComments = _databaseManager.ReadReports(email, 1);
-            var unsolvedComments = _databaseManager.ReadReports(email, 0);
+            var solvedComments = _reportsManager.ReadReports(email, 1);
+            var unsolvedComments = _reportsManager.ReadReports(email, 0);
             var allComments = solvedComments.Concat(unsolvedComments).ToList();
 
             var role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
@@ -41,9 +41,9 @@ namespace PCE_Web.Controllers
 
         public IActionResult Delete (int id, string email)
         {
-            _databaseManager.DeleteReports(id);
+            _reportsManager.DeleteReports(id);
 
-            if(_databaseManager.ReadReports(email, 0).Any() || _databaseManager.ReadReports(email, 1).Any())
+            if(_reportsManager.ReadReports(email, 0).Any() || _reportsManager.ReadReports(email, 1).Any())
             {
                 return RedirectToAction("Report", "Reports", new { Email = email });
             }
@@ -55,7 +55,7 @@ namespace PCE_Web.Controllers
 
         public IActionResult Mark (int id, string email)
         {
-            _databaseManager.MarkAsSolved(id);
+            _reportsManager.MarkAsSolved(id);
             return RedirectToAction("Report", "Reports", new { Email = email });
         }
     }

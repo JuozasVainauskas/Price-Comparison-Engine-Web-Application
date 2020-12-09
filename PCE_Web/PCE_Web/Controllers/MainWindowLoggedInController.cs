@@ -14,16 +14,18 @@ namespace PCE_Web.Controllers
     public class MainWindowLoggedInController : Controller
     {
         public static int IsDeletedOrSaved = 1;
-        private readonly IDatabaseManager _databaseManager;
+        private readonly IReportsManager _reportsManager;
+        private readonly ISavedItemsManager _savedItemsManager;
         private readonly IEmailSenderInterface _emailSender;
         private readonly IProductsCache _productsCache;
         private readonly string[] _shops={"Avitela", "Gintarinė", "Barbora", "Rde", "BigBox", "Elektromarkt", "Pigu"};
 
-        public MainWindowLoggedInController(IDatabaseManager databaseManager, IEmailSenderInterface emailSender, IProductsCache productsCache)
+        public MainWindowLoggedInController(IEmailSenderInterface emailSender, IProductsCache productsCache, IReportsManager reportsManager, ISavedItemsManager savedItemsManager)
         {
-            _databaseManager = databaseManager;
             _emailSender = emailSender;
             _productsCache = productsCache;
+            _reportsManager = reportsManager;
+            _savedItemsManager = savedItemsManager;
         }
 
         public IActionResult Items(string link, string pictureUrl, string seller, string name, string price)
@@ -38,7 +40,7 @@ namespace PCE_Web.Controllers
                     Name = name,
                     Price = price
                 };
-                _databaseManager.DeleteSavedItem(User.Identity.Name, productToDelete);
+                _savedItemsManager.DeleteSavedItem(User.Identity.Name, productToDelete);
                 IsDeletedOrSaved = 0;
             }
 
@@ -67,7 +69,7 @@ namespace PCE_Web.Controllers
                     
                 }
 
-                var productsSaved = _databaseManager.ReadSavedItems(User.Identity.Name);
+                var productsSaved = _savedItemsManager.ReadSavedItems(User.Identity.Name);
                
                 var slideshowView = new SlideshowView
                 {
@@ -82,7 +84,7 @@ namespace PCE_Web.Controllers
             else
             {
                 var products = new List<Slide>();
-                var productsSaved = _databaseManager.ReadSavedItems(User.Identity.Name);
+                var productsSaved = _savedItemsManager.ReadSavedItems(User.Identity.Name);
                 var notExistingItem = new Slide
                 {
                     PageUrl = "",
@@ -103,7 +105,7 @@ namespace PCE_Web.Controllers
 
         public IActionResult Report(string report)
         {
-            _databaseManager.WriteReports(User.Identity.Name,report);
+            _reportsManager.WriteReports(User.Identity.Name,report);
             _emailSender.AnswerReportMessage(User.Identity.Name, 0);
             return RedirectToAction("Items", "MainWindowLoggedIn");
         }
