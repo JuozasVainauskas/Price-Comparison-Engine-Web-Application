@@ -90,63 +90,61 @@ namespace PCE_Web.Classes
             }
         }
 
+        //public void MarkAsSolved(int id)
+        //{
+        //    _pceDatabaseContext.Reports.Where(column => column.ReportsId == id && column.Solved == 0).ToList().ForEach(column => column.Solved = 1);
+        //    _pceDatabaseContext.SaveChanges();
+        //}
+
         public void MarkAsSolved(int id)
         {
             List<Reports> list = _pceDatabaseContext.Reports.Where(column => column.ReportsId == id && column.Solved == 0).ToList();
             foreach (var report in list)
             {
-                Console.WriteLine(report);
+                Console.WriteLine(report.ReportsId);
+                Console.WriteLine(report.Comment);
+                Console.WriteLine(report.Email);
+                Console.WriteLine(report.Solved);
             }
-            Console.WriteLine("stuff");
-            List<Reports> list2 = _pceDatabaseContext.Reports.Where(column => column.ReportsId == id).ToList();
-            foreach (var report in list2)
+            Console.WriteLine("Id " + id);
+
+            var sqlConnection = new SqlConnection(_pceDatabaseContext.Database.GetDbConnection().ConnectionString);
+            var sqlDataAdapter = new SqlDataAdapter("SELECT ReportsId, Solved FROM Reports;", sqlConnection);
+            try
             {
-                Console.WriteLine(report);
+                if (sqlConnection.State == ConnectionState.Closed)
+                {
+                    sqlConnection.Open();
+                }
+
+                var update = new SqlCommand
+                {
+                    Connection = sqlConnection,
+                    CommandType = CommandType.Text,
+                    CommandText = "UPDATE Reports SET Solved = 1 WHERE ReportsId = @Id AND Solved = 0;"
+                };
+
+                update.Parameters.Add(new SqlParameter("@Id", SqlDbType.NVarChar, int.MaxValue, "Id"));
+
+                sqlDataAdapter.UpdateCommand = update;
+
+                var dataSet = new DataSet();
+                sqlDataAdapter.Fill(dataSet, "Reports");
+
+                DataTable dataTable = dataSet.Tables["Reports"];
+                dataTable.Rows[0]["Id"] = id;
+
+                sqlDataAdapter.Update(dataSet, "Reports");
             }
-
-            _pceDatabaseContext.Reports.Where(column => column.ReportsId == id && column.Solved == 0).ToList().ForEach(column => column.Solved = 1);
-            _pceDatabaseContext.SaveChanges();
+            catch (Exception ex)
+            {
+                //WriteLoggedExceptions(ex.Message, ex.Source, ex.StackTrace, DateTime.UtcNow.ToString());
+            }
+            finally
+            {
+                sqlConnection.Close();
+                sqlDataAdapter.Dispose();
+            }
         }
-
-        //public void MarkAsSolved(int id)
-        //{
-        //    var sqlConnection = new SqlConnection(_pceDatabaseContext.Database.GetDbConnection().ConnectionString);
-        //    var sqlDataAdapter = new SqlDataAdapter("SELECT ReportsId FROM Reports;", sqlConnection);
-        //    try
-        //    {
-        //        if (sqlConnection.State == ConnectionState.Closed)
-        //        {
-        //            sqlConnection.Open();
-        //        }
-
-        //        var update = new SqlCommand
-        //        {
-        //            Connection = sqlConnection,
-        //            CommandType = CommandType.Text,
-        //            CommandText = "UPDATE Reports SET Solved = 1 WHERE ReportsId = @Id AND Solved = 0;"
-        //        };
-
-        //        update.Parameters.Add(new SqlParameter("@Id", SqlDbType.NVarChar, int.MaxValue, "Id"));
-
-        //        sqlDataAdapter.UpdateCommand = update;
-
-        //        var dataSet = new DataSet();
-        //        sqlDataAdapter.Fill(dataSet, "Reports");
-
-        //        DataTable dataTable = dataSet.Tables["Reports"];
-        //        dataTable.Rows[0]["Id"] = id;
-
-        //        sqlDataAdapter.Update(dataSet, "Reports");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        //WriteLoggedExceptions(ex.Message, ex.Source, ex.StackTrace, DateTime.UtcNow.ToString());
-        //    }
-        //    finally
-        //    {
-        //        sqlConnection.Close();
-        //        sqlDataAdapter.Dispose();
-        //    }
-        //}
     }
 }
