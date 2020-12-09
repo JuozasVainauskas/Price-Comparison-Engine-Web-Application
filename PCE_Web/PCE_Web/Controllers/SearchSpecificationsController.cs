@@ -21,18 +21,18 @@ namespace PCE_Web.Controllers
         public delegate void WriteData<THtmlNode, TItem, in TInt>(List<THtmlNode> productListItems, List<TItem> products, TInt minPrice, TInt maxPrice);
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
         private readonly IHttpClientFactory _httpClient;
-        private readonly IDatabaseManager _databaseManager;
+        private readonly IExceptionsManager _exceptionsManager;
 
-        public SearchSpecificationsController(IHttpClientFactory httpClient, IDatabaseManager databaseManager)
+        public SearchSpecificationsController(IHttpClientFactory httpClient, IExceptionsManager exceptionsManager)
         {
             _httpClient = httpClient;
-            _databaseManager = databaseManager;
+            _exceptionsManager = exceptionsManager;
         }
 
         public async Task<IActionResult> SuggestionsSpecifications(string productName, int lowestPrice, int biggestPrice, string[] tags)
         {
             var httpClient = _httpClient.CreateClient();
-            var products = await FetchAlgorithmForSpecifications.FetchAlgorithmaSpecfications(productName, httpClient, lowestPrice*100, biggestPrice*100, tags, _databaseManager);
+            var products = await FetchAlgorithmForSpecifications.FetchAlgorithmaSpecfications(productName, httpClient, lowestPrice*100, biggestPrice*100, tags, _exceptionsManager);
             var suggestionsSpecificationsView = new SuggestionsSpecificationsView { Products = products };
             return View(suggestionsSpecificationsView);
         }
