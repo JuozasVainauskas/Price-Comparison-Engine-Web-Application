@@ -60,7 +60,7 @@ namespace PCE_Web.Classes
             }
             catch (Exception ex)
             {
-                WriteLoggedExceptions(ex.Message, ex.Source, ex.StackTrace, DateTime.UtcNow.ToString());
+                //WriteLoggedExceptions(ex.Message, ex.Source, ex.StackTrace, DateTime.UtcNow.ToString());
             }
             finally
             {
@@ -91,7 +91,7 @@ namespace PCE_Web.Classes
             }
             catch (Exception ex)
             {
-                WriteLoggedExceptions(ex.Message, ex.Source, ex.StackTrace, DateTime.UtcNow.ToString());
+                //WriteLoggedExceptions(ex.Message, ex.Source, ex.StackTrace, DateTime.UtcNow.ToString());
             }
             finally
             {
@@ -117,7 +117,7 @@ namespace PCE_Web.Classes
             }
             catch (Exception ex)
             {
-                WriteLoggedExceptions(ex.Message, ex.Source, ex.StackTrace, DateTime.UtcNow.ToString());
+                //WriteLoggedExceptions(ex.Message, ex.Source, ex.StackTrace, DateTime.UtcNow.ToString());
             }
             finally
             {
