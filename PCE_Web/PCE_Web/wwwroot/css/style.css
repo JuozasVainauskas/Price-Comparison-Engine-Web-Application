@@ -348,3 +348,10 @@ only screen and (                min-resolution: 2dppx) {
     }
 	
 }
+
+/*Hide table columns*/
+@media only screen and (max-width: 400px) {
+	.hide {
+		display: none;
+	}
+}
