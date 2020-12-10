@@ -16,15 +16,12 @@
 </div>
 
 <br>
-    <h1>Iš viso surasta prekių: @Model.Products.Count
+    <h1>Iš viso surasta prekių: @Model.Products.Count, 
         @{
             var itemsList = 
                 from item in @Model.Products 
                 group item by item.Seller;
-            foreach(var item in itemsList)
-            {
-                <text>, </text>@item.Key<text>: </text> @item.Count()
-            }
+            <text>@itemsList.Select(x => string.Format("{0}: {1}", x.Key, x.Count())).Aggregate((current, next) => current + ", " + next)</text>
         }
     </h1>
 <br>
