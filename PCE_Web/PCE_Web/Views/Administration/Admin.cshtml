@@ -81,8 +81,8 @@
             <tr>
                 <th>Data</th>
                 <th>Žinutė</th>
-                <th>Šaltinis</th>
-                <th>Steko šaltinis</th>
+                <th class="hide">Šaltinis</th>
+                <th class="hide">Steko šaltinis</th>
                 <th>Ištrinti</th>
             </tr>
             @foreach (var exception in @Model.Exceptions)
@@ -90,8 +90,8 @@
                 <tr>
                     <td>@exception.Date</td>
                     <td>@exception.Message</td>
-                    <td>@exception.Source</td>
-                    <td>@exception.StackTrace</td>
+                    <td class="hide">@exception.Source</td>
+                    <td class="hide">@exception.StackTrace</td>
                     <td>
                         <button id="mvc-action-button" class="myButton" onclick="location.href = '@Url.Action("Delete", "Administration", new { id = exception.Id})'">Ištrinti</button>
                     </td>

@@ -13,14 +13,15 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
+    word-wrap: break-word;
 }
 
 .comments-container {
     height: 510px;
     overflow-y: scroll;
     direction: rtl;
-    margin-left:auto;
-    margin-right:auto;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .evaluation-container {

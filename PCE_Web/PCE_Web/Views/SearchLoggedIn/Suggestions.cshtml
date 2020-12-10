@@ -21,7 +21,7 @@
 <div class="table-responsive">
     <table id="items">
         <tr>
-            <th></th>
+            <th class="hide">Pardavėjas</th>
             <th>Nuotrauka</th>
             <th>Prekė</th>
             <th>Kaina</th>
@@ -30,7 +30,7 @@
         @foreach (var product in @Model.Products)
         {
             <tr>
-                <td align="center">@product.Seller</td>
+                <td class="hide" align="center">@product.Seller</td>
                 <td align="center"><a href="@product.Link"><img class="image" alt="product.jpg" src="@product.Picture" style="max-width:100%; height:auto; width:auto;"></a></td>
                 <td align="center"><a href="@Url.Action("ParticularItemLoggedIn", "ParticularItemLoggedIn", new { particularItem = @product.Name })" class="link">@product.Name</a> </td>
                 <td align="center">@product.Price</td>
