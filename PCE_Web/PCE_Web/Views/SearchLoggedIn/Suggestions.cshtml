@@ -16,7 +16,17 @@
 </div>
 
 <br>
-<h1>Iš viso surasta prekių: @Model.Products.Count</h1>
+    <h1>Iš viso surasta prekių: @Model.Products.Count
+        @{
+            var itemsList = 
+                from item in @Model.Products 
+                group item by item.Seller;
+            foreach(var item in itemsList)
+            {
+                <text>, </text>@item.Key<text>: </text> @item.Count()
+            }
+        }
+    </h1>
 <br>
 <div class="table-responsive">
     <table id="items">
