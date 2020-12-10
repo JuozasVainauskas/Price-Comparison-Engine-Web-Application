@@ -61,24 +61,23 @@
             {
                  <option value=@shop.Key>@shop.Value</option>
             }
-
         </select>
         <br />
         <div class="comments-container">
             @{
-                var name = Model.Comments.Join(PCE_Web.Controllers.EvaluationSuccessController._allowedShopId, c => c.ShopId, a => a.Key, (c, a) => new { a.Value });
+                var shopNames = Model.Comments.Join(PCE_Web.Controllers.EvaluationSuccessController._allowedShopId, c => c.ShopId, a => a.Key, (c, a) => new { a.Value });
             }
             @foreach (var comment in Model.Comments)
             {
                 <div class="comment-container">
                     <img src="~/img/member.jpg" alt="Avatar">
                     <p>
-                        <strong class="text-center">@comment.Email</strong>
-                        @foreach (var names in name)
+                        <strong>@comment.Email</strong>
+                        @foreach (var shopName in shopNames)
                         {
-                            <span class="time-right">@names.Value</span>
+                            <span class="time-right">@shopName.Value</span>
                         }
-                        </p>
+                    </p>
                     <p>@comment.Comment</p>
                     <span class="time-right">@comment.Date</span>
                     <span class="time-left">Įvertinimas: @comment.Rating</span>
