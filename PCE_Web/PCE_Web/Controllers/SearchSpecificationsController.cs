@@ -16,10 +16,6 @@ namespace PCE_Web.Controllers
     [Authorize]
     public class SearchSpecificationsController : Controller
     {
-        public static int SoldOutBarbora;
-        public static int SoldOut;
-        public delegate void WriteData<THtmlNode, TItem, in TInt>(List<THtmlNode> productListItems, List<TItem> products, TInt minPrice, TInt maxPrice);
-        public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
         private readonly IHttpClientFactory _httpClient;
         private readonly IExceptionsManager _exceptionsManager;
 
