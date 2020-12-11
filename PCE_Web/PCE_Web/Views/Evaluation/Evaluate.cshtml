@@ -4,7 +4,6 @@
 
 @model EvaluationView
 
-
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
@@ -35,13 +34,10 @@
 
                     <select id="shopIdSelect" name="shopId">
                         <option value="0">--Pasirinkite--</option>
-                        <option value="1">Avitela</option>
-                        <option value="2">Gintarine</option>
-                        <option value="3">Barbora</option>
-                        <option value="4">RDE</option>
-                        <option value="5">BigBox</option>
-                        <option value="6">Elektromarkt</option>
-                        <option value="7">Pigu</option>
+                        @foreach (var shop in PCE_Web.Controllers.EvaluationSuccessController._allowedShopId)
+                        {
+                            <option value=@shop.Key>@shop.Value</option>
+                        }
                     </select>
                     <br />
 
@@ -60,22 +56,28 @@
         </form>
         <br />
         <select id="mySelect" onchange="changeIndex()">
-            <option>--Pasirinkite--</option>
-            <option value="1">Avitela</option>
-            <option value="2">Gintarine</option>
-            <option value="3">Barbora</option>
-            <option value="4">RDE</option>
-            <option value="5">BigBox</option>
-            <option value="6">Elektromarkt</option>
-            <option value="7">Pigu</option>
+            <option value="0">--Pasirinkite--</option>
+            @foreach (var shop in PCE_Web.Controllers.EvaluationSuccessController._allowedShopId)
+            {
+                 <option value=@shop.Key>@shop.Value</option>
+            }
         </select>
         <br />
         <div class="comments-container">
+            @{
+                var shopNames = Model.Comments.Join(PCE_Web.Controllers.EvaluationSuccessController._allowedShopId, c => c.ShopId, a => a.Key, (c, a) => new { a.Value });
+            }
             @foreach (var comment in Model.Comments)
             {
                 <div class="comment-container">
                     <img src="~/img/member.jpg" alt="Avatar">
-                    <p><strong>@comment.Email</strong></p>
+                    <p>
+                        <strong>@comment.Email</strong>
+                        @foreach (var shopName in shopNames)
+                        {
+                            <span class="time-right">@shopName.Value</span>
+                        }
+                    </p>
                     <p>@comment.Comment</p>
                     <span class="time-right">@comment.Date</span>
                     <span class="time-left">Įvertinimas: @comment.Rating</span>

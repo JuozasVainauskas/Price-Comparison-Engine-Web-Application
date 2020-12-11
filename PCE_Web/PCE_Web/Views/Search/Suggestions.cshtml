@@ -3,7 +3,14 @@
 <link rel="stylesheet" href="~/css/Loading.css">
 
 <br>
-<h1>Iš viso surasta prekių: @Model.Products.Count</h1>
+    <h1>Iš viso surasta prekių: @Model.Products.Count, 
+        @{
+            var itemsList = 
+                from item in @Model.Products 
+                group item by item.Seller;
+            <text>@itemsList.Select(x => string.Format("{0}: {1}", x.Key, x.Count())).Aggregate((current, next) => current + ", " + next)</text>
+        }
+    </h1>
 <br>
 <div class="table-responsive">
     <table id="items">
@@ -18,7 +25,7 @@
     <tr>
         <td align="center">@product.Seller</td>
         <td align="center"><a href="@product.Link"><img class="image" alt="product.jpg" src="@product.Picture" style="max-width:100%; height:auto; width:auto;"></a></td>
-        <td align="center" ><a href="@Url.Action("ParticularItemLoggedIn", "ParticularItemLoggedIn", new { particularItem = @product.Name })" class="link">@product.Name</a> </td>
+        <td align="center" ><a href="@Url.Action("ParticularItem", "ParticularItem", new { particularItem = @product.Name })" class="link">@product.Name</a> </td>
         <td align="center">@product.Price</td>
     </tr>
         }
