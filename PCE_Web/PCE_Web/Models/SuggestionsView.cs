@@ -8,6 +8,8 @@ namespace PCE_Web.Models
     {
         public static string AlertBoxText { get; set; }
         public List<Item> Products { get; set; }
+
+        public List<Item> AllProducts { get; set; }
         
         public string ProductName { get; set; }
         public int Page { get; set; }
