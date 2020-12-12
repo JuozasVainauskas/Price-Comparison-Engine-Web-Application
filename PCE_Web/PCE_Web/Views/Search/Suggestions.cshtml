@@ -53,13 +53,13 @@
     }
 }
 
-<form method="get" action="" style="float:right;margin-right:40%;">
+<form method="get" action="" style="float:right;margin-right:35%;">
     <input type="hidden" name="ProductName" value="@Model.ProductName">
     <input type="hidden" name="Page" value="@nextPage">
     <button type="submit" class="btn btn-success" asp-area="" asp-controller="Search" asp-action="Suggestions"><i class="fa fa-angle-right"></i></button>
 </form>
-
-<form method="get" action="" style="float:left; margin-left: 40%;">
+<h8 style="text-align:center;">@Model.Page / @maxPages</h8>
+<form method="get" action="" style="float:left; margin-left: 35%;">
     <input type="hidden" name="ProductName" value="@Model.ProductName">
     <input type="hidden" name="Page" value="@previousPage">
     <button type="submit" class="btn btn-success" asp-area="" asp-controller="Search" asp-action="Suggestions"><i class="fa fa-angle-left"></i></button>

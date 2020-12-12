@@ -38,13 +38,7 @@ namespace PCE_Web.Controllers
                     ++maxPage;
                 }
 
-                if (page > 1 && page < maxPage)
-                {
-                    var productsToShow = products.Skip((page - 1) * 10).Take(10).ToList();
-                    var suggestionsView = new SuggestionsView { Products = productsToShow, AllProducts = products, Page = page, ProductName = productName };
-                    return View(suggestionsView);
-                }
-                else if (page == 1 && page < maxPage)
+                if (page == 1 && page < maxPage)
                 {
                     var productsToShow = products.Take(10).ToList();
                     var suggestionsView = new SuggestionsView { Products = productsToShow, AllProducts = products, Page = page, ProductName = productName };
@@ -53,6 +47,12 @@ namespace PCE_Web.Controllers
                 else if (page == 1 && page == maxPage)
                 {
                     var suggestionsView = new SuggestionsView { Products = products, AllProducts = products, Page = page, ProductName = productName };
+                    return View(suggestionsView);
+                }
+                else if (page > 1 && page < maxPage)
+                {
+                    var productsToShow = products.Skip((page - 1) * 10).Take(10).ToList();
+                    var suggestionsView = new SuggestionsView { Products = productsToShow, AllProducts = products, Page = page, ProductName = productName };
                     return View(suggestionsView);
                 }
                 else if (page > 1 && page == maxPage)
@@ -79,13 +79,7 @@ namespace PCE_Web.Controllers
                     ++maxPage;
                 }
 
-                if (page > 1 && page < maxPage)
-                {
-                    var productsToShow = products.Skip((page - 1) * 10).Take(10).ToList();
-                    var suggestionsView = new SuggestionsView { Products = productsToShow, AllProducts = products, Page = page, ProductName = productName };
-                    return View(suggestionsView);
-                }
-                else if (page == 1 && page < maxPage)
+                if (page == 1 && page < maxPage)
                 {
                     var productsToShow = products.Take(10).ToList();
                     var suggestionsView = new SuggestionsView { Products = productsToShow, AllProducts = products, Page = page, ProductName = productName };
@@ -94,6 +88,12 @@ namespace PCE_Web.Controllers
                 else if (page == 1 && page == maxPage)
                 {
                     var suggestionsView = new SuggestionsView { Products = products, AllProducts = products, Page = page, ProductName = productName };
+                    return View(suggestionsView);
+                }
+                else if (page > 1 && page < maxPage)
+                {
+                    var productsToShow = products.Skip((page - 1) * 10).Take(10).ToList();
+                    var suggestionsView = new SuggestionsView { Products = productsToShow, AllProducts = products, Page = page, ProductName = productName };
                     return View(suggestionsView);
                 }
                 else if (page > 1 && page == maxPage)
