@@ -1,39 +1,45 @@
-﻿using HtmlAgilityPack;
-using PCE_Web.Classes;
-using PCE_Web.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using HtmlAgilityPack;
+using WEBSearchAPI.Controllers;
+using WEBSearchAPI.DTO;
 
-namespace PCE_Web.Classes
+namespace WEBSearchAPI.Classes
 {
-    public class FetchAlgorithm
+    public class SearchingProducts
     {
         public static int SoldOutBarbora;
         public static int SoldOut;
         public delegate void WriteData<THtmlNode, TItem>(List<THtmlNode> productListItems, List<TItem> products);
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
-        public static async Task<List<Item>> FetchAlgorithmaAsync(string SearchWord, HttpClient httpClient, IExceptionsManager exceptionsManager)
+
+        public static async Task<List<Item>> FetchAlgorithmaAsync(string SearchWord, HttpClient httpClient)
         {
             var products = new List<Item>();
-            await ReadingItemsAsync(SearchWord, products, httpClient, exceptionsManager);
+            await ReadingItemsAsync(SearchWord, products, httpClient);
             products = SortAndInsert(products);
             return products;
         }
-  
-        private static async Task ReadingItemsAsync(string productName, List<Item> products, HttpClient httpClient, IExceptionsManager exceptionsManager)
+
+        public static async Task ReadingItemsAsync(string productName, List<Item> products, HttpClient httpClient)
         {
-            var gettingRde = await Task.Factory.StartNew(() => GettingItemsFromRde(productName, products, httpClient, exceptionsManager));
-            var gettingBarbora = await Task.Factory.StartNew(() => GettingItemsFromBarbora(productName, products, httpClient, exceptionsManager));
-            var gettingAvitela = await Task.Factory.StartNew(() => GettingItemsFromAvitela(productName, products, httpClient, exceptionsManager));
-            var gettingPigu = await Task.Factory.StartNew(() => GettingItemsFromPigu(productName, products, httpClient, exceptionsManager));
-            var gettingGintarine = await Task.Factory.StartNew(() => GettingItemsFromGintarineVaistine(productName, products, httpClient, exceptionsManager));
-            var gettingElektromarkt = await Task.Factory.StartNew(() => GettingItemsFromElektromarkt(productName, products, httpClient, exceptionsManager));
-            var gettingBigBox = await Task.Factory.StartNew(() => GettingItemsFromBigBox(productName, products, httpClient, exceptionsManager));
+            var gettingRde = await Task.Factory.StartNew(() => GettingItemsFromRde(productName, products, httpClient));
+            var gettingBarbora =
+                await Task.Factory.StartNew(() => GettingItemsFromBarbora(productName, products, httpClient));
+            var gettingAvitela =
+                await Task.Factory.StartNew(() => GettingItemsFromAvitela(productName, products, httpClient));
+            var gettingPigu =
+                await Task.Factory.StartNew(() => GettingItemsFromPigu(productName, products, httpClient));
+            var gettingGintarine = await Task.Factory.StartNew(() =>
+                GettingItemsFromGintarineVaistine(productName, products, httpClient));
+            var gettingElektromarkt =
+                await Task.Factory.StartNew(() => GettingItemsFromElektromarkt(productName, products, httpClient));
+            var gettingBigBox =
+                await Task.Factory.StartNew(() => GettingItemsFromBigBox(productName, products, httpClient));
             var taskList = new List<Task>
             {
                 gettingRde, gettingBarbora, gettingAvitela, gettingPigu, gettingGintarine, gettingElektromarkt,
@@ -42,125 +48,78 @@ namespace PCE_Web.Classes
             Task.WaitAll(taskList.ToArray());
         }
 
-        private static async Task GettingItemsFromRde(string productName, List<Item> products, HttpClient httpClient, IExceptionsManager exceptionsManager)
+        private static async Task GettingItemsFromRde(string productName, List<Item> products, HttpClient httpClient)
         {
-            try
-            {
-                var urlRde = "https://www.rde.lt/search_result/lt/word/" + productName + "/page/1";
-                Search<HtmlDocument> rdeSearch = RdeSearch;
-                WriteData<HtmlNode, Item> writeDataFromRde = WriteDataFromRde;
-                var rdeItems = rdeSearch(await Html(httpClient, urlRde));
-                writeDataFromRde(rdeItems, products);
-            }
-            catch (Exception e)
-            {
-                exceptionsManager.WriteLoggedExceptions("Exception Rde: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
-            }
-        }
-        private static async Task GettingItemsFromBarbora(string productName, List<Item> products, HttpClient httpClient, IExceptionsManager exceptionsManager)
-        {
-            try
-            {
-                var urlBarbora = "https://pagrindinis.barbora.lt/paieska?q=" + productName;
-                Search<HtmlDocument> barboraSearch = BarboraSearch;
-                WriteData<HtmlNode, Item> writeDataFromBarbora = WriteDataFromBarbora;
-                var barboraItems = barboraSearch(await Html(httpClient, urlBarbora));
-                writeDataFromBarbora(barboraItems, products);
-            }
-            catch (Exception e)
-            {
-                exceptionsManager.WriteLoggedExceptions("Exception Barbora: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
-            }
+            var urlRde = "https://www.rde.lt/search_result/lt/word/" + productName + "/page/1";
+            SearchingProducts.Search<HtmlDocument> rdeSearch = RdeSearch;
+            SearchingProducts.WriteData<HtmlNode, Item> writeDataFromRde = WriteDataFromRde;
+            var rdeItems = rdeSearch(await Html(httpClient, urlRde));
+            writeDataFromRde(rdeItems, products);
         }
 
-        private static async Task GettingItemsFromAvitela(string productName, List<Item> products, HttpClient httpClient, IExceptionsManager exceptionsManager)
+        private static async Task GettingItemsFromBarbora(string productName, List<Item> products, HttpClient httpClient)
         {
-            try
-            {
-                var urlAvitela = "https://avitela.lt/paieska/" + productName;
-                Search<HtmlDocument> avitelaSearch = AvitelaSearch;
-                WriteData<HtmlNode, Item> writeDataFromAvitela = WriteDataFromAvitela;
-                var avitelaItems = avitelaSearch(await Html(httpClient, urlAvitela));
-                writeDataFromAvitela(avitelaItems, products);
-            }
-            catch (Exception e)
-            {
-                exceptionsManager.WriteLoggedExceptions("Exception Avitela: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
-            }
+            var urlBarbora = "https://pagrindinis.barbora.lt/paieska?q=" + productName;
+            SearchingProducts.Search<HtmlDocument> barboraSearch = BarboraSearch;
+            SearchingProducts.WriteData<HtmlNode, Item> writeDataFromBarbora = WriteDataFromBarbora;
+            var barboraItems = barboraSearch(await Html(httpClient, urlBarbora));
+            writeDataFromBarbora(barboraItems, products);
         }
 
-        private static async Task GettingItemsFromPigu(string productName, List<Item> products, HttpClient httpClient, IExceptionsManager exceptionsManager)
+        private static async Task GettingItemsFromAvitela(string productName, List<Item> products, HttpClient httpClient)
         {
-            try
-            {
-                var urlPigu = "https://pigu.lt/lt/search?q=" + productName;
-                Search<HtmlDocument> piguSearch = PiguSearch;
-                WriteData<HtmlNode, Item> writeDataFromPigu = WriteDataFromPigu;
-                var piguItems = piguSearch(await Html(httpClient, urlPigu));
-                writeDataFromPigu(piguItems, products);
-            }
-            catch (Exception e)
-            {
-                exceptionsManager.WriteLoggedExceptions("Exception Pigu: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
-            }
+            var urlAvitela = "https://avitela.lt/paieska/" + productName;
+            SearchingProducts.Search<HtmlDocument> avitelaSearch = AvitelaSearch;
+            SearchingProducts.WriteData<HtmlNode, Item> writeDataFromAvitela = WriteDataFromAvitela;
+            var avitelaItems = avitelaSearch(await Html(httpClient, urlAvitela));
+            writeDataFromAvitela(avitelaItems, products);
         }
 
-        private static async Task GettingItemsFromBigBox(string productName, List<Item> products, HttpClient httpClient, IExceptionsManager exceptionsManager)
+        private static async Task GettingItemsFromPigu(string productName, List<Item> products, HttpClient httpClient)
         {
-            try
-            {
-                var urlBigBox = "https://bigbox.lt/paieska?controller=search&orderby=position&orderway=desc&ssa_submit=&search_query=" + productName;
-                Search<HtmlDocument> bigBoxSearch = BigBoxSearch;
-                WriteData<HtmlNode, Item> writeDataFromBigBox = WriteDataFromBigBox;
-                var bigBoxItems = bigBoxSearch(await Html(httpClient, urlBigBox));
-                writeDataFromBigBox(bigBoxItems, products);
-            }
-            catch (Exception e)
-            {
-                exceptionsManager.WriteLoggedExceptions("Exception BigBox: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
-            }
+            var urlPigu = "https://pigu.lt/lt/search?q=" + productName;
+            SearchingProducts.Search<HtmlDocument> piguSearch = PiguSearch;
+            SearchingProducts.WriteData<HtmlNode, Item> writeDataFromPigu = WriteDataFromPigu;
+            var piguItems = piguSearch(await Html(httpClient, urlPigu));
+            writeDataFromPigu(piguItems, products);
         }
 
-        private static async Task GettingItemsFromGintarineVaistine(string productName, List<Item> products, HttpClient httpClient, IExceptionsManager exceptionsManager)
+        private static async Task GettingItemsFromBigBox(string productName, List<Item> products, HttpClient httpClient)
         {
-            try
-            {
-                var urlGintarineVaistine = "https://www.gintarine.lt/search?adv=false&cid=0&mid=0&vid=0&q=" + productName + "%5D&sid=false&isc=true&orderBy=0";
-                Search<HtmlDocument> gintarineVaistineSearch = GintarineVaistineSearch;
-                WriteData<HtmlNode, Item> writeDataFromGintarineVaistine = WriteDataFromGintarineVaistine;
-                var gintarineVaistineItems = gintarineVaistineSearch(await Html(httpClient, urlGintarineVaistine));
-                writeDataFromGintarineVaistine(gintarineVaistineItems, products);
-            }
-            catch (Exception e)
-            {
-                exceptionsManager.WriteLoggedExceptions("Exception Gitarine Vaistine: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
-            }
+            var urlBigBox = "https://bigbox.lt/paieska?controller=search&orderby=position&orderway=desc&ssa_submit=&search_query=" + productName;
+            SearchingProducts.Search<HtmlDocument> bigBoxSearch = BigBoxSearch;
+            SearchingProducts.WriteData<HtmlNode, Item> writeDataFromBigBox = WriteDataFromBigBox;
+            var bigBoxItems = bigBoxSearch(await Html(httpClient, urlBigBox));
+            writeDataFromBigBox(bigBoxItems, products);
         }
 
-        private static async Task GettingItemsFromElektromarkt(string productName, List<Item> products, HttpClient httpClient, IExceptionsManager exceptionsManager)
+        private static async Task GettingItemsFromGintarineVaistine(string productName, List<Item> products, HttpClient httpClient)
         {
-            try
-            {
-                var urlElektromarkt = "https://elektromarkt.lt/paieska/" + productName;
-                Search<HtmlDocument> elektromarktSearch = ElektromarktSearch;
-                WriteData<HtmlNode, Item> writeDataFromElektromarkt = WriteDataFromElektromarkt;
-                var elektromarktItems = elektromarktSearch(await Html(httpClient, urlElektromarkt));
-                writeDataFromElektromarkt(elektromarktItems, products);
-            }
-            catch (Exception e)
-            {
-                exceptionsManager.WriteLoggedExceptions("Exception Elektromarkt: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
-            }
+            var urlGintarineVaistine = "https://www.gintarine.lt/search?adv=false&cid=0&mid=0&vid=0&q=" + productName + "%5D&sid=false&isc=true&orderBy=0";
+            SearchingProducts.Search<HtmlDocument> gintarineVaistineSearch = GintarineVaistineSearch;
+            SearchingProducts.WriteData<HtmlNode, Item> writeDataFromGintarineVaistine = WriteDataFromGintarineVaistine;
+            var gintarineVaistineItems = gintarineVaistineSearch(await Html(httpClient, urlGintarineVaistine));
+            writeDataFromGintarineVaistine(gintarineVaistineItems, products);
         }
 
-        private static async Task<HtmlDocument> Html(HttpClient httpClient, string urlGet)
+        private static async Task GettingItemsFromElektromarkt(string productName, List<Item> products, HttpClient httpClient)
         {
-            var url = urlGet;
+            var urlElektromarkt = "https://elektromarkt.lt/paieska/" + productName;
+            SearchingProducts.Search<HtmlDocument> elektromarktSearch = ElektromarktSearch;
+            SearchingProducts.WriteData<HtmlNode, Item> writeDataFromElektromarkt = WriteDataFromElektromarkt;
+            var elektromarktItems = elektromarktSearch(await Html(httpClient, urlElektromarkt));
+            writeDataFromElektromarkt(elektromarktItems, products);
+        }
+
+        private static async Task<HtmlDocument> Html(HttpClient httpClient, string urlget)
+        {
+            var url = urlget;
             var html = await httpClient.GetStringAsync(url);
             var htmlDocument = new HtmlDocument();
             htmlDocument.LoadHtml(html);
             return htmlDocument;
         }
+
         private static List<HtmlNode> RdeSearch(HtmlDocument htmlDocument)
         {
             if (htmlDocument != null)
@@ -168,8 +127,8 @@ namespace PCE_Web.Classes
                 try
                 {
                     var productsHtml = htmlDocument.DocumentNode.Descendants("div")
-                    .Where(node => node.GetAttributeValue("id", "")
-                        .Equals("body_div")).ToList();
+                        .Where(node => node.GetAttributeValue("id", "")
+                            .Equals("body_div")).ToList();
 
                     var productListItems = productsHtml[0].Descendants("div")
                         .Where(node => node.GetAttributeValue("class", "")
@@ -184,6 +143,7 @@ namespace PCE_Web.Classes
 
             return null;
         }
+
         private static List<HtmlNode> AvitelaSearch(HtmlDocument htmlDocument)
         {
             if (htmlDocument != null)
@@ -204,6 +164,7 @@ namespace PCE_Web.Classes
                     return null;
                 }
             }
+
             return null;
         }
 
@@ -235,6 +196,7 @@ namespace PCE_Web.Classes
                     return null;
                 }
             }
+
             return null;
         }
 
@@ -276,13 +238,13 @@ namespace PCE_Web.Classes
             {
                 try
                 {
-                    var productsHtml = htmlDocument.DocumentNode.Descendants("div")
-                        .Where(node => node.GetAttributeValue("class", "")
-                            .Equals("col-lg-9 col-md-8")).ToList();
+                    var productsHtml = htmlDocument.DocumentNode.Descendants("dyiv")
+                        .Where(node => node.GetAttributeValue("clayjyjss", "")
+                            .Equals("col-lg-9 col-mdygyyj-8")).ToList();
 
                     var productListItems = productsHtml[0].Descendants("li")
                         .Where(node => node.GetAttributeValue("class", "")
-                            .StartsWith("category-item ajax_block_product col-xs-12 col-sm-6 col-md-4 col-lg-3"))
+                            .StartsWith("category-iygygtem ajax_block_product col-xs-12 col-sm-6 col-md-4 col-lg-3"))
                         .ToList();
                     return productListItems;
 
@@ -295,6 +257,7 @@ namespace PCE_Web.Classes
 
             return null;
         }
+
         private static List<HtmlNode> ElektromarktSearch(HtmlDocument htmlDocument)
         {
             if (htmlDocument != null)
@@ -319,6 +282,7 @@ namespace PCE_Web.Classes
 
             return null;
         }
+
         private static List<HtmlNode> GintarineVaistineSearch(HtmlDocument htmlDocument)
         {
             if (htmlDocument != null)
@@ -343,6 +307,8 @@ namespace PCE_Web.Classes
             return null;
         }
 
+        private static readonly object Lock = new object();
+
         private static void WriteDataFromRde(List<HtmlNode> productListItems, List<Item> products)
         {
             if (productListItems != null)
@@ -363,11 +329,12 @@ namespace PCE_Web.Classes
                     var link = productListItem.Descendants("a").FirstOrDefault()?.GetAttributeValue("href", "");
 
                     var productListItems2 = productListItem.Descendants("div")
-                    .Where(node => node.GetAttributeValue("class", "")
-                    .Contains("photo_box")).ToList();
+                        .Where(node => node.GetAttributeValue("class", "")
+                            .Contains("photo_box")).ToList();
                     foreach (var productListItem2 in productListItems2)
                     {
-                        var imgLink = productListItem2.Descendants("img").FirstOrDefault()?.GetAttributeValue("src", "");
+                        var imgLink = productListItem2.Descendants("img").FirstOrDefault()
+                            ?.GetAttributeValue("src", "");
 
                         if (!string.IsNullOrEmpty(price))
                         {
@@ -386,7 +353,10 @@ namespace PCE_Web.Classes
                                 Price = price,
                                 Link = "https://www.rde.lt/" + link
                             };
-                            products.Add(singleItem);
+                            lock (Lock)
+                            {
+                                AddingToACollection(products, singleItem);
+                            }
                         }
                     }
                 }
@@ -412,7 +382,8 @@ namespace PCE_Web.Classes
 
                     var link = productListItem.Descendants("a").FirstOrDefault()?.GetAttributeValue("href", "");
 
-                    var imgLink = productListItem.Descendants("img").FirstOrDefault()?.GetAttributeValue("data-echo", "");
+                    var imgLink = productListItem.Descendants("img").FirstOrDefault()
+                        ?.GetAttributeValue("data-echo", "");
 
                     if (!string.IsNullOrEmpty(price))
                     {
@@ -431,14 +402,11 @@ namespace PCE_Web.Classes
                                 Price = price,
                                 Link = link
                             };
-                            products.Add(singleItem);
+                            lock (Lock)
+                            {
+                                AddingToACollection(products, singleItem);
+                            }
                         }
-                        else
-                        {
-                            var singleItem = new Item { Picture = "https://avitela.lt/image/no_image.jpg", Seller = "Avitela", Name = name, PriceDouble = priceDouble, Price = price, Link = link };
-                            products.Add(singleItem);
-                        }
-
                     }
                 }
             }
@@ -476,7 +444,7 @@ namespace PCE_Web.Classes
                             var priceTemporary = price;
                             priceTemporary = EliminatingEuroSimbol(priceTemporary);
                             var priceDouble = Convert.ToDouble(priceTemporary);
-                            var item1 = new Item
+                            var singleItem = new Item
                             {
                                 Picture = "https://pagrindinis.barbora.lt/" + imgLink,
                                 Seller = "Barbora",
@@ -485,7 +453,10 @@ namespace PCE_Web.Classes
                                 Price = price,
                                 Link = "https://pagrindinis.barbora.lt/" + link
                             };
-                            products.Add(item1);
+                            lock (Lock)
+                            {
+                                AddingToACollection(products, singleItem);
+                            }
                         }
 
                         countItems--;
@@ -511,7 +482,8 @@ namespace PCE_Web.Classes
                                 .Equals("product-name"))
                             ?.InnerText.Trim();
 
-                        var link = "https://pigu.lt/" + productListItem.Descendants("a").FirstOrDefault()?.GetAttributeValue("href", "");
+                        var link = "https://pigu.lt/" + productListItem.Descendants("a").FirstOrDefault()
+                            ?.GetAttributeValue("href", "");
 
                         var imgLink = productListItem
                             .Descendants("img").FirstOrDefault(node => node.GetAttributeValue("src", "")
@@ -536,7 +508,11 @@ namespace PCE_Web.Classes
                                 Price = price,
                                 Link = link
                             };
-                            products.Add(singleItem);
+                            lock (Lock)
+                            {
+                                AddingToACollection(products, singleItem);
+                            }
+
                             countItems--;
                         }
                     }
@@ -583,8 +559,10 @@ namespace PCE_Web.Classes
                             Price = price,
                             Link = link
                         };
-
-                        products.Add(singleItem);
+                        lock (Lock)
+                        {
+                            AddingToACollection(products, singleItem);
+                        }
                     }
                 }
             }
@@ -613,12 +591,13 @@ namespace PCE_Web.Classes
 
                     if (!string.IsNullOrEmpty(price))
                     {
+
                         price = EliminateSpaces(price);
                         var priceAtsarg = price;
                         priceAtsarg = EliminatingEuroSimbol(priceAtsarg);
 
                         var priceDouble = double.Parse(priceAtsarg);
-                        var item1 = new Item
+                        var singleItem = new Item
                         {
                             Picture = imgLink,
                             Seller = "Elektromarkt",
@@ -627,7 +606,11 @@ namespace PCE_Web.Classes
                             Price = price,
                             Link = link
                         };
-                        products.Add(item1);
+                        lock (Lock)
+                        {
+                            AddingToACollection(products, singleItem);
+                        }
+
                     }
                 }
             }
@@ -648,11 +631,12 @@ namespace PCE_Web.Classes
                     var name = productListItem.Descendants("input").FirstOrDefault()?.GetAttributeValue("value", "");
 
                     var link = productListItem.Descendants("a").FirstOrDefault()?.GetAttributeValue("href", "");
-                    var imgLink = productListItem.Descendants("img").FirstOrDefault()?.GetAttributeValue("data-lazyloadsrc", "");
+                    var imgLink = productListItem.Descendants("img").FirstOrDefault()
+                        ?.GetAttributeValue("data-lazyloadsrc", "");
 
                     if (!string.IsNullOrEmpty(price))
                     {
-                        var regex = Regex.Match(price ?? string.Empty, @"[0-9]+\,[0-9][0-9]");
+                        var regex = Regex.Match(price, @"[0-9]+\,[0-9][0-9]");
                         price = Convert.ToString(regex);
                         var priceDouble = Convert.ToDouble(price);
 
@@ -665,10 +649,18 @@ namespace PCE_Web.Classes
                             Price = price + '€',
                             Link = "https://www.gintarine.lt/" + link
                         };
-                        products.Add(singleItem);
+                        lock (Lock)
+                        {
+                            AddingToACollection(products, singleItem);
+                        }
                     }
                 }
             }
+        }
+
+        private static void AddingToACollection<T>(ICollection<T> list, T variable)
+        {
+            list.Add(variable);
         }
 
         private static string EliminatingEuroSimbol(string priceAtsarg)
@@ -703,6 +695,7 @@ namespace PCE_Web.Classes
 
             return price;
         }
+
         private static string EliminateSpaces(string price)
         {
             var charsToRemove = new[] { " " };
@@ -716,6 +709,7 @@ namespace PCE_Web.Classes
             foreach (var c in charsToRemove) price = price.Replace(c, string.Empty);
             return price;
         }
+
         private static List<Item> SortAndInsert(List<Item> products)
         {
             products = products.OrderBy(o => o.PriceDouble).ToList();
