@@ -19,10 +19,6 @@ namespace PCE_Web.Controllers
     {
         public static int IsSaved;
         public static string SearchWord = "";
-        public static int SoldOutBarbora;
-        public static int SoldOut;
-        public delegate void WriteData<THtmlNode, TItem>(List<THtmlNode> productListItems, List<TItem> products);
-        public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
         private readonly IHttpClientFactory _httpClient;
         private readonly ISavedItemsManager _savedItemsManager;
         private readonly IProductsCache _productsCache;

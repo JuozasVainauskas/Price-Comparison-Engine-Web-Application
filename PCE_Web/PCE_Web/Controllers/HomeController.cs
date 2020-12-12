@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Globalization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
@@ -11,13 +12,10 @@ namespace PCE_Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
         private readonly IExceptionsManager _exceptionsManager;
 
-        public HomeController(ILogger<HomeController> logger, IExceptionsManager exceptionsManager)
+        public HomeController(IExceptionsManager exceptionsManager)
         {
-            _logger = logger;
             _exceptionsManager = exceptionsManager;
         }
 
@@ -39,7 +37,7 @@ namespace PCE_Web.Controllers
         {
             var feature = HttpContext.Features.Get<IExceptionHandlerFeature>();
 
-            _exceptionsManager.WriteLoggedExceptions(feature.Error.Message, feature.Error.Source, feature.Error.StackTrace, DateTime.UtcNow.ToString());
+            _exceptionsManager.WriteLoggedExceptions(feature.Error.Message, feature.Error.Source, feature.Error.StackTrace, DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
 
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
