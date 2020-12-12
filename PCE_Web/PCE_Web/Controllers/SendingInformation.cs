@@ -13,10 +13,7 @@ namespace PCE_Web.Controllers
 
         protected virtual void OnButtonPushed(string code, string email)
         {
-            if (ButtonPushed != null)
-            {
-                ButtonPushed(this, new ServiceEventArgs(){ Code = code, Email = email });
-            }
+            ButtonPushed?.Invoke(this, new ServiceEventArgs(){ Code = code, Email = email });
         }
     }
 }
