@@ -42,5 +42,5 @@
 Create a program/website/app which takes the data of the prices from different shopping websites and provides a comparison in a visual manner
 
 ## Database diagrams
-![Relational diagram](schemaOriginali.PNG)
-![ER diagram](erDiagrama.PNG)
+![Relational diagram](dbRelationalScheme.PNG)
+![ER diagram](erScheme.PNG)
