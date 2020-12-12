@@ -37,7 +37,7 @@ namespace PCE_Web.Controllers
             _exceptionsManager = exceptionsManager;
         }
         
-        public async Task<IActionResult> Suggestions(string productName, string link, string pictureUrl, string seller, string name, string price)
+        public async Task<IActionResult> Suggestions(string productName, string link, string pictureUrl, string seller, string name, string price, int page)
         {
             SavingAnItemD savingAnItem = null;
             savingAnItem += SavingAnItem;
@@ -63,9 +63,28 @@ namespace PCE_Web.Controllers
                 {
                     products.Add(cachedItem);
                 }
-                var suggestionsView = new SuggestionsView { Products = products };
-                IsSaved = 0;
-                return View(suggestionsView);
+
+                if (page > 1)
+                {
+                    var productsToShow = products.Skip(page * 10).Take(10).ToList();
+                    var suggestionsView = new SuggestionsView { Products = productsToShow, Page = page };
+                    IsSaved = 0;
+                    return View(suggestionsView);
+                }
+                else if (page == 1)
+                {
+                    var productsToShow = products.Take(10).ToList();
+                    var suggestionsView = new SuggestionsView { Products = productsToShow, Page = page };
+                    IsSaved = 0;
+                    return View(suggestionsView);
+                }
+                else
+                {
+                    var suggestionsView = new SuggestionsView { Products = products, Page = 1 };
+                    IsSaved = 0;
+                    return View(suggestionsView);
+                }
+
             }
             else
             {
@@ -77,8 +96,23 @@ namespace PCE_Web.Controllers
                 var httpClient = _httpClient.CreateClient();
                 var products = await FetchAlgorithm.FetchAlgorithmaAsync(SearchWord, httpClient, _exceptionsManager);
                 _productsCache.SetCachedItems(SearchWord, products);
-                var suggestionsView = new SuggestionsView { Products = products };
-                return View(suggestionsView);
+                if (page > 1)
+                {
+                    var productsToShow = products.Skip(page * 10).Take(10).ToList();
+                    var suggestionsView = new SuggestionsView { Products = productsToShow, Page = page };
+                    return View(suggestionsView);
+                }
+                else if (page == 1)
+                {
+                    var productsToShow = products.Take(10).ToList();
+                    var suggestionsView = new SuggestionsView { Products = productsToShow, Page = page };
+                    return View(suggestionsView);
+                }
+                else
+                {
+                    var suggestionsView = new SuggestionsView { Products = products, Page = 1 };
+                    return View(suggestionsView);
+                }
             }
         }
 

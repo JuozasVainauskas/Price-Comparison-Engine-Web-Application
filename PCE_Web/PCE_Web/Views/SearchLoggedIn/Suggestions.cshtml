@@ -46,6 +46,12 @@
 
         }
     </table>
+    <form method="get" action="">
+        <input type="hidden" name="Page" value="@Model.Page + 1">
+        <input type="hidden" name="ProductName" value="samsung">
+        <button type="submit" class="btn btn-success" asp-area="" asp-controller="SearchLoggedIn" asp-action="Suggestions">Kitas puslapis</button>
+    </form>
+
 </div>
 
     <div id="overlay" class="overlay">
