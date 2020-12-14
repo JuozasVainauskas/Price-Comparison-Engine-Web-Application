@@ -70,7 +70,7 @@ namespace PCE_Web.Controllers
             }
             else
             {
-                var products = GetProductsFromAPI(productName);
+                var products = GetProductsFromApi.GetProducts(productName);
                 _productsCache.SetCachedItems(productName,products);
 
                 int maxPage = products.Count / 10;
