@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using HtmlAgilityPack;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PCE_Web.Classes;
@@ -70,7 +65,7 @@ namespace PCE_Web.Controllers
             }
             else
             {
-                var products = GetProductsFromAPI(productName);
+                var products = GetProductsFromApi.GetProducts(productName);
                 _productsCache.SetCachedItems(productName,products);
 
                 int maxPage = products.Count / 10;

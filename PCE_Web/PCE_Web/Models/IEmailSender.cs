@@ -1,4 +1,5 @@
-﻿namespace PCE_Web.Models
+﻿
+namespace PCE_Web.Models
 {
     public interface IEmailSender
     {
