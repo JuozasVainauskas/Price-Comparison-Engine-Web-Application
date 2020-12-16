@@ -26,83 +26,17 @@ namespace PCE_Web.Controllers
                 {
                     products.Add(cachedItem);
                 }
-
-                int maxPage = products.Count / 10;
-                if (products.Count % 10 != 0)
-                {
-                    ++maxPage;
-                }
-
-                if (page == 1 && page < maxPage)
-                {
-                    var productsToShow = products.Take(10).ToList();
-                    var suggestionsView = new SuggestionsView { Products = productsToShow, AllProducts = products, Page = page, ProductName = productName };
-                    return View(suggestionsView);
-                }
-                else if (page == 1 && page == maxPage)
-                {
-                    var suggestionsView = new SuggestionsView { Products = products, AllProducts = products, Page = page, ProductName = productName };
-                    return View(suggestionsView);
-                }
-                else if (page > 1 && page < maxPage)
-                {
-                    var productsToShow = products.Skip((page - 1) * 10).Take(10).ToList();
-                    var suggestionsView = new SuggestionsView { Products = productsToShow, AllProducts = products, Page = page, ProductName = productName };
-                    return View(suggestionsView);
-                }
-                else if (page > 1 && page == maxPage)
-                {
-                    var productsToShow = products.Skip((page - 1) * 10).Take(products.Count - ((page - 1) * 10)).ToList();
-                    var suggestionsView = new SuggestionsView { Products = productsToShow, AllProducts = products, Page = page, ProductName = productName };
-                    return View(suggestionsView);
-                }
-                else
-                {
-                    var productsToShow = products.Take(10).ToList();
-                    var suggestionsView = new SuggestionsView { Products = productsToShow, AllProducts = products, Page = 1, ProductName = productName };
-                    return View(suggestionsView);
-                }
+                var suggestionsView = new SuggestionsView { Products = products };
+                return View(suggestionsView);
             }
             else
             {
                 var products = GetProductsFromApi.GetProducts(productName);
                 _productsCache.SetCachedItems(productName,products);
+                var productsToShow = products.Take(10).ToList();
+                var suggestionsView = new SuggestionsView {Products = products};
+                return View(suggestionsView);
 
-                int maxPage = products.Count / 10;
-                if (products.Count % 10 != 0)
-                {
-                    ++maxPage;
-                }
-
-                if (page == 1 && page < maxPage)
-                {
-                    var productsToShow = products.Take(10).ToList();
-                    var suggestionsView = new SuggestionsView { Products = productsToShow, AllProducts = products, Page = page, ProductName = productName };
-                    return View(suggestionsView);
-                }
-                else if (page == 1 && page == maxPage)
-                {
-                    var suggestionsView = new SuggestionsView { Products = products, AllProducts = products, Page = page, ProductName = productName };
-                    return View(suggestionsView);
-                }
-                else if (page > 1 && page < maxPage)
-                {
-                    var productsToShow = products.Skip((page - 1) * 10).Take(10).ToList();
-                    var suggestionsView = new SuggestionsView { Products = productsToShow, AllProducts = products, Page = page, ProductName = productName };
-                    return View(suggestionsView);
-                }
-                else if (page > 1 && page == maxPage)
-                {
-                    var productsToShow = products.Skip((page - 1) * 10).Take(products.Count - ((page - 1) * 10)).ToList();
-                    var suggestionsView = new SuggestionsView { Products = productsToShow, AllProducts = products, Page = page, ProductName = productName };
-                    return View(suggestionsView);
-                }
-                else
-                {
-                    var productsToShow = products.Take(10).ToList();
-                    var suggestionsView = new SuggestionsView { Products = productsToShow, AllProducts = products, Page = 1, ProductName = productName };
-                    return View(suggestionsView);
-                }
             }
         }
     }
