@@ -16,7 +16,8 @@ namespace PCE_Web.Classes
 
         public void WriteLoggedExceptions(string message, string source, string stackTrace, string date)
         {
-            var result = _pceDatabaseContext.SavedExceptions.SingleOrDefault(column => column.Date == date && column.Message == message && column.Source == source && column.StackTrace == stackTrace);
+            var result = _pceDatabaseContext.SavedExceptions.SingleOrDefault
+                (column => column.Date == date && column.Message == message && column.Source == source && column.StackTrace == stackTrace);
 
             if (result == null)
             {
@@ -45,7 +46,8 @@ namespace PCE_Web.Classes
         public List<Exceptions> ReadLoggedExceptions()
         {
             var exceptions = _pceDatabaseContext.SavedExceptions.Where(row => row.SavedExceptionId > 0)
-                .Select(column => new Exceptions { Id = column.SavedExceptionId, Date = column.Date, Message = column.Message, StackTrace = column.StackTrace, Source = column.Source }).ToList();
+                .Select(column => new Exceptions 
+                    { Id = column.SavedExceptionId, Date = column.Date, Message = column.Message, StackTrace = column.StackTrace, Source = column.Source }).ToList();
             return exceptions;
         }
     }

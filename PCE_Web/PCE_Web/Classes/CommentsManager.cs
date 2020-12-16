@@ -17,13 +17,21 @@ namespace PCE_Web.Classes
 
         public List<Comments> ReadComments(int index)
         {
-            var comments = _pceDatabaseContext.Comments.Where(column => column.ShopId == index).Select(column => new Comments { CommentId = column.CommentId, Email = column.Email, ShopId = column.ShopId, Date = column.Date, Rating = column.Rating, Comment = column.Comment }).ToList();
+            var comments = _pceDatabaseContext.Comments.Where
+                (column => column.ShopId == index).Select
+                (column => new Comments 
+                    { CommentId = column.CommentId, Email = column.Email, ShopId = column.ShopId, Date = column.Date, Rating = column.Rating, Comment = column.Comment })
+                        .ToList();
             return comments;
         }
 
         public bool IsAlreadyCommented(string email, int shopId)
         {
-            var item = _pceDatabaseContext.Comments.Where(column => column.Email == email && column.ShopId == shopId).Select(column => new Comments { CommentId = column.CommentId, Email = column.Email, ShopId = column.ShopId, Date = column.Date, Rating = column.Rating, Comment = column.Comment }).ToList();
+            var item = _pceDatabaseContext.Comments.Where
+                (column => column.Email == email && column.ShopId == shopId).Select
+                (column => new Comments 
+                    { CommentId = column.CommentId, Email = column.Email, ShopId = column.ShopId, Date = column.Date, Rating = column.Rating, Comment = column.Comment })
+                        .ToList();
             if (item.Count > 0)
             {
                 return true;

@@ -107,7 +107,8 @@ namespace PCE_Web.Classes
         public List<User> ReadUsersList()
         {
             var usersList = new List<User>();
-            var users = _pceDatabaseContext.UserData.Select(column => new UserData() { Email = column.Email, Role = column.Role, PasswordHash = "", PasswordSalt = "", UserId = 0 }).ToList();
+            var users = _pceDatabaseContext.UserData.Select
+                (column => new UserData() { Email = column.Email, Role = column.Role, PasswordHash = "", PasswordSalt = "", UserId = 0 }).ToList();
 
             foreach (var user in users)
             {
@@ -195,7 +196,8 @@ namespace PCE_Web.Classes
 
         public void ChangePassword(string email, string password, string passwordConfirm)
         {
-            if (!string.IsNullOrWhiteSpace(password) && !string.IsNullOrWhiteSpace(passwordConfirm) && PasswordVerification(password) && password.Equals(passwordConfirm))
+            if (!string.IsNullOrWhiteSpace(password) 
+                && !string.IsNullOrWhiteSpace(passwordConfirm) && PasswordVerification(password) && password.Equals(passwordConfirm))
             {
                 var passwordSalt = GenerateHash.CreateSalt(10);
                 var passwordHash = GenerateHash.GenerateSha256Hash(password, passwordSalt);

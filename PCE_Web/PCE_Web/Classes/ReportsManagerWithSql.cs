@@ -30,8 +30,10 @@ namespace PCE_Web.Classes
                     sqlConnection.Open();
                 }
 
-                var sqlCommand = new SqlCommand("INSERT INTO Reports(Email, Comment, Date, Solved) VALUES (@Email, @Comment, @Date, @Solved)", sqlConnection);
-                sqlCommand.CommandType = CommandType.Text;
+                var sqlCommand =
+                    new SqlCommand(
+                        "INSERT INTO Reports(Email, Comment, Date, Solved) VALUES (@Email, @Comment, @Date, @Solved)",
+                        sqlConnection) {CommandType = CommandType.Text};
                 sqlCommand.Parameters.AddWithValue("@Email", email);
                 sqlCommand.Parameters.AddWithValue("@Comment", report);
                 sqlCommand.Parameters.AddWithValue("@Date", DateTime.UtcNow.ToString());
@@ -64,8 +66,9 @@ namespace PCE_Web.Classes
                     sqlConnection.Open();
                 }
 
-                var sqlCommand = new SqlCommand("DELETE FROM Reports WHERE ReportsId = @Id;", sqlConnection);
-                sqlCommand.CommandType = CommandType.Text;
+                var sqlCommand =
+                    new SqlCommand("DELETE FROM Reports WHERE ReportsId = @Id;",
+                        sqlConnection) {CommandType = CommandType.Text};
                 sqlCommand.Parameters.AddWithValue("@Id", id);
                 sqlCommand.ExecuteNonQuery();
             }
