@@ -2,6 +2,7 @@
 using PCE_Web.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
@@ -15,7 +16,8 @@ namespace PCE_Web.Classes
         public static int SoldOut;
         public delegate void WriteData<THtmlNode, TItem, in TInt>(List<THtmlNode> productListItems, List<TItem> products, TInt minPrice, TInt maxPrice);
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
-        public static async Task<List<Item>> FetchAlgorithmaSpecfications(string productName, HttpClient httpClient, int minPrice, int maxPrice, string[] tags, IExceptionsManager exceptionsManager)
+        public static async Task<List<Item>> FetchAlgorithmaSpecfications(string productName, 
+            HttpClient httpClient, int minPrice, int maxPrice, string[] tags, IExceptionsManager exceptionsManager)
         {
             var products = new List<Item>();
             await ReadingItemsAsync(productName, products, httpClient, minPrice, maxPrice, tags, exceptionsManager);
@@ -23,15 +25,23 @@ namespace PCE_Web.Classes
             return products;
         }
 
-        private static async Task ReadingItemsAsync(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice, string[] tags, IExceptionsManager exceptionsManager)
+        private static async Task ReadingItemsAsync(string productName, List<Item> products,
+            HttpClient httpClient, int minPrice, int maxPrice, string[] tags, IExceptionsManager exceptionsManager)
         {
-            var gettingRde = await Task.Factory.StartNew(() => GettingItemsFromRde(productName, products, httpClient, minPrice, maxPrice, tags, exceptionsManager));
-            var gettingBarbora = await Task.Factory.StartNew(() => GettingItemsFromBarbora(productName, products, httpClient, minPrice, maxPrice, tags, exceptionsManager));
-            var gettingAvitela = await Task.Factory.StartNew(() => GettingItemsFromAvitela(productName, products, httpClient, minPrice, maxPrice, tags, exceptionsManager));
-            var gettingPigu = await Task.Factory.StartNew(() => GettingItemsFromPigu(productName, products, httpClient, minPrice, maxPrice, tags, exceptionsManager));
-            var gettingGintarine = await Task.Factory.StartNew(() => GettingItemsFromGintarineVaistine(productName, products, httpClient, minPrice, maxPrice, tags, exceptionsManager));
-            var gettingElektromarkt = await Task.Factory.StartNew(() => GettingItemsFromElektromarkt(productName, products, httpClient, minPrice, maxPrice, tags, exceptionsManager));
-            var gettingBigBox = await Task.Factory.StartNew(() => GettingItemsFromBigBox(productName, products, httpClient, minPrice, maxPrice, tags, exceptionsManager));
+            var gettingRde = await Task.Factory.StartNew(() =>
+                GettingItemsFromRde(productName, products, httpClient, minPrice, maxPrice, tags, exceptionsManager));
+            var gettingBarbora = await Task.Factory.StartNew(() =>
+                GettingItemsFromBarbora(productName, products, httpClient, minPrice, maxPrice, tags, exceptionsManager));
+            var gettingAvitela = await Task.Factory.StartNew(() =>
+                GettingItemsFromAvitela(productName, products, httpClient, minPrice, maxPrice, tags, exceptionsManager));
+            var gettingPigu = await Task.Factory.StartNew(() =>
+                GettingItemsFromPigu(productName, products, httpClient, minPrice, maxPrice, tags, exceptionsManager));
+            var gettingGintarine = await Task.Factory.StartNew(() =>
+                GettingItemsFromGintarineVaistine(productName, products, httpClient, minPrice, maxPrice, tags, exceptionsManager));
+            var gettingElektromarkt = await Task.Factory.StartNew(() =>
+                GettingItemsFromElektromarkt(productName, products, httpClient, minPrice, maxPrice, tags, exceptionsManager));
+            var gettingBigBox = await Task.Factory.StartNew(() =>
+                GettingItemsFromBigBox(productName, products, httpClient, minPrice, maxPrice, tags, exceptionsManager));
             var taskList = new List<Task>
             {
                 gettingRde, gettingBarbora, gettingAvitela, gettingPigu, gettingGintarine, gettingElektromarkt,
@@ -40,7 +50,8 @@ namespace PCE_Web.Classes
             Task.WaitAll(taskList.ToArray()); 
         }
 
-        private static async Task GettingItemsFromRde(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice, string[] tags, IExceptionsManager exceptionsManager)
+        private static async Task GettingItemsFromRde(string productName, List<Item> products, 
+            HttpClient httpClient, int minPrice, int maxPrice, string[] tags, IExceptionsManager exceptionsManager)
         {
             if (tags.Contains("Rde"))
             {
@@ -54,12 +65,14 @@ namespace PCE_Web.Classes
                 }
                 catch (Exception e)
                 {
-                    exceptionsManager.WriteLoggedExceptions("Exception Rde: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
+                    exceptionsManager.WriteLoggedExceptions("Exception Rde: " + 
+                        e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
                 }
             }
         }
 
-        private static async Task GettingItemsFromBarbora(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice, string[] tags, IExceptionsManager exceptionsManager)
+        private static async Task GettingItemsFromBarbora(string productName, List<Item> products,
+            HttpClient httpClient, int minPrice, int maxPrice, string[] tags, IExceptionsManager exceptionsManager)
         {
             if (tags.Contains("Barbora"))
             {
@@ -73,12 +86,14 @@ namespace PCE_Web.Classes
                 }
                 catch (Exception e)
                 {
-                    exceptionsManager.WriteLoggedExceptions("Exception Barbora: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
+                    exceptionsManager.WriteLoggedExceptions("Exception Barbora: " + e.Message, e.Source, e.StackTrace,
+                        DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
                 }
             }
         }
 
-        private static async Task GettingItemsFromAvitela(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice, string[] tags, IExceptionsManager exceptionsManager)
+        private static async Task GettingItemsFromAvitela(string productName, List<Item> products,
+            HttpClient httpClient, int minPrice, int maxPrice, string[] tags, IExceptionsManager exceptionsManager)
         {
             if (tags.Contains("Avitela"))
             {
@@ -92,12 +107,14 @@ namespace PCE_Web.Classes
                 }
                 catch (Exception e)
                 {
-                    exceptionsManager.WriteLoggedExceptions("Exception Avitela: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
+                    exceptionsManager.WriteLoggedExceptions("Exception Avitela: " + e.Message, e.Source, e.StackTrace,
+                        DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
                 }
             }
         }
 
-        private static async Task GettingItemsFromPigu(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice, string[] tags, IExceptionsManager exceptionsManager)
+        private static async Task GettingItemsFromPigu(string productName, List<Item> products,
+            HttpClient httpClient, int minPrice, int maxPrice, string[] tags, IExceptionsManager exceptionsManager)
         {
             if (tags.Contains("Pigu"))
             {
@@ -111,12 +128,14 @@ namespace PCE_Web.Classes
                 }
                 catch (Exception e)
                 {
-                    exceptionsManager.WriteLoggedExceptions("Exception Pigu: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
+                    exceptionsManager.WriteLoggedExceptions("Exception Pigu: " + e.Message, e.Source, e.StackTrace,
+                        DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
                 }
             }
         }
 
-        private static async Task GettingItemsFromBigBox(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice, string[] tags, IExceptionsManager exceptionsManager)
+        private static async Task GettingItemsFromBigBox(string productName, List<Item> products,
+            HttpClient httpClient, int minPrice, int maxPrice, string[] tags, IExceptionsManager exceptionsManager)
         {
             if (tags.Contains("BigBox"))
             {
@@ -132,12 +151,14 @@ namespace PCE_Web.Classes
                 }
                 catch (Exception e)
                 {
-                    exceptionsManager.WriteLoggedExceptions("Exception Bigbox: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
+                    exceptionsManager.WriteLoggedExceptions("Exception Bigbox: " + e.Message, e.Source, e.StackTrace,
+                        DateTime.UtcNow.ToString());
                 }
             }
         }
 
-        private static async Task GettingItemsFromGintarineVaistine(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice, string[] tags, IExceptionsManager exceptionsManager)
+        private static async Task GettingItemsFromGintarineVaistine(string productName, List<Item> products,
+            HttpClient httpClient, int minPrice, int maxPrice, string[] tags, IExceptionsManager exceptionsManager)
         {
             if (tags.Contains("Gintarinė"))
             {
@@ -152,12 +173,14 @@ namespace PCE_Web.Classes
                 }
                 catch (Exception e)
                 {
-                    exceptionsManager.WriteLoggedExceptions("Exception Gitarine Vaistine: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
+                    exceptionsManager.WriteLoggedExceptions("Exception Gitarine Vaistine: " + e.Message, e.Source, e.StackTrace,
+                        DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
                 }
             }
         }
 
-        private static async Task GettingItemsFromElektromarkt(string productName, List<Item> products, HttpClient httpClient, int minPrice, int maxPrice, string[] tags, IExceptionsManager exceptionsManager)
+        private static async Task GettingItemsFromElektromarkt(string productName, List<Item> products,
+            HttpClient httpClient, int minPrice, int maxPrice, string[] tags, IExceptionsManager exceptionsManager)
         {
             if (tags.Contains("Elektromarkt"))
             {
@@ -171,7 +194,8 @@ namespace PCE_Web.Classes
                 }
                 catch (Exception e)
                 {
-                    exceptionsManager.WriteLoggedExceptions("Exception Elektromarkt: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
+                    exceptionsManager.WriteLoggedExceptions("Exception Elektromarkt: " + e.Message, e.Source, e.StackTrace,
+                        DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
                 }
             }
         }
@@ -376,7 +400,8 @@ namespace PCE_Web.Classes
                 {
 
                     var price = productListItem
-                        .Descendants("div").FirstOrDefault(node => node.GetAttributeValue("class", "")
+                        .Descendants("div").FirstOrDefault(node =>
+                            node.GetAttributeValue("class", "")
                             .Equals("product_price_wo_discount_listing"))
                         ?.InnerText.Trim();
 
@@ -390,7 +415,8 @@ namespace PCE_Web.Classes
                     {
 
                         var name = productListItem
-                            .Descendants("div").FirstOrDefault(node => node.GetAttributeValue("class", "")
+                            .Descendants("div").FirstOrDefault(node =>
+                                node.GetAttributeValue("class", "")
                                 .Equals("product_name"))
                             ?.InnerText.Trim();
 
@@ -434,7 +460,8 @@ namespace PCE_Web.Classes
                 {
 
                     var price = productListItem
-                        .Descendants("div").FirstOrDefault(node => node.GetAttributeValue("class", "")
+                        .Descendants("div").FirstOrDefault(node => 
+                            node.GetAttributeValue("class", "")
                             .Equals("price"))
                         ?.InnerText.Trim();
 
@@ -447,11 +474,13 @@ namespace PCE_Web.Classes
                     {
 
                         var name = productListItem
-                            .Descendants("div").FirstOrDefault(node => node.GetAttributeValue("class", "")
+                            .Descendants("div").FirstOrDefault(node => 
+                                node.GetAttributeValue("class", "")
                                 .Equals("name"))
                             ?.InnerText.Trim();
 
-                        var link = productListItem.Descendants("a").FirstOrDefault()?.GetAttributeValue("href", "");
+                        var link = productListItem.Descendants("a").
+                            FirstOrDefault()?.GetAttributeValue("href", "");
 
                         var imgLink = productListItem.Descendants("img").FirstOrDefault()
                             ?.GetAttributeValue("data-echo", "");
@@ -490,7 +519,8 @@ namespace PCE_Web.Classes
                     if (countItems != 0)
                     {
                         var price = productListItem
-                            .Descendants("span").FirstOrDefault(node => node.GetAttributeValue("class", "")
+                            .Descendants("span").FirstOrDefault(node => 
+                                node.GetAttributeValue("class", "")
                                 .Equals("b-product-price-current-number"))
                             ?.InnerText.Trim();
 
@@ -503,14 +533,16 @@ namespace PCE_Web.Classes
                         {
 
                             var name = productListItem
-                                .Descendants("span").FirstOrDefault(node => node.GetAttributeValue("itemprop", "")
+                                .Descendants("span").FirstOrDefault(node => 
+                                    node.GetAttributeValue("itemprop", "")
                                     .Equals("name"))
                                 ?.InnerText.Trim();
 
                             var link = productListItem.Descendants("a").FirstOrDefault()?.GetAttributeValue("href", "");
 
                             var imgLink = productListItem
-                                .Descendants("img").FirstOrDefault(node => node.GetAttributeValue("itemprop", "")
+                                .Descendants("img").FirstOrDefault(node => 
+                                    node.GetAttributeValue("itemprop", "")
                                     .Contains("image"))
                                 ?.GetAttributeValue("src", "");
 
@@ -547,7 +579,8 @@ namespace PCE_Web.Classes
                     if (countItems != 0)
                     {
                         var price = productListItem
-                            .Descendants("span").FirstOrDefault(node => node.GetAttributeValue("class", "")
+                            .Descendants("span").FirstOrDefault(node => 
+                                node.GetAttributeValue("class", "")
                                 .Equals("price notranslate"))
                             ?.InnerText.Trim();
 
@@ -561,7 +594,8 @@ namespace PCE_Web.Classes
                         if ((priceDouble > minPrice) && (priceDouble < maxPrice))
                         {
                             var name = productListItem
-                                .Descendants("p").FirstOrDefault(node => node.GetAttributeValue("class", "")
+                                .Descendants("p").FirstOrDefault(node => 
+                                    node.GetAttributeValue("class", "")
                                     .Equals("product-name"))
                                 ?.InnerText.Trim();
 
@@ -569,7 +603,8 @@ namespace PCE_Web.Classes
                                 ?.GetAttributeValue("href", "");
 
                             var imgLink = productListItem
-                                .Descendants("img").FirstOrDefault(node => node.GetAttributeValue("src", "")
+                                .Descendants("img").FirstOrDefault(node => 
+                                    node.GetAttributeValue("src", "")
                                     .Contains("jpg"))
                                 ?.GetAttributeValue("src", "");
 
@@ -603,7 +638,8 @@ namespace PCE_Web.Classes
                 foreach (var productListItem in productListItems)
                 {
                     var price = productListItem
-                        .Descendants("span").FirstOrDefault(node => node.GetAttributeValue("class", "")
+                        .Descendants("span").FirstOrDefault(node => 
+                            node.GetAttributeValue("class", "")
                             .Equals("price product-price"))
                         ?.InnerText.Trim();
 
@@ -617,14 +653,16 @@ namespace PCE_Web.Classes
                     if ((priceDouble > minPrice) && (priceDouble < maxPrice))
                     {
                         var name = productListItem
-                            .Descendants("a").FirstOrDefault(node => node.GetAttributeValue("class", "")
+                            .Descendants("a").FirstOrDefault(node => 
+                                node.GetAttributeValue("class", "")
                                 .Equals("product-name"))
                             ?.InnerText.Trim();
 
                         var link = productListItem.Descendants("a").FirstOrDefault()?.GetAttributeValue("href", "");
 
                         var imgLink = productListItem
-                            .Descendants("img").FirstOrDefault(node => node.GetAttributeValue("class", "")
+                            .Descendants("img").FirstOrDefault(node => 
+                                node.GetAttributeValue("class", "")
                                 .Contains("replace-2x img-responsive"))
                             ?.GetAttributeValue("src", "");
 
@@ -657,12 +695,14 @@ namespace PCE_Web.Classes
                 {
 
                     var name = productListItem
-                        .Descendants("h2").FirstOrDefault(node => node.GetAttributeValue("class", "")
+                        .Descendants("h2").FirstOrDefault(node => 
+                            node.GetAttributeValue("class", "")
                             .Equals("product-name"))
                         ?.InnerText.Trim();
 
                     var price = productListItem
-                        .Descendants("span").FirstOrDefault(node => node.GetAttributeValue("class", "")
+                        .Descendants("span").FirstOrDefault(node => 
+                            node.GetAttributeValue("class", "")
                             .Equals("price"))
                         ?.InnerText.Trim();
 
@@ -674,9 +714,11 @@ namespace PCE_Web.Classes
 
                     if ((priceDouble > minPrice) && (priceDouble < maxPrice))
                     {
-                        var link = productListItem.Descendants("a").FirstOrDefault()?.GetAttributeValue("href", "");
+                        var link = productListItem.Descendants("a").
+                            FirstOrDefault()?.GetAttributeValue("href", "");
 
-                        var imgLink = productListItem.Descendants("img").FirstOrDefault()?.GetAttributeValue("src", "");
+                        var imgLink = productListItem.Descendants("img").
+                            FirstOrDefault()?.GetAttributeValue("src", "");
 
                         if (!string.IsNullOrEmpty(price))
                         {
@@ -708,7 +750,8 @@ namespace PCE_Web.Classes
                 {
 
                     var price = productListItem
-                        .Descendants("span").FirstOrDefault(node => node.GetAttributeValue("class", "")
+                        .Descendants("span").FirstOrDefault(node => 
+                            node.GetAttributeValue("class", "")
                             .Equals("price actual-price"))
                         ?.InnerText.Trim();
 
@@ -717,11 +760,14 @@ namespace PCE_Web.Classes
                     var priceDouble = Convert.ToDouble(price);
                     if ((priceDouble > minPrice) && (priceDouble < maxPrice))
                     {
-                        var name = productListItem.Descendants("input").FirstOrDefault()
+                        var name = productListItem.Descendants("input").
+                            FirstOrDefault()
                             ?.GetAttributeValue("value", "");
 
-                        var link = productListItem.Descendants("a").FirstOrDefault()?.GetAttributeValue("href", "");
-                        var imgLink = productListItem.Descendants("img").FirstOrDefault()
+                        var link = productListItem.Descendants("a").
+                            FirstOrDefault()?.GetAttributeValue("href", "");
+                        var imgLink = productListItem.Descendants("img").
+                            FirstOrDefault()
                             ?.GetAttributeValue("data-lazyloadsrc", "");
 
                         if (!string.IsNullOrEmpty(price))
