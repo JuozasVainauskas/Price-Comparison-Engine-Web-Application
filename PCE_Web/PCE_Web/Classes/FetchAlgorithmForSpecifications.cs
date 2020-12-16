@@ -796,23 +796,9 @@ namespace PCE_Web.Classes
             return price;
         }
 
-        private static double ConvertingToDouble(string price)
-        {
-            var charsToRemove = new[] { "," };
-            foreach (var c in charsToRemove) price = price.Replace(c, ".");
-            price = EliminatingEuroSimbol(price);
-            var convertedPrice = double.Parse(price, System.Globalization.CultureInfo.InvariantCulture);
-            return convertedPrice;
-        }
-
         private static List<Item> SortAndInsert(List<Item> products)
         {
             products = products.OrderBy(o => o.PriceDouble).ToList();
-            return products;
-        }
-        private static List<Item> SortAndInsertByDescending(List<Item> products)
-        {
-            products = products.OrderByDescending(o => o.PriceDouble).ToList();
             return products;
         }
     }
