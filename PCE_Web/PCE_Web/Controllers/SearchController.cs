@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PCE_Web.Classes;
@@ -18,7 +17,7 @@ namespace PCE_Web.Controllers
         [AllowAnonymous]
         public ActionResult Suggestions(string productName, int page)
         {
-            /*
+            
             var cachedItems = _productsCache.GetCachedItems(productName);
             if (cachedItems!=null)
             {
@@ -32,13 +31,13 @@ namespace PCE_Web.Controllers
             }
             else
             {
-            */
+            
                 var products = GetProductsFromApi.GetProducts(productName);
-                //_productsCache.SetCachedItems(productName,products);
+                _productsCache.SetCachedItems(productName,products);
                 var suggestionsView = new SuggestionsView {Products = products};
                 return View(suggestionsView);
 
-            //}
+            }
         }
     }
 }

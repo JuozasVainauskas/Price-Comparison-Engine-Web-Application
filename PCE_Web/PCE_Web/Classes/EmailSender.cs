@@ -100,7 +100,6 @@ namespace PCE_Web.Classes
         {
             if (e.Error != null)
             {
-                return;
             }
         }
     }

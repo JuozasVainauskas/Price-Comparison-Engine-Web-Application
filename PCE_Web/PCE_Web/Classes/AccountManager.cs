@@ -9,9 +9,9 @@ namespace PCE_Web.Classes
 {
     public class AccountManager : IAccountManager
     {
-        private readonly PCEDatabaseContext _pceDatabaseContext;
+        private readonly PceDatabaseContext _pceDatabaseContext;
 
-        public AccountManager(PCEDatabaseContext pceDatabaseContext)
+        public AccountManager(PceDatabaseContext pceDatabaseContext)
         {
             _pceDatabaseContext = pceDatabaseContext;
         }

@@ -16,10 +16,10 @@ namespace PCE_Web.Classes
         public delegate void WriteData<THtmlNode, TItem>(List<THtmlNode> productListItems, List<TItem> products);
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
 
-        public static async Task<List<Item>> FetchAlgorithmaAsync(string SearchWord, HttpClient httpClient, IExceptionsManager exceptionsManager)
+        public static async Task<List<Item>> FetchAlgorithmaAsync(string searchWord, HttpClient httpClient, IExceptionsManager exceptionsManager)
         {
             var products = new List<Item>();
-            await ReadingItemsAsync(SearchWord, products, httpClient, exceptionsManager);
+            await ReadingItemsAsync(searchWord, products, httpClient, exceptionsManager);
             products = SortAndInsert(products);
             return products;
         }
@@ -651,7 +651,7 @@ namespace PCE_Web.Classes
 
                     if (!string.IsNullOrEmpty(price))
                     {
-                        var regex = Regex.Match(price ?? string.Empty, @"[0-9]+\,[0-9][0-9]");
+                        var regex = Regex.Match(price, @"[0-9]+\,[0-9][0-9]");
                         price = Convert.ToString(regex);
                         var priceDouble = Convert.ToDouble(price);
 

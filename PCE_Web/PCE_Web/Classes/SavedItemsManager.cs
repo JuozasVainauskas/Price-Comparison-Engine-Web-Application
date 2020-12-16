@@ -7,9 +7,9 @@ namespace PCE_Web.Classes
 {
     public class SavedItemsManager : ISavedItemsManager
     {
-        private readonly PCEDatabaseContext _pceDatabaseContext;
+        private readonly PceDatabaseContext _pceDatabaseContext;
 
-        public SavedItemsManager(PCEDatabaseContext pceDatabaseContext)
+        public SavedItemsManager(PceDatabaseContext pceDatabaseContext)
         {
             _pceDatabaseContext = pceDatabaseContext;
         }

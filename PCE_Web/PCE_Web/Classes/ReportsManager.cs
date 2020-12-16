@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using PCE_Web.Models;
 using PCE_Web.Tables;
@@ -8,9 +9,9 @@ namespace PCE_Web.Classes
 {
     public class ReportsManager : IReportsManager
     {
-        private readonly PCEDatabaseContext _pceDatabaseContext;
+        private readonly PceDatabaseContext _pceDatabaseContext;
 
-        public ReportsManager(PCEDatabaseContext pceDatabaseContext)
+        public ReportsManager(PceDatabaseContext pceDatabaseContext)
         {
             _pceDatabaseContext = pceDatabaseContext;
         }
@@ -23,7 +24,7 @@ namespace PCE_Web.Classes
                 {
                     Email = email,
                     Comment = report,
-                    Date = DateTime.UtcNow.ToString(),
+                    Date = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture),
                     Solved = 0
                 };
                 _pceDatabaseContext.Reports.Add(newReport);
@@ -33,7 +34,7 @@ namespace PCE_Web.Classes
 
         public List<Report> ReadReports(string email, int solvedId)
         {
-            var comments = _pceDatabaseContext.Reports.Where(column => column.Email == email && column.Solved == solvedId).Select(column => new Report { Comment = column.Comment, ID = column.ReportsId, Date = column.Date, Email = column.Email }).ToList();
+            var comments = _pceDatabaseContext.Reports.Where(column => column.Email == email && column.Solved == solvedId).Select(column => new Report { Comment = column.Comment, Id = column.ReportsId, Date = column.Date, Email = column.Email }).ToList();
             return comments;
         }
 

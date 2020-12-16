@@ -3,7 +3,7 @@ namespace PCE_Web.Classes
 {
     public class Report
     {
-        public int ID
+        public int Id
         {
             get;
             set;

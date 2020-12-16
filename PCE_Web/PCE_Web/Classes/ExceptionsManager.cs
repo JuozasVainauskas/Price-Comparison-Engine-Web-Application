@@ -7,9 +7,9 @@ namespace PCE_Web.Classes
 {
     public class ExceptionsManager : IExceptionsManager
     {
-        private readonly PCEDatabaseContext _pceDatabaseContext;
+        private readonly PceDatabaseContext _pceDatabaseContext;
 
-        public ExceptionsManager(PCEDatabaseContext pceDatabaseContext)
+        public ExceptionsManager(PceDatabaseContext pceDatabaseContext)
         {
             _pceDatabaseContext = pceDatabaseContext;
         }

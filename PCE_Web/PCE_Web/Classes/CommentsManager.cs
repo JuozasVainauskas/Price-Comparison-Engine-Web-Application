@@ -8,9 +8,9 @@ namespace PCE_Web.Classes
 {
     public class CommentsManager : ICommentsManager
     {
-        private readonly PCEDatabaseContext _pceDatabaseContext;
+        private readonly PceDatabaseContext _pceDatabaseContext;
 
-        public CommentsManager(PCEDatabaseContext pceDatabaseContext)
+        public CommentsManager(PceDatabaseContext pceDatabaseContext)
         {
             _pceDatabaseContext = pceDatabaseContext;
         }

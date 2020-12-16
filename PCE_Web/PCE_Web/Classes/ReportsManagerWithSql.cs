@@ -11,10 +11,10 @@ namespace PCE_Web.Classes
 {
     public class ReportsManagerWithSql : IReportsManager
     {
-        private readonly PCEDatabaseContext _pceDatabaseContext;
+        private readonly PceDatabaseContext _pceDatabaseContext;
         private readonly IExceptionsManager _exceptionsManager;
 
-        public ReportsManagerWithSql(IExceptionsManager exceptionsManager, PCEDatabaseContext pceDatabaseContext)
+        public ReportsManagerWithSql(IExceptionsManager exceptionsManager, PceDatabaseContext pceDatabaseContext)
         {
             _exceptionsManager = exceptionsManager;
             _pceDatabaseContext = pceDatabaseContext;
@@ -50,7 +50,7 @@ namespace PCE_Web.Classes
 
         public List<Report> ReadReports(string email, int solvedId)
         {
-            var comments = _pceDatabaseContext.Reports.Where(column => column.Email == email && column.Solved == solvedId).Select(column => new Report { Comment = column.Comment, ID = column.ReportsId, Date = column.Date, Email = column.Email }).ToList();
+            var comments = _pceDatabaseContext.Reports.Where(column => column.Email == email && column.Solved == solvedId).Select(column => new Report { Comment = column.Comment, Id = column.ReportsId, Date = column.Date, Email = column.Email }).ToList();
             return comments;
         }
 

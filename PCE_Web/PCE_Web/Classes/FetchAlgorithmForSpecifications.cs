@@ -712,7 +712,7 @@ namespace PCE_Web.Classes
                             .Equals("price actual-price"))
                         ?.InnerText.Trim();
 
-                    var regex = Regex.Match(price, @"[0-9]+\,[0-9][0-9]");
+                    var regex = Regex.Match(price ?? string.Empty, @"[0-9]+\,[0-9][0-9]");
                     price = Convert.ToString(regex);
                     var priceDouble = Convert.ToDouble(price);
                     if ((priceDouble > minPrice) && (priceDouble < maxPrice))
