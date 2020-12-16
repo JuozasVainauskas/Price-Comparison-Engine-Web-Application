@@ -120,7 +120,6 @@ namespace WEBSearchAPI.Classes
 
         private static List<HtmlNode> RdeSearch(HtmlDocument htmlDocument)
         {
-            Console.WriteLine("test");
             if (htmlDocument != null)
             {
                 try
@@ -145,7 +144,6 @@ namespace WEBSearchAPI.Classes
 
         private static List<HtmlNode> AvitelaSearch(HtmlDocument htmlDocument)
         {
-            Console.WriteLine("test");
             if (htmlDocument != null)
             {
                 try
