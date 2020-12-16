@@ -16,7 +16,6 @@ namespace WEBSearchAPI.Classes
         public static int SoldOut;
         public delegate void WriteData<THtmlNode, TItem>(List<THtmlNode> productListItems, List<TItem> products);
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
-
         public static async Task<List<Item>> FetchAlgorithmaAsync(string SearchWord, HttpClient httpClient)
         {
             var products = new List<Item>();
@@ -24,7 +23,6 @@ namespace WEBSearchAPI.Classes
             products = SortAndInsert(products);
             return products;
         }
-
         public static async Task ReadingItemsAsync(string productName, List<Item> products, HttpClient httpClient)
         {
             var gettingRde = await Task.Factory.StartNew(() => GettingItemsFromRde(productName, products, httpClient));
@@ -122,6 +120,7 @@ namespace WEBSearchAPI.Classes
 
         private static List<HtmlNode> RdeSearch(HtmlDocument htmlDocument)
         {
+            Console.WriteLine("test");
             if (htmlDocument != null)
             {
                 try
@@ -146,6 +145,7 @@ namespace WEBSearchAPI.Classes
 
         private static List<HtmlNode> AvitelaSearch(HtmlDocument htmlDocument)
         {
+            Console.WriteLine("test");
             if (htmlDocument != null)
             {
                 try
@@ -163,6 +163,7 @@ namespace WEBSearchAPI.Classes
                 {
                     return null;
                 }
+
             }
 
             return null;

@@ -15,6 +15,7 @@ namespace PCE_Web.Classes
         public static int SoldOut;
         public delegate void WriteData<THtmlNode, TItem>(List<THtmlNode> productListItems, List<TItem> products);
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
+
         public static async Task<List<Item>> FetchAlgorithmaAsync(string SearchWord, HttpClient httpClient, IExceptionsManager exceptionsManager)
         {
             var products = new List<Item>();

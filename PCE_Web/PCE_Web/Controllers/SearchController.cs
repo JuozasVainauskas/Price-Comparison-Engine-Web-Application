@@ -18,6 +18,7 @@ namespace PCE_Web.Controllers
         [AllowAnonymous]
         public ActionResult Suggestions(string productName, int page)
         {
+            /*
             var cachedItems = _productsCache.GetCachedItems(productName);
             if (cachedItems!=null)
             {
@@ -31,13 +32,13 @@ namespace PCE_Web.Controllers
             }
             else
             {
+            */
                 var products = GetProductsFromApi.GetProducts(productName);
-                _productsCache.SetCachedItems(productName,products);
-                var productsToShow = products.Take(10).ToList();
+                //_productsCache.SetCachedItems(productName,products);
                 var suggestionsView = new SuggestionsView {Products = products};
                 return View(suggestionsView);
 
-            }
+            //}
         }
     }
 }
