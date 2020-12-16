@@ -4,7 +4,13 @@
 
 <br>
 <h1>
-    Iš viso surasta prekių: @Model.Products.Count
+    Iš viso surasta prekių: @Model.AllProducts.Count,
+    @{
+        var itemsList =
+            from item in @Model.AllProducts
+            group item by item.Seller;
+    <text>@itemsList.Select(x => string.Format("{0}: {1}", x.Key, x.Count())).Aggregate((current, next) => current + ", " + next)</text>
+    }
 </h1>
 <br>
 <div class="table-responsive">
