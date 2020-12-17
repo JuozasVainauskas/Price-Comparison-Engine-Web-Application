@@ -1,7 +1,7 @@
 ﻿
 namespace PCE_Web.Tables
 {
-    public partial class SavedItems
+    public class SavedItems
     {
         public int SavedItemId { get; set; }
         public string Email { get; set; }

@@ -1,7 +1,7 @@
 ﻿
 namespace PCE_Web.Tables
 {
-    public partial class Comments
+    public class Comments
     {
         public int CommentId { get; set; }
         public string Email { get; set; }
