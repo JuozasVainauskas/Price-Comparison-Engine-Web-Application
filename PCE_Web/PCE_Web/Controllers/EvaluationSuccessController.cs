@@ -10,8 +10,20 @@ namespace PCE_Web.Controllers
     [Authorize]
     public class EvaluationSuccessController : Controller
     {
-        public static readonly Dictionary<int, string> AllowedShopId = new Dictionary<int, string> { { 1, "Avitela" }, { 2, "Gintarine" }, { 3, "Barbora" }, { 4, "RDE" }, { 5, "BigBox" }, { 6, "Elektromarkt" }, { 7, "Pigu" } };
-        private readonly Lazy<int[]> _allowedRate = new Lazy<int[]>(() => new[] { 1, 2, 3, 4, 5});
+        public static readonly Dictionary<int, string> AllowedShopId = 
+            new Dictionary<int, string>
+            {
+                { 1, "Avitela" }, 
+                { 2, "Gintarine" }, 
+                { 3, "Barbora" }, 
+                { 4, "RDE" }, 
+                { 5, "BigBox" }, 
+                { 6, "Elektromarkt" }, 
+                { 7, "Pigu" }
+            };
+
+        private readonly Lazy<int[]> _allowedRate = 
+            new Lazy<int[]>(() => new[] { 1, 2, 3, 4, 5});
         private readonly ICommentsManager _commentsManager;
 
         public EvaluationSuccessController(ICommentsManager commentsManager)
@@ -23,7 +35,10 @@ namespace PCE_Web.Controllers
         {
             var currentEmail = User.Identity.Name;
 
-            if (!_commentsManager.IsAlreadyCommented(currentEmail,shopId) && currentEmail!=null && AllowedShopId.ContainsKey(shopId) && _allowedRate.Value.Contains(rate))
+            if (!_commentsManager.IsAlreadyCommented(currentEmail,shopId) 
+                && currentEmail!=null 
+                && AllowedShopId.ContainsKey(shopId) 
+                && _allowedRate.Value.Contains(rate))
             {
                 _commentsManager.WriteComments(currentEmail, shopId, rate, comment);
                 return View();

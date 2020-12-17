@@ -26,7 +26,10 @@ namespace PCE_Web.Controllers
                 {
                     products.Add(cachedItem);
                 }
-                var suggestionsView = new SuggestionsView { Products = products };
+                var suggestionsView = new SuggestionsView
+                {
+                    Products = products
+                };
                 return View(suggestionsView);
             }
             else
@@ -34,7 +37,10 @@ namespace PCE_Web.Controllers
             
                 var products = GetProductsFromApi.GetProducts(productName);
                 _productsCache.SetCachedItems(productName,products);
-                var suggestionsView = new SuggestionsView {Products = products};
+                var suggestionsView = new SuggestionsView
+                {
+                    Products = products
+                };
                 return View(suggestionsView);
 
             }

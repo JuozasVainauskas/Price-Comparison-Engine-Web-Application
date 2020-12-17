@@ -714,7 +714,8 @@ namespace WEBSearchAPI.Classes
         private static string EliminatingEuroSimbol(string priceAtsarg)
         {
             var charsToRemove = new[] { "€" };
-            foreach (var c in charsToRemove) priceAtsarg = priceAtsarg.Replace(c, string.Empty);
+            foreach (var c in charsToRemove) 
+                priceAtsarg = priceAtsarg.Replace(c, string.Empty);
 
             return priceAtsarg;
         }
@@ -725,7 +726,9 @@ namespace WEBSearchAPI.Classes
             if (index > 0) price = price.Substring(0, index);
 
             var charsToChange = new[] { "." };
-            foreach (var c in charsToChange) price = price.Replace(c, ",");
+            foreach (var c in charsToChange) 
+                price = price.Replace(c, ",");
+
             return price;
         }
 
@@ -735,11 +738,17 @@ namespace WEBSearchAPI.Classes
             if (index > 0) price = price.Substring(0, index);
 
             var charsToChange = new[] { "." };
-            foreach (var c in charsToChange) price = price.Replace(c, ",");
+            
+            foreach (var c in charsToChange)
+                price = price.Replace(c, ",");
             var charsToChange2 = new[] { "&nbsp;" };
-            foreach (var c in charsToChange2) price = price.Replace(c, "");
+            
+            foreach (var c in charsToChange2)
+                price = price.Replace(c, "");
             var charsToChange3 = new[] { "Kaina: " };
-            foreach (var c in charsToChange3) price = price.Replace(c, "");
+            
+            foreach (var c in charsToChange3)
+                price = price.Replace(c, "");
 
             return price;
         }
@@ -747,14 +756,16 @@ namespace WEBSearchAPI.Classes
         private static string EliminateSpaces(string price)
         {
             var charsToRemove = new[] { " " };
-            foreach (var c in charsToRemove) price = price.Replace(c, string.Empty);
+            foreach (var c in charsToRemove) 
+                price = price.Replace(c, string.Empty);
             return price;
         }
 
         private static string EliminateSpacesPigu(string price)
         {
             var charsToRemove = new[] { " " };
-            foreach (var c in charsToRemove) price = price.Replace(c, string.Empty);
+            foreach (var c in charsToRemove) 
+                price = price.Replace(c, string.Empty);
             return price;
         }
 

@@ -39,8 +39,15 @@ namespace PCE_Web.Controllers
             }
 
             var users = allUsers.Except(reportedUsers).ToList();
-            var role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
-            var adminView = new AdminView() { Users = users, ReportedUsers = reportedUsers, Role = role, Exceptions = exceptions };
+            var role = User.Claims.FirstOrDefault
+                (x => x.Type == ClaimTypes.Role)?.Value;
+            var adminView = new AdminView()
+            {
+                Users = users, 
+                ReportedUsers = reportedUsers, 
+                Role = role, 
+                Exceptions = exceptions
+            };
             
             return View(adminView);
         }
@@ -67,7 +74,11 @@ namespace PCE_Web.Controllers
                             new { messageString = "Toks vartotojas jau egzistuoja!" });
                     }
                 }
-                var newUser = new User() { Email = email, Role = Role.User };
+                var newUser = new User()
+                {
+                    Email = email, 
+                    Role = Role.User
+                };
                 _accountManager.CreateAccount(email, password);
                 return RedirectToAction("Admin", "Administration");
             }
