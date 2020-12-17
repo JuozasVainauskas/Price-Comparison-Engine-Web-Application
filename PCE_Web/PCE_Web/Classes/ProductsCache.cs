@@ -8,7 +8,7 @@ namespace PCE_Web.Classes
 {
     public class ProductsCache : IProductsCache
     {
-        private ObjectCache _cache = MemoryCache.Default;
+        private readonly ObjectCache _cache = MemoryCache.Default;
 
         public void SetCachedItems(string key, List<Item> products)
         {

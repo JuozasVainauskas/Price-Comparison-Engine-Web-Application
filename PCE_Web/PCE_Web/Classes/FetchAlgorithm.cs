@@ -63,7 +63,7 @@ namespace PCE_Web.Classes
             catch (Exception e)
             {
                 exceptionsManager.WriteLoggedExceptions
-                    ("Exception Rde: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString());
+                    ("Exception Rde: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
             }
         }
         private static async Task GettingItemsFromBarbora(string productName, List<Item> products, HttpClient httpClient, IExceptionsManager exceptionsManager)
