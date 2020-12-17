@@ -17,7 +17,8 @@ namespace PCE_Web.Classes
         public delegate void WriteData<THtmlNode, TItem>(List<THtmlNode> productListItems, List<TItem> products);
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
 
-        public static async Task<List<Item>> FetchAlgorithmaAsync(string searchWord, HttpClient httpClient, IExceptionsManager exceptionsManager)
+        public static async Task<List<Item>> FetchAlgorithmaAsync(string searchWord, 
+            HttpClient httpClient, IExceptionsManager exceptionsManager)
         {
             var products = new List<Item>();
             await ReadingItemsAsync(searchWord, products, httpClient, exceptionsManager);
@@ -25,22 +26,30 @@ namespace PCE_Web.Classes
             return products;
         }
   
-        private static async Task ReadingItemsAsync(string productName, List<Item> products, HttpClient httpClient, IExceptionsManager exceptionsManager)
+        private static async Task ReadingItemsAsync(string productName, List<Item> products, 
+            HttpClient httpClient, IExceptionsManager exceptionsManager)
         {
             var gettingRde = await Task.Factory.StartNew(() 
                 => GettingItemsFromRde(productName, products, httpClient, exceptionsManager));
+
             var gettingBarbora = await Task.Factory.StartNew(() 
                 => GettingItemsFromBarbora(productName, products, httpClient, exceptionsManager));
+
             var gettingAvitela = await Task.Factory.StartNew(() 
                 => GettingItemsFromAvitela(productName, products, httpClient, exceptionsManager));
+
             var gettingPigu = await Task.Factory.StartNew(() 
                 => GettingItemsFromPigu(productName, products, httpClient, exceptionsManager));
+
             var gettingGintarine = await Task.Factory.StartNew(() 
                 => GettingItemsFromGintarineVaistine(productName, products, httpClient, exceptionsManager));
+
             var gettingElektromarkt = await Task.Factory.StartNew(() 
                 => GettingItemsFromElektromarkt(productName, products, httpClient, exceptionsManager));
+
             var gettingBigBox = await Task.Factory.StartNew(() 
                 => GettingItemsFromBigBox(productName, products, httpClient, exceptionsManager));
+
             var taskList = new List<Task>
             {
                 gettingRde, gettingBarbora, gettingAvitela, gettingPigu, gettingGintarine, gettingElektromarkt,
@@ -49,7 +58,8 @@ namespace PCE_Web.Classes
             Task.WaitAll(taskList.ToArray());
         }
 
-        private static async Task GettingItemsFromRde(string productName, List<Item> products, HttpClient httpClient, IExceptionsManager exceptionsManager)
+        private static async Task GettingItemsFromRde(string productName, List<Item> products, 
+            HttpClient httpClient, IExceptionsManager exceptionsManager)
         {
             try
             {
@@ -63,10 +73,12 @@ namespace PCE_Web.Classes
             catch (Exception e)
             {
                 exceptionsManager.WriteLoggedExceptions
-                    ("Exception Rde: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
+                    ("Exception Rde: " + 
+                     e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
             }
         }
-        private static async Task GettingItemsFromBarbora(string productName, List<Item> products, HttpClient httpClient, IExceptionsManager exceptionsManager)
+        private static async Task GettingItemsFromBarbora(string productName, List<Item> products, 
+            HttpClient httpClient, IExceptionsManager exceptionsManager)
         {
             try
             {
@@ -80,11 +92,13 @@ namespace PCE_Web.Classes
             catch (Exception e)
             {
                 exceptionsManager.WriteLoggedExceptions
-                    ("Exception Barbora: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
+                    ("Exception Barbora: " +
+                     e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
             }
         }
 
-        private static async Task GettingItemsFromAvitela(string productName, List<Item> products, HttpClient httpClient, IExceptionsManager exceptionsManager)
+        private static async Task GettingItemsFromAvitela(string productName, List<Item> products,
+            HttpClient httpClient, IExceptionsManager exceptionsManager)
         {
             try
             {
@@ -98,11 +112,13 @@ namespace PCE_Web.Classes
             catch (Exception e)
             {
                 exceptionsManager.WriteLoggedExceptions
-                    ("Exception Avitela: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
+                    ("Exception Avitela: " + 
+                     e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
             }
         }
 
-        private static async Task GettingItemsFromPigu(string productName, List<Item> products, HttpClient httpClient, IExceptionsManager exceptionsManager)
+        private static async Task GettingItemsFromPigu(string productName, List<Item> products,
+            HttpClient httpClient, IExceptionsManager exceptionsManager)
         {
             try
             {
@@ -116,11 +132,13 @@ namespace PCE_Web.Classes
             catch (Exception e)
             {
                 exceptionsManager.WriteLoggedExceptions
-                    ("Exception Pigu: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
+                    ("Exception Pigu: " +
+                     e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
             }
         }
 
-        private static async Task GettingItemsFromBigBox(string productName, List<Item> products, HttpClient httpClient, IExceptionsManager exceptionsManager)
+        private static async Task GettingItemsFromBigBox(string productName, List<Item> products,
+            HttpClient httpClient, IExceptionsManager exceptionsManager)
         {
             try
             {
@@ -134,11 +152,13 @@ namespace PCE_Web.Classes
             catch (Exception e)
             {
                 exceptionsManager.WriteLoggedExceptions
-                    ("Exception BigBox: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
+                    ("Exception BigBox: " +
+                     e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
             }
         }
 
-        private static async Task GettingItemsFromGintarineVaistine(string productName, List<Item> products, HttpClient httpClient, IExceptionsManager exceptionsManager)
+        private static async Task GettingItemsFromGintarineVaistine(string productName, List<Item> products,
+            HttpClient httpClient, IExceptionsManager exceptionsManager)
         {
             try
             {
@@ -151,11 +171,13 @@ namespace PCE_Web.Classes
             }
             catch (Exception e)
             {
-                exceptionsManager.WriteLoggedExceptions("Exception Gitarine Vaistine: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
+                exceptionsManager.WriteLoggedExceptions("Exception Gitarine Vaistine: " + 
+                    e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
             }
         }
 
-        private static async Task GettingItemsFromElektromarkt(string productName, List<Item> products, HttpClient httpClient, IExceptionsManager exceptionsManager)
+        private static async Task GettingItemsFromElektromarkt(string productName, List<Item> products,
+            HttpClient httpClient, IExceptionsManager exceptionsManager)
         {
             try
             {
@@ -168,7 +190,8 @@ namespace PCE_Web.Classes
             }
             catch (Exception e)
             {
-                exceptionsManager.WriteLoggedExceptions("Exception Elektromarkt: " + e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
+                exceptionsManager.WriteLoggedExceptions("Exception Elektromarkt: " +
+                    e.Message, e.Source, e.StackTrace, DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
             }
         }
 

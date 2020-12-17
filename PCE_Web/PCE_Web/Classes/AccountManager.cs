@@ -44,7 +44,8 @@ namespace PCE_Web.Classes
 
         public void SetRole(string email, string role)
         {
-            var result = _pceDatabaseContext.UserData.SingleOrDefault(column => column.Email == email);
+            var result = _pceDatabaseContext.UserData.SingleOrDefault(column => 
+                column.Email == email);
             if (result != null)
             {
                 result.Role = role;
@@ -54,25 +55,29 @@ namespace PCE_Web.Classes
 
         public void DeleteAccount(string email)
         {
-            var savedItems = _pceDatabaseContext.SavedItems.Where(column => column.Email == email).ToList();
+            var savedItems = _pceDatabaseContext.SavedItems.Where(column => 
+                column.Email == email).ToList();
             foreach (var savedItem in savedItems)
             {
                 _pceDatabaseContext.SavedItems.Remove(savedItem);
             }
 
-            var result = _pceDatabaseContext.UserData.SingleOrDefault(column => column.Email == email);
+            var result = _pceDatabaseContext.UserData.SingleOrDefault(column => 
+                column.Email == email);
             if (result != null)
             {
                 _pceDatabaseContext.UserData.Remove(result);
             }
 
-            var comments = _pceDatabaseContext.Comments.Where(column => column.Email == email).ToList();
+            var comments = _pceDatabaseContext.Comments.Where(column => 
+                column.Email == email).ToList();
             foreach (var comment in comments)
             {
                 _pceDatabaseContext.Comments.Remove(comment);
             }
 
-            var reports = _pceDatabaseContext.Reports.Where(column => column.Email == email).ToList();
+            var reports = _pceDatabaseContext.Reports.Where(column => 
+                column.Email == email).ToList();
             foreach (var report in reports)
             {
                 _pceDatabaseContext.Reports.Remove(report);
@@ -108,7 +113,15 @@ namespace PCE_Web.Classes
         {
             var usersList = new List<User>();
             var users = _pceDatabaseContext.UserData.Select
-                (column => new UserData() { Email = column.Email, Role = column.Role, PasswordHash = "", PasswordSalt = "", UserId = 0 }).ToList();
+                (column => new UserData() 
+            {
+                Email = column.Email, 
+                Role = column.Role, 
+                PasswordHash = "", 
+                PasswordSalt = "", 
+                UserId = 0
+
+            }).ToList();
 
             foreach (var user in users)
             {
@@ -197,7 +210,9 @@ namespace PCE_Web.Classes
         public void ChangePassword(string email, string password, string passwordConfirm)
         {
             if (!string.IsNullOrWhiteSpace(password) 
-                && !string.IsNullOrWhiteSpace(passwordConfirm) && PasswordVerification(password) && password.Equals(passwordConfirm))
+                && !string.IsNullOrWhiteSpace(passwordConfirm) 
+                && PasswordVerification(password) 
+                && password.Equals(passwordConfirm))
             {
                 var passwordSalt = GenerateHash.CreateSalt(10);
                 var passwordHash = GenerateHash.GenerateSha256Hash(password, passwordSalt);

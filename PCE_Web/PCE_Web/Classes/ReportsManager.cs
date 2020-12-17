@@ -36,8 +36,13 @@ namespace PCE_Web.Classes
         {
             var comments = _pceDatabaseContext.Reports.Where
                 (column => column.Email == email && column.Solved == solvedId).Select
-                (column => new Report 
-                { Comment = column.Comment, Id = column.ReportsId, Date = column.Date, Email = column.Email }).ToList();
+            (column => new Report
+            {
+                Comment = column.Comment, 
+                Id = column.ReportsId, 
+                Date = column.Date, 
+                Email = column.Email
+            }).ToList();
             return comments;
         }
 
@@ -55,8 +60,13 @@ namespace PCE_Web.Classes
         {
             var item = _pceDatabaseContext.Reports.Where
                 (column => column.Email == email).Select
-                (column => new Reports 
-                { Email = column.Email, Comment = column.Comment, Solved = column.Solved, Date = column.Date }).ToList();
+                (column => new Reports
+            {
+                Email = column.Email, 
+                Comment = column.Comment, 
+                Solved = column.Solved, 
+                Date = column.Date
+            }).ToList();
             if (item.Count > 0)
             {
                 return true;

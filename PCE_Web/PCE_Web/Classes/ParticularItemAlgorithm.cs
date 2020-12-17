@@ -28,18 +28,25 @@ namespace PCE_Web.Classes
         {
             var gettingRde = await Task.Factory.StartNew(() =>
                 GettingItemsFromRde(productName, products, httpClient));
+
             var gettingBarbora = await Task.Factory.StartNew(() =>
                 GettingItemsFromBarbora(productName, products, httpClient));
+
             var gettingAvitela = await Task.Factory.StartNew(() =>
                 GettingItemsFromAvitela(productName, products, httpClient));
+
             var gettingPigu = await Task.Factory.StartNew(() =>
                 GettingItemsFromPigu(productName, products, httpClient));
+
             var gettingGintarine = await Task.Factory.StartNew(() =>
                 GettingItemsFromGintarineVaistine(productName, products, httpClient));
+
             var gettingElektromarkt = await Task.Factory.StartNew(() =>
                 GettingItemsFromElektromarkt(productName, products, httpClient));
+
             var gettingBigBox = await Task.Factory.StartNew(() =>
                 GettingItemsFromBigBox(productName, products, httpClient));
+
             var taskList = new List<Task>
             {
                 gettingRde, gettingBarbora, gettingAvitela, gettingPigu, gettingGintarine, gettingElektromarkt,
@@ -441,7 +448,8 @@ namespace PCE_Web.Classes
                                 .Equals("name"))
                             ?.InnerText.Trim();
 
-                        var link = productListItem.Descendants("a").FirstOrDefault()?.GetAttributeValue("href", "");
+                        var link = productListItem.Descendants("a").
+                            FirstOrDefault()?.GetAttributeValue("href", "");
 
                         var imgLink = productListItem
                             .Descendants("img").FirstOrDefault(node => 
@@ -500,7 +508,8 @@ namespace PCE_Web.Classes
                                 .Equals("product-name"))
                             ?.InnerText.Trim();
 
-                        var link = "https://pigu.lt/" + productListItem.Descendants("a").FirstOrDefault()?.GetAttributeValue("href", "");
+                        var link = "https://pigu.lt/" + productListItem.Descendants("a").
+                            FirstOrDefault()?.GetAttributeValue("href", "");
 
                         var imgLink = productListItem
                             .Descendants("img").FirstOrDefault(node =>

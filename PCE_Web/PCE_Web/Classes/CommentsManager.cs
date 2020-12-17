@@ -19,8 +19,15 @@ namespace PCE_Web.Classes
         {
             var comments = _pceDatabaseContext.Comments.Where
                 (column => column.ShopId == index).Select
-                (column => new Comments 
-                    { CommentId = column.CommentId, Email = column.Email, ShopId = column.ShopId, Date = column.Date, Rating = column.Rating, Comment = column.Comment })
+                (column => new Comments
+                {
+                    CommentId = column.CommentId, 
+                    Email = column.Email, 
+                    ShopId = column.ShopId, 
+                    Date = column.Date, 
+                    Rating = column.Rating, 
+                    Comment = column.Comment
+                })
                         .ToList();
             return comments;
         }
@@ -29,8 +36,15 @@ namespace PCE_Web.Classes
         {
             var item = _pceDatabaseContext.Comments.Where
                 (column => column.Email == email && column.ShopId == shopId).Select
-                (column => new Comments 
-                    { CommentId = column.CommentId, Email = column.Email, ShopId = column.ShopId, Date = column.Date, Rating = column.Rating, Comment = column.Comment })
+                (column => new Comments
+                {
+                    CommentId = column.CommentId, 
+                    Email = column.Email, 
+                    ShopId = column.ShopId, 
+                    Date = column.Date, 
+                    Rating = column.Rating, 
+                    Comment = column.Comment
+                })
                         .ToList();
             if (item.Count > 0)
             {
@@ -41,7 +55,9 @@ namespace PCE_Web.Classes
 
         public void WriteComments(string email, int shopId, int rating, string comment)
         {
-            var result = _pceDatabaseContext.Comments.SingleOrDefault(column => column.Email == email && column.ShopId == shopId);
+            var result = _pceDatabaseContext.Comments.SingleOrDefault(column => 
+                column.Email == email 
+                && column.ShopId == shopId);
             if (result == null)
             {
                 var commentsTable = new Comments()
