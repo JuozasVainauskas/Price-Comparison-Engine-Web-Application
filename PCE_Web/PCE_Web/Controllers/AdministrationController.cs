@@ -74,11 +74,7 @@ namespace PCE_Web.Controllers
                             new { messageString = "Toks vartotojas jau egzistuoja!" });
                     }
                 }
-                var newUser = new User()
-                {
-                    Email = email, 
-                    Role = Role.User
-                };
+
                 _accountManager.CreateAccount(email, password);
                 return RedirectToAction("Admin", "Administration");
             }
@@ -103,7 +99,6 @@ namespace PCE_Web.Controllers
                     if (temp.Count > 0)
                     {
                         _accountManager.DeleteAccount(email);
-                        var adminView = new AdminView() { Users = users.Except(temp).ToList() };
                         return RedirectToAction("Admin", "Administration");
                     }
                     else
