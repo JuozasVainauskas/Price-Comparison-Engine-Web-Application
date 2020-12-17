@@ -35,9 +35,13 @@ namespace PCE_Web.Controllers
         {
             var feature = HttpContext.Features.Get<IExceptionHandlerFeature>();
 
-            _exceptionsManager.WriteLoggedExceptions(feature.Error.Message, feature.Error.Source, feature.Error.StackTrace, DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
+            _exceptionsManager.WriteLoggedExceptions(feature.Error.Message,
+                feature.Error.Source,
+                feature.Error.StackTrace,
+                DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
 
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ErrorViewModel 
+                { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }
