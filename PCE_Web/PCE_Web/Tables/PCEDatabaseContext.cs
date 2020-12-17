@@ -105,9 +105,9 @@ namespace PCE_Web.Tables
             OnModelCreatingPartial(modelBuilder);
         }
 
+        //Cia nereikia throw new System.NotImplementedException(); kadangi šis metodas nera panaudojamas, bet jei bus idetas exception, tai neleis prisijungti.
         private void OnModelCreatingPartial(ModelBuilder modelBuilder)
         {
-            throw new System.NotImplementedException();
         }
     }
 }
