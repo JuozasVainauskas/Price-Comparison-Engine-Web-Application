@@ -63,7 +63,8 @@ namespace PCE_Web.Controllers
                 {
                     if (user.Email == email)
                     {
-                        return RedirectToAction("Admin", "Administration", new { messageString = "Toks vartotojas jau egzistuoja!" });
+                        return RedirectToAction("Admin", "Administration",
+                            new { messageString = "Toks vartotojas jau egzistuoja!" });
                     }
                 }
                 var newUser = new User() { Email = email, Role = Role.User };
@@ -96,12 +97,14 @@ namespace PCE_Web.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("Admin", "Administration", new { messageString = "Toks vartotojas neegzistuoja!" });
+                        return RedirectToAction("Admin", "Administration",
+                            new { messageString = "Toks vartotojas neegzistuoja!" });
                     }
                 }
                 else
                 {
-                    return RedirectToAction("Admin", "Administration", new { messageString = "Savęs ištrinti negalite!" });
+                    return RedirectToAction("Admin", "Administration",
+                        new { messageString = "Savęs ištrinti negalite!" });
                 }
             }
             return RedirectToAction("Admin", "Administration");
@@ -116,11 +119,13 @@ namespace PCE_Web.Controllers
                 if (temp.Count > 0)
                 {
                     _accountManager.SetRole(email, roleId.ToString());
-                    return RedirectToAction("Admin", "Administration", new { messageString = "Rolė suteikta sėkmingai" });
+                    return RedirectToAction("Admin", "Administration",
+                        new { messageString = "Rolė suteikta sėkmingai" });
                 }
                 else
                 {
-                    return RedirectToAction("Admin", "Administration", new { messageString = "Toks vartotojas neegzistuoja!" });
+                    return RedirectToAction("Admin", "Administration",
+                        new { messageString = "Toks vartotojas neegzistuoja!" });
                 }
             }
             else
