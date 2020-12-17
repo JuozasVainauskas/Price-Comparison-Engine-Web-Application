@@ -64,20 +64,26 @@ namespace PCE_Web.Controllers
                 if (page > 0 && page <= maxPage)
                 {
                     var productsToShow = products.Skip((page - 1) * 10).Take(10).ToList();
-                    var suggestionsView = new SuggestionsView { Products = productsToShow,
-                                                                AllProducts = products,
-                                                                Page = page,
-                                                                ProductName = productName };
+                    var suggestionsView = new SuggestionsView 
+                    { 
+                        Products = productsToShow,
+                        AllProducts = products,
+                        Page = page,
+                        ProductName = productName
+                    };
                     IsSaved = 0;
                     return View(suggestionsView);
                 }
                 else
                 {
                     var productsToShow = products.Take(10).ToList();
-                    var suggestionsView = new SuggestionsView { Products = productsToShow,
-                                                                AllProducts = products,
-                                                                Page = 1,
-                                                                ProductName = productName };
+                    var suggestionsView = new SuggestionsView 
+                    { 
+                        Products = productsToShow,
+                        AllProducts = products,
+                        Page = 1,
+                        ProductName = productName
+                    };
                     IsSaved = 0;
                     return View(suggestionsView);
                 }
