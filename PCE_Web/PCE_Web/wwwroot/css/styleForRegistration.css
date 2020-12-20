@@ -20,7 +20,7 @@ label, input {
 
 /* Full-width input fields */
 input[type=email], input[type=password] {
-  width: 50%;
+  width: 60%;
   padding: 5px;
   margin: 5px 0 22px 0;
   display: inline-block;
