@@ -7,15 +7,20 @@ body {
   box-sizing: border-box;
 }
 
+label, input {
+    display: block;
+}
+
 /* Add padding to containers */
 .container {
-  padding: 15px;
+  width:90%;
   background-color: white;
+  text-align:center;
 }
 
 /* Full-width input fields */
 input[type=email], input[type=password] {
-  width: 100%;
+  width: 50%;
   padding: 5px;
   margin: 5px 0 22px 0;
   display: inline-block;
@@ -43,7 +48,8 @@ hr {
     margin-right: auto;
     border: none;
     cursor: pointer;
-    width: 30%;
+    width: auto;
+    height: auto;
     opacity: 0.9;
 }
 
