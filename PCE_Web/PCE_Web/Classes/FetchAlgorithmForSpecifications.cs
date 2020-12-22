@@ -31,14 +31,14 @@ namespace PCE_Web.Classes
             var gettingRde = await Task.Factory.StartNew(() =>
                 GettingItemsFromRde(productName, products, httpClient, minPrice, maxPrice, tags, exceptionsManager));
 
-            var gettingBarbora = await Task.Factory.StartNew(() =>
-                GettingItemsFromBarbora(productName, products, httpClient, minPrice, maxPrice, tags, exceptionsManager));
+            //var gettingBarbora = await Task.Factory.StartNew(() =>
+                //GettingItemsFromBarbora(productName, products, httpClient, minPrice, maxPrice, tags, exceptionsManager));
 
             var gettingAvitela = await Task.Factory.StartNew(() =>
                 GettingItemsFromAvitela(productName, products, httpClient, minPrice, maxPrice, tags, exceptionsManager));
 
-            var gettingPigu = await Task.Factory.StartNew(() =>
-                GettingItemsFromPigu(productName, products, httpClient, minPrice, maxPrice, tags, exceptionsManager));
+            //var gettingPigu = await Task.Factory.StartNew(() =>
+            //    GettingItemsFromPigu(productName, products, httpClient, minPrice, maxPrice, tags, exceptionsManager));
 
             var gettingGintarine = await Task.Factory.StartNew(() =>
                 GettingItemsFromGintarineVaistine(productName, products, httpClient, minPrice, maxPrice, tags, exceptionsManager));
@@ -51,7 +51,7 @@ namespace PCE_Web.Classes
 
             var taskList = new List<Task>
             {
-                gettingRde, gettingBarbora, gettingAvitela, gettingPigu, gettingGintarine, gettingElektromarkt,
+                gettingRde,/* gettingBarbora,*/ gettingAvitela, /*gettingPigu,*/ gettingGintarine, gettingElektromarkt,
                 gettingBigBox
             };
             Task.WaitAll(taskList.ToArray()); 
