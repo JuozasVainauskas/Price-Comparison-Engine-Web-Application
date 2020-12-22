@@ -576,7 +576,6 @@ namespace PCE_Web.Classes
                     }
             }
         }
-
         private static void WriteDataFromPigu(List<HtmlNode> productListItems, List<Item> products, int minPrice, int maxPrice)
         {
             if (productListItems != null)
@@ -591,48 +590,47 @@ namespace PCE_Web.Classes
                                 node.GetAttributeValue("class", "")
                                 .Equals("price notranslate"))
                             ?.InnerText.Trim();
-
-                        price = EliminateSpacesPigu(price);
-                        var priceAtsarg = price;
-                        price = EliminatingEuroSimbol(price);
-                        price += "€";
-                        priceAtsarg = EliminatingEuroSimbol(priceAtsarg);
-                        var priceDouble = Convert.ToDouble(priceAtsarg);
-
-                        if ((priceDouble > minPrice) && (priceDouble < maxPrice))
+                        if (!string.IsNullOrEmpty(price))
                         {
-                            var name = productListItem
-                                .Descendants("p").FirstOrDefault(node => 
-                                    node.GetAttributeValue("class", "")
-                                    .Equals("product-name"))
-                                ?.InnerText.Trim();
+                            price = EliminateSpacesPigu(price);
+                            var priceAtsarg = price;
+                            price = EliminatingEuroSimbol(price);
+                            price += "€";
+                            priceAtsarg = EliminatingEuroSimbol(priceAtsarg);
+                            var priceDouble = Convert.ToDouble(priceAtsarg);
 
-                            var link = "https://pigu.lt/" + productListItem.Descendants("a").FirstOrDefault()
-                                ?.GetAttributeValue("href", "");
-
-                            var imgLink = productListItem
-                                .Descendants("img").FirstOrDefault(node => 
-                                    node.GetAttributeValue("src", "")
-                                    .Contains("jpg"))
-                                ?.GetAttributeValue("src", "");
-
-                            if (!string.IsNullOrEmpty(price))
+                            if ((priceDouble > minPrice) && (priceDouble < maxPrice))
                             {
-                                var singleItem = new Item
-                                {
-                                    Picture = imgLink,
-                                    Seller = "Pigu",
-                                    Name = name,
-                                    PriceDouble = priceDouble,
-                                    Price = price,
-                                    Link = link
-                                };
-                                lock (Lock)
-                                {
-                                    AddingToACollection(products, singleItem);
-                                }
+                                var name = productListItem
+                                    .Descendants("p").FirstOrDefault(node => 
+                                        node.GetAttributeValue("class", "")
+                                        .Equals("product-name"))
+                                    ?.InnerText.Trim();
 
-                                countItems--;
+                                var link = "https://pigu.lt/" + productListItem.Descendants("a").FirstOrDefault()
+                                    ?.GetAttributeValue("href", "");
+
+                                var imgLink = productListItem
+                                    .Descendants("img").FirstOrDefault(node => 
+                                        node.GetAttributeValue("src", "")
+                                        .Contains("jpg"))
+                                    ?.GetAttributeValue("src", "");
+
+                            
+                                    var singleItem = new Item
+                                    {
+                                        Picture = imgLink,
+                                        Seller = "Pigu",
+                                        Name = name,
+                                        PriceDouble = priceDouble,
+                                        Price = price,
+                                        Link = link
+                                    };
+                                    lock (Lock)
+                                    {
+                                        AddingToACollection(products, singleItem);
+                                    }
+                                    countItems--;
                             }
                         }
                     }
