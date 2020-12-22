@@ -23,7 +23,7 @@ namespace PCE_Web.Controllers
         {
             var httpClient = _httpClient.CreateClient();
             var products = await FetchAlgorithmForSpecifications.FetchAlgorithmaSpecfications
-                (productName, httpClient, lowestPrice*100, biggestPrice*100, tags, _exceptionsManager);
+                (productName, httpClient, lowestPrice, biggestPrice, tags, _exceptionsManager);
             var suggestionsSpecificationsView = new SuggestionsSpecificationsView { Products = products };
             return View(suggestionsSpecificationsView);
         }
