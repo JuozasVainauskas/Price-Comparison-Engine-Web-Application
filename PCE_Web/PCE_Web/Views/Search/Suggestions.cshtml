@@ -4,12 +4,15 @@
 
 <br>
 <h1>
-    Iš viso surasta prekių: @Model.AllProducts.Count,
+    Iš viso surasta prekių: @Model.Products.Count,
     @{
-        var itemsList =
-            from item in @Model.AllProducts
-            group item by item.Seller;
-    <text>@itemsList.Select(x => string.Format("{0}: {1}", x.Key, x.Count())).Aggregate((current, next) => current + ", " + next)</text>
+        if (Model.Products.Count != 0)
+        {
+            var itemsList =
+                from item in @Model.Products
+                group item by item.Seller;
+            <text>@itemsList.Select(x => string.Format("{0}: {1}", x.Key, x.Count())).Aggregate((current, next) => current + ", " + next)</text>
+        }
     }
 </h1>
 <br>
@@ -33,37 +36,6 @@
     </table>
 </div>
 
-@{
-    int maxPages = Model.AllProducts.Count / 10;
-    int nextPage = Model.Page + 1;
-    int previousPage = Model.Page - 1;
-
-    if (Model.AllProducts.Count % 10 != 0)
-    {
-        ++maxPages;
-    }
-
-    if (Model.Page == 1)
-    {
-        previousPage = Model.Page;
-    }
-    if (Model.Page == maxPages)
-    {
-        nextPage = Model.Page;
-    }
-}
-
-<form method="get" action="" style="float:right;margin-right:35%;">
-    <input type="hidden" name="ProductName" value="@Model.ProductName">
-    <input type="hidden" name="Page" value="@nextPage">
-    <button type="submit" class="btn btn-success" asp-area="" asp-controller="Search" asp-action="Suggestions"><i class="fa fa-angle-right"></i></button>
-</form>
-<h8 style="text-align:center;">@Model.Page / @maxPages</h8>
-<form method="get" action="" style="float:left; margin-left: 35%;">
-    <input type="hidden" name="ProductName" value="@Model.ProductName">
-    <input type="hidden" name="Page" value="@previousPage">
-    <button type="submit" class="btn btn-success" asp-area="" asp-controller="Search" asp-action="Suggestions"><i class="fa fa-angle-left"></i></button>
-</form>
 
 <div id="overlay" class="overlay">
 

@@ -11,10 +11,10 @@ namespace PCE_Web.Classes
 {
     public class ReportsManagerWithSql : IReportsManager
     {
-        private readonly PCEDatabaseContext _pceDatabaseContext;
+        private readonly PceDatabaseContext _pceDatabaseContext;
         private readonly IExceptionsManager _exceptionsManager;
 
-        public ReportsManagerWithSql(IExceptionsManager exceptionsManager, PCEDatabaseContext pceDatabaseContext)
+        public ReportsManagerWithSql(IExceptionsManager exceptionsManager, PceDatabaseContext pceDatabaseContext)
         {
             _exceptionsManager = exceptionsManager;
             _pceDatabaseContext = pceDatabaseContext;
@@ -30,8 +30,10 @@ namespace PCE_Web.Classes
                     sqlConnection.Open();
                 }
 
-                var sqlCommand = new SqlCommand("INSERT INTO Reports(Email, Comment, Date, Solved) VALUES (@Email, @Comment, @Date, @Solved)", sqlConnection);
-                sqlCommand.CommandType = CommandType.Text;
+                var sqlCommand =
+                    new SqlCommand(
+                        "INSERT INTO Reports(Email, Comment, Date, Solved) VALUES (@Email, @Comment, @Date, @Solved)",
+                        sqlConnection) {CommandType = CommandType.Text};
                 sqlCommand.Parameters.AddWithValue("@Email", email);
                 sqlCommand.Parameters.AddWithValue("@Comment", report);
                 sqlCommand.Parameters.AddWithValue("@Date", DateTime.UtcNow.ToString());
@@ -50,7 +52,15 @@ namespace PCE_Web.Classes
 
         public List<Report> ReadReports(string email, int solvedId)
         {
-            var comments = _pceDatabaseContext.Reports.Where(column => column.Email == email && column.Solved == solvedId).Select(column => new Report { Comment = column.Comment, ID = column.ReportsId, Date = column.Date, Email = column.Email }).ToList();
+            var comments = _pceDatabaseContext.Reports.Where
+                (column => column.Email == email && column.Solved == solvedId).Select
+                (column => new Report
+            {
+                Comment = column.Comment, 
+                Id = column.ReportsId, 
+                Date = column.Date, 
+                Email = column.Email
+            }).ToList();
             return comments;
         }
 
@@ -64,8 +74,9 @@ namespace PCE_Web.Classes
                     sqlConnection.Open();
                 }
 
-                var sqlCommand = new SqlCommand("DELETE FROM Reports WHERE ReportsId = @Id;", sqlConnection);
-                sqlCommand.CommandType = CommandType.Text;
+                var sqlCommand =
+                    new SqlCommand("DELETE FROM Reports WHERE ReportsId = @Id;",
+                        sqlConnection) {CommandType = CommandType.Text};
                 sqlCommand.Parameters.AddWithValue("@Id", id);
                 sqlCommand.ExecuteNonQuery();
             }
@@ -81,7 +92,15 @@ namespace PCE_Web.Classes
 
         public bool IsReported(string email)
         {
-            var item = _pceDatabaseContext.Reports.Where(column => column.Email == email).Select(column => new Reports { Email = column.Email, Comment = column.Comment, Solved = column.Solved, Date = column.Date }).ToList();
+            var item = _pceDatabaseContext.Reports.Where
+                (column => column.Email == email).Select
+                (column => new Reports
+            {
+                Email = column.Email, 
+                Comment = column.Comment, 
+                Solved = column.Solved, 
+                Date = column.Date
+            }).ToList();
             if (item.Count > 0)
             {
                 return true;

@@ -23,22 +23,22 @@
                 @foreach (var comment in @Model.UnsolvedComments)
                 {
                     <tr>
-                        <td style="font-weight:bold;color:red;">@comment.ID</td>
+                        <td style="font-weight:bold;color:red;">@comment.Id</td>
                         <td style="font-weight:bold;color:red;">@comment.Date</td>
                         <td style="font-weight:bold;color:red;max-width:70px; word-wrap:break-word;">@comment.Comment</td>
-                        <td align="center" style="width:50px;"><button type="button" class="btn btn-warning" onclick="location.href = '@Url.Action("Mark", "Reports", new {id = comment.ID, email = comment.Email})'"><i class="fa fa-search"></i></button></td>
-                        <td align="center" style="width:50px;"><button type="button" class="btn btn-danger" onclick="location.href = '@Url.Action("Delete", "Reports", new {id = comment.ID ,email = comment.Email })'"><i class="fa fa-eraser"></i></button></td>
+                        <td align="center" style="width:50px;"><button type="button" class="btn btn-warning" onclick="location.href = '@Url.Action("Mark", "Reports", new {id = comment.Id, email = comment.Email})'"><i class="fa fa-search"></i></button></td>
+                        <td align="center" style="width:50px;"><button type="button" class="btn btn-danger" onclick="location.href = '@Url.Action("Delete", "Reports", new {id = comment.Id ,email = comment.Email })'"><i class="fa fa-eraser"></i></button></td>
                     </tr>
                 }
 
                 @foreach (var comment in @Model.SolvedComments)
                 {
                     <tr>
-                        <td>@comment.ID</td>
+                        <td>@comment.Id</td>
                         <td>@comment.Date</td>
                         <td style="max-width:500px; word-wrap:break-word;">@comment.Comment</td>
                         <td></td>
-                        <td align="center" style="width:50px"><button type="button" class="btn btn-danger" onclick="location.href = '@Url.Action("Delete", "Reports", new {id = comment.ID ,email = comment.Email })'"><i class="fa fa-eraser"></i></button></td>
+                        <td align="center" style="width:50px"><button type="button" class="btn btn-danger" onclick="location.href = '@Url.Action("Delete", "Reports", new {id = comment.Id ,email = comment.Email })'"><i class="fa fa-eraser"></i></button></td>
                     </tr>
                 }
 

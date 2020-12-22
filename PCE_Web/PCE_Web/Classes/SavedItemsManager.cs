@@ -7,9 +7,9 @@ namespace PCE_Web.Classes
 {
     public class SavedItemsManager : ISavedItemsManager
     {
-        private readonly PCEDatabaseContext _pceDatabaseContext;
+        private readonly PceDatabaseContext _pceDatabaseContext;
 
-        public SavedItemsManager(PCEDatabaseContext pceDatabaseContext)
+        public SavedItemsManager(PceDatabaseContext pceDatabaseContext)
         {
             _pceDatabaseContext = pceDatabaseContext;
         }
@@ -17,8 +17,12 @@ namespace PCE_Web.Classes
         public void DeleteSavedItem(string email, Item item)
         {
             var result = _pceDatabaseContext.SavedItems.SingleOrDefault(column =>
-                column.Email == email && column.PageUrl == item.Link && column.ImgUrl == item.Picture &&
-                column.ShopName == item.Seller && column.ItemName == item.Name && column.PriceWithSymbol == item.Price);
+                column.Email == email 
+                && column.PageUrl == item.Link 
+                && column.ImgUrl == item.Picture 
+                && column.ShopName == item.Seller 
+                && column.ItemName == item.Name 
+                && column.PriceWithSymbol == item.Price);
 
             if (result != null)
             {
@@ -29,8 +33,16 @@ namespace PCE_Web.Classes
 
         public List<Item> ReadSavedItems(string email)
         {
-            var items = _pceDatabaseContext.SavedItems.Where(column => column.Email == email).Select(column => new Item
-            { Link = column.PageUrl, Picture = column.ImgUrl, Seller = column.ShopName, Name = column.ItemName, Price = column.PriceWithSymbol }).ToList();
+            var items = _pceDatabaseContext.SavedItems.
+                Where(column => column.Email == email).
+                Select(column => new Item
+                {
+                    Link = column.PageUrl, 
+                    Picture = column.ImgUrl, 
+                    Seller = column.ShopName, 
+                    Name = column.ItemName, 
+                    Price = column.PriceWithSymbol
+                }).ToList();
 
             return items;
         }
@@ -39,8 +51,10 @@ namespace PCE_Web.Classes
         {
 
             var result = _pceDatabaseContext.SavedItems.SingleOrDefault(column =>
-                column.PageUrl == pageUrl && column.ImgUrl == imgUrl && column.ShopName == shopName && column.ItemName == itemName &&
-                column.PriceWithSymbol == price && column.Email == email);
+                column.PageUrl == pageUrl && column.ImgUrl == imgUrl 
+                                          && column.ShopName == shopName 
+                                          && column.ItemName == itemName 
+                                          && column.PriceWithSymbol == price && column.Email == email);
 
             if (result == null)
             {

@@ -22,7 +22,8 @@ namespace PCE_Web.Controllers
         public async Task<IActionResult> SuggestionsSpecifications(string productName, int lowestPrice, int biggestPrice, string[] tags)
         {
             var httpClient = _httpClient.CreateClient();
-            var products = await FetchAlgorithmForSpecifications.FetchAlgorithmaSpecfications(productName, httpClient, lowestPrice*100, biggestPrice*100, tags, _exceptionsManager);
+            var products = await FetchAlgorithmForSpecifications.FetchAlgorithmaSpecfications
+                (productName, httpClient, lowestPrice, biggestPrice, tags, _exceptionsManager);
             var suggestionsSpecificationsView = new SuggestionsSpecificationsView { Products = products };
             return View(suggestionsSpecificationsView);
         }

@@ -51,7 +51,7 @@ namespace PCE_Web
             services.AddMvc(options => options.Filters.Add(new AuthorizeFilter()))
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.Configure<UserOptions>(Configuration.GetSection(UserOptions.EmailSend));
-            services.AddDbContext<PCEDatabaseContext>(options =>
+            services.AddDbContext<PceDatabaseContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("PCEConnectionString")));
             services.AddScoped<IAccountManager, AccountManager>();
             services.AddScoped<ICommentsManager, CommentsManager>();

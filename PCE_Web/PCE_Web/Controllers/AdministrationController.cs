@@ -39,8 +39,15 @@ namespace PCE_Web.Controllers
             }
 
             var users = allUsers.Except(reportedUsers).ToList();
-            var role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
-            var adminView = new AdminView() { Users = users, ReportedUsers = reportedUsers, Role = role, Exceptions = exceptions };
+            var role = User.Claims.FirstOrDefault
+                (x => x.Type == ClaimTypes.Role)?.Value;
+            var adminView = new AdminView()
+            {
+                Users = users, 
+                ReportedUsers = reportedUsers, 
+                Role = role, 
+                Exceptions = exceptions
+            };
             
             return View(adminView);
         }
@@ -63,10 +70,11 @@ namespace PCE_Web.Controllers
                 {
                     if (user.Email == email)
                     {
-                        return RedirectToAction("Admin", "Administration", new { messageString = "Toks vartotojas jau egzistuoja!" });
+                        return RedirectToAction("Admin", "Administration",
+                            new { messageString = "Toks vartotojas jau egzistuoja!" });
                     }
                 }
-                var newUser = new User() { Email = email, Role = Role.User };
+
                 _accountManager.CreateAccount(email, password);
                 return RedirectToAction("Admin", "Administration");
             }
@@ -91,17 +99,18 @@ namespace PCE_Web.Controllers
                     if (temp.Count > 0)
                     {
                         _accountManager.DeleteAccount(email);
-                        var adminView = new AdminView() { Users = users.Except(temp).ToList() };
                         return RedirectToAction("Admin", "Administration");
                     }
                     else
                     {
-                        return RedirectToAction("Admin", "Administration", new { messageString = "Toks vartotojas neegzistuoja!" });
+                        return RedirectToAction("Admin", "Administration",
+                            new { messageString = "Toks vartotojas neegzistuoja!" });
                     }
                 }
                 else
                 {
-                    return RedirectToAction("Admin", "Administration", new { messageString = "Savęs ištrinti negalite!" });
+                    return RedirectToAction("Admin", "Administration",
+                        new { messageString = "Savęs ištrinti negalite!" });
                 }
             }
             return RedirectToAction("Admin", "Administration");
@@ -116,11 +125,13 @@ namespace PCE_Web.Controllers
                 if (temp.Count > 0)
                 {
                     _accountManager.SetRole(email, roleId.ToString());
-                    return RedirectToAction("Admin", "Administration", new { messageString = "Rolė suteikta sėkmingai" });
+                    return RedirectToAction("Admin", "Administration",
+                        new { messageString = "Rolė suteikta sėkmingai" });
                 }
                 else
                 {
-                    return RedirectToAction("Admin", "Administration", new { messageString = "Toks vartotojas neegzistuoja!" });
+                    return RedirectToAction("Admin", "Administration",
+                        new { messageString = "Toks vartotojas neegzistuoja!" });
                 }
             }
             else

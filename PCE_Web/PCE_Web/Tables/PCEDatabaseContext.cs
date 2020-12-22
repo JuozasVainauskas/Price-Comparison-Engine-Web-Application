@@ -2,13 +2,13 @@
 
 namespace PCE_Web.Tables
 {
-    public partial class PCEDatabaseContext : DbContext
+    public class PceDatabaseContext : DbContext
     {
-        public PCEDatabaseContext()
+        public PceDatabaseContext()
         {
         }
 
-        public PCEDatabaseContext(DbContextOptions<PCEDatabaseContext> options)
+        public PceDatabaseContext(DbContextOptions<PceDatabaseContext> options)
             : base(options)
         {
         }
@@ -105,6 +105,9 @@ namespace PCE_Web.Tables
             OnModelCreatingPartial(modelBuilder);
         }
 
-        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+        //Cia nereikia throw new System.NotImplementedException(); kadangi šis metodas nera panaudojamas, bet jei bus idetas exception, tai neleis prisijungti.
+        private void OnModelCreatingPartial(ModelBuilder modelBuilder)
+        {
+        }
     }
 }

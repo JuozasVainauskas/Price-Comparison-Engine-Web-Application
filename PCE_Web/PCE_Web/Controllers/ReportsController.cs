@@ -25,7 +25,13 @@ namespace PCE_Web.Controllers
             var allComments = solvedComments.Concat(unsolvedComments).ToList();
 
             var role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
-            var reportView = new ReportView() { AllComments = allComments, UnsolvedComments = unsolvedComments, SolvedComments = solvedComments, Role = role };
+            var reportView = new ReportView() 
+                { 
+                    AllComments = allComments,
+                    UnsolvedComments = unsolvedComments, 
+                    SolvedComments = solvedComments, 
+                    Role = role
+                };
             return View(reportView);
         }
 

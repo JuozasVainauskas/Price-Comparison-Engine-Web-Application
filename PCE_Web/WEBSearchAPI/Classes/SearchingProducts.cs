@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
-using WEBSearchAPI.Controllers;
 using WEBSearchAPI.DTO;
 
 namespace WEBSearchAPI.Classes
@@ -16,43 +15,62 @@ namespace WEBSearchAPI.Classes
         public static int SoldOut;
         public delegate void WriteData<THtmlNode, TItem>(List<THtmlNode> productListItems, List<TItem> products);
         public delegate List<HtmlNode> Search<in THtmlDocument>(THtmlDocument htmlDocument);
-
-        public static async Task<List<Item>> FetchAlgorithmaAsync(string SearchWord, HttpClient httpClient)
+        public static async Task<List<Item>> FetchAlgorithmaAsync(string searchWord, HttpClient httpClient)
         {
             var products = new List<Item>();
-            await ReadingItemsAsync(SearchWord, products, httpClient);
+            await ReadingItemsAsync(searchWord, products, httpClient);
             products = SortAndInsert(products);
             return products;
         }
-
         public static async Task ReadingItemsAsync(string productName, List<Item> products, HttpClient httpClient)
         {
-            var gettingRde = await Task.Factory.StartNew(() => GettingItemsFromRde(productName, products, httpClient));
-            var gettingBarbora =
-                await Task.Factory.StartNew(() => GettingItemsFromBarbora(productName, products, httpClient));
-            var gettingAvitela =
-                await Task.Factory.StartNew(() => GettingItemsFromAvitela(productName, products, httpClient));
-            var gettingPigu =
-                await Task.Factory.StartNew(() => GettingItemsFromPigu(productName, products, httpClient));
-            var gettingGintarine = await Task.Factory.StartNew(() =>
-                GettingItemsFromGintarineVaistine(productName, products, httpClient));
-            var gettingElektromarkt =
-                await Task.Factory.StartNew(() => GettingItemsFromElektromarkt(productName, products, httpClient));
-            var gettingBigBox =
-                await Task.Factory.StartNew(() => GettingItemsFromBigBox(productName, products, httpClient));
-            var taskList = new List<Task>
+            try
             {
-                gettingRde, gettingBarbora, gettingAvitela, gettingPigu, gettingGintarine, gettingElektromarkt,
-                gettingBigBox
-            };
-            Task.WaitAll(taskList.ToArray());
+                var gettingRde = 
+                    await Task.Factory.StartNew(() => 
+                    GettingItemsFromRde(productName, products, httpClient));
+
+                var gettingBarbora =
+                    await Task.Factory.StartNew(() => 
+                        GettingItemsFromBarbora(productName, products, httpClient));
+
+                var gettingAvitela =
+                    await Task.Factory.StartNew(() => 
+                        GettingItemsFromAvitela(productName, products, httpClient));
+
+                var gettingPigu =
+                    await Task.Factory.StartNew(() => 
+                        GettingItemsFromPigu(productName, products, httpClient));
+
+                var gettingGintarine = 
+                    await Task.Factory.StartNew(() =>
+                    GettingItemsFromGintarineVaistine(productName, products, httpClient));
+
+                var gettingElektromarkt =
+                    await Task.Factory.StartNew(() =>
+                        GettingItemsFromElektromarkt(productName, products, httpClient));
+
+                var gettingBigBox =
+                    await Task.Factory.StartNew(() => 
+                        GettingItemsFromBigBox(productName, products, httpClient));
+                var taskList = new List<Task>
+                {
+                    gettingRde, gettingBarbora, gettingAvitela, gettingPigu, 
+                    gettingGintarine, gettingElektromarkt, gettingBigBox
+                };
+                Task.WaitAll(taskList.ToArray());
+            }
+            catch 
+            {
+            }
+           
         }
 
         private static async Task GettingItemsFromRde(string productName, List<Item> products, HttpClient httpClient)
         {
             var urlRde = "https://www.rde.lt/search_result/lt/word/" + productName + "/page/1";
-            SearchingProducts.Search<HtmlDocument> rdeSearch = RdeSearch;
-            SearchingProducts.WriteData<HtmlNode, Item> writeDataFromRde = WriteDataFromRde;
+            Search<HtmlDocument> rdeSearch = RdeSearch;
+            WriteData<HtmlNode, Item> writeDataFromRde = WriteDataFromRde;
             var rdeItems = rdeSearch(await Html(httpClient, urlRde));
             writeDataFromRde(rdeItems, products);
         }
@@ -60,8 +78,8 @@ namespace WEBSearchAPI.Classes
         private static async Task GettingItemsFromBarbora(string productName, List<Item> products, HttpClient httpClient)
         {
             var urlBarbora = "https://pagrindinis.barbora.lt/paieska?q=" + productName;
-            SearchingProducts.Search<HtmlDocument> barboraSearch = BarboraSearch;
-            SearchingProducts.WriteData<HtmlNode, Item> writeDataFromBarbora = WriteDataFromBarbora;
+            Search<HtmlDocument> barboraSearch = BarboraSearch;
+            WriteData<HtmlNode, Item> writeDataFromBarbora = WriteDataFromBarbora;
             var barboraItems = barboraSearch(await Html(httpClient, urlBarbora));
             writeDataFromBarbora(barboraItems, products);
         }
@@ -69,8 +87,8 @@ namespace WEBSearchAPI.Classes
         private static async Task GettingItemsFromAvitela(string productName, List<Item> products, HttpClient httpClient)
         {
             var urlAvitela = "https://avitela.lt/paieska/" + productName;
-            SearchingProducts.Search<HtmlDocument> avitelaSearch = AvitelaSearch;
-            SearchingProducts.WriteData<HtmlNode, Item> writeDataFromAvitela = WriteDataFromAvitela;
+            Search<HtmlDocument> avitelaSearch = AvitelaSearch;
+            WriteData<HtmlNode, Item> writeDataFromAvitela = WriteDataFromAvitela;
             var avitelaItems = avitelaSearch(await Html(httpClient, urlAvitela));
             writeDataFromAvitela(avitelaItems, products);
         }
@@ -78,26 +96,29 @@ namespace WEBSearchAPI.Classes
         private static async Task GettingItemsFromPigu(string productName, List<Item> products, HttpClient httpClient)
         {
             var urlPigu = "https://pigu.lt/lt/search?q=" + productName;
-            SearchingProducts.Search<HtmlDocument> piguSearch = PiguSearch;
-            SearchingProducts.WriteData<HtmlNode, Item> writeDataFromPigu = WriteDataFromPigu;
+            Search<HtmlDocument> piguSearch = PiguSearch;
+            WriteData<HtmlNode, Item> writeDataFromPigu = WriteDataFromPigu;
             var piguItems = piguSearch(await Html(httpClient, urlPigu));
             writeDataFromPigu(piguItems, products);
         }
 
         private static async Task GettingItemsFromBigBox(string productName, List<Item> products, HttpClient httpClient)
         {
-            var urlBigBox = "https://bigbox.lt/paieska?controller=search&orderby=position&orderway=desc&ssa_submit=&search_query=" + productName;
-            SearchingProducts.Search<HtmlDocument> bigBoxSearch = BigBoxSearch;
-            SearchingProducts.WriteData<HtmlNode, Item> writeDataFromBigBox = WriteDataFromBigBox;
+            var urlBigBox =
+                "https://bigbox.lt/paieska?controller=search&orderby=position&orderway=desc&ssa_submit=&search_query=" 
+                + productName;
+            Search<HtmlDocument> bigBoxSearch = BigBoxSearch;
+            WriteData<HtmlNode, Item> writeDataFromBigBox = WriteDataFromBigBox;
             var bigBoxItems = bigBoxSearch(await Html(httpClient, urlBigBox));
             writeDataFromBigBox(bigBoxItems, products);
         }
 
         private static async Task GettingItemsFromGintarineVaistine(string productName, List<Item> products, HttpClient httpClient)
         {
-            var urlGintarineVaistine = "https://www.gintarine.lt/search?adv=false&cid=0&mid=0&vid=0&q=" + productName + "%5D&sid=false&isc=true&orderBy=0";
-            SearchingProducts.Search<HtmlDocument> gintarineVaistineSearch = GintarineVaistineSearch;
-            SearchingProducts.WriteData<HtmlNode, Item> writeDataFromGintarineVaistine = WriteDataFromGintarineVaistine;
+            var urlGintarineVaistine = "https://www.gintarine.lt/search?adv=false&cid=0&mid=0&vid=0&q="
+                                       + productName + "%5D&sid=false&isc=true&orderBy=0";
+            Search<HtmlDocument> gintarineVaistineSearch = GintarineVaistineSearch;
+            WriteData<HtmlNode, Item> writeDataFromGintarineVaistine = WriteDataFromGintarineVaistine;
             var gintarineVaistineItems = gintarineVaistineSearch(await Html(httpClient, urlGintarineVaistine));
             writeDataFromGintarineVaistine(gintarineVaistineItems, products);
         }
@@ -105,8 +126,8 @@ namespace WEBSearchAPI.Classes
         private static async Task GettingItemsFromElektromarkt(string productName, List<Item> products, HttpClient httpClient)
         {
             var urlElektromarkt = "https://elektromarkt.lt/paieska/" + productName;
-            SearchingProducts.Search<HtmlDocument> elektromarktSearch = ElektromarktSearch;
-            SearchingProducts.WriteData<HtmlNode, Item> writeDataFromElektromarkt = WriteDataFromElektromarkt;
+            Search<HtmlDocument> elektromarktSearch = ElektromarktSearch;
+            WriteData<HtmlNode, Item> writeDataFromElektromarkt = WriteDataFromElektromarkt;
             var elektromarktItems = elektromarktSearch(await Html(httpClient, urlElektromarkt));
             writeDataFromElektromarkt(elektromarktItems, products);
         }
@@ -163,6 +184,7 @@ namespace WEBSearchAPI.Classes
                 {
                     return null;
                 }
+
             }
 
             return null;
@@ -317,16 +339,19 @@ namespace WEBSearchAPI.Classes
                 {
 
                     var price = productListItem
-                        .Descendants("div").FirstOrDefault(node => node.GetAttributeValue("class", "")
+                        .Descendants("div").FirstOrDefault(node => 
+                            node.GetAttributeValue("class", "")
                             .Equals("product_price_wo_discount_listing"))
                         ?.InnerText.Trim();
 
                     var name = productListItem
-                        .Descendants("div").FirstOrDefault(node => node.GetAttributeValue("class", "")
+                        .Descendants("div").FirstOrDefault(node => 
+                            node.GetAttributeValue("class", "")
                             .Equals("product_name"))
                         ?.InnerText.Trim();
 
-                    var link = productListItem.Descendants("a").FirstOrDefault()?.GetAttributeValue("href", "");
+                    var link = productListItem.Descendants("a").
+                        FirstOrDefault()?.GetAttributeValue("href", "");
 
                     var productListItems2 = productListItem.Descendants("div")
                         .Where(node => node.GetAttributeValue("class", "")
@@ -371,12 +396,14 @@ namespace WEBSearchAPI.Classes
                 {
 
                     var price = productListItem
-                        .Descendants("div").FirstOrDefault(node => node.GetAttributeValue("class", "")
+                        .Descendants("div").FirstOrDefault(node => 
+                            node.GetAttributeValue("class", "")
                             .Equals("price"))
                         ?.InnerText.Trim();
 
                     var name = productListItem
-                        .Descendants("div").FirstOrDefault(node => node.GetAttributeValue("class", "")
+                        .Descendants("div").FirstOrDefault(node => 
+                            node.GetAttributeValue("class", "")
                             .Equals("name"))
                         ?.InnerText.Trim();
 
@@ -422,19 +449,23 @@ namespace WEBSearchAPI.Classes
                     if (countItems != 0)
                     {
                         var price = productListItem
-                            .Descendants("span").FirstOrDefault(node => node.GetAttributeValue("class", "")
+                            .Descendants("span").FirstOrDefault(node => 
+                                node.GetAttributeValue("class", "")
                                 .Equals("b-product-price-current-number"))
                             ?.InnerText.Trim();
 
                         var name = productListItem
-                            .Descendants("span").FirstOrDefault(node => node.GetAttributeValue("itemprop", "")
+                            .Descendants("span").FirstOrDefault(node => 
+                                node.GetAttributeValue("itemprop", "")
                                 .Equals("name"))
                             ?.InnerText.Trim();
 
-                        var link = productListItem.Descendants("a").FirstOrDefault()?.GetAttributeValue("href", "");
+                        var link = productListItem.Descendants("a").
+                            FirstOrDefault()?.GetAttributeValue("href", "");
 
                         var imgLink = productListItem
-                            .Descendants("img").FirstOrDefault(node => node.GetAttributeValue("itemprop", "")
+                            .Descendants("img").FirstOrDefault(node => 
+                                node.GetAttributeValue("itemprop", "")
                                 .Contains("image"))
                             ?.GetAttributeValue("src", "");
 
@@ -474,19 +505,23 @@ namespace WEBSearchAPI.Classes
                     if (countItems != 0)
                     {
                         var price = productListItem
-                            .Descendants("span").FirstOrDefault(node => node.GetAttributeValue("class", "")
+                            .Descendants("span").FirstOrDefault(node => 
+                                node.GetAttributeValue("class", "")
                                 .Equals("price notranslate"))
                             ?.InnerText.Trim();
                         var name = productListItem
-                            .Descendants("p").FirstOrDefault(node => node.GetAttributeValue("class", "")
+                            .Descendants("p").FirstOrDefault(node => 
+                                node.GetAttributeValue("class", "")
                                 .Equals("product-name"))
                             ?.InnerText.Trim();
 
-                        var link = "https://pigu.lt/" + productListItem.Descendants("a").FirstOrDefault()
+                        var link = "https://pigu.lt/" + productListItem.Descendants("a").
+                            FirstOrDefault()
                             ?.GetAttributeValue("href", "");
 
                         var imgLink = productListItem
-                            .Descendants("img").FirstOrDefault(node => node.GetAttributeValue("src", "")
+                            .Descendants("img").FirstOrDefault(node =>
+                                node.GetAttributeValue("src", "")
                                 .Contains("jpg"))
                             ?.GetAttributeValue("src", "");
 
@@ -526,19 +561,23 @@ namespace WEBSearchAPI.Classes
                 foreach (var productListItem in productListItems)
                 {
                     var price = productListItem
-                        .Descendants("span").FirstOrDefault(node => node.GetAttributeValue("class", "")
+                        .Descendants("span").FirstOrDefault(node =>
+                            node.GetAttributeValue("class", "")
                             .Equals("price product-price"))
                         ?.InnerText.Trim();
 
                     var name = productListItem
-                        .Descendants("a").FirstOrDefault(node => node.GetAttributeValue("class", "")
+                        .Descendants("a").FirstOrDefault(node =>
+                            node.GetAttributeValue("class", "")
                             .Equals("product-name"))
                         ?.InnerText.Trim();
 
-                    var link = productListItem.Descendants("a").FirstOrDefault()?.GetAttributeValue("href", "");
+                    var link = productListItem.Descendants("a").
+                        FirstOrDefault()?.GetAttributeValue("href", "");
 
                     var imgLink = productListItem
-                        .Descendants("img").FirstOrDefault(node => node.GetAttributeValue("class", "")
+                        .Descendants("img").FirstOrDefault(node =>
+                            node.GetAttributeValue("class", "")
                             .Contains("replace-2x img-responsive"))
                         ?.GetAttributeValue("src", "");
 
@@ -576,18 +615,22 @@ namespace WEBSearchAPI.Classes
                 {
 
                     var name = productListItem
-                        .Descendants("h2").FirstOrDefault(node => node.GetAttributeValue("class", "")
+                        .Descendants("h2").FirstOrDefault(node =>
+                            node.GetAttributeValue("class", "")
                             .Equals("product-name"))
                         ?.InnerText.Trim();
 
                     var price = productListItem
-                        .Descendants("span").FirstOrDefault(node => node.GetAttributeValue("class", "")
+                        .Descendants("span").FirstOrDefault(node =>
+                            node.GetAttributeValue("class", "")
                             .Equals("price"))
                         ?.InnerText.Trim();
 
-                    var link = productListItem.Descendants("a").FirstOrDefault()?.GetAttributeValue("href", "");
+                    var link = productListItem.Descendants("a").
+                        FirstOrDefault()?.GetAttributeValue("href", "");
 
-                    var imgLink = productListItem.Descendants("img").FirstOrDefault()?.GetAttributeValue("src", "");
+                    var imgLink = productListItem.Descendants("img").
+                        FirstOrDefault()?.GetAttributeValue("src", "");
 
                     if (!string.IsNullOrEmpty(price))
                     {
@@ -624,14 +667,19 @@ namespace WEBSearchAPI.Classes
                 {
 
                     var price = productListItem
-                        .Descendants("span").FirstOrDefault(node => node.GetAttributeValue("class", "")
+                        .Descendants("span").FirstOrDefault(node =>
+                            node.GetAttributeValue("class", "")
                             .Equals("price actual-price"))
                         ?.InnerText.Trim();
 
-                    var name = productListItem.Descendants("input").FirstOrDefault()?.GetAttributeValue("value", "");
+                    var name = productListItem.Descendants("input").
+                        FirstOrDefault()?.GetAttributeValue("value", "");
 
-                    var link = productListItem.Descendants("a").FirstOrDefault()?.GetAttributeValue("href", "");
-                    var imgLink = productListItem.Descendants("img").FirstOrDefault()
+                    var link = productListItem.Descendants("a").
+                        FirstOrDefault()?.GetAttributeValue("href", "");
+
+                    var imgLink = productListItem.Descendants("img").
+                        FirstOrDefault()
                         ?.GetAttributeValue("data-lazyloadsrc", "");
 
                     if (!string.IsNullOrEmpty(price))
@@ -666,7 +714,8 @@ namespace WEBSearchAPI.Classes
         private static string EliminatingEuroSimbol(string priceAtsarg)
         {
             var charsToRemove = new[] { "€" };
-            foreach (var c in charsToRemove) priceAtsarg = priceAtsarg.Replace(c, string.Empty);
+            foreach (var c in charsToRemove) 
+                priceAtsarg = priceAtsarg.Replace(c, string.Empty);
 
             return priceAtsarg;
         }
@@ -677,7 +726,9 @@ namespace WEBSearchAPI.Classes
             if (index > 0) price = price.Substring(0, index);
 
             var charsToChange = new[] { "." };
-            foreach (var c in charsToChange) price = price.Replace(c, ",");
+            foreach (var c in charsToChange) 
+                price = price.Replace(c, ",");
+
             return price;
         }
 
@@ -687,11 +738,17 @@ namespace WEBSearchAPI.Classes
             if (index > 0) price = price.Substring(0, index);
 
             var charsToChange = new[] { "." };
-            foreach (var c in charsToChange) price = price.Replace(c, ",");
+            
+            foreach (var c in charsToChange)
+                price = price.Replace(c, ",");
             var charsToChange2 = new[] { "&nbsp;" };
-            foreach (var c in charsToChange2) price = price.Replace(c, "");
+            
+            foreach (var c in charsToChange2)
+                price = price.Replace(c, "");
             var charsToChange3 = new[] { "Kaina: " };
-            foreach (var c in charsToChange3) price = price.Replace(c, "");
+            
+            foreach (var c in charsToChange3)
+                price = price.Replace(c, "");
 
             return price;
         }
@@ -699,14 +756,16 @@ namespace WEBSearchAPI.Classes
         private static string EliminateSpaces(string price)
         {
             var charsToRemove = new[] { " " };
-            foreach (var c in charsToRemove) price = price.Replace(c, string.Empty);
+            foreach (var c in charsToRemove) 
+                price = price.Replace(c, string.Empty);
             return price;
         }
 
         private static string EliminateSpacesPigu(string price)
         {
             var charsToRemove = new[] { " " };
-            foreach (var c in charsToRemove) price = price.Replace(c, string.Empty);
+            foreach (var c in charsToRemove) 
+                price = price.Replace(c, string.Empty);
             return price;
         }
 

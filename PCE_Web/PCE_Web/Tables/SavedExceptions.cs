@@ -1,7 +1,7 @@
 ﻿
 namespace PCE_Web.Tables
 {
-    public partial class SavedExceptions
+    public class SavedExceptions
     {
         public int SavedExceptionId { get; set; }
         public string Message { get; set; }
