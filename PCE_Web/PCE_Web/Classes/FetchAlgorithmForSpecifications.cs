@@ -616,8 +616,7 @@ namespace PCE_Web.Classes
                                         .Contains("jpg"))
                                     ?.GetAttributeValue("src", "");
 
-                            
-                                    var singleItem = new Item
+                                var singleItem = new Item
                                     {
                                         Picture = imgLink,
                                         Seller = "Pigu",
@@ -626,11 +625,11 @@ namespace PCE_Web.Classes
                                         Price = price,
                                         Link = link
                                     };
-                                    lock (Lock)
-                                    {
+                                lock (Lock)
+                                {
                                         AddingToACollection(products, singleItem);
-                                    }
-                                    countItems--;
+                                }
+                                countItems--;
                             }
                         }
                     }
