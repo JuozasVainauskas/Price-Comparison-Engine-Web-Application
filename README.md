@@ -1,4 +1,4 @@
-#How to run the program
+# How to run the program
 "PCE_Web" dešinis klavišas -> "Manage User Secrets"
 
 Pridėti šitai:
@@ -15,9 +15,9 @@ Kad teisingai paleisti - reikia nustatyti šiuos nustatymus:
 "Solution 'PCE_Web' (3 of 3 projects)" dešinis klavišas -> "Properties"
 Kairėje: "Common Properties" -> "Startup Project"
 Viduryje: "Multiple startup projects":
-PCE_Web - action: "Start"
-PCEDatabase - action: "None"
-WEBSearchAPI - action: "Start"
+- PCE_Web - action: "Start"
+- PCEDatabase - action: "None"
+- WEBSearchAPI - action: "Start"
 
 # Price comparison engine
 ### Students working on the project: 
