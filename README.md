@@ -21,6 +21,10 @@ Viduryje: "Multiple startup projects":
 - PCEDatabase - action: "None"
 - WEBSearchAPI - action: "Start"
 
+Kad pridėti duomenų bazę, reikia daryti tai:
+
+
+
 # Price comparison engine
 ### Students working on the project: 
 - Juozas Vainauskas
