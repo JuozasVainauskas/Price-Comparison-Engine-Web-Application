@@ -22,8 +22,13 @@ Viduryje: "Multiple startup projects":
 - WEBSearchAPI - action: "Start"
 
 Kad pridėti duomenų bazę, reikia daryti tai:
-
-
+Solution explorer'yje surasti PCEDatabase ir spausti dešinį klavišą:\
+Spausti "Publish...":
+- Iššokusioje lentelėje spausti "Edit" -> spausti "Browse" tab -> Atidaryti "Local" ir pasirinkti "MSSQLLocalDB", spausti OK
+- Į database name įvesti "PCEDatabase"
+- Komentaras - galima išsaugoti šitą publish profile tam, kad ateityje galima būtų jį iš karto loadint,\
+  tačiau jeigu atnaujinsite duomenų bazės struktūrą, teks paminėtus žingsnius kartoti iš naujo.
+- Spausti Publish
 
 # Price comparison engine
 ### Students working on the project: 
