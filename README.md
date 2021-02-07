@@ -14,7 +14,7 @@ Kad teisingai paleisti - reikia nustatyti šiuos nustatymus:
 
 "Solution 'PCE_Web' (3 of 3 projects)" dešinis klavišas -> "Properties"\
 Kairėje: "Common Properties" -> "Startup Project"\
-Viduryje: "Multiple startup projects":\
+Viduryje: "Multiple startup projects":
 - PCE_Web - action: "Start"
 - PCEDatabase - action: "None"
 - WEBSearchAPI - action: "Start"
