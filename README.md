@@ -3,12 +3,14 @@
 
 Pridėti šitai:
 
+```
 {
     "EmailSend": {
         "SecretMail": "Jūsų email",
         "SecretPassword": "Jūsų susikurto email slaptažodis"       
     } 
 }
+```
 
 Kad teisingai paleisti - reikia nustatyti šiuos nustatymus:
 
