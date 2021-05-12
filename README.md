@@ -1,7 +1,7 @@
 # How to run the program
-"PCE_Web" dešinis klavišas -> "Manage User Secrets"
+Right click on "PCE_Web" -> "Manage User Secrets"
 
-Pridėti šitai:
+Add:
 
 ```
 {
@@ -12,23 +12,22 @@ Pridėti šitai:
 }
 ```
 
-Kad teisingai paleisti - reikia nustatyti šiuos nustatymus:
+Configuring startup options:
 
-"Solution 'PCE_Web' (3 of 3 projects)" dešinis klavišas -> "Properties"\
-Kairėje: "Common Properties" -> "Startup Project"\
-Viduryje: "Multiple startup projects":
+"Solution 'PCE_Web' (3 of 3 projects)" right click -> "Properties"\
+On the left: "Common Properties" -> "Startup Project"\
+On the middle: "Multiple startup projects":
 - PCE_Web - action: "Start"
 - PCEDatabase - action: "None"
 - WEBSearchAPI - action: "Start"
 
-Kad pridėti duomenų bazę, reikia daryti tai:
-Solution explorer'yje surasti PCEDatabase ir spausti dešinį klavišą:\
-Spausti "Publish...":
-- Iššokusioje lentelėje spausti "Edit" -> spausti "Browse" tab -> Atidaryti "Local" ir pasirinkti "MSSQLLocalDB", spausti OK
-- Į database name įvesti "PCEDatabase"
-- Komentaras - galima išsaugoti šitą publish profile tam, kad ateityje galima būtų jį iš karto loadint,\
-  tačiau jeigu atnaujinsite duomenų bazės struktūrą, teks paminėtus žingsnius kartoti iš naujo.
-- Spausti Publish
+Adding database:
+Find PCEDatabase in the solution explorer and click left mouse:
+Press "Publish...":
+- "Edit" -> "Browse" -> "Local" and choose "MSSQLLocalDB", press OK
+- Write "PCEDatabase" into the Database name
+- Note: It is possible to save this publish profile and load it again later. However, after updating DB structure, it will be necessary to repeat all steps again
+- Press Publish
 
 # Price comparison engine
 ### Students working on the project: 
