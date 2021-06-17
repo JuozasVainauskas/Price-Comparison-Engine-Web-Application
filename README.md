@@ -1,3 +1,8 @@
+# PCE_Web
+
+Web application which is capable of comparing product prices on different
+online shops and informing the user where he can buy the specific item for the lowest price possible
+
 # How to run the program
 Right click on "PCE_Web" -> "Manage User Secrets"
 
